@@ -1,0 +1,59 @@
+html, body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #EEEEF5;
+    /* #EEEEF5 */
+}
+
+.sign-in-menu {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.sign-in-menu .sign-in-box {
+    width: 500px;
+    height: 450px;
+    background-color: white;
+    border-radius: 5%;
+    padding: 20px;
+    box-shadow: 0 4px 10px 5px rgba(0,0,0,0.2);;
+    
+}
+
+.sign-in-box h1, h2 {
+    margin: 0;
+    text-align: center; 
+    padding: 30px 0px;
+}
+
+
+.sign-in-box .sign-in-input input, #sign-in-btn{
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 10px 0px;
+    border-radius: 5px;
+}
+
+.sign-in-box .sign-in-input .sign-in-input-field, #sign-in-btn {
+    border: 1px solid #ccc;
+    padding: 10px;
+    
+}
+
+#sign-in-btn {
+    border: blue;
+    background-color: black;
+    color: white;
+}
+
+#sign-in-btn:hover {
+    opacity: 0.9;
+    cursor: pointer;
+}
