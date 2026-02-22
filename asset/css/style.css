@@ -13,7 +13,7 @@ html, body {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 21px;
+    padding: 20px;
 }
 
 .sign-in-menu .sign-in-box {
