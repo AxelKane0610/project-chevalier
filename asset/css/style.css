@@ -4,6 +4,7 @@ html, body {
     /* #EEEEF5 */
 }
 
+/* SIGN IN CSS PAGE */
 .sign-in-menu {
     position: fixed;
     top: 0;
@@ -56,4 +57,8 @@ html, body {
 #sign-in-btn:hover {
     opacity: 0.9;
     cursor: pointer;
+}
+
+.main-menu-categories h1{
+    text-align: center;
 }
