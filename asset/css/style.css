@@ -24,11 +24,11 @@ html, body {
     background-color: white;
     border-radius: 5%;
     padding: 20px;
-    box-shadow: 0 4px 10px 5px rgba(0,0,0,0.2);;
+    box-shadow: 0 4px 10px 5px rgba(0,0,0,0.2);
     
 }
 
-.sign-in-box h1, h2 {
+.sign-in-box h1, .sign-in-box h2 {
     margin: 0;
     text-align: center; 
     padding: 30px 0px;
@@ -66,20 +66,22 @@ html, body {
     text-align: center;
 }
 
+
 #main-menu-categories-container {
-    padding: 10px;
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 10px;
-    justify-content: center;
+    height: 100vh;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
 
 }
 
 .software-tickets-btn, .ttex-tickets-btn, .laser-engraving-btn, .loanunit-tickets-btn, .training-submit-btn {
     margin: 5px;
-    width: 19vw;
-    height: 300px;
+    width: 18vw;
+    height: 500px;
     background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px 5px rgba(0,0,0,0.2);
 }
 
 
@@ -88,4 +90,24 @@ html, body {
     object-fit: contain;
     width: 100%;
     height: 65%;
+}
+
+#main-menu-categories-container h2 {
+    text-align: left;
+    padding-left: 10px;
+    text-shadow: 0px 1px 4px rgba(0,0,0,0.3);
+}
+
+#main-menu-categories-container p {
+    padding: 0 10px;
+}
+
+.software-tickets-btn:hover, 
+.ttex-tickets-btn:hover, 
+.laser-engraving-btn:hover, 
+.loanunit-tickets-btn:hover, 
+.training-submit-btn:hover {
+    opacity: 0.9;
+    cursor: pointer;
+    box-shadow: 0 4px 10px 5px rgba(0,0,0,0.5);
 }
