@@ -1,9 +1,13 @@
-html, body, a {
+html, body{
     font-family: Arial, Helvetica, sans-serif;
     background-color: #EEEEF5;
     margin: 0;
     text-decoration: none;
     /* #EEEEF5 */
+}
+
+a {
+    text-decoration: none;
 }
 
 /* -------------------- SIGN IN CSS PAGE --------------------*/
@@ -173,7 +177,7 @@ html, body, a {
 }
 
 
-
+/* -------------------CSS cho Form log ticket software --------------------*/
 .ticket-form-overlay {
     position: fixed;
     top: 0;
@@ -185,6 +189,7 @@ html, body, a {
     justify-content: center;
     padding: 20px;
     background-color: rgba(0,0,0,0.3);
+
     
 }
 
@@ -196,6 +201,7 @@ html, body, a {
     border-radius: 5%;
     padding: 20px;
     box-shadow: 0 4px 10px 5px rgba(0,0,0,0.2);
+    
 }
 
 .ticket-form-header {
@@ -213,4 +219,10 @@ html, body, a {
 
 .ticket-form-overlay.active {
     display: flex; /* HIỆN FORM KHI NHẤN NÚT CLOSE */
+
 }
+
+
+
+
+
