@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Project Chevalier</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="asset/css/style.css">
+        <link rel="stylesheet" href="asset/css/themify-icons/themify-icons.css">
+    </head>
+
+    <body>
+        <div id="software-tickets-menu">
+            <div class="software-tickets-sidebar">
+                <h1>Software Support</h1>
+                <h2>Discover</h2>
+                <ul class="software-tickets-sidebar-item-container">
+                    <li><i class="ti-home"></i><a>Home</a></li>
+                    <li><i class="ti-search"></i><a>Search</a></li>
+                </ul>
+            </div>
+
+            <div class="software-tickets-menu-content">
+                <button id="software-tickets-create-btn" class="js-create-software-tickets">Create ticket</button>
+            </div>
+
+        </div>
+
+        <div class="ticket-form-overlay">
+            <div class="ticket-form-box">
+                <div class="ticket-form-header">
+                    <i class="ti-close js-close-create-software-tickets"></i> <!-- class="js-close-create-software-tickets"-->
+                    <h2>EEG Software Support</h2>
+                </div>
+            </div>
+        </div>
+
+        
+    </body>
+
+    <script>
+            const TicketFormOverlay = document.querySelector(".ticket-form-overlay")
+            
+            const clickCreateTicket = document.querySelector('.js-create-software-tickets')
+            clickCreateTicket.addEventListener('click', showTicketForm)
+            const closeCreateTicket = document.querySelector('.js-close-create-software-tickets')
+            closeCreateTicket.addEventListener('click', closeTicketForm)
+
+            function showTicketForm() {
+                TicketFormOverlay.classList.add('active')
+            }
+            function closeTicketForm() {
+                TicketFormOverlay.classList.remove('active')
+            }
+            
+    </script>
+</html>
