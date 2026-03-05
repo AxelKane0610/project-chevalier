@@ -26,10 +26,44 @@
 
         <div class="ticket-form-overlay">
             <div class="ticket-form-box">
-                <div class="ticket-form-header">
-                    <i class="ti-close js-close-create-software-tickets"></i> <!-- class="js-close-create-software-tickets"-->
-                    <h2>EEG Software Support</h2>
+                <div class="ticket-form-box-content">
+                    <div class="ticket-form-header">
+                        <i class="ti-close js-close-create-software-tickets"></i> <!-- class="js-close-create-software-tickets"-->
+                        <h2>EEG Software Support</h2>
+                    </div>
+
+                    <form action="process.php" method="POST" class="EEG-Software-Support-Form">
+        
+                        <label>Reciept</label>
+                        <input type="text" class="EEG-Software-Support-Form-Input">
+
+                        <label>Support Type</label>
+                        <select name="Software-Support-Type" class="EEG-Software-Support-Form-Input">
+                            <option value="add-part">Thêm mã part</option>
+                            <option value="rollback">Rollback</option>
+                            <option value="delete-reciept">Hủy số phiếu</option>
+                            <option value="adjust-infomation">Điều chỉnh thông tin</option>
+                        </select>
+
+                        <label>Priority</label>
+                        <select name="Software-Support-Type" class="EEG-Software-Support-Form-Input">
+                            <option value="Normal">Normal</option>
+                            <option value="Critical">Critical</option>
+                            <option value="High">High</option>
+                            <option value="Low">Low</option>
+                        </select>
+
+                        <label>Description</label>
+                        <textarea name="description" class="EEG-Software-Support-Form-Input"></textarea>
+                        
+                        <label>Attach File:</label>
+                        <input type="file" name="attachment">
+
+                        <button type="submit" class="EEG-Software-Support-Form-Input">Submit</button>
+
+                    </form>
                 </div>
+                
             </div>
         </div>
 

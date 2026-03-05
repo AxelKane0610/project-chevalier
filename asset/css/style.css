@@ -196,11 +196,14 @@ a {
 .ticket-form-box {
     position: relative;
     width: 500px;
-    height: 450px;
+    height: 500px;
     background-color: white;
     border-radius: 5%;
     padding: 20px;
     box-shadow: 0 4px 10px 5px rgba(0,0,0,0.2);
+}
+
+.ticket-form-box-content {
     
 }
 
@@ -223,6 +226,30 @@ a {
 }
 
 
+.EEG-Software-Support-Form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y:auto;
+}
 
+.EEG-Software-Support-Form .EEG-Software-Support-Form-Input {
+    padding: 5px;
+    font-size: 15px;
+}
 
+.EEG-Software-Support-Form textarea {
+    height: 100px;
+}
 
+.EEG-Software-Support-Form > button {
+    color: white;
+    background-color: black;
+    border-radius: 5px;
+}
+
+.EEG-Software-Support-Form > button:hover {
+    cursor: pointer;
+    background-color: white;
+    color: black;
+}
