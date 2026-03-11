@@ -210,9 +210,6 @@ h1, h2, h3 {
     box-shadow: 0 4px 10px 5px rgba(0,0,0,0.2);
 }
 
-.ticket-form-box-content {
-    
-}
 
 .ticket-form-header {
     justify-content: center;
@@ -263,7 +260,7 @@ h1, h2, h3 {
 
 /* CSS CHO TABLE TICKET PENDING */
 
-#pending-software-tickets-table-container {
+#pending-software-tickets-table-container, #rejected-software-tickets-table-container {
     padding: 10px;
     margin-top: 10px;
     width: 99%;
@@ -272,7 +269,7 @@ h1, h2, h3 {
     border-radius: 10px;
 }
 
-.pending-software-tickets-table {
+.pending-software-tickets-table, .rejected-software-tickets-table {
     text-align: left;
     text-decoration: none;
     line-height: 30px;
@@ -288,4 +285,7 @@ h1, h2, h3 {
     color: white;
 }
 
+.software-tickets-menu-detais-header {
+    
+}
 
