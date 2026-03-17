@@ -1,10 +1,18 @@
-html, body, ul{
+:root {
+    --button-background-color: rgb(0,113,227);
+    --button-text-color: white;
+}
+html, body{
     font-family: Arial, Helvetica, sans-serif;
-    background-color: #EEEEF5;
+    background-color: rgb(28,28,30);
     margin: 0;
     text-decoration: none;
     
     /* #EEEEF5 */
+}
+
+*::-webkit-scrollbar {
+    display: none;
 }
 
 a {
@@ -13,6 +21,20 @@ a {
 
 h1, h2, h3 {
     margin: 0;
+}
+
+.background-enable {
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    
+    background-image:url("./imgs/blue_vector_background.svg") ;
+    background-size:cover;
+    background-position:center;
+    
+    z-index:-1;
 }
 
 /* -------------------- SIGN IN CSS PAGE --------------------*/
@@ -29,13 +51,17 @@ h1, h2, h3 {
 }
 
 .sign-in-menu .sign-in-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     width: 500px;
     height: 450px;
-    background-color: white;
+    background-color: rgb(28,28,30);
     border-radius: 5%;
     padding: 20px;
-    box-shadow: 0 4px 10px 5px rgba(0,0,0,0.2);
-    
+    box-shadow: 0 4px 10px 10px rgba(0,0,0,0.2);
+    color: var(--button-text-color);
 }
 
 .sign-in-box h1, .sign-in-box h2 {
@@ -44,71 +70,100 @@ h1, h2, h3 {
     padding: 30px 0px;
 }
 
-.sign-in-box .sign-in-input input, #sign-in-btn{
-    display: block;
+.sign-in-input {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: 10px;
+}
+.sign-in-box .sign-in-input input{
+    
     width: 100%;
     box-sizing: border-box;
-    margin: 10px 0px;
     border-radius: 5px;
 }
 
-.sign-in-box .sign-in-input .sign-in-input-field, #sign-in-btn {
-    border: 1px solid #ccc;
+.sign-in-box .sign-in-input .sign-in-input-field {
+    border: 1px solid gray;
     padding: 10px;
+    background-color: rgb(37,37,39);
+    color: white;
+    outline: none;
     
 }
 
+.sign-in-box .sign-in-input .sign-in-input-field:focus {
+    border: 1px solid rgb(0,113,227);
+}
+
 #sign-in-btn {
-    background-color: black;
+    border-radius: 5px;
+    width: 200px;
+    padding: 10px;
+    background-color: blue;
     color: white;
+    border: none;
 }
 
 #sign-in-btn:hover {
-    opacity: 0.9;
+    opacity: 0.8;
     cursor: pointer;
 }
 
 
 /* -------------------- CSS Cho main menu chọn tickets --------------------*/
 .main-menu-categories-header h1{
+    display: flex;
     text-align: center;
+    justify-content: center;
+    align-items: center;
+    height: 10vh;
+    color: white;
 }
 
 
 #main-menu-categories-container {
-    height: 100vh;
+    height: 90vh;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
     align-items: center;
+    gap: 20px;
 
 }
 
 .software-tickets-btn, .ttex-tickets-btn, .laser-engraving-btn, .loanunit-tickets-btn, .training-submit-btn {
-    margin: 5px;
-    width: 18vw;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 400px;
     height: 500px;
-    background-color: white;
-    border-radius: 15px;
-    box-shadow: 0 4px 10px 5px rgba(0,0,0,0.2);
-    color: black;
+    background: rgba(0,0,0,0.65);
+    border-radius: 30px;
+    box-shadow: 0 4px 10px 5px rgba(0,0,0,0.5);
+    color: white;
 }
 
 
 
 #main-menu-categories-container img {
-    object-fit: contain;
-    width: 100%;
+    
+    object-fit: cover;
+    width: 300px;
     height: 65%;
 }
 
 #main-menu-categories-container h2 {
-    text-align: left;
     padding-left: 10px;
     text-shadow: 0px 1px 4px rgba(0,0,0,0.3);
 }
 
 #main-menu-categories-container p {
     padding: 0 10px;
+    color: white;
 }
 
 .software-tickets-btn:hover, 
@@ -285,10 +340,14 @@ h1, h2, h3 {
     color: white;
 }
 
-.software-tickets-detais-header {
+.software-tickets-details-header {
+    display: flex;
     width: 100%;
     height: 5vh;
     background-color: white;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
 }
 
 .software-tickets-detail-content {
@@ -313,7 +372,7 @@ h1, h2, h3 {
     display: grid;
     align-content: start;
     gap: 10px;
-    
+    overflow-y: scroll;
 }
 
 .software-tickets-details-items{
@@ -326,9 +385,7 @@ h1, h2, h3 {
     
 }
 
-.software-tickets-details-items::-webkit-scrollbar { /* ẩn biểu tượng cuộn*/
-    display: none;
-}
+
 .software-tickets-comment-form{
     display: flex;
     flex-direction: column;
