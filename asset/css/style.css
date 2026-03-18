@@ -130,31 +130,38 @@ h1, h2, h3 {
     justify-content: center;
     align-items: center;
     gap: 20px;
+    
 
 }
 
 .software-tickets-btn, .ttex-tickets-btn, .laser-engraving-btn, .loanunit-tickets-btn, .training-submit-btn {
-    padding: 10px;
+
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 10px;
-    width: 350px;
+    width: 300px;
     height: 500px;
     /* background: rgba(0,0,0,0.65); */
     background: white;
     border-radius: 30px;
     box-shadow: 0 4px 10px 5px rgba(0,0,0,0.5);
     color: black;
+    transition: all 0.25s ease;
 }
 
+.ticket-img-description {
+    box-sizing: border-box;
+    padding: 20px;
+    width: 100;
+    height: 60%;
+}
 
-
-#main-menu-categories-container img {
+.ticket-img-description img {
+    object-fit: scale-down;
     
-    object-fit: cover;
-    width: 300px;
-    height: 65%;
+    width: 100%;
+    height: 100%;
 }
 
 #main-menu-categories-container h2 {
@@ -163,6 +170,7 @@ h1, h2, h3 {
 }
 
 #main-menu-categories-container p {
+    height: 10px;
     padding: 0 10px;
     color: black;
 }
@@ -175,6 +183,27 @@ h1, h2, h3 {
     opacity: 0.9;
     cursor: pointer;
     box-shadow: 0 4px 10px 5px rgba(0,0,0,0.5);
+    transform: scale(1.05);
+}
+
+.card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    margin-top: auto;
+    padding-left: 16px;
+    width: 100%;
+    height: 70px;
+    background-color: rgb(241,245,254);
+    border-radius: 0 0 30px 30px;
+    color: rgb(0,113,227);
+    font-weight: 750;
+}
+
+.card-footer-icon .ti-angle-right {
+    padding: 20px;
+    color: rgb(0,113,227);
 }
 
 /* -------------------- CSS Cho main menu software tickets --------------------*/
