@@ -139,12 +139,13 @@ h1, h2, h3 {
     flex-direction: column;
     align-items: center;
     gap: 10px;
-    width: 400px;
+    width: 350px;
     height: 500px;
-    background: rgba(0,0,0,0.65);
+    /* background: rgba(0,0,0,0.65); */
+    background: white;
     border-radius: 30px;
     box-shadow: 0 4px 10px 5px rgba(0,0,0,0.5);
-    color: white;
+    color: black;
 }
 
 
@@ -163,7 +164,7 @@ h1, h2, h3 {
 
 #main-menu-categories-container p {
     padding: 0 10px;
-    color: white;
+    color: black;
 }
 
 .software-tickets-btn:hover, 
