@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+        <title>Project Chevalier</title>
+        <meta charset="utf-8">
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <link rel="stylesheet" href="{{ asset('icons/themify-icons.css') }}">
+    
+    </head>
+
+    <body class="background-enable">
+        
+        <div class="main-menu-categories-header">
+            <h1>Xin chào, hôm nay bạn cần hỗ trợ gì ?</h1>
+        </div>
+        
+        <div id="main-menu-categories-container">
+            <a href="{{ url('/software-tickets-menu') }}">
+                <div class="software-tickets-btn">
+                    <div class="ticket-img-description">
+                        <img src="{{ asset('imgs/Ticket Software Icon.png') }}" alt="">
+                    </div>
+                    
+                    <h2>Software</h2>
+                    <p>Liên quan tới lỗi hệ thống EEG hoặc có đề xuất cải thiện hệ thống</p>
+                    <div class="card-footer">
+                        <div class="card-footer-text">Learn more</div>
+                        <div class="card-footer-icon"><i class="ti-angle-right"></i></div>
+                    </div>
+                </div>
+            </a>
+            
+
+            <div class="ttex-tickets-btn">
+                <div class="ticket-img-description">
+                    <img src="{{ asset('imgs/transport_image.png') }}" alt="">
+                </div>
+                
+                <h2>Điều tin TTEX</h2>
+                <p>Luân chuyển hàng hóa từ TTBH hoặc ngược lại</p>
+                <div class="card-footer">
+                    <div class="card-footer-text">Learn more</div>
+                    <div class="card-footer-icon"><i class="ti-angle-right"></i></div>
+                </div>
+            </div>
+
+            <div class="laser-engraving-btn">
+                <div class="ticket-img-description">
+                    <img src="{{ asset('imgs/laser_engraving_image.png') }}" alt="">
+                </div>
+                
+                <h2>Khắc base</h2>
+                <p>Khắc base (Mặt D) sau khi thay</p>
+                <div class="card-footer">
+                    <div class="card-footer-text">Learn more</div>
+                    <div class="card-footer-icon"><i class="ti-angle-right"></i></div>
+                </div>
+            </div>
+
+            <div class="loanunit-tickets-btn">
+                <div class="ticket-img-description">
+                    <img src="{{ asset('imgs/loanunit_image.png') }}" alt="">
+                </div>
+                
+                <h2>Mượn máy & parts</h2>
+                <p>Mượn máy/part để bảo hành hoặc test</p>
+                <div class="card-footer">
+                    <div class="card-footer-text">Learn more</div>
+                    <div class="card-footer-icon"><i class="ti-angle-right"></i></div>
+                </div>
+            </div>
+
+            <div class="training-submit-btn">
+                <div class="ticket-img-description">
+                    <img src="{{ asset('imgs/training_image.png') }}" alt="">
+                </div>
+                
+                <h2>Submit training</h2>
+                <p>Submit các chứng chỉ sau khi hoàn thành training</p>
+                <div class="card-footer">
+                    <div class="card-footer-text">Learn more</div>
+                    <div class="card-footer-icon"><i class="ti-angle-right"></i></div>
+                </div>
+            </div>
+        </div>
+        
+        
+    </body>
+</html>

@@ -1,0 +1,536 @@
+@import 'tailwindcss';
+@layer base {
+    h1 {
+        @apply text-4xl font-bold;
+    }
+    h2 {
+        @apply text-2xl font-bold;
+    }
+
+    input, select, textarea {
+        @apply border border-gray-300 rounded-md p-2 outline-none;
+    }
+
+    input:focus, select:focus, textarea:focus {
+        @apply border-blue-500 ring-1 ring-blue-500;
+    }
+}
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Arial', 'Helvetica', sans-serif, ui-sans-serif, system-ui;
+}
+
+:root {
+    --button-background-color: rgb(40,104,245);
+    --button-text-color: white;
+    --table-header-background-color: rgb(241,241,252);
+}
+html, body{
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: rgb(28,28,30);
+    margin: 0;
+    text-decoration: none;
+    
+    /* #EEEEF5 */
+}
+
+*::-webkit-scrollbar {
+    display: none;
+}
+
+button {
+    background-color: var(--button-background-color);
+    color: var(--button-text-color);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table tr th {
+    background-color: var(--table-header-background-color);
+    padding: 10px;
+}
+
+th, td {
+    border: 1px solid #e5e7eb;
+    padding: 10px;
+}
+
+
+
+i {
+    padding-right: 10px;
+}
+
+a {
+    text-decoration: none;
+}
+
+h1, h2, h3 {
+    margin: 0;
+}
+
+
+.background-enable {
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    
+    background-image:url("/imgs/blue_vector_background.svg") ;
+    background-size:cover;
+    background-position:center;
+    
+    z-index:-1;
+}
+
+/* -------------------- SIGN IN CSS PAGE --------------------*/
+.sign-in-menu {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.sign-in-menu .sign-in-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 500px;
+    height: 450px;
+    background-color: rgb(28,28,30);
+    border-radius: 5%;
+    padding: 20px;
+    box-shadow: 0 4px 10px 10px rgba(0,0,0,0.2);
+    color: var(--button-text-color);
+}
+
+.sign-in-box h1, .sign-in-box h2 {
+    margin: 0;
+    text-align: center; 
+    padding: 30px 0px;
+}
+
+.sign-in-box .sign-in-input {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: 10px;
+}
+
+
+.sign-in-input-field {
+    border: 1px solid gray;
+    padding: 10px;
+    background-color: rgb(37,37,39);
+    color: white;
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 5px;
+    
+}
+
+.sign-in-box .sign-in-input .sign-in-input-field:focus {
+    border: 1px solid rgb(0,113,227);
+}
+
+#sign-in-btn {
+    border-radius: 5px;
+    width: 200px;
+    padding: 10px;
+    background-color: blue;
+    color: white;
+    border: none;
+}
+
+#sign-in-btn:hover {
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+
+/* -------------------- CSS Cho main menu chọn tickets --------------------*/
+.main-menu-categories-header h1{
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    height: 10vh;
+    color: white;
+}
+
+
+#main-menu-categories-container {
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    
+
+}
+
+.software-tickets-btn, .ttex-tickets-btn, .laser-engraving-btn, .loanunit-tickets-btn, .training-submit-btn {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 300px;
+    height: 500px;
+    /* background: rgba(0,0,0,0.65); */
+    background: white;
+    border-radius: 30px;
+    box-shadow: 0 4px 10px 5px rgba(0,0,0,0.5);
+    color: black;
+    transition: all 0.25s ease;
+}
+
+.ticket-img-description {
+    box-sizing: border-box;
+    padding: 20px;
+    width: 100;
+    height: 60%;
+}
+
+.ticket-img-description img {
+    object-fit: scale-down;
+    
+    width: 100%;
+    height: 100%;
+}
+
+#main-menu-categories-container h2 {
+    padding-left: 10px;
+    text-shadow: 0px 1px 4px rgba(0,0,0,0.3);
+}
+
+#main-menu-categories-container p {
+    height: 10px;
+    padding: 0 10px;
+    color: black;
+}
+
+.software-tickets-btn:hover, 
+.ttex-tickets-btn:hover, 
+.laser-engraving-btn:hover, 
+.loanunit-tickets-btn:hover, 
+.training-submit-btn:hover {
+    opacity: 0.9;
+    cursor: pointer;
+    box-shadow: 0 4px 10px 5px rgba(0,0,0,0.5);
+    transform: scale(1.05);
+}
+
+.card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    margin-top: auto;
+    padding-left: 16px;
+    width: 100%;
+    height: 70px;
+    background-color: rgb(241,245,254);
+    border-radius: 0 0 30px 30px;
+    color: rgb(0,113,227);
+    font-weight: 750;
+}
+
+.card-footer-icon .ti-angle-right {
+    padding: 20px;
+    color: rgb(0,113,227);
+}
+
+/* -------------------- CSS Cho main menu software tickets --------------------*/
+#software-tickets-menu {
+    display: flex;
+    flex-direction: column;
+}
+
+.common-header-navigation {
+    background: linear-gradient(to right, #1e3a8a, #3b82f6);
+    height: 60px;
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    color: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.common-header-navigation h1 {
+    margin: 0;
+    padding: 10px;
+}
+
+.common-header-navigation-item-container {
+    list-style: none;
+    margin: 0;
+}
+
+.common-header-navigation-item-container li {
+    display: inline-block;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+}
+
+
+
+.common-header-navigation-item-container li:hover {
+    opacity: 0.9;
+    cursor: pointer;
+    background-color: #f1f1f1;
+    color: black;
+}
+
+
+.software-tickets-menu-content {
+    padding: 20px;
+    /* display: flex; */
+    flex: 1;
+    gap: 10px;
+}
+
+.software-tickets-menu-content > #software-tickets-create-btn {
+    padding: 15px;
+    background-color: var(--button-background-color);
+    color: var(--button-text-color);
+    border-radius: 5px;
+    border-width: 0px;
+    font-weight: 750 ;
+}
+
+.software-tickets-menu-content > #software-tickets-create-btn:hover {
+    background-color: white;
+    color: black;
+    cursor: pointer;
+    
+    
+}
+
+
+/* -------------------CSS cho Form log ticket software --------------------*/
+.ticket-form-overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: none; /* ẨN FORM KHI CHƯA NHẤN NÚT CREATE TICKET */
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: rgba(0,0,0,0.3);
+
+    
+}
+
+.ticket-form-box {
+    position: relative;
+    width: 500px;
+    height: auto;
+    background-color: white;
+    border-radius: 5%;
+    padding: 20px;
+    box-shadow: 0 4px 10px 5px rgba(0,0,0,0.2);
+}
+
+
+.ticket-form-header {
+    justify-content: center;
+    align-items: flex-end;
+    
+}
+
+.ticket-form-header > .ti-close {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    cursor: pointer;
+}
+
+.ticket-form-overlay.active {
+    display: flex; /* HIỆN FORM KHI NHẤN NÚT CREATE TICKET */
+
+}
+
+
+.Ticket-Form-Body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y:hidden;
+    box-sizing: border-box;
+}
+
+.Ticket-Form-Body .Ticket-Form-Body-Input {
+    padding: 5px;
+    font-size: 15px;
+}
+
+.Ticket-Form-Body textarea {
+    height: 100px;
+}
+
+.Ticket-Form-Body > button {
+    color: white;
+    background-color: black;
+    border-radius: 5px;
+}
+
+.Ticket-Form-Body > button:hover {
+    cursor: pointer;
+    background-color: white;
+    color: black;
+}
+
+/* CSS CHO TABLE TICKET PENDING */
+
+#pending-software-tickets-table-container, #rejected-software-tickets-table-container {
+    padding: 10px;
+    margin-top: 10px;
+    width: 99%;
+    height: 300px;
+    background-color: white;
+    border-radius: 10px;
+}
+
+.pending-software-tickets-table, .rejected-software-tickets-table {
+    text-align: left;
+    text-decoration: none;
+    line-height: 30px;
+}
+
+.ti-arrow-right {
+    padding: 10px;
+}
+
+.ti-arrow-right:hover {
+    cursor: pointer;
+    background-color: black;
+    color: white;
+}
+
+.software-tickets-comments,
+.software-tickets-tracking-info,
+.tickets-details
+{
+    padding: 10px;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    box-sizing: border-box;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-content: start;
+    box-shadow: 0 4px 10px 10px rgba(0,0,0,0.4);
+    
+}
+
+.tickets-details-items {
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 100%;
+    justify-content: space-evenly;
+    align-items: center;
+    overflow-y: scroll;
+    box-sizing: border-box;
+}
+
+
+
+.tickets-details-items li{
+    padding: 5px;
+    background-color: white;
+    width: 99%;
+    height: auto;
+    
+    
+}
+
+
+.software-tickets-comment-form{
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    gap: 10px;
+}
+
+.software-tickets-comment-form button {
+    padding: 10px;
+    background-color: black;
+    color: white;
+    border-radius: 5px;
+}
+
+.software-tickets-content {
+    display: grid;
+    grid-template-columns: 30vw 30vw 30vw;
+    width: 100%;
+    height: 95vh;
+    padding: 20px;
+    justify-content: space-evenly;
+    gap: 20px;
+}
+
+.dialog-box {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: none; /* ẨN DIALOG KHI CHƯA NHẤN NÚT */
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: rgba(0,0,0,0.3);
+}
+
+.dialog-box .dialog-box-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    width: 400px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    color: black;
+}
+
+.dialog-box.active {
+    display: flex; /* HIỆN DIALOG KHI NHẤN NÚT */
+}
+
+.dialog-box-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.dialog-box-content > .dialog-box-header > .ti-close {
+    /* position: absolute; */
+    cursor: pointer;
+    padding: 10px;
+    
+}
+
