@@ -6,7 +6,7 @@
                 <h2>{{$title}}</h2>
             </div>
 
-            <form action="{{$action}}" method="POST" class="Ticket-Form-Body">
+            <form action="{{ $action1 }}" method="POST" class="Ticket-Form-Body" id="{{ $id }}"> <!-- id="create-sw-ticket" -->
                 @csrf
                 {{ $slot }}
 
@@ -31,6 +31,7 @@
             TicketFormOverlay.classList.remove('active')
         }
 
+        
         
         
 </script>

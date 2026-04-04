@@ -410,6 +410,7 @@ h1, h2, h3 {
     height: 300px;
     background-color: white;
     border-radius: 10px;
+    overflow-y: scroll;
 }
 
 .pending-software-tickets-table, .rejected-software-tickets-table {

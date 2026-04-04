@@ -4,6 +4,7 @@
         <title>Project Chevalier</title>
         <meta charset="utf-8">
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @vite(['resources/js/test.js'])
         <link rel="stylesheet" href="{{ asset('icons/themify-icons.css') }}">
     </head>
 
@@ -12,7 +13,7 @@
 
             <x-common-header title="EEG Software Support">
                 <li><i class="ti-home"></i><a href="/main-menu">Home</a></li>
-                <li><i class="ti-search"></i><a href="#">Search</a></li>
+                <li class="js-search-btn"><i class="ti-search"></i><a href="#">Search</a></li>
                 <li><i class="ti-user"></i><a href="#">Profile</a></li>
             </x-common-header>
 
@@ -23,7 +24,7 @@
                 <div id="pending-software-tickets-table-container">
                     <h2>Pending Tickets</h2>
 
-                    <table class="pending-software-tickets-table" width="100%" >
+                    <table id="pending-software-tickets-table" width="100%" >
                         <tr>
                             <th width="5%"></th>
                             <th width="14%">Reciept</th>
@@ -33,45 +34,46 @@
                             <th width="14%">Latest comment</th>
                         </tr>
                     
-
-                        @foreach ($tickets as $ticket)
-                            <tr>
-                                <td>
-                                    <a href="/software-tickets-menu-details/{{ $ticket->id }}">
-                                        <i class="ti-arrow-right" ></i>
-                                    </a>
-                                </td>
-                                <td>{{ $ticket->ticket_reciept }}</td>
-                                <td>
-                                    @if ($ticket->support_type == 1)
-                                        Thêm mã part
-                                    @elseif ($ticket->support_type == 2)
-                                        Rollback
-                                    @elseif ($ticket->support_type == 3)
-                                        Hủy số phiếu
-                                    @elseif ($ticket->support_type == 4)
-                                        Điều chỉnh thông tin
-                                    @else
-                                        N/A
-                                    @endif
-                                </td>
-                                <td>{{ $ticket->description }}</td>
-                                <td>
-                                    @if ($ticket->priority == 1)
-                                        Normal
-                                    @elseif ($ticket->priority == 2)
-                                        Critical
-                                    @elseif ($ticket->priority == 3)
-                                        High
-                                    @elseif ($ticket->priority == 4)
-                                        Low
-                                    @else
-                                        N/A
-                                    @endif
-                                </td>
-                                <td>Chờ leader approve</td>
-                            </tr>
-                        @endforeach
+                        <tbody>
+                            @foreach ($tickets as $ticket)
+                                <tr>
+                                    <td>
+                                        <a href="/software-tickets-menu-details/{{ $ticket->id }}">
+                                            <i class="ti-arrow-right" ></i>
+                                        </a>
+                                    </td>
+                                    <td>{{ $ticket->ticket_reciept }}</td>
+                                    <td>
+                                        @if ($ticket->support_type == 1)
+                                            Thêm mã part
+                                        @elseif ($ticket->support_type == 2)
+                                            Rollback
+                                        @elseif ($ticket->support_type == 3)
+                                            Hủy số phiếu
+                                        @elseif ($ticket->support_type == 4)
+                                            Điều chỉnh thông tin
+                                        @else
+                                            N/A
+                                        @endif
+                                    </td>
+                                    <td>{{ $ticket->description }}</td>
+                                    <td>
+                                        @if ($ticket->priority == 1)
+                                            Normal
+                                        @elseif ($ticket->priority == 2)
+                                            Critical
+                                        @elseif ($ticket->priority == 3)
+                                            High
+                                        @elseif ($ticket->priority == 4)
+                                            Low
+                                        @else
+                                            N/A
+                                        @endif
+                                    </td>
+                                    <td>Chờ leader approve</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
 
                     </table>
 
@@ -107,7 +109,7 @@
         </div>
 
 
-        <x-common-ticket-form title="EEG Software Support" action="/create-software-ticket" method="POST" id="create-sw-ticket">
+        <x-common-ticket-form title="EEG Software Support" action1="/create-software-ticket" id="create-sw-ticket"> <!-- action="/create-software-ticket" method="POST"> -->
 
             <label>Reciept</label>
             <input type="text" class="Ticket-Form-Body-Input" placeholder="Nhập số phiếu tại đây" name="ticket_reciept" required>
@@ -134,12 +136,17 @@
             <label>Attach File:</label>
             <input type="file" name="attachment" multiple>
 
-            <button type="submit" class="Ticket-Form-Body-Input">Submit</button>
+            <button type="submit" class="Ticket-Form-Body-Input" id="software-ticket-submit-btn">Submit</button>
+
         </x-common-ticket-form>
         
-
+        <script>
+            
+        </script>
         
     </body>
+
+    
 
 
 </html>

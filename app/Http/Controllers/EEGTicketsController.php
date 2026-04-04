@@ -22,8 +22,12 @@ class EEGTicketsController extends Controller
         $ticket_info_input['description'] = strip_tags($ticket_info_input['description']);
         $ticket_info_input['user_id'] = auth()->id();
 
-        EEG_Software_Ticket::create($ticket_info_input); //Phải tạo model EEG_Software_Ticket để có thể sử dụng hàm create() này, và phải khai báo fillable trong model đó nữa
-        return redirect('/software-tickets-menu')->with('success', 'Tạo ticket thành công!');
+        $ticket = EEG_Software_Ticket::create($ticket_info_input); //Phải tạo model EEG_Software_Ticket để có thể sử dụng hàm create() này, và phải khai báo fillable trong model đó nữa
+        // return redirect('/software-tickets-menu')->with('success', 'Tạo ticket thành công!');
+        return response()->json([
+            'success' => true,
+            'ticket' => $ticket
+        ]);
     }
 
     public function Show_Software_Ticket_Details($id){
