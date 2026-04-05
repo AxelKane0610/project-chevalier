@@ -16,22 +16,24 @@
         </div>
         
         <div id="main-menu-categories-container">
-            <a href="{{ url('/software-tickets-menu') }}">
-                <div class="software-tickets-btn">
-                    <div class="ticket-img-description">
-                        <img src="{{ asset('imgs/Ticket Software Icon.png') }}" alt="">
+            @can('check_role', 'ROLE_SW_TICKET_ADMIN' || 'ROLE_SUPER_ADMIN')
+                <a href="{{ url('/software-tickets-menu') }}">
+                    <div class="software-tickets-btn">
+                        <div class="ticket-img-description">
+                            <img src="{{ asset('imgs/Ticket Software Icon.png') }}" alt="">
+                        </div>
+                        
+                        <h2>Software</h2>
+                        <p>Liên quan tới lỗi hệ thống EEG hoặc có đề xuất cải thiện hệ thống</p>
+                        <div class="card-footer">
+                            <div class="card-footer-text">Learn more</div>
+                            <div class="card-footer-icon"><i class="ti-angle-right"></i></div>
+                        </div>
                     </div>
-                    
-                    <h2>Software</h2>
-                    <p>Liên quan tới lỗi hệ thống EEG hoặc có đề xuất cải thiện hệ thống</p>
-                    <div class="card-footer">
-                        <div class="card-footer-text">Learn more</div>
-                        <div class="card-footer-icon"><i class="ti-angle-right"></i></div>
-                    </div>
-                </div>
-            </a>
+                </a>
+            @endcan
             
-
+            @can('check_role', 'ROLE_SUPER_ADMIN')
             <div class="ttex-tickets-btn">
                 <div class="ticket-img-description">
                     <img src="{{ asset('imgs/transport_image.png') }}" alt="">
@@ -44,6 +46,7 @@
                     <div class="card-footer-icon"><i class="ti-angle-right"></i></div>
                 </div>
             </div>
+            @endcan
 
             <div class="laser-engraving-btn">
                 <div class="ticket-img-description">

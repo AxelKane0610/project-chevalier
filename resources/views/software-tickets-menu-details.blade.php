@@ -11,21 +11,56 @@
 
         
             <x-common-header title="EEG Software Support">
-                <li><i class="ti-home"></i><a href="/software-tickets-menu">Home</a></li>
-                <li><i class="ti-search"></i><a href="#">Quick Search</a></li>
-                <li><i class="ti-layout-grid2"></i><a href="/main-menu">Quick Navigation</a></li>
-                
+                <li>
+                    <a href="/main-menu">
+                        <i class="ti-home"></i>
+                        Home
+                    </a>
+                </li>
+
+                <li>
+                    <a href="">
+                        <i class="ti-search"></i>
+                        Quick Search
+                    </a>
+                </li>
+                <li>
+                    <a href="/main-menu">
+                        <i class="ti-layout-grid2"></i>
+                        Quick Navigation
+                    </a>
+                </li>
+
                     @can('check_role', 'ROLE_SW_TICKET_ADMIN' || 'ROLE_SUPER_ADMIN')
                     
                         @switch($ticket->status)
                             @case(1)
                             @case(2)
                             @case(3)
-                                <li><i class="ti-alarm-clock"></i><a href="#">In Progress</a></li>
-                                <li><i class="ti-angle-double-right"></i><a href="#">Send approve</a></li>
-                                <li><i class="ti-check"></i><a href="#">Complete</a></li>
-                                <li><i class="ti-thumb-down"></i><a href="#">Reject</a></li>
-                                
+                                <li>
+                                    <a href="">
+                                        <i class="ti-alarm-clock"></i>
+                                        In Progress
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="">
+                                        <i class="ti-angle-double-right"></i>
+                                        Send approve
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="" id="complete-sw-ticket">
+                                        <i class="ti-check"></i>
+                                        Complete
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="">
+                                        <i class="ti-thumb-down"></i>
+                                        Reject
+                                    </a>
+                                </li>
                             @break
                             
                             
@@ -34,7 +69,12 @@
                     @endcan
 
                     @if ($ticket->status == 4 || $ticket->status == 5)
-                        <li><i class="ti-back-left"></i><a href="#">Request Re-Open</a></li>
+                        <li>
+                            <a href="">
+                                <i class="ti-back-left"></i>
+                                Request Re-Open
+                            </a>
+                        </li>
                     @endif
                 
             </x-common-header>
@@ -155,6 +195,39 @@
             </div>
 
         </div>
+
+        <script>
+            const completeTicketBtn = document.querySelector('#complete-sw-ticket');
+            completeTicketBtn.addEventListener('click', function() 
+            {
+                
+                fetch(`/change-ticket-status/{{ $ticket->id }}/status`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({ status: 4 }) // Gửi status mới là "Complete"
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Ticket marked as complete!');
+                        location.reload(); // Tải lại trang để cập nhật trạng thái
+                    } else {
+                        alert('Failed to update ticket status.');
+                    }
+                })
+                // .then(response => response.json())
+                // .then(data => {
+                //     console.log(data);
+                //     // Cập nhật giao diện hoặc hiển thị thông báo thành công
+                //     alert('Ticket marked as complete!');
+                //     location.reload(); // Tải lại trang để cập nhật trạng thái
+                // })
+                // .catch(error => console.error('Error:', error));
+            });
+        </script>
 
     </body>
 

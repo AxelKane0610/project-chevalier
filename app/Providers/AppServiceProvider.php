@@ -25,9 +25,7 @@ class AppServiceProvider extends ServiceProvider
             return $user->hasRole($role);
         });
 
-        // Gate::define('access-software-tickets-menu', function ($user) {
-        //     return $user->hasRole('ROLE_ADMIN') || $user->hasRole('ROLE_SUPPORT'); // Cho phép người dùng có role 'admin' hoặc 'support' truy cập menu quản lý ticket
-        // });
+        
     }
 
     

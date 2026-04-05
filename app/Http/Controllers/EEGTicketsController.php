@@ -26,13 +26,40 @@ class EEGTicketsController extends Controller
         // return redirect('/software-tickets-menu')->with('success', 'Tạo ticket thành công!');
         return response()->json([
             'success' => true,
-            'ticket' => $ticket
+            'ticket_id' => $ticket->id,
+            'ticket_reciept' => $ticket->ticket_reciept,
+            'support_type' => match ($ticket->support_type) 
+                {
+                    '1' => 'Thêm mã part',
+                    '2' => 'Rollback',
+                    '3' => 'Hủy số phiếu',
+                    '4' => 'Điều chỉnh thông tin',
+                    default => 'Unknown',
+                },
+            'priority' => match ($ticket->priority) {
+                    '1' => 'Normal',
+                    '2' => 'Critical',
+                    '3' => 'High',
+                    '4' => 'Low',
+                    default => 'Unknown',
+                },
+            'description' => $ticket->description,
         ]);
     }
 
     public function Show_Software_Ticket_Details($id){
         $ticket = EEG_Software_Ticket::with('user_owner')->findOrFail($id); //gọi tới function "user" trong model EEG_Software_Ticket để lấy thông tin user của ticket đó, rồi mới trả về view
         return view('software-tickets-menu-details', compact('ticket'));
+    }
+
+    public function Change_Software_Ticket_Status($id){
+        $ticket = EEG_Software_Ticket::with('user_owner')->findOrFail($id);
+        $ticket->status = 4; //đổi status thành "Đã hoàn thành"
+        $ticket->save();
+        return response()->json([
+            'success' => true,
+            'message' => 'Ticket status updated successfully',
+        ]);
     }
 
     

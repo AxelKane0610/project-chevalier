@@ -32,4 +32,6 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/software-tickets-menu-details/{id}', [EEGTicketsController::class, 'Show_Software_Ticket_Details']);
 
+    Route::patch('/change-ticket-status/{id}/status', [EEGTicketsController::class, 'Change_Software_Ticket_Status']);
+
 });

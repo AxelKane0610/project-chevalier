@@ -4,7 +4,7 @@
         <title>Project Chevalier</title>
         <meta charset="utf-8">
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-        @vite(['resources/js/test.js'])
+        @vite(['resources/js/new-ticket.js'])
         <link rel="stylesheet" href="{{ asset('icons/themify-icons.css') }}">
     </head>
 
@@ -12,14 +12,31 @@
         <div id="software-tickets-menu">
 
             <x-common-header title="EEG Software Support">
-                <li><i class="ti-home"></i><a href="/main-menu">Home</a></li>
-                <li class="js-search-btn"><i class="ti-search"></i><a href="#">Search</a></li>
-                <li><i class="ti-user"></i><a href="#">Profile</a></li>
+                <li>
+                    <a href="/main-menu">
+                        <i class="ti-home"></i>
+                        Home
+                    </a>
+                </li>
+                <li class="js-search-btn">
+                    <a href="#">
+                        <i class="ti-search"></i>
+                        Search
+                    </a>
+                    
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="ti-user"></i>
+                        Profile
+                    </a>
+                    
+                </li>
             </x-common-header>
 
 
             <div class="software-tickets-menu-content">
-                <button id="software-tickets-create-btn" class="js-create-software-tickets"><i class = "ti-plus"></i>Create Ticket</button>
+                <button id="software-tickets-create-btn" class="js-create-software-tickets">Create Ticket</button>
 
                 <div id="pending-software-tickets-table-container">
                     <h2>Pending Tickets</h2>
@@ -70,7 +87,7 @@
                                             N/A
                                         @endif
                                     </td>
-                                    <td>Chờ leader approve</td>
+                                    <td></td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -97,7 +114,7 @@
                             <td>Rollback</td>
                             <td>Nhờ team SW rollback do cần báo giá bổ sung thêm part.</td>
                             <td>Rejected</td>
-                            <td>Chờ leader approve</td>
+                            <td></td>
                         </tr>
                         
                     </table>

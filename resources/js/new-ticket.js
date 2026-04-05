@@ -19,29 +19,29 @@ softwareTicketForm.addEventListener('submit', async function(e) {
     })
     .then(response => response.json())
     .then(new_ticket => {
-        console.log(new_ticket.ticket);
+        console.log(new_ticket);
         const newRow = 
         `
             <tr>
                 <td>
-                    <a href="/software-tickets-menu-details/{{ $ticket->id }}">
+                    <a href="/software-tickets-menu-details/${new_ticket.ticket_id}">
                         <i class="ti-arrow-right" ></i>
                     </a>
                 </td>
-                <td>${new_ticket.ticket.ticket_reciept}</td>
-                <td>${new_ticket.ticket.support_type}</td>
-                <td>${new_ticket.ticket.description}</td>
-                <td>${new_ticket.ticket.priority}</td>
+                <td>${new_ticket.ticket_reciept}</td>
+                <td>${new_ticket.support_type}</td>
+                <td>${new_ticket.description}</td>
+                <td>${new_ticket.priority}</td>
             </tr>
         
         `;
-        // $('.pending-software-tickets-table tbody').append(newRow);
         document
         .querySelector('#pending-software-tickets-table tbody')
         .insertAdjacentHTML('beforeend', newRow);
     })
     .catch(error => console.error(error));
-
+    closeTicketForm();
+    softwareTicketForm.reset();
     
 
     alert('tạo thành công');
