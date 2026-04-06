@@ -31,7 +31,7 @@
                     </a>
                 </li>
 
-                    @can('check_role', 'ROLE_SW_TICKET_ADMIN' || 'ROLE_SUPER_ADMIN')
+                    @can('check_role', 'ROLE_SW_TICKET_ADMIN' || 'ROLE_SUPER_ADMIN') <!-- Chỉ hiển thị nút action nếu người dùng có vai trò admin hoặc super admin -->
                     
                         @switch($ticket->status)
                             @case(1)
@@ -68,7 +68,7 @@
                     
                     @endcan
 
-                    @if ($ticket->status == 4 || $ticket->status == 5)
+                    @if ( ($ticket->status == 4 || $ticket->status == 5) && $ticket->user_id == auth()->user()->id )
                         <li>
                             <a href="">
                                 <i class="ti-back-left"></i>

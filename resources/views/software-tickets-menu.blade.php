@@ -53,42 +53,48 @@
                     
                         <tbody>
                             @foreach ($tickets as $ticket)
-                                <tr>
-                                    <td>
-                                        <a href="/software-tickets-menu-details/{{ $ticket->id }}">
-                                            <i class="ti-arrow-right" ></i>
-                                        </a>
-                                    </td>
-                                    <td>{{ $ticket->ticket_reciept }}</td>
-                                    <td>
-                                        @if ($ticket->support_type == 1)
-                                            Thêm mã part
-                                        @elseif ($ticket->support_type == 2)
-                                            Rollback
-                                        @elseif ($ticket->support_type == 3)
-                                            Hủy số phiếu
-                                        @elseif ($ticket->support_type == 4)
-                                            Điều chỉnh thông tin
-                                        @else
-                                            N/A
-                                        @endif
-                                    </td>
-                                    <td>{{ $ticket->description }}</td>
-                                    <td>
-                                        @if ($ticket->priority == 1)
-                                            Normal
-                                        @elseif ($ticket->priority == 2)
-                                            Critical
-                                        @elseif ($ticket->priority == 3)
-                                            High
-                                        @elseif ($ticket->priority == 4)
-                                            Low
-                                        @else
-                                            N/A
-                                        @endif
-                                    </td>
-                                    <td></td>
-                                </tr>
+                                @switch($ticket->status)
+                                    @case(1)
+                                    @case(2)
+                                    @case(3)
+                                    <tr>
+                                        <td>
+                                            <a href="/software-tickets-menu-details/{{ $ticket->id }}">
+                                                <i class="ti-arrow-right" ></i>
+                                            </a>
+                                        </td>
+                                        <td>{{ $ticket->ticket_reciept }}</td>
+                                        <td>
+                                            @if ($ticket->support_type == 1)
+                                                Thêm mã part
+                                            @elseif ($ticket->support_type == 2)
+                                                Rollback
+                                            @elseif ($ticket->support_type == 3)
+                                                Hủy số phiếu
+                                            @elseif ($ticket->support_type == 4)
+                                                Điều chỉnh thông tin
+                                            @else
+                                                N/A
+                                            @endif
+                                        </td>
+                                        <td>{{ $ticket->description }}</td>
+                                        <td>
+                                            @if ($ticket->priority == 1)
+                                                Normal
+                                            @elseif ($ticket->priority == 2)
+                                                Critical
+                                            @elseif ($ticket->priority == 3)
+                                                High
+                                            @elseif ($ticket->priority == 4)
+                                                Low
+                                            @else
+                                                N/A
+                                            @endif
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    @break
+                                @endswitch
                             @endforeach
                         </tbody>
 
