@@ -31,7 +31,4 @@
             TicketFormOverlay.classList.remove('active')
         }
 
-        
-        
-        
 </script>

@@ -16,7 +16,7 @@
         </div>
         
         <div id="main-menu-categories-container">
-            @can('check_role', 'ROLE_SW_TICKET_ADMIN' || 'ROLE_SUPER_ADMIN')
+            
                 <a href="{{ url('/software-tickets-menu') }}">
                     <div class="software-tickets-btn">
                         <div class="ticket-img-description">
@@ -31,9 +31,8 @@
                         </div>
                     </div>
                 </a>
-            @endcan
             
-            @can('check_role', 'ROLE_SUPER_ADMIN')
+           
             <div class="ttex-tickets-btn">
                 <div class="ticket-img-description">
                     <img src="{{ asset('imgs/transport_image.png') }}" alt="">
@@ -46,7 +45,7 @@
                     <div class="card-footer-icon"><i class="ti-angle-right"></i></div>
                 </div>
             </div>
-            @endcan
+            
 
             <div class="laser-engraving-btn">
                 <div class="ticket-img-description">

@@ -31,7 +31,7 @@
                     </a>
                 </li>
 
-                    @can('check_role', 'ROLE_SW_TICKET_ADMIN' || 'ROLE_SUPER_ADMIN') <!-- Chỉ hiển thị nút action nếu người dùng có vai trò admin hoặc super admin -->
+                    @can('hasRole', 'ROLE_SUPER_ADMIN' || 'ROLE_TICKET_SW_ADMIN') <!-- Chỉ hiển thị nút action nếu người dùng có vai trò admin hoặc super admin -->
                     
                         @switch($ticket->status)
                             @case(1)
@@ -218,14 +218,7 @@
                         alert('Failed to update ticket status.');
                     }
                 })
-                // .then(response => response.json())
-                // .then(data => {
-                //     console.log(data);
-                //     // Cập nhật giao diện hoặc hiển thị thông báo thành công
-                //     alert('Ticket marked as complete!');
-                //     location.reload(); // Tải lại trang để cập nhật trạng thái
-                // })
-                // .catch(error => console.error('Error:', error));
+                
             });
         </script>
 

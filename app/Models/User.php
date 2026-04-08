@@ -18,6 +18,7 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
+    
     protected $fillable = [
         'name',
         'email',
@@ -26,13 +27,14 @@ class User extends Authenticatable
     ];
 
     protected $casts = [
-    'roles' => 'array', // Ép kiểu từ chuỗi JSON trong DB thành mảng PHP
+        'roles' => 'array', // Ép kiểu từ chuỗi JSON trong DB thành mảng PHP
     ];
 
-    public function hasRole($role)
+    public function hasRole($role) // Hàm kiểm tra xem user có role nào đó không, để hiện hoặc ẩn nút action trên view
     {
     // Kiểm tra xem cái role cần tìm có nằm trong mảng roles của User không
-    return in_array($role, $this->roles ?? []);
+        
+        return in_array($role, $this->roles ?? []);
     }
 
     /**
