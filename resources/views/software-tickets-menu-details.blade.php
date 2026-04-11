@@ -12,71 +12,74 @@
         
             <x-common-header title="EEG Software Support">
                 <li>
-                    <a href="/main-menu">
-                        <i class="ti-home"></i>
-                        Home
-                    </a>
+                    <form action="/software-tickets-menu">
+                        @csrf
+                        <button type="submit"><i class="ti-home"></i>Home</button>
+                    </form>
                 </li>
 
                 <li>
-                    <a href="">
-                        <i class="ti-search"></i>
-                        Quick Search
-                    </a>
+                    <form action="#">
+                        @csrf
+                        <button type="submit"><i class="ti-search"></i>Search</button>
+                    </form>
+
                 </li>
                 <li>
-                    <a href="/main-menu">
-                        <i class="ti-layout-grid2"></i>
-                        Quick Navigation
-                    </a>
+                    <form action="/main-menu">
+                        @csrf
+                        <button type="submit"><i class="ti-layout-grid2"></i>Quick Navigation</button>
+                    </form>
                 </li>
 
-                    @can('hasRole', 'ROLE_SUPER_ADMIN' || 'ROLE_TICKET_SW_ADMIN') <!-- Chỉ hiển thị nút action nếu người dùng có vai trò admin hoặc super admin -->
-                    
-                        @switch($ticket->status)
-                            @case(1)
-                            @case(2)
-                            @case(3)
-                                <li>
-                                    <a href="">
-                                        <i class="ti-alarm-clock"></i>
-                                        In Progress
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="">
-                                        <i class="ti-angle-double-right"></i>
-                                        Send approve
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="" id="complete-sw-ticket">
-                                        <i class="ti-check"></i>
-                                        Complete
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="">
-                                        <i class="ti-thumb-down"></i>
-                                        Reject
-                                    </a>
-                                </li>
-                            @break
-                            
-                            
-                        @endswitch
-                    
-                    @endcan
-
-                    @if ( ($ticket->status == 4 || $ticket->status == 5) && $ticket->user_id == auth()->user()->id )
-                        <li>
-                            <a href="">
-                                <i class="ti-back-left"></i>
-                                Request Re-Open
-                            </a>
-                        </li>
-                    @endif
+                @can('hasRole', 'ROLE_TICKET_SW_ADMIN', 'ROLE_SUPER_ADMIN') <!-- Chỉ hiển thị nút action nếu người dùng có vai trò admin hoặc super admin -->
                 
+                    @switch($ticket->status)
+                        @case(1)
+                        @case(2)
+                        @case(3)
+                            <li>
+                                <form action="#">
+                                    @csrf
+                                    <button type="submit"><i class="ti-alarm-clock"></i>In Progress</button>
+                                </form>
+                            </li>
+                            <li>
+                                
+                                <form action="{{ route('send-approval-request', $ticket->id) }}" method="POST">
+                                    @csrf
+                                    <button type="submit"><i class="ti-angle-double-right"></i>Send Approval </button>
+                                </form>
+                                
+                            </li>
+                            <li>
+                                <form action="#" id="complete-sw-ticket">
+                                    @csrf
+                                    <button type="submit"><i class="ti-check"></i>Complete</button>
+                                </form>
+                            </li>
+                            <li>
+                                <form action="#">
+                                    @csrf
+                                    <button type="submit"><i class="ti-thumb-down"></i>Reject</button>
+                                </form>
+                            </li>
+                        @break
+                        
+                        
+                    @endswitch
+                
+                @endcan
+
+                @if ( ($ticket->status == 4 || $ticket->status == 5) && $ticket->user_id == auth()->user()->id )
+                    <li>
+                        <a href="">
+                            <i class="ti-back-left"></i>
+                            Request Re-Open
+                        </a>
+                    </li>
+                @endif
+            
             </x-common-header>
 
                 

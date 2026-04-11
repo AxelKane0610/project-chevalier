@@ -13,6 +13,7 @@ class CheckRole
      *
      * @param  Closure(Request): (Response)  $next
      */
+    
     public function handle(Request $request, Closure $next, ...$allowedRoles): Response
     {
         $user = $request->user();

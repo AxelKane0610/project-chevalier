@@ -4,10 +4,14 @@
         {{ $slot }}
 
         <li class="logout-btn">
-            <a href="{{ url('/logout') }}" >
-                <i class="ti-power-off"></i>
-                Logout
-            </a>
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit">
+                    <i class="ti-power-off"></i>
+                        Logout
+                </button>
+            </form>
+        
         </li>
 
     </ul>

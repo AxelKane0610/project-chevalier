@@ -26,7 +26,7 @@ Route::middleware(['auth'])->group(function () {
         return view('main-menu');
     });
 
-     // Chỉ cho phép ROLE_SUPER_ADMIN truy cập vào route này, nếu không sẽ bị trả về lỗi 403 Forbidden
+    // Chỉ cho phép ROLE_SUPER_ADMIN truy cập vào route này, nếu không sẽ bị trả về lỗi 403 Forbidden
     // Route::get('/software-tickets-menu', function () {
     //     $tickets = EEG_Software_Ticket::where('user_id', auth()->id())->get();
     //     return view('software-tickets-menu', compact('tickets'));
@@ -46,10 +46,11 @@ Route::middleware(['auth'])->group(function () {
         // Thêm các route khác vào đây...
         Route::post('/create-software-ticket', [EEGTicketsController::class, 'Create_Software_Ticket']);
         Route::patch('/change-ticket-status/{id}/status', [EEGTicketsController::class, 'Change_Software_Ticket_Status']);
+        Route::post('/send-approval-request/{id}', [EEGTicketsController::class, 'Send_Approval_Request']) ->name('send-approval-request');
 
     });
 
-    
+    Route::post('/logout', [UserController::class, 'logout'])->name('logout');
     
 
 });

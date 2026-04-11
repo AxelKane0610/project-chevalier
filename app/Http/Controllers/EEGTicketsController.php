@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\EEG_Software_Ticket;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class EEGTicketsController extends Controller
 {
@@ -60,6 +61,18 @@ class EEGTicketsController extends Controller
             'success' => true,
             'message' => 'Ticket status updated successfully',
         ]);
+    }
+
+    public function Send_Approval_Request($id){
+        $ticket = EEG_Software_Ticket::with('user_owner')->findOrFail($id);
+        $ticket->status = 3;
+        $ticket->save();
+        $response = Http::post('https://defaultca7981a2785a463db82a3db87dfc3c.e6.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/02e7dce1f8724f49a897de0ee8a58568/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=zC58zM_5pldekMYNMUI_yLYF-31LYLG5A2rE0tOqy6o', [
+            'ticket_id'   => $ticket->id,
+            'reciept' => $ticket->ticket_reciept,
+        ]);
+
+        return back()->with('success', 'Approval sent!');
     }
 
     

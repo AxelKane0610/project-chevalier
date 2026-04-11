@@ -24,18 +24,12 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         
-        // Gate::define('check_role', function ($user, $role) {
-        //     // $roles lúc này sẽ luôn là một mảng, ví dụ: ["ROLE_SUPER_ADMIN", "ROLE_SW_ADMIN"]
-        //     dd([
-        //         'user_roles' => $user->roles,
-        //         'required_role' => $role,
-        //     ]);
-        //     return $user->hasRole($role);
-        // });
 
-        Gate::define('hasRole', function ($user, $role) { // Định nghĩa một Gate có tên 'check_role' để kiểm tra vai trò của người dùng
-            // dd($role);
-            return $user->hasRole($role);
+        Gate::define('hasRole', function ($user, $roles) {
+            // ép về array nếu truyền 1 role
+            $roles = is_array($roles) ? $roles : [$roles];
+
+            return collect($user->roles)->intersect($roles)->isNotEmpty();
         });
 
         

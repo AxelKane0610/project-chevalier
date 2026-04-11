@@ -302,28 +302,27 @@ h1, h2, h3 {
     margin: 0;
 }
 
-.common-header-navigation-item-container li {
+.common-header-navigation-item-container li form {
     display: flex;
-    align-items: center;
+    /* align-items: center; */
     justify-content: center;
-    
-    border-radius: 5px;
 }
 
 
-.common-header-navigation-item-container li:hover {
+.common-header-navigation-item-container button:hover {
     opacity: 0.9;
     cursor: pointer;
     background-color: #f1f1f1;
     color: black;
 }
 
-.common-header-navigation-item-container li a {
+.common-header-navigation-item-container li form button {
     display: flex;
     padding: 10px 15px;
     flex: 1;
     width: 100%;
     height: 100%;
+    border-radius: 10px;
 }
 
 .logout-btn {

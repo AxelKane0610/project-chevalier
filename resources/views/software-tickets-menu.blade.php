@@ -65,31 +65,52 @@
                                         </td>
                                         <td>{{ $ticket->ticket_reciept }}</td>
                                         <td>
-                                            @if ($ticket->support_type == 1)
-                                                Thêm mã part
-                                            @elseif ($ticket->support_type == 2)
-                                                Rollback
-                                            @elseif ($ticket->support_type == 3)
-                                                Hủy số phiếu
-                                            @elseif ($ticket->support_type == 4)
-                                                Điều chỉnh thông tin
-                                            @else
-                                                N/A
-                                            @endif
+                                            @switch($ticket->support_type)
+                                                @case(1)
+                                                    Thêm mã part/product
+                                                    @break
+                                                @case(2)
+                                                    Rollback
+                                                    @break
+                                                @case(3)
+                                                    Hủy số phiếu/Ẩn lịch sử bảo hành
+                                                    @break
+                                                @case(4)
+                                                    Điều chỉnh thông tin
+                                                    @break
+                                                @case(5)
+                                                    Unmark Re-Repair
+                                                    @break
+                                                @case(6)
+                                                    Lỗi hệ thống
+                                                    @break
+                                                @case(7)
+                                                    Cấp quyền export data
+                                                    @break
+                                                @case(8)
+                                                    Đề xuất thay đổi/cải tiến
+                                                    @break
+                                                @case(9)
+                                                    Vấn đề khác
+                                                    @break
+                                            @endswitch
                                         </td>
                                         <td>{{ $ticket->description }}</td>
                                         <td>
-                                            @if ($ticket->priority == 1)
-                                                Normal
-                                            @elseif ($ticket->priority == 2)
-                                                Critical
-                                            @elseif ($ticket->priority == 3)
-                                                High
-                                            @elseif ($ticket->priority == 4)
-                                                Low
-                                            @else
-                                                N/A
-                                            @endif
+                                            @switch($ticket->priority)
+                                                @case(1)
+                                                    Normal
+                                                    @break
+                                                @case(2)
+                                                    Critical
+                                                    @break
+                                                @case(3)
+                                                    High
+                                                    @break
+                                                @case(4)
+                                                    Low
+                                                    @break
+                                            @endswitch
                                         </td>
                                         <td></td>
                                     </tr>
@@ -139,10 +160,15 @@
 
             <label>Support Type</label>
             <select name="support_type" class="Ticket-Form-Body-Input">
-                <option value="1">Thêm mã part</option>
+                <option value="1">Thêm mã part/product</option>
                 <option value="2">Rollback</option>
-                <option value="3">Hủy số phiếu</option>
+                <option value="3">Hủy số phiếu/Ẩn lịch sử bảo hành</option>
                 <option value="4">Điều chỉnh thông tin</option>
+                <option value="5">Unmark Re-Repair</option>
+                <option value="6">Lỗi hệ thống</option>
+                <option value="7">Cấp quyền export data</option>
+                <option value="8">Đề xuất thay đổi/cải tiến</option>
+                <option value="9">Vấn đề khác</option>
             </select>
 
             <label>Priority</label>
