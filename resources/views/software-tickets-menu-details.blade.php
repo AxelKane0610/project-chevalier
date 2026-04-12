@@ -53,7 +53,7 @@
                                 
                             </li>
                             <li>
-                                <form action="#" id="complete-sw-ticket">
+                                <form action="" id="complete-sw-ticket">
                                     @csrf
                                     <button type="submit"><i class="ti-check"></i>Complete</button>
                                 </form>
@@ -109,17 +109,22 @@
                         <lable>Priority</lable>
                         
                             <h2>
-                                @if ($ticket->priority == 1)
-                                    Normal
-                                @elseif ($ticket->priority == 2)
-                                    Critical
-                                @elseif ($ticket->priority == 3)
-                                    High
-                                @elseif ($ticket->priority == 4)
-                                    Low
-                                @else
-                                    N/A
-                                @endif
+                                @switch($ticket->priority)
+                                    @case(1)
+                                        Normal
+                                        @break
+                                    @case(2)
+                                        Critical
+                                        @break
+                                    @case(3)
+                                        High
+                                        @break
+                                    @case(4)
+                                        Low
+                                        @break
+                                    @default
+                                        N/A
+                                @endswitch
                             </h2>
                             
                     </li>
@@ -166,6 +171,39 @@
                         
                         <p>{{ $ticket->description }}</p>
                         
+                    </li>
+
+                    <li>
+                        <lable>Attachments</lable>
+                        
+                        <table class="attachments-table">
+                            <thead>
+                                <tr>
+                                    <th>File Name</th>
+                                    <th>Download</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($ticket->attachments as $attachment)
+                                    @if(in_array($attachment->type_of_ticket, [1, 2])) {{-- Cách viết gọn thay cho switch --}}
+                                    <tr>
+                                        <td>{{ $attachment->name }}</td>
+                                        <td>
+                                            {{-- Link để xem trực tiếp --}}
+                                            <a href="{{ asset('storage/' . $attachment->file_path) }}" target="_blank" class="btn btn-info">
+                                                View
+                                            </a>
+                                            
+                                            {{-- (Tùy chọn) Nếu bạn vẫn muốn có nút download riêng --}}
+                                            <a href="{{ asset('storage/' . $attachment->file_path) }}" download="{{ $attachment->name }}" class="btn btn-secondary">
+                                                Download
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    @endif
+                                @endforeach
+                            </tbody>
+                        </table>
                     </li>
                     <!-- <li>
                         <lable>Issue Owner</lable>

@@ -17,20 +17,20 @@
         
         <div id="main-menu-categories-container">
             
-                <a href="{{ url('/software-tickets-menu') }}">
-                    <div class="software-tickets-btn">
-                        <div class="ticket-img-description">
-                            <img src="{{ asset('imgs/Ticket Software Icon.png') }}" alt="">
-                        </div>
-                        
-                        <h2>Software</h2>
-                        <p>Liên quan tới lỗi hệ thống EEG hoặc có đề xuất cải thiện hệ thống</p>
-                        <div class="card-footer">
-                            <div class="card-footer-text">Learn more</div>
-                            <div class="card-footer-icon"><i class="ti-angle-right"></i></div>
-                        </div>
+            <a href="{{ url('/software-tickets-menu') }}">
+                <div class="software-tickets-btn">
+                    <div class="ticket-img-description">
+                        <img src="{{ asset('imgs/Ticket Software Icon.png') }}" alt="">
                     </div>
-                </a>
+                    
+                    <h2>Software</h2>
+                    <p>Liên quan tới lỗi hệ thống EEG hoặc có đề xuất cải thiện hệ thống</p>
+                    <div class="card-footer">
+                        <div class="card-footer-text">Learn more</div>
+                        <div class="card-footer-icon"><i class="ti-angle-right"></i></div>
+                    </div>
+                </div>
+            </a>
             
            
             <div class="ttex-tickets-btn">
@@ -85,6 +85,75 @@
                     <div class="card-footer-icon"><i class="ti-angle-right"></i></div>
                 </div>
             </div>
+
+            <a href="{{ url('/subk-management') }}">
+
+                <div class="subk-management-btn">
+                    <div class="ticket-img-description">
+                        <img src="{{ asset('imgs/subk_image.png') }}" alt="">
+                    </div>
+                    
+                    <h2>Quản lý SubK</h2>
+                    <p>Quản lý các thành viên trong team/country</p>
+                    <div class="card-footer">
+                        <div class="card-footer-text">Learn more</div>
+                        <div class="card-footer-icon"><i class="ti-angle-right"></i></div>
+                    </div>
+                </div>
+
+            </a>
+
+            <a href="#">
+
+                <div class="invoice-exceptional-btn">
+                    <div class="ticket-img-description">
+                        <img src="{{ asset('imgs/invoice_exceptional_image.png') }}" alt="">
+                    </div>
+                    
+                    <h2>Invoice Exceptional</h2>
+                    <p>Xin approve đối với các trường hợp hóa đơn không hợp lệ</p>
+                    <div class="card-footer">
+                        <div class="card-footer-text">Learn more</div>
+                        <div class="card-footer-icon"><i class="ti-angle-right"></i></div>
+                    </div>
+                </div>
+                
+            </a>
+
+            <a href="#">
+
+                <div class="onboard-offboard-btn">
+                    <div class="ticket-img-description">
+                        <img src="{{ asset('imgs/onboard_offboard_image.png') }}" alt="">
+                    </div>
+                    
+                    <h2>Onboard & Offboard</h2>
+                    <p>Thực hiện onboard khi có nhân sự mới và offboard khi có nhân sự nghỉ việc</p>
+                    <div class="card-footer">
+                        <div class="card-footer-text">Learn more</div>
+                        <div class="card-footer-icon"><i class="ti-angle-right"></i></div>
+                    </div>
+                </div>
+                
+            </a>
+
+            <a href="#">
+
+                <div class="offline-request-btn">
+                    <div class="ticket-img-description">
+                        <img src="{{ asset('imgs/offline_request_image.png') }}" alt="">
+                    </div>
+                    
+                    <h2>Out of office Request</h2>
+                    <p>Xin nghỉ phép/đi trễ/về sớm</p>
+                    <div class="card-footer">
+                        <div class="card-footer-text">Learn more</div>
+                        <div class="card-footer-icon"><i class="ti-angle-right"></i></div>
+                    </div>
+                </div>
+                
+            </a>
+
         </div>
         
         

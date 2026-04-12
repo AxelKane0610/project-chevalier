@@ -6,7 +6,7 @@
                 <h2>{{$title}}</h2>
             </div>
 
-            <form action="{{ $action1 }}" method="POST" class="Ticket-Form-Body" id="{{ $id }}"> <!-- id="create-sw-ticket" -->
+            <form action="{{ $action1 }}" method="POST" class="Ticket-Form-Body" id="{{ $id }}" enctype="multipart/form-data"> <!-- id="create-sw-ticket" -->
                 @csrf
                 {{ $slot }}
 

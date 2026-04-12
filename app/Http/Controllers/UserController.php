@@ -48,6 +48,11 @@ class UserController extends Controller
         return redirect('/login');
     }
 
+    public function index(){
+        $users = User::all();
+        return view('/subk-management-menu', compact('users'));
+    }
+
     
 
     

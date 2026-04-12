@@ -25,4 +25,10 @@ class EEG_Software_Ticket extends Model
         // Một ticket thì "thuộc về" (belongsTo) một người dùng
         return $this->belongsTo(User::class, 'user_id'); //Bảo model sang model User để lấy thông tin user của ticket đó, dựa vào "user_id"
     }
+
+    public function attachments()
+    {
+        // Giả sử ticket_id là khóa ngoại ở bảng attachments_table
+        return $this->hasMany(Attachments_Model::class, 'ticket_id', 'id') ->where('type_of_ticket', 1); // Chỉ lấy attachment có type_of_ticket là 1 (software ticket)
+    }
 }

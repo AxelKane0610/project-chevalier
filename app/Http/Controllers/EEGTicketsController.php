@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 use App\Models\EEG_Software_Ticket;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\AttachmentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use App\Models\Attachments_Model;
 
 class EEGTicketsController extends Controller
 {
@@ -15,6 +17,7 @@ class EEGTicketsController extends Controller
             'support_type' => 'required',
             'priority' => 'required',
             'description' => 'required',
+            'attachments.*' => 'file|max:5120|mimes:jpg,png,pdf,jpeg'
         ]);
 
         $ticket_info_input['ticket_reciept'] = strip_tags($ticket_info_input['ticket_reciept']);//remove code xấu do người dùng input
@@ -24,7 +27,26 @@ class EEGTicketsController extends Controller
         $ticket_info_input['user_id'] = auth()->id();
 
         $ticket = EEG_Software_Ticket::create($ticket_info_input); //Phải tạo model EEG_Software_Ticket để có thể sử dụng hàm create() này, và phải khai báo fillable trong model đó nữa
-        // return redirect('/software-tickets-menu')->with('success', 'Tạo ticket thành công!');
+        
+        if ($request->hasFile('attachments')) {
+
+            foreach ($request->file('attachments') as $file) {
+                $filePath = $file->store('attachments', 'public'); // Lưu file vào thư mục 'storage/app/public/attachments'
+                
+                Attachments_Model::create([
+                    'type_of_ticket' => 1, // Giả sử 1 là mã cho software ticket
+                    'ticket_id' => $ticket->id,
+                    'file_path' => $filePath,
+                    'name' => $file->getClientOriginalName(),
+                ]);
+            }
+            
+        }
+
+
+
+
+
         return response()->json([
             'success' => true,
             'ticket_id' => $ticket->id,
@@ -49,7 +71,7 @@ class EEGTicketsController extends Controller
     }
 
     public function Show_Software_Ticket_Details($id){
-        $ticket = EEG_Software_Ticket::with('user_owner')->findOrFail($id); //gọi tới function "user" trong model EEG_Software_Ticket để lấy thông tin user của ticket đó, rồi mới trả về view
+        $ticket = EEG_Software_Ticket::with('user_owner', 'attachments')->findOrFail($id); //gọi tới function "user" trong model EEG_Software_Ticket để lấy thông tin user của ticket đó, rồi mới trả về view
         return view('software-tickets-menu-details', compact('ticket'));
     }
 
@@ -74,6 +96,8 @@ class EEGTicketsController extends Controller
 
         return back()->with('success', 'Approval sent!');
     }
+
+    
 
     
 

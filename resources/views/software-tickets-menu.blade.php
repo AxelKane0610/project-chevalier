@@ -13,35 +13,29 @@
 
             <x-common-header title="EEG Software Support">
                 <li>
-                    <a href="/main-menu">
-                        <i class="ti-home"></i>
-                        Home
-                    </a>
+                    <form action="/main-menu">
+                        @csrf
+                        <button type="submit"><i class="ti-home"></i>Home</button>
+                    </form>
                 </li>
                 <li class="js-search-btn">
-                    <a href="#">
-                        <i class="ti-search"></i>
-                        Search
-                    </a>
+                    <form action="#">
+                        @csrf
+                        <button type="submit"><i class="ti-search"></i>Search</button>
+                    </form>
                     
                 </li>
-                <li>
-                    <a href="#">
-                        <i class="ti-user"></i>
-                        Profile
-                    </a>
-                    
-                </li>
+                
             </x-common-header>
 
 
             <div class="software-tickets-menu-content">
                 <button id="software-tickets-create-btn" class="js-create-software-tickets">Create Ticket</button>
 
-                <div id="pending-software-tickets-table-container">
+                <div class="common-table-container">
                     <h2>Pending Tickets</h2>
 
-                    <table id="pending-software-tickets-table" width="100%" >
+                    <table id="pending-software-tickets-table" class="common-table" width="100%" >
                         <tr>
                             <th width="5%"></th>
                             <th width="14%">Reciept</th>
@@ -183,9 +177,10 @@
             <textarea name="description" class="Ticket-Form-Body-Input" placeholder="Nhập mô tả vấn đề bạn cần hỗ trợ" required></textarea>
             
             <label>Attach File:</label>
-            <input type="file" name="attachment" multiple>
+            <input type="file" name="attachments[]" multiple>
 
-            <button type="submit" class="Ticket-Form-Body-Input" id="software-ticket-submit-btn">Submit</button>
+            <button type="submit" class="Ticket-Form-Body-Input" id="software-ticket-submit-btn">Submit</button> 
+            <!-- class="Ticket-Form-Body-Input" id="software-ticket-submit-btn"-->
 
         </x-common-ticket-form>
         

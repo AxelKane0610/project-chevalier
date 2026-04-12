@@ -50,6 +50,11 @@ Route::middleware(['auth'])->group(function () {
 
     });
 
+    Route::middleware(['role:ROLE_SUPER_ADMIN'])->group(function () {
+        // Các route chỉ dành cho ROLE_SUPER_ADMIN
+        Route::get('/subk-management', [UserController::class, 'index']);
+    });
+
     Route::post('/logout', [UserController::class, 'logout'])->name('logout');
     
 
