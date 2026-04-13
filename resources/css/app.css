@@ -23,6 +23,12 @@
 @theme {
     --font-sans: 'Arial', 'Helvetica', sans-serif, ui-sans-serif, system-ui;
 }
+.swal2-popup {
+    box-shadow: none !important;
+}
+.swal2-container {
+    z-index: 999999999999999 !important;
+}
 
 :root {
     --button-background-color: rgb(40,104,245);
@@ -34,7 +40,19 @@ html, body{
     background-color: rgb(28,28,30);
     margin: 0;
     text-decoration: none;
+    height: auto;
     
+    position: fixed;
+    top:0 !important;
+    left:0 !important;
+    width:100vw !important;
+    height:100vh !important;
+    
+    background-image:url("/imgs/blue_vector_background.svg") ;
+    background-size:cover;
+    /* background-position:center; */
+    
+    z-index: -1;
     /* #EEEEF5 */
 }
 
@@ -80,7 +98,7 @@ h1, h2, h3 {
     margin: 0;
 }
 
-
+/* 
 .background-enable {
     position: fixed;
     top:0;
@@ -92,8 +110,8 @@ h1, h2, h3 {
     background-size:cover;
     background-position:center;
     
-    z-index:-1;
-}
+    z-index: -1;
+} */
 
 /* -------------------- SIGN IN CSS PAGE --------------------*/
 .sign-in-menu {
@@ -478,25 +496,25 @@ h1, h2, h3 {
 .software-tickets-tracking-info,
 .tickets-details
 {
+    display: flex;
     padding: 10px;
     width: 100%;
-    height: 100%;
+    max-height: 90vh;
     background-color: white;
     box-sizing: border-box;
     border-radius: 20px;
-    display: flex;
     flex-direction: column;
-    align-content: start;
+    /* align-items: center; */
     box-shadow: 0 4px 10px 10px rgba(0,0,0,0.4);
+    margin: 0 auto;
     
 }
-
+.software-tickets-comments,
 .tickets-details-items {
     display: grid;
     grid-template-columns: 1fr;
     width: 100%;
     justify-content: space-evenly;
-    align-items: center;
     overflow-y: scroll;
     box-sizing: border-box;
 }
@@ -510,6 +528,15 @@ h1, h2, h3 {
     height: auto;
     
     
+}
+
+.tickets-details button {
+    padding: 10px;
+    background-color: var(--button-background-color);
+    color: var(--button-text-color);
+    border-radius: 5px;
+    width: 150px;
+    align-content: center;
 }
 
 
@@ -531,7 +558,7 @@ h1, h2, h3 {
     display: grid;
     grid-template-columns: 30vw 30vw 30vw;
     width: 100%;
-    height: 95vh;
+    max-height: 800px;
     padding: 20px;
     justify-content: space-evenly;
     gap: 20px;

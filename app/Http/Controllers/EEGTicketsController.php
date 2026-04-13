@@ -28,23 +28,20 @@ class EEGTicketsController extends Controller
 
         $ticket = EEG_Software_Ticket::create($ticket_info_input); //Phải tạo model EEG_Software_Ticket để có thể sử dụng hàm create() này, và phải khai báo fillable trong model đó nữa
         
-        if ($request->hasFile('attachments')) {
+        if ($request->hasFile('attachments')) { //Kiểm tra xem có file nào được upload lên không
 
-            foreach ($request->file('attachments') as $file) {
+            foreach ($request->file('attachments') as $file) { //Duyệt qua từng file được upload lên
                 $filePath = $file->store('attachments', 'public'); // Lưu file vào thư mục 'storage/app/public/attachments'
                 
                 Attachments_Model::create([
                     'type_of_ticket' => 1, // Giả sử 1 là mã cho software ticket
                     'ticket_id' => $ticket->id,
                     'file_path' => $filePath,
-                    'name' => $file->getClientOriginalName(),
+                    'name' => $file->getClientOriginalName(),// Lưu tên gốc của file vào cơ sở dữ liệu
                 ]);
             }
             
         }
-
-
-
 
 
         return response()->json([

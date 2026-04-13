@@ -3,8 +3,7 @@
     <head>
         <title>Project Chevalier</title>
         <meta charset="utf-8">
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-        @vite(['resources/js/new-ticket.js'])
+        @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/new-ticket.js'])
         <link rel="stylesheet" href="{{ asset('icons/themify-icons.css') }}">
     </head>
 

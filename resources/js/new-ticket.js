@@ -2,7 +2,14 @@ console.log("JS LOADED");
 const test = document.querySelector('.js-search-btn').addEventListener('click', alertTest);
 
 function alertTest() {
-    alert('test');
+    Swal.fire({
+            title: 'Success!',
+            text: 'Ticket created successfully.',
+            input: 'text',
+            icon: 'success',
+            confirmButtonText: 'OK',
+            scrollbarPadding: false
+        });
 }
 
 
@@ -20,6 +27,12 @@ softwareTicketForm.addEventListener('submit', async function(e) {
     .then(response => response.json())
     .then(new_ticket => {
         console.log(new_ticket);
+        Swal.fire({
+            title: 'Success!',
+            text: 'Ticket created successfully.',
+            icon: 'success',
+            confirmButtonText: 'OK'
+        });
         const newRow = 
         `
             <tr>

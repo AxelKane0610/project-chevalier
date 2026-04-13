@@ -3,84 +3,79 @@
     <head>
         <title>Project Chevalier</title>
         <meta charset="utf-8">
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/software-ticket-details.js'])
         <link rel="stylesheet" href="{{ asset('icons/themify-icons.css') }}">
     </head>
 
     <body class="background-enable">
 
         
-            <x-common-header title="EEG Software Support">
-                <li>
-                    <form action="/software-tickets-menu">
-                        @csrf
-                        <button type="submit"><i class="ti-home"></i>Home</button>
-                    </form>
-                </li>
+        <x-common-header title="EEG Software Support">
+            <li>
+                <form action="/software-tickets-menu">
+                    @csrf
+                    <button type="submit"><i class="ti-home"></i>Home</button>
+                </form>
+            </li>
 
-                <li>
-                    <form action="#">
-                        @csrf
-                        <button type="submit"><i class="ti-search"></i>Search</button>
-                    </form>
+            <li>
+                <form>
+                    @csrf
+                    <button type="submit"><i class="ti-search test-js"></i>Search</button>
+                </form>
 
-                </li>
-                <li>
-                    <form action="/main-menu">
-                        @csrf
-                        <button type="submit"><i class="ti-layout-grid2"></i>Quick Navigation</button>
-                    </form>
-                </li>
+            </li>
+            <li>
+                <form action="/main-menu">
+                    @csrf
+                    <button type="submit"><i class="ti-layout-grid2"></i>Quick Navigation</button>
+                </form>
+            </li>
 
-                @can('hasRole', 'ROLE_TICKET_SW_ADMIN', 'ROLE_SUPER_ADMIN') <!-- Chỉ hiển thị nút action nếu người dùng có vai trò admin hoặc super admin -->
-                
-                    @switch($ticket->status)
-                        @case(1)
-                        @case(2)
-                        @case(3)
-                            <li>
-                                <form action="#">
-                                    @csrf
-                                    <button type="submit"><i class="ti-alarm-clock"></i>In Progress</button>
-                                </form>
-                            </li>
-                            <li>
-                                
-                                <form action="{{ route('send-approval-request', $ticket->id) }}" method="POST">
-                                    @csrf
-                                    <button type="submit"><i class="ti-angle-double-right"></i>Send Approval </button>
-                                </form>
-                                
-                            </li>
-                            <li>
-                                <form action="" id="complete-sw-ticket">
-                                    @csrf
-                                    <button type="submit"><i class="ti-check"></i>Complete</button>
-                                </form>
-                            </li>
-                            <li>
-                                <form action="#">
-                                    @csrf
-                                    <button type="submit"><i class="ti-thumb-down"></i>Reject</button>
-                                </form>
-                            </li>
-                        @break
-                        
-                        
-                    @endswitch
-                
-                @endcan
-
-                @if ( ($ticket->status == 4 || $ticket->status == 5) && $ticket->user_id == auth()->user()->id )
-                    <li>
-                        <a href="">
-                            <i class="ti-back-left"></i>
-                            Request Re-Open
-                        </a>
-                    </li>
-                @endif
+            @can('hasRole', 'ROLE_TICKET_SW_ADMIN', 'ROLE_SUPER_ADMIN') <!-- Chỉ hiển thị nút action nếu người dùng có vai trò admin hoặc super admin -->
             
-            </x-common-header>
+                @switch($ticket->status)
+                    @case(1)
+                    @case(2)
+                    @case(3)
+                        <li>
+                            <form action="#">
+                                @csrf
+                                <button type="submit"><i class="ti-alarm-clock"></i>In Progress</button>
+                            </form>
+                        </li>
+                        <li>
+                            
+                            <form action="{{ route('send-approval-request', $ticket->id) }}" method="POST">
+                                @csrf
+                                <button type="submit"><i class="ti-angle-double-right"></i>Send Approval </button>
+                            </form>
+                            
+                        </li>
+                        <li>
+                            <form action="" id="complete-sw-ticket">
+                                @csrf
+                                <button type="submit"><i class="ti-check"></i>Close Ticket</button>
+                            </form>
+                        </li>
+                        
+                    @break
+                    
+                    
+                @endswitch
+            
+            @endcan
+
+            @if ( ($ticket->status == 4 || $ticket->status == 5) && $ticket->user_id == auth()->user()->id )
+                <li>
+                    <a href="">
+                        <i class="ti-back-left"></i>
+                        Request Re-Open
+                    </a>
+                </li>
+            @endif
+        
+        </x-common-header>
 
                 
         <div class="software-tickets-content">
@@ -110,20 +105,10 @@
                         
                             <h2>
                                 @switch($ticket->priority)
-                                    @case(1)
-                                        Normal
-                                        @break
-                                    @case(2)
-                                        Critical
-                                        @break
-                                    @case(3)
-                                        High
-                                        @break
-                                    @case(4)
-                                        Low
-                                        @break
-                                    @default
-                                        N/A
+                                    @case(1) Normal @break
+                                    @case(2) Critical @break
+                                    @case(3) High @break
+                                    @case(4) Low @break
                                 @endswitch
                             </h2>
                             
@@ -132,17 +117,18 @@
                         <lable>Support type</lable>
                         
                             <h2>
-                                @if ($ticket->support_type == 1)
-                                    Thêm mã part
-                                @elseif ($ticket->support_type == 2)
-                                    Rollback
-                                @elseif ($ticket->support_type == 3)
-                                    Hủy số phiếu
-                                @elseif ($ticket->support_type == 4)
-                                    Điều chỉnh thông tin
-                                @else
-                                    N/A
-                                @endif
+                                
+                                @switch($ticket->support_type)
+                                    @case(1) Thêm mã part/product @break
+                                    @case(2) Rollback @break
+                                    @case(3) Hủy số phiếu/Ẩn lịch sử bảo hành @break
+                                    @case(4) Điều chỉnh thông tin @break
+                                    @case(5) Unmark Re-Repair @break
+                                    @case(6) Lỗi hệ thống @break
+                                    @case(7) Cấp quyền export data @break
+                                    @case(8) Đề xuất thay đổi/cải tiến @break
+                                    @case(9) Vấn đề khác @break
+                                @endswitch
                             </h2>
                             
                     </li>
@@ -150,19 +136,13 @@
                         <lable>Status</lable>
                         
                             <h2>
-                                @if ($ticket->status == 1)
-                                    Open
-                                @elseif ($ticket->status == 2)
-                                    In Progress
-                                @elseif ($ticket->status == 3)
-                                    Waiting Approval
-                                @elseif ($ticket->status == 4)
-                                    Complete
-                                @elseif ($ticket->status == 5)
-                                    Rejected
-                                @else
-                                    N/A
-                                @endif
+                                @switch($ticket->status)
+                                    @case(1) Open @break
+                                    @case(2) In Progress @break
+                                    @case(3) Waiting Approval @break
+                                    @case(4) Complete @break
+                                    @case(5) Rejected @break
+                                @endswitch
                             </h2>
                             
                     </li>
@@ -180,7 +160,7 @@
                             <thead>
                                 <tr>
                                     <th>File Name</th>
-                                    <th>Download</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -189,14 +169,15 @@
                                     <tr>
                                         <td>{{ $attachment->name }}</td>
                                         <td>
-                                            {{-- Link để xem trực tiếp --}}
+                                            
+                                            
                                             <a href="{{ asset('storage/' . $attachment->file_path) }}" target="_blank" class="btn btn-info">
-                                                View
+                                                <i class="ti-eye"></i>
                                             </a>
                                             
-                                            {{-- (Tùy chọn) Nếu bạn vẫn muốn có nút download riêng --}}
+                                            
                                             <a href="{{ asset('storage/' . $attachment->file_path) }}" download="{{ $attachment->name }}" class="btn btn-secondary">
-                                                Download
+                                                <i class="ti-download"></i>
                                             </a>
                                         </td>
                                     </tr>
@@ -205,18 +186,6 @@
                             </tbody>
                         </table>
                     </li>
-                    <!-- <li>
-                        <lable>Issue Owner</lable>
-                        
-                        <h2>{{ $ticket->issue_owner }}</h2>
-                        
-                    </li>
-                    <li>
-                        <lable>Người thực hiện ticket</lable>
-                        
-                        <h2>{{ $ticket->assignee }}</h2>
-                        
-                    </li> -->
                 
 
             </x-common-ticket-detail-form>
@@ -237,32 +206,7 @@
 
         </div>
 
-        <script>
-            const completeTicketBtn = document.querySelector('#complete-sw-ticket');
-            completeTicketBtn.addEventListener('click', function() 
-            {
-                
-                fetch(`/change-ticket-status/{{ $ticket->id }}/status`, {
-                    method: 'PATCH',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({ status: 4 }) // Gửi status mới là "Complete"
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert('Ticket marked as complete!');
-                        location.reload(); // Tải lại trang để cập nhật trạng thái
-                    } else {
-                        alert('Failed to update ticket status.');
-                    }
-                })
-                
-            });
-        </script>
-
+        
     </body>
 
 </html>
