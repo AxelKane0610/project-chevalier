@@ -3,6 +3,9 @@
         {{ $slot }}
     
     </ul>
-    <button>Edit</button>
+    <form action="">
+        <button>Edit</button>
+    </form>
+    
     
 </div>

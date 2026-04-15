@@ -35,16 +35,25 @@
 
         </div>
 
+        
         @if(session('login_error'))
-        <x-common-dialog title="Đăng nhập thất bại">
-            <p>Sai tài khoản hoặc mật khẩu</p>
-        </x-common-dialog>
+            <x-common-dialog title="Đăng nhập thất bại">
+                <p>Sai tài khoản hoặc mật khẩu</p>
+            </x-common-dialog>
 
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                showDialog()
-            })
-        </script>
+            <script>
+                document.addEventListener("DOMContentLoaded", function() 
+                {
+                    Swal.fire({
+                    title: 'Đăng nhập thất bại',
+                    text: 'Sai tài khoản hoặc mật khẩu',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                    });
+                })
+                
+            </script>
+                
 
         @endif
     </body>
