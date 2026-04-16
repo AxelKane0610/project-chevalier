@@ -61,12 +61,20 @@ html, body{
 }
 
 form button {
+    display: flex;
     padding: 10px;
     background-color: var(--button-background-color);
     color: var(--button-text-color);
     border-radius: 5px;
-    width: 150px;
+    width: 100px;
     align-content: center;
+    justify-content: center;
+}
+
+form button:hover {
+    background-color: white;
+    color: black;
+    cursor: pointer;
 }
 
 button {
@@ -513,7 +521,7 @@ h1, h2, h3 {
     box-sizing: border-box;
     border-radius: 20px;
     flex-direction: column;
-    /* align-items: center; */
+    align-items: center;
     box-shadow: 0 4px 10px 10px rgba(0,0,0,0.4);
     margin: 0 auto;
     

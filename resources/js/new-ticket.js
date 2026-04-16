@@ -62,6 +62,55 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+document.addEventListener('submit', function (e) {
+    // Kiểm tra xem form nào đang được submit dựa vào ID
+    if (e.target && e.target.id === 'create-sw-ticket-form') {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        fetch('/create-software-ticket', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+            }
+        })
+        .then(response => response.json())
+        .then(new_ticket => {
+            console.log(new_ticket);
+            Swal.fire({
+                title: 'Success!',
+                text: 'Ticket created successfully.',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            });
+            const newRow = 
+            `
+                <tr>
+                    <td>
+                        <a href="/software-tickets-menu-details/${new_ticket.ticket_id}">
+                            <i class="ti-arrow-right" ></i>
+                        </a>
+                    </td>
+                    <td>${new_ticket.ticket_reciept}</td>
+                    <td>${new_ticket.support_type}</td>
+                    <td>${new_ticket.description}</td>
+                    <td>${new_ticket.priority}</td>
+                </tr>
+            
+            `;
+            document
+            .querySelector('#pending-software-tickets-table tbody')
+            .insertAdjacentHTML('beforeend', newRow);
+            
+            document.querySelector('.ticket-form-overlay').classList.remove('active');
+            e.target.reset();
+        })
+        .catch(error => console.error(error));
+
+    }
+});
+
+
 
 
 // var softwareTicketForm = document.querySelector('#create-sw-ticket');

@@ -4,7 +4,7 @@
     
     </ul>
     <form action="">
-        <button>Edit</button>
+        <button><i class="ti-pencil"></i> Edit</button>
     </form>
     
     

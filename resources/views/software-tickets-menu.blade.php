@@ -18,7 +18,7 @@
                     </form>
                 </li>
                 <li>
-                    <form action="" class="js-input-required-btn" id="create-sw-ticket-btn" data-target="create-sw-ticket-form">
+                    <form action="" class="js-input-required-btn" >
                         @csrf
                         <button type="button"><i class="ti-search"></i>Search</button>
                     </form>
@@ -30,8 +30,8 @@
 
             <div class="software-tickets-menu-content">
 
-                <form action="" class="js-input-required-btn" id="create-hw-ticket-btn" data-target="create-hw-ticket-form">
-                    <button type="button" >Create Ticket</button>
+                <form action="" class="js-input-required-btn" id="create-sw-ticket-btn" data-target="create-sw-ticket-form">
+                    <button type="button"><i class="ti-plus"></i> Create Ticket</button>
                 </form>
                 
 
@@ -162,37 +162,7 @@
         </x-common-ticket-form>
         
 
-        <x-common-ticket-form title="EEG Software Support 2" action1="/create-software-ticket" id="create-hw-ticket-form"> <!-- action="/create-software-ticket" method="POST"> -->
-
-            <label>Reciept</label>
-            <input type="text" class="Ticket-Form-Body-Input" placeholder="Nhập số phiếu tại đây" name="ticket_reciept" required>
-
-            <label>Support Type</label>
-            <select name="support_type" class="Ticket-Form-Body-Input">
-                <option value="1">Thêm mã part/product</option>
-                <option value="2">Rollback</option>
-                <option value="3">Hủy số phiếu/Ẩn lịch sử bảo hành</option>
-                <option value="4">Điều chỉnh thông tin</option>
-            </select>
-
-            <label>Priority</label>
-            <select name="priority" class="Ticket-Form-Body-Input">
-                <option value="1">Normal</option>
-                <option value="2">Critical</option>
-                <option value="3">High</option>
-                <option value="4">Low</option>
-            </select>
-
-            <label>Description</label>
-            <textarea name="description" class="Ticket-Form-Body-Input" placeholder="Nhập mô tả vấn đề bạn cần hỗ trợ" required></textarea>
-            
-            <label>Attach File:</label>
-            <input type="file" name="attachments[]" multiple>
-
-            <button type="submit" class="Ticket-Form-Body-Input" id="hw-ticket-submit-btn">Submit</button> 
-            <!-- class="Ticket-Form-Body-Input" id="software-ticket-submit-btn"-->
-
-        </x-common-ticket-form>
+    
         
     </body>
 
