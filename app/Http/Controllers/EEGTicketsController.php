@@ -17,7 +17,7 @@ class EEGTicketsController extends Controller
             'support_type' => 'required',
             'priority' => 'required',
             'description' => 'required',
-            'attachments.*' => 'file|max:5120|mimes:jpg,png,pdf,jpeg'
+            'attachments.*' => 'file|max:5120|mimes:jpg,png,pdf,jpeg,xlsx'
         ]);
 
         $ticket_info_input['ticket_reciept'] = strip_tags($ticket_info_input['ticket_reciept']);//remove code xấu do người dùng input
@@ -92,6 +92,28 @@ class EEGTicketsController extends Controller
         ]);
 
         return back()->with('success', 'Approval sent!');
+    }
+
+    public function Close_Software_Ticket(Request $request, $id){
+        
+        $ticket_info_input = $request->validate([
+            'ticket_status' => 'required',
+            'issue_owner' => 'required',
+            'ticket_comment' => 'nullable'
+        ]);
+
+        $ticket_info_input['ticket_status'] = strip_tags($ticket_info_input['ticket_status']);
+        $ticket_info_input['issue_owner'] = strip_tags($ticket_info_input['issue_owner']);
+        $ticket_info_input['ticket_comment'] = strip_tags($ticket_info_input['ticket_comment']);
+        
+        $ticket = EEG_Software_Ticket::with('user_owner')->findOrFail($id);
+        $ticket->status = $ticket_info_input['ticket_status'];
+        $ticket->issue_owner = $ticket_info_input['issue_owner'];
+        $ticket->save();
+        return response()->json([
+            'success' => true,
+            'message' => 'Ticket completed !',
+        ]);
     }
 
     

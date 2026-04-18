@@ -53,9 +53,9 @@
                             
                         </li>
                         <li>
-                            <form action="" id="complete-sw-ticket">
+                            <form action="" id="complete-sw-ticket" data-target="close-ticket-form" class="js-input-required-btn">
                                 @csrf
-                                <button type="submit"><i class="ti-check"></i>Close Ticket</button>
+                                <button type="button"><i class="ti-check"></i>Close Ticket</button>
                             </form>
                         </li>
                         
@@ -204,8 +204,33 @@
                 <h3>Trịnh Minh Vương send approval at 26/10/2025 11:00 AM</h3>
             </div>
 
+            <x-common-ticket-form title="EEG Ticket Close" id="close-ticket-form" action1="{{ route('close-software-ticket', $ticket->id) }}">
+                @method('PATCH')
+                <label>Status</label>
+                <select name="ticket_status" class="Ticket-Form-Body-Input">
+                    <option value="4">Complete</option>
+                    <option value="5">Reject</option>
+                    <option value="6">Cancel</option>
+                </select>
+
+                <label>Issue Owner</label>
+                <select name="issue_owner" class="Ticket-Form-Body-Input">
+                    <option value="1">System Matters</option>
+                    <option value="2">Human Matters</option>
+                    <option value="3">Customer Matters</option>
+                    <option value="4">Others</option>
+                    <option value="5">Parts Matters</option>
+                </select>
+
+                <label>Comment</label>
+                <textarea name="ticket_comment" class="Ticket-Form-Body-Input" placeholder="Comment cho người tạo ticket nếu có"></textarea>
+                <button type="submit" class="Ticket-Form-Body-Input">Close ticket</button>
+            </x-common-ticket-form>
+
         </div>
 
+
+        
         
     </body>
 
