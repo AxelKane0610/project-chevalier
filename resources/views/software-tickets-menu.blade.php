@@ -31,8 +31,8 @@
 
             <div class="software-tickets-menu-content">
 
-                <form action="" class="js-input-required-btn" id="create-sw-ticket-btn" data-target="create-sw-ticket-form">
-                    <button type="button"><i class="ti-plus"></i> Create Ticket</button>
+                <form action=""  >
+                    <button type="button" class="js-input-required-btn" id="create-sw-ticket-btn" data-target="create-sw-ticket-form"><i class="ti-plus"></i> Create Ticket</button>
                 </form>
                 
 
@@ -127,10 +127,10 @@
 
         <x-common-ticket-form title="EEG Software Support" action1="/create-software-ticket" id="create-sw-ticket-form"> <!-- action="/create-software-ticket" method="POST"> -->
 
-            <label>Reciept</label>
+            <label class="Ticket-Form-Body-Input">Reciept</label>
             <input type="text" class="Ticket-Form-Body-Input" placeholder="Nhập số phiếu tại đây" name="ticket_reciept" required>
 
-            <label>Support Type</label>
+            <label class="Ticket-Form-Body-Input">Support Type</label>
             <select name="support_type" class="Ticket-Form-Body-Input">
                 <option value="1">Thêm mã part/product</option>
                 <option value="2">Rollback</option>
@@ -143,7 +143,7 @@
                 <option value="9">Vấn đề khác</option>
             </select>
 
-            <label>Priority</label>
+            <label class="Ticket-Form-Body-Input">Priority</label>
             <select name="priority" class="Ticket-Form-Body-Input">
                 <option value="1">Normal</option>
                 <option value="2">Critical</option>
@@ -151,13 +151,14 @@
                 <option value="4">Low</option>
             </select>
 
-            <label>Description</label>
+            <label class="Ticket-Form-Body-Input">Description</label>
             <textarea name="description" class="Ticket-Form-Body-Input" placeholder="Nhập mô tả vấn đề bạn cần hỗ trợ" required></textarea>
             
-            <label>Attach File:</label>
-            <input type="file" name="attachments[]" multiple>
+            <label class="Ticket-Form-Body-Input">Attach File:</label>
+            <input class="Ticket-Form-Body-Input" type="file" name="attachments[]" multiple id="fileInput">
+            <ul id="fileList"></ul>
 
-            <button type="submit" class="Ticket-Form-Body-Input" id="software-ticket-submit-btn">Submit</button> 
+            <button class="Ticket-Form-Body-Input" type="submit"  id="software-ticket-submit-btn">Submit</button> 
             <!-- class="Ticket-Form-Body-Input" id="software-ticket-submit-btn"-->
 
         </x-common-ticket-form>

@@ -60,7 +60,7 @@ html, body{
     display: none;
 }
 
-form button {
+form > button {
     display: flex;
     padding: 10px;
     background-color: var(--button-background-color);
@@ -71,16 +71,16 @@ form button {
     justify-content: center;
 }
 
-form button:hover {
+form > button:hover {
     background-color: white;
     color: black;
     cursor: pointer;
 }
 
-button {
+/* button {
     background-color: var(--button-background-color);
     color: var(--button-text-color);
-}
+} */
 
 table {
     width: 100%;
@@ -388,14 +388,7 @@ h1, h2, h3 {
     gap: 10px;
 }
 
-.software-tickets-menu-content > #software-tickets-create-btn {
-    padding: 15px;
-    background-color: var(--button-background-color);
-    color: var(--button-text-color);
-    border-radius: 5px;
-    border-width: 0px;
-    font-weight: 750 ;
-}
+
 
 .software-tickets-menu-content > #software-tickets-create-btn:hover {
     background-color: white;
@@ -455,14 +448,20 @@ h1, h2, h3 {
 .Ticket-Form-Body {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    /* gap: 10px; */
     overflow-y:hidden;
     box-sizing: border-box;
+    align-items: center;
+}
+
+.Ticket-Form-Body > label {
+    align-items: stretch;
 }
 
 .Ticket-Form-Body .Ticket-Form-Body-Input {
     padding: 5px;
     font-size: 15px;
+    width: 100%;
 }
 
 .Ticket-Form-Body textarea {
@@ -480,6 +479,20 @@ h1, h2, h3 {
     background-color: white;
     color: black;
 }
+
+#fileList > li > button > i {
+    color: red;
+    padding: 5px;
+}
+
+#fileList > li > button > i:hover {
+    cursor: pointer;
+}
+
+/* .ti-close {
+    color: red;
+} */
+
 
 /* CSS CHO TABLE TICKET PENDING */
 
