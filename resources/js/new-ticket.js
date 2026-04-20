@@ -34,6 +34,8 @@ document.addEventListener('submit', function (e) {
     // Kiểm tra xem form nào đang được submit dựa vào ID
     if (e.target && e.target.id === 'create-sw-ticket-form') {
         e.preventDefault();
+        const buttons = this.querySelectorAll('button');
+        buttons.forEach(btn => btn.disabled = true);
         const formData = new FormData(e.target);
         fetch('/create-software-ticket', {
             method: 'POST',
@@ -51,6 +53,7 @@ document.addEventListener('submit', function (e) {
                 icon: 'success',
                 confirmButtonText: 'OK'
             });
+            buttons.forEach(btn => btn.disabled = false);
             const newRow = 
             `
                 <tr>

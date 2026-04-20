@@ -127,11 +127,11 @@
 
         <x-common-ticket-form title="EEG Software Support" action1="/create-software-ticket" id="create-sw-ticket-form"> <!-- action="/create-software-ticket" method="POST"> -->
 
-            <label class="Ticket-Form-Body-Input">Reciept</label>
-            <input type="text" class="Ticket-Form-Body-Input" placeholder="Nhập số phiếu tại đây" name="ticket_reciept" required>
+            <label class="ticket-form-body-input">Reciept</label>
+            <input type="text" class="ticket-form-body-input" placeholder="Nhập số phiếu tại đây" name="ticket_reciept" required>
 
-            <label class="Ticket-Form-Body-Input">Support Type</label>
-            <select name="support_type" class="Ticket-Form-Body-Input">
+            <label class="ticket-form-body-input">Support Type</label>
+            <select name="support_type" class="ticket-form-body-input">
                 <option value="1">Thêm mã part/product</option>
                 <option value="2">Rollback</option>
                 <option value="3">Hủy số phiếu/Ẩn lịch sử bảo hành</option>
@@ -143,23 +143,26 @@
                 <option value="9">Vấn đề khác</option>
             </select>
 
-            <label class="Ticket-Form-Body-Input">Priority</label>
-            <select name="priority" class="Ticket-Form-Body-Input">
+            <label class="ticket-form-body-input">Priority</label>
+            <select name="priority" class="ticket-form-body-input">
                 <option value="1">Normal</option>
                 <option value="2">Critical</option>
                 <option value="3">High</option>
                 <option value="4">Low</option>
             </select>
 
-            <label class="Ticket-Form-Body-Input">Description</label>
-            <textarea name="description" class="Ticket-Form-Body-Input" placeholder="Nhập mô tả vấn đề bạn cần hỗ trợ" required></textarea>
+            <label class="ticket-form-body-input">Description</label>
+            <textarea name="description" class="ticket-form-body-input" placeholder="Nhập mô tả vấn đề bạn cần hỗ trợ" required></textarea>
             
-            <label class="Ticket-Form-Body-Input">Attach File:</label>
-            <input class="Ticket-Form-Body-Input" type="file" name="attachments[]" multiple id="fileInput">
+            <label class="ticket-form-body-input">Attach File:</label>
+            <input class="ticket-form-body-input" type="file" name="attachments[]" multiple id="fileInput">
             <ul id="fileList"></ul>
-
-            <button class="Ticket-Form-Body-Input" type="submit"  id="software-ticket-submit-btn">Submit</button> 
-            <!-- class="Ticket-Form-Body-Input" id="software-ticket-submit-btn"-->
+            
+            <x-slot:footer>
+                <button class="ticket-form-body-input" type="submit" id="software-ticket-submit-btn">Submit</button> 
+            </x-slot:footer>
+            
+            <!-- class="ticket-form-body-input" id="software-ticket-submit-btn"-->
 
         </x-common-ticket-form>
         

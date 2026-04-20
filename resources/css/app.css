@@ -70,12 +70,20 @@ form > button {
     align-content: center;
     justify-content: center;
 }
-
+        
 form > button:hover {
     background-color: white;
     color: black;
     cursor: pointer;
 }
+
+button:disabled {
+    background-color: #cccccc !important;
+    color: #666666 !important;
+    cursor: not-allowed !important;
+    pointer-events: none; /* Ngăn chặn hoàn toàn mọi sự kiện chuột */
+}
+
 
 /* button {
     background-color: var(--button-background-color);
@@ -445,39 +453,44 @@ h1, h2, h3 {
 }
 
 
-.Ticket-Form-Body {
+.ticket-form-body {
     display: flex;
     flex-direction: column;
     /* gap: 10px; */
     overflow-y:hidden;
     box-sizing: border-box;
-    align-items: center;
 }
 
-.Ticket-Form-Body > label {
-    align-items: stretch;
+.ticket-form-body > label {
+    align-items: left;
 }
 
-.Ticket-Form-Body .Ticket-Form-Body-Input {
+.ticket-form-body .ticket-form-body-input {
     padding: 5px;
     font-size: 15px;
     width: 100%;
 }
 
-.Ticket-Form-Body textarea {
+.ticket-form-body textarea {
     height: 100px;
 }
-
-.Ticket-Form-Body > button {
-    color: white;
-    background-color: black;
+.ticket-form-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.ticket-form-footer > button {
+    color: var(--button-text-color);
+    padding: 10px;
+    background-color: var(--button-background-color);
     border-radius: 5px;
 }
 
-.Ticket-Form-Body > button:hover {
+.ticket-form-footer > button:hover {
     cursor: pointer;
-    background-color: white;
+    background-color: #f1f1f1;
     color: black;
+    
 }
 
 #fileList > li > button > i {

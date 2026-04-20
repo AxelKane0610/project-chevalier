@@ -6,11 +6,22 @@
                 <h2>{{$title}}</h2>
             </div>
 
-            <form action="{{ $action1 }}" method="POST" class="Ticket-Form-Body" id="{{ $id }}" enctype="multipart/form-data"> <!-- id="create-sw-ticket" -->
-                @csrf
-                {{ $slot }}
+            
+                <form action="{{ $action1 }}" method="POST"  id="{{ $id }}" enctype="multipart/form-data"> <!-- id="create-sw-ticket" -->
+                    <div class="ticket-form-body">
+                        @csrf
+                        {{ $slot }}
+                    </div>
 
-            </form>
+                    <div class="ticket-form-footer">
+                        {{ $footer ?? '' }}
+                    </div>
+                    
+                </form>
+            
+
+            
+            
         </div>
         
     </div>

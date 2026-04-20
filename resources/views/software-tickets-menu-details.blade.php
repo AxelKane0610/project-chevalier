@@ -207,14 +207,14 @@
             <x-common-ticket-form title="EEG Ticket Close" id="close-ticket-form" action1="{{ route('close-software-ticket', $ticket->id) }}">
                 @method('PATCH')
                 <label>Status</label>
-                <select name="ticket_status" class="Ticket-Form-Body-Input">
+                <select name="ticket_status" class="ticket-form-body-input">
                     <option value="4">Complete</option>
                     <option value="5">Reject</option>
                     <option value="6">Cancel</option>
                 </select>
 
                 <label>Issue Owner</label>
-                <select name="issue_owner" class="Ticket-Form-Body-Input">
+                <select name="issue_owner" class="ticket-form-body-input">
                     <option value="1">System Matters</option>
                     <option value="2">Human Matters</option>
                     <option value="3">Customer Matters</option>
@@ -223,8 +223,11 @@
                 </select>
 
                 <label>Comment</label>
-                <textarea name="ticket_comment" class="Ticket-Form-Body-Input" placeholder="Comment cho người tạo ticket nếu có"></textarea>
-                <button type="submit" class="Ticket-Form-Body-Input">Close ticket</button>
+                <textarea name="ticket_comment" class="ticket-form-body-input" placeholder="Comment cho người tạo ticket nếu có"></textarea>
+                <x-slot:footer>
+                    <button type="submit" class="ticket-form-body-input">Close ticket</button>
+                </x-slot:footer>
+                
             </x-common-ticket-form>
 
         </div>
