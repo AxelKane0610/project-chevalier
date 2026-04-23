@@ -10,24 +10,27 @@
     </head>
 
     <body class="background-enable">
+
         <div class="" id="subk-management-menu">
 
             <x-common-header title="SubK Management">
             <li>
                 <form action="/main-menu">
-                    @csrf
                     <button type="submit"><i class="ti-home"></i>Home</button>
                 </form>
             </li>
             <li>
                 <form action="#">
-                    @csrf
                     <button type="submit"><i class="ti-search"></i>Search</button>
                 </form>
             </li>
             </x-common-header>
 
             <div class="subk-management-menu-content">
+
+                <form>
+                    <button type="button" class="js-input-required-btn" data-target="create-user-form"><i class="ti-plus"></i>Create User</button>
+                </form>
 
                 <div class="common-table-container">
                     <h2>Users </h2>
@@ -60,12 +63,43 @@
                         </tbody>
 
                     </table>
-
+                
+                
                 </div>
+
+                
+
             </div>
 
         </div>
         
+        <x-common-ticket-form title="Tạo user mới" id="create-user-form" action1="create-new-user">
+            <label class="ticket-form-body-input">Username</label>
+            <input name="Username" class="ticket-form-body-input"></input>
+            <label class="ticket-form-body-input">Password</label>
+            <input name="Password" class="ticket-form-body-input" type="password"></input>
+            <label class="ticket-form-body-input">Fullname</label>
+            <input name="Fullname" class="ticket-form-body-input"></input>
+            
+            <label class="ticket-form-body-input">Site</label>
+            <select name="Site" class="ticket-form-body-input">
+                <option value="1">Hồ Chí Minh</option>
+                <option value="2">Hà Nội</option>
+                <option value="3">Đà Nẵng</option>
+                <option value="4">Cần Thơ</option>
+                <option value="5">Call Center</option>
+            </select>
+
+            <label class="ticket-form-body-input">Email</label>
+            <input name="Email" class="ticket-form-body-input"></input>
+
+            <label class="ticket-form-body-input">Learner ID</label>
+            <input name="Learner-Id" class="ticket-form-body-input"></input>
+
+            <label class="ticket-form-body-input">Role</label>
+            
+
+        </x-common-ticket-form>
 
     </body>
 

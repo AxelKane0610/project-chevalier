@@ -335,6 +335,7 @@ h1, h2, h3 {
     padding: 0 24px;
     color: white;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-bottom: 10px;
 }
 
 .common-header-navigation ul {
@@ -471,9 +472,14 @@ h1, h2, h3 {
     width: 100%;
 }
 
-.ticket-form-body textarea {
+.ticket-form-body .single-row {
+    height: 30px;
+}
+
+.ticket-form-body .multiple-row {
     height: 100px;
 }
+
 .ticket-form-footer {
     display: flex;
     align-items: center;

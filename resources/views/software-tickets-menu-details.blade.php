@@ -13,7 +13,6 @@
         <x-common-header title="EEG Software Support">
             <li>
                 <form action="/software-tickets-menu">
-                    @csrf
                     <button type="submit"><i class="ti-home"></i>Home</button>
                 </form>
             </li>
@@ -40,7 +39,6 @@
                     @case(3)
                         <li>
                             <form action="#">
-                                @csrf
                                 <button type="submit"><i class="ti-alarm-clock"></i>In Progress</button>
                             </form>
                         </li>

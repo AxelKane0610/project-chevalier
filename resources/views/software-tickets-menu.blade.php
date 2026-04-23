@@ -14,7 +14,6 @@
             <x-common-header title="EEG Software Support">
                 <li>
                     <form action="/main-menu">
-                        @csrf
                         <button type="submit"><i class="ti-home"></i>Home</button>
                     </form>
                 </li>
@@ -152,7 +151,7 @@
             </select>
 
             <label class="ticket-form-body-input">Description</label>
-            <textarea name="description" class="ticket-form-body-input" placeholder="Nhập mô tả vấn đề bạn cần hỗ trợ" required></textarea>
+            <textarea name="description" class="ticket-form-body-input multiple-row" placeholder="Nhập mô tả vấn đề bạn cần hỗ trợ" required></textarea>
             
             <label class="ticket-form-body-input">Attach File:</label>
             <input class="ticket-form-body-input" type="file" name="attachments[]" multiple id="fileInput">
