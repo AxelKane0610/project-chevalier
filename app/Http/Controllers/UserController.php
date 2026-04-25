@@ -51,16 +51,31 @@ class UserController extends Controller
     }
 
     public function Create_New_User(Request $request){
-
+        // dd($request->all());
         $user_info_input = $request->validate([
             'Username' => 'required',
             'Password' => 'required',
+            'Fullname'   => 'required', // Bắt buộc phải khai báo ở đây
+            'Site'       => 'required', // Dùng nullable nếu trường này không bắt buộc
+            'Leader'     => 'required',
+            'Email'      => 'required|email',
+            'Learner_Id' => 'required',
+            'roles'      => 'required|array',
         ]);
 
+        
         User::create([
             'name'     => $user_info_input['Username'], // Map Username vào cột name
             'password' => bcrypt($user_info_input['Password']),
+            'fullname' => $user_info_input['Fullname'],
+            'site_id' => $user_info_input['Site'], 
+            'leader_id' => $user_info_input['Leader'],
+            'email' => $user_info_input['Email'],
+            'learner_id' => $user_info_input['Learner_Id'],
+            'roles' => $user_info_input['roles'],
         ]);
+
+        return redirect()->back()->with('success', 'Tạo người dùng thành công!');
     }
 
     

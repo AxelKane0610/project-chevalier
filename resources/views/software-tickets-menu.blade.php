@@ -57,7 +57,7 @@
                                     <tr>
                                         <td>
                                             <a href="/software-tickets-menu-details/{{ $ticket->id }}">
-                                                <i class="ti-arrow-right" ></i>
+                                                <button><i class="ti-arrow-right" ></i></button>
                                             </a>
                                         </td>
                                         <td>{{ $ticket->ticket_reciept }}</td>

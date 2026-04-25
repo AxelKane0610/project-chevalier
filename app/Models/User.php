@@ -24,6 +24,10 @@ class User extends Authenticatable
         'email',
         'password',
         'fullname',
+        'learner_id',
+        'site_id',
+        'roles',
+        
     ];
 
     protected $casts = [
