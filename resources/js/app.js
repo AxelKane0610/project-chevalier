@@ -47,3 +47,47 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+
+const fileInput = document.getElementById('fileInput');
+const fileListUI = document.getElementById('fileList');
+
+let selectedFiles = [];
+
+fileInput.addEventListener('change', function () {
+    selectedFiles = Array.from(this.files);
+    renderFileList();
+});
+
+function renderFileList() {
+    fileListUI.innerHTML = ''; //Clear UI cũ (re-render lại từ đầu)
+
+    selectedFiles.forEach((file, index) => {
+        const li = document.createElement('li');
+
+        li.textContent = file.name;
+
+        const removeBtn = document.createElement('button');
+        // removeBtn.textContent = 'X';
+        removeBtn.innerHTML = '<i class="ti-close"></i>';
+        removeBtn.onclick = () => removeFile(index);
+ 
+        li.appendChild(removeBtn);
+        fileListUI.appendChild(li);
+    });
+}
+
+function removeFile(index) {
+    selectedFiles.splice(index, 1);
+    updateInputFiles();
+    renderFileList();
+}
+
+function updateInputFiles() {
+    const dataTransfer = new DataTransfer();
+
+    selectedFiles.forEach(file => {
+        dataTransfer.items.add(file);
+    });
+
+    fileInput.files = dataTransfer.files;
+}

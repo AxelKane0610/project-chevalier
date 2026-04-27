@@ -184,6 +184,9 @@
                             </tbody>
                         </table>
                     </li>
+                <x-slot:footer>
+                    <button type="button" class="js-input-required-btn" data-target="edit-ticket-details"><i class="ti-pencil"></i> Edit</button>
+                </x-slot:footer>
                 
 
             </x-common-ticket-detail-form>
@@ -226,6 +229,76 @@
                     <button type="submit" class="ticket-form-body-input">Close ticket</button>
                 </x-slot:footer>
                 
+            </x-common-ticket-form>
+
+            <x-common-ticket-form title="Edit Ticket EEG" id="edit-ticket-details" action1="">
+
+                <label>Reciept</label>
+                <input type="text" class="ticket-form-body-input" name="ticket_reciept" value=" {{ $ticket->ticket_reciept }}">
+
+                <label>Support Type</label>
+                <select name="support_type" class="ticket-form-body-input">
+                    <option value="1" @selected($ticket->support_type == 1)>Thêm mã part/product</option>
+                    <option value="2" @selected($ticket->support_type == 2)>Rollback</option>
+                    <option value="3" @selected($ticket->support_type == 3)>Hủy số phiếu/Ẩn lịch sử bảo hành</option>
+                    <option value="4" @selected($ticket->support_type == 4)>Điều chỉnh thông tin</option>
+                    <option value="5" @selected($ticket->support_type == 5)>Unmark Re-Repair</option>
+                    <option value="6" @selected($ticket->support_type == 6)>Lỗi hệ thống</option>
+                    <option value="7" @selected($ticket->support_type == 7)>Cấp quyền export data</option>
+                    <option value="8" @selected($ticket->support_type == 8)>Đề xuất thay đổi/cải tiến</option>
+                    <option value="9" @selected($ticket->support_type == 9)>Vấn đề khác</option>
+                </select>
+
+                <label>Priority</label>
+                <select name="priority" class="ticket-form-body-input">
+                    <option value="1" @selected($ticket->priority == 1)>Normal</option>
+                    <option value="2" @selected($ticket->priority == 2)>Critical</option>
+                    <option value="3" @selected($ticket->priority == 3)>High</option>
+                    <option value="4" @selected($ticket->priority == 4)>Low</option>
+                </select>
+
+                <label>Issue description</label>
+                <textarea name="description" class="ticket-form-body-input multiple-row">{{$ticket->description}}</textarea>
+
+                
+                <label><b>Attachments</b></label>
+                
+                @if($ticket->attachments->count() > 0)
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-sm">
+                            <tbody>
+                                @foreach($ticket->attachments as $attachment)
+                                    <tr>
+                                        <td class="align-middle">
+                                            
+                                            <a href="{{ asset('storage/' . $attachment->path) }}" target="_blank">
+                                                {{ $attachment->name ?? 'File đính kèm' }}
+                                            </a>
+                                        </td>
+                                        <td class="align-middle text-center" width="150">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="delete_files[]" value="{{ $attachment->id }}" id="del_{{ $attachment->id }}">
+                                                <label class="form-check-label text-danger" for="del_{{ $attachment->id }}">
+                                                    Xóa file này
+                                                </label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    <small class="text-muted">Tích vào ô "Xóa file này" nếu muốn gỡ bỏ file đính kèm trước đó.</small>
+                @else
+                    <p class="text-muted">Không có file nào được đính kèm</p>
+                @endif
+                
+                <label class="ticket-form-body-input">Đính kèm thêm files:</label>
+                <input class="ticket-form-body-input" type="file" name="attachments[]" multiple id="fileInput">
+                <ul id="fileList"></ul>
+                <x-slot:footer>
+                    <button class="ticket-form-body-input" type="submit" id="software-ticket-submit-btn">Save</button> 
+                </x-slot:footer>
             </x-common-ticket-form>
 
         </div>

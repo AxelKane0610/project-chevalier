@@ -1,11 +1,18 @@
-<div class="tickets-details">
-    <ul class="tickets-details-items">
-        {{ $slot }}
+<div class="tickets-details-box">
     
-    </ul>
-    <form action="">
-        <button><i class="ti-pencil"></i> Edit</button>
-    </form>
+    <div class="ticket-details-body">
+        <ul class="tickets-details-items">
+        {{ $slot }}
+        </ul>
+    </div>
+    
+    <div class="ticket-details-footer">
+        <form action="">
+            {{ $footer ?? '' }}
+        </form>
+        
+    </div>
+    
     
     
 </div>
