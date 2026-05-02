@@ -100,6 +100,8 @@ table {
     border-collapse: collapse;
 }
 
+
+
 table tr th {
     background-color: var(--table-header-background-color);
     padding: 10px;
@@ -110,7 +112,10 @@ th, td {
     padding: 10px;
 }
 
-
+textarea {
+    min-height: 100px;
+    flex-shrink: 0;
+}
 
 i {
     display: flex;
@@ -439,8 +444,8 @@ h1, h2, h3 {
     flex-direction: column;
     max-height: 80vh;
     /* gap: 10px; */
-    overflow-y:scroll;
-    box-sizing: border-box;
+    overflow-y:auto;
+    /* box-sizing: border-box; */
 }
 
 .ticket-form-body > label {
@@ -452,11 +457,12 @@ h1, h2, h3 {
     font-size: 15px;
     width: 100%;
 }
-
+.ticket-form-body-input .singlerow,
 .ticket-form-body .single-row {
     height: 30px;
 }
 
+.ticket-form-body-input .multiple-row,
 .ticket-form-body .multiple-row {
     height: 100px;
 }
@@ -536,8 +542,7 @@ h1, h2, h3 {
 .ticket-details-body {
     display: flex;
     width: 100%;
-    height: 95%;
-    overflow-y: scroll;
+    max-height: 95%;
 }
 .software-tickets-comments,
 .tickets-details-items {

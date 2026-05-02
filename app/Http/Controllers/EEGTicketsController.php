@@ -67,8 +67,8 @@ class EEGTicketsController extends Controller
         ]);
     }
 
-    public function Show_Software_Ticket_Details($id){
-        $ticket = EEG_Software_Ticket::with('user_owner', 'attachments')->findOrFail($id); //gọi tới function "user" trong model EEG_Software_Ticket để lấy thông tin user của ticket đó, rồi mới trả về view
+    public function Show_Software_Ticket_Details($id, $type_of_ticket = 1){
+        $ticket = EEG_Software_Ticket::with('user_owner', 'active_attachments')->findOrFail($id); //gọi tới function "user" trong model EEG_Software_Ticket để lấy thông tin user của ticket đó, rồi mới trả về view
         return view('software-tickets-menu-details', compact('ticket'));
     }
 
@@ -115,6 +115,57 @@ class EEGTicketsController extends Controller
             'message' => 'Ticket completed !',
         ]);
     }
+
+    public function Edit_Software_Ticket(Request $request, $id){
+
+        $ticket_info_input = $request->validate([
+            'ticket_reciept' => 'required',
+            'support_type' => 'required',
+            'priority' => 'required',
+            'description' => 'required',
+            'attachments.*' => 'file|max:5120|mimes:jpg,png,pdf,jpeg,xlsx'
+        ]);
+
+        $ticket_info_input['ticket_reciept'] = strip_tags($ticket_info_input['ticket_reciept']);
+        $ticket_info_input['support_type'] = strip_tags($ticket_info_input['support_type']);
+        $ticket_info_input['priority'] = strip_tags($ticket_info_input['priority']);
+        $ticket_info_input['description'] = strip_tags($ticket_info_input['description']);
+        
+        $ticket = EEG_Software_Ticket::with('user_owner')->findOrFail($id);
+        $ticket->ticket_reciept = $ticket_info_input['ticket_reciept'];
+        $ticket->support_type = $ticket_info_input['support_type'];
+        $ticket->priority = $ticket_info_input['priority'];
+        $ticket->description = $ticket_info_input['description'];
+
+        $ticket->save();
+
+        if ($request->hasFile('attachments')) { //Kiểm tra xem có file nào được upload lên không
+
+            foreach ($request->file('attachments') as $file) { //Duyệt qua từng file được upload lên
+                $filePath = $file->store('attachments', 'public'); // Lưu file vào thư mục 'storage/app/public/attachments'
+                
+                Attachments_Model::create([
+                    'type_of_ticket' => 1, // Giả sử 1 là mã cho software ticket
+                    'ticket_id' => $ticket->id,
+                    'file_path' => $filePath,
+                    'name' => $file->getClientOriginalName(),// Lưu tên gốc của file vào cơ sở dữ liệu
+                ]);
+            }
+            
+        }
+
+        if ($request->has('delete_files')) {
+        // Cập nhật tất cả các ID được tích chọn thành status = 0 trong 1 câu lệnh duy nhất
+            Attachments_Model::whereIn('id', $request->input('delete_files'))->update(['status' => '0']);
+        }
+
+        return back()->with('success');
+
+
+    }
+
+    
+    
 
     
 

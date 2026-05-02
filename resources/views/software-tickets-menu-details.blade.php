@@ -26,7 +26,6 @@
             </li>
             <li>
                 <form action="/main-menu">
-                    @csrf
                     <button type="submit"><i class="ti-layout-grid2"></i>Quick Navigation</button>
                 </form>
             </li>
@@ -153,7 +152,6 @@
 
                     <li>
                         <lable>Attachments</lable>
-                        
                         <table class="attachments-table">
                             <thead>
                                 <tr>
@@ -162,8 +160,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($ticket->attachments as $attachment)
-                                    @if(in_array($attachment->type_of_ticket, [1, 2])) {{-- Cách viết gọn thay cho switch --}}
+                                @foreach ($ticket->active_attachments as $attachment)
+                                    @if(in_array($attachment->type_of_ticket, [1])) {{-- Cách viết gọn thay cho switch --}}
                                     <tr>
                                         <td>{{ $attachment->name }}</td>
                                         <td>
@@ -183,7 +181,10 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        
                     </li>
+                    
+
                 <x-slot:footer>
                     <button type="button" class="js-input-required-btn" data-target="edit-ticket-details"><i class="ti-pencil"></i> Edit</button>
                 </x-slot:footer>
@@ -231,8 +232,8 @@
                 
             </x-common-ticket-form>
 
-            <x-common-ticket-form title="Edit Ticket EEG" id="edit-ticket-details" action1="">
-
+            <x-common-ticket-form title="Edit Ticket EEG" id="edit-ticket-details" action1="{{ route('edit-software-ticket', $ticket->id) }}">
+                @method('PATCH')
                 <label>Reciept</label>
                 <input type="text" class="ticket-form-body-input" name="ticket_reciept" value=" {{ $ticket->ticket_reciept }}">
 
@@ -258,16 +259,16 @@
                 </select>
 
                 <label>Issue description</label>
-                <textarea name="description" class="ticket-form-body-input multiple-row">{{$ticket->description}}</textarea>
+                <textarea name="description" class="ticket-form-body-input multiple-row" style="height: 200px;">{{$ticket->description}}</textarea>
 
                 
                 <label><b>Attachments</b></label>
                 
-                @if($ticket->attachments->count() > 0)
+                @if($ticket->active_attachments->count() > 0)
                     <div class="table-responsive">
-                        <table class="table table-bordered table-sm">
+                        <table class="attachments-table">
                             <tbody>
-                                @foreach($ticket->attachments as $attachment)
+                                @foreach($ticket->active_attachments as $attachment)
                                     <tr>
                                         <td class="align-middle">
                                             
@@ -277,9 +278,13 @@
                                         </td>
                                         <td class="align-middle text-center" width="150">
                                             <div class="form-check">
+                                                
+                                                <a href="{{ asset('storage/' . $attachment->file_path) }}" target="_blank" class="btn btn-info">
+                                                    <i class="ti-eye"></i>
+                                                </a>
                                                 <input class="form-check-input" type="checkbox" name="delete_files[]" value="{{ $attachment->id }}" id="del_{{ $attachment->id }}">
                                                 <label class="form-check-label text-danger" for="del_{{ $attachment->id }}">
-                                                    Xóa file này
+                                                    Xóa
                                                 </label>
                                             </div>
                                         </td>
@@ -297,7 +302,7 @@
                 <input class="ticket-form-body-input" type="file" name="attachments[]" multiple id="fileInput">
                 <ul id="fileList"></ul>
                 <x-slot:footer>
-                    <button class="ticket-form-body-input" type="submit" id="software-ticket-submit-btn">Save</button> 
+                    <button class="ticket-form-body-input" type="submit" >Save</button> 
                 </x-slot:footer>
             </x-common-ticket-form>
 

@@ -20,11 +20,17 @@ class Attachments_Model extends Model
         'name',
     ];
 
-    public function attachments()
-    {
-        // Giả sử ticket_id là khóa ngoại ở bảng attachments_table
-        return $this->hasMany(Attachments_Model::class, 'ticket_id', 'id');
-    }
+    // public function attachments()
+    // {
+    //     // Giả sử ticket_id là khóa ngoại ở bảng attachments_table
+    //     return $this->hasMany(Attachments_Model::class, 'ticket_id', 'id');
+    // }
+
+    // public function active_attachments()
+    // {
+    //     return $this->hasMany(Attachments_Model::class, 'ticket_id', 'id')
+    //         ->where('status', '1'); // Chỉ lấy những attachment có status = 1 (còn hiệu lực)
+    // }
 
     
 }
