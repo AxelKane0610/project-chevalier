@@ -36,10 +36,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::middleware(['role:ROLE_SUPER_ADMIN,ROLE_SW_TICKET_USER,ROLE_TICKET_SW_ADMIN'])->group(function () {
     
-        Route::get('/software-tickets-menu', function () {
-            $tickets = EEG_Software_Ticket::where('user_id', auth()->id())->get();
-            return view('software-tickets-menu', compact('tickets'));
-        });
+        Route::get('/software-tickets-menu', [EEGTicketsController::class, 'Show_Pending_Tickets']);
 
         Route::get('/software-tickets-menu-details/{id}', [EEGTicketsController::class, 'Show_Software_Ticket_Details']);
         

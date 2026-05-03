@@ -1,6 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\UserController;
 use App\Models\EEG_Software_Ticket;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\AttachmentController;
@@ -65,6 +68,31 @@ class EEGTicketsController extends Controller
                 },
             'description' => $ticket->description,
         ]);
+    }
+
+    public function Show_Pending_Tickets(){
+        if (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_TICKET_SW_ADMIN')) {
+            $tickets = EEG_Software_Ticket::whereIn('status', ['1', '2', '3'])->get();
+            $tickets_waiting_approval = EEG_Software_Ticket::where('status', 3)->get();
+            return view('software-tickets-menu', compact('tickets', 'tickets_waiting_approval'));
+        } 
+        else {
+            $tickets = EEG_Software_Ticket::where('user_id', auth()->id()) //lọc ra ticket của user đó
+                ->whereIn('status', ['1', '2', '3']) // lọc ra ticket đang pending
+                ->get();
+
+            $tickets_waiting_approval = DB::table('eeg_software_tickets as EEG_Software_Ticket')
+            ->join('users', 'EEG_Software_Ticket.user_id', '=', 'users.id') 
+            ->where('users.leader_id', auth()->id())
+            ->where('EEG_Software_Ticket.status', 3)
+            ->select('EEG_Software_Ticket.*')
+            ->get();
+            
+            return view('software-tickets-menu', compact('tickets', 'tickets_waiting_approval'));
+
+            
+        }
+        
     }
 
     public function Show_Software_Ticket_Details($id, $type_of_ticket = 1){

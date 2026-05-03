@@ -50,10 +50,7 @@
                     
                         <tbody>
                             @foreach ($tickets as $ticket)
-                                @switch($ticket->status)
-                                    @case(1)
-                                    @case(2)
-                                    @case(3)
+                                
                                     <tr>
                                         <td>
                                             <a href="/software-tickets-menu-details/{{ $ticket->id }}">
@@ -85,8 +82,7 @@
                                         </td>
                                         <td></td>
                                     </tr>
-                                    @break
-                                @endswitch
+                                    
                             @endforeach
                         </tbody>
 
@@ -94,30 +90,62 @@
 
                 </div>
 
-                <div id="rejected-software-tickets-table-container">
-                    <h2>Recent Rejected Tickets</h2>
+                @if(auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_TICKET_SW_ADMIN') || auth()->user()->hasRole('ROLE_APPROVE_ROLLBACK'))
+                    <div class="common-table-container">
+                        <h2>Waiting Approval</h2>
 
-                    <table class="rejected-software-tickets-table" width="100%" >
-                        <tr>
-                            <th width="5%"></th>
-                            <th width="14%">Reciept</th>
-                            <th width="14%">Type of request</th>
-                            <th width="39%">Issue Description</th>
-                            <th width="14%">Status</th>
-                            <th width="14%">Latest comment</th>
-                        </tr>
-                        <tr>
-                            <td><i class="ti-arrow-right" ></i></td>
-                            <td>SCHCM26-001234</td>
-                            <td>Rollback</td>
-                            <td>Nhờ team SW rollback do cần báo giá bổ sung thêm part.</td>
-                            <td>Rejected</td>
-                            <td></td>
-                        </tr>
-                        
-                    </table>
+                        <table class="common-table" width="100%" >
+                            <tr>
+                                <th width="5%"></th>
+                                <th width="14%">Reciept</th>
+                                <th width="14%">Type of request</th>
+                                <th width="39%">Issue Description</th>
+                                <th width="14%">Status</th>
+                                <th width="14%">Latest comment</th>
+                            </tr>
+                            <tr>
+                                @foreach ($tickets_waiting_approval as $ticket)
+                                
+                                    <tr>
+                                        <td>
+                                            <a href="/software-tickets-menu-details/{{ $ticket->id }}">
+                                                <button><i class="ti-arrow-right" ></i></button>
+                                            </a>
+                                        </td>
+                                        <td>{{ $ticket->ticket_reciept }}</td>
+                                        <td>
+                                            @switch($ticket->support_type)
+                                                @case(1) Thêm mã part/product @break
+                                                @case(2) Rollback @break
+                                                @case(3) Hủy số phiếu/Ẩn lịch sử bảo hành @break
+                                                @case(4) Điều chỉnh thông tin @break
+                                                @case(5) Unmark Re-Repair @break
+                                                @case(6) Lỗi hệ thống @break
+                                                @case(7) Cấp quyền export data @break
+                                                @case(8) Đề xuất thay đổi/cải tiến @break
+                                                @case(9) Vấn đề khác @break
+                                            @endswitch
+                                        </td>
+                                        <td>{{ $ticket->description }}</td>
+                                        <td>
+                                            @switch($ticket->priority)
+                                                @case(1) Normal @break
+                                                @case(2) Critical @break
+                                                @case(3) High @break
+                                                @case(4) Low @break
+                                            @endswitch
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    
+                            @endforeach
+                                
+                            </tr>
+                            
+                        </table>
 
-                </div>
+                    </div>
+                @endif
 
             </div>
 
