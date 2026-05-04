@@ -257,7 +257,9 @@ h1, h2, h3 {
 .training-submit-btn, 
 .subk-management-btn, 
 .invoice-exceptional-btn, 
-.onboard-offboard-btn, .offline-request-btn {
+.onboard-offboard-btn, 
+.offline-request-btn,
+.overheat-request-btn {
 
     display: flex;
     flex-direction: column;
@@ -304,7 +306,8 @@ h1, h2, h3 {
 .subk-management-btn:hover, 
 .invoice-exceptional-btn:hover, 
 .onboard-offboard-btn:hover, 
-.offline-request-btn:hover {
+.offline-request-btn:hover,
+.overheat-request-btn:hover {
     opacity: 0.9;
     cursor: pointer;
     box-shadow: 0 4px 10px 5px rgba(0,0,0,0.5);

@@ -30,47 +30,69 @@
                 </form>
             </li>
 
-            @can('hasRole', 'ROLE_TICKET_SW_ADMIN', 'ROLE_SUPER_ADMIN') <!-- Chỉ hiển thị nút action nếu người dùng có vai trò admin hoặc super admin -->
             
-                @switch($ticket->status)
-                    @case(1)
-                    @case(2)
-                    @case(3)
-                        <li>
-                            <form action="#">
-                                <button type="submit"><i class="ti-alarm-clock"></i>In Progress</button>
-                            </form>
-                        </li>
-                        <li>
-                            
-                            <form action="{{ route('send-approval-request', $ticket->id) }}" method="POST">
-                                @csrf
-                                <button type="submit"><i class="ti-angle-double-right"></i>Send Approval </button>
-                            </form>
-                            
-                        </li>
-                        <li>
-                            <form action="" id="complete-sw-ticket" data-target="close-ticket-form" class="js-input-required-btn">
-                                @csrf
-                                <button type="button"><i class="ti-check"></i>Close Ticket</button>
-                            </form>
-                        </li>
-                        
-                    @break
-                    
-                    
-                @endswitch
-            
-            @endcan
+                    @switch($ticket->status)
+                        @case(1)
+                        @case(2)
+                            @if(auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_TICKET_SW_ADMIN'))
+                                <li>
+                                    <form action="#">
+                                        <button type="submit"><i class="ti-alarm-clock"></i>In Progress</button>
+                                    </form>
+                                </li>
 
-            @if ( ($ticket->status == 4 || $ticket->status == 5) && $ticket->user_id == auth()->user()->id )
-                <li>
-                    <a href="">
-                        <i class="ti-back-left"></i>
-                        Request Re-Open
-                    </a>
-                </li>
-            @endif
+                                <li>
+                                    <form action="{{ route('send-approval-request', $ticket->id) }}" method="POST">
+                                        @csrf
+                                        <button type="submit"><i class="ti-angle-double-right"></i>Send Approval </button>
+                                    </form>
+                                </li>
+
+                                <li>
+                                    <form action="" id="complete-sw-ticket" data-target="close-ticket-form" class="js-input-required-btn">
+                                        @csrf
+                                        <button type="button"><i class="ti-check"></i>Close Ticket</button>
+                                    </form>
+                                </li>
+                            @endif
+                        @break
+
+                        @case(3)
+                            @if(auth()->user()->hasRole('ROLE_APPROVE_ROLLBACK') ) <!-- Chỉ hiển thị nút action nếu người dùng là leader của ticket -->
+                                @can('is-leader-of-ticket', $ticket)
+                                <li>
+                                    <form action="#">
+                                        <button type="submit"><i class="ti-thumb-up"></i>Approve</button>
+                                    </form>
+                                </li>
+
+                                <li>
+                                    <form action="#">
+                                        <button type="submit"><i class="ti-thumb-down"></i>Reject</button>
+                                    </form>
+                                </li>
+                                @endcan
+                            @endif
+                            
+                        @break
+
+                        @case(4)
+                        @case(5)
+                            @if($ticket->user_id == auth()->user()->id)
+                            <li>
+                                <form action="#">
+                                    <button type="submit"><i class="ti-back-left"></i>Request Re-Open</button>
+                                </form>
+                            </li>
+                            @endif
+                        @break
+                        
+                        
+                    @endswitch
+            
+                
+
+            
         
         </x-common-header>
 
@@ -184,10 +206,11 @@
                         
                     </li>
                     
-
+                @if(($ticket->status == 1 || $ticket->status == 4 || $ticket->status == 5) && $ticket->user_id == auth()->user()->id)
                 <x-slot:footer>
                     <button type="button" class="js-input-required-btn" data-target="edit-ticket-details"><i class="ti-pencil"></i> Edit</button>
                 </x-slot:footer>
+                @endif
                 
 
             </x-common-ticket-detail-form>
@@ -265,7 +288,7 @@
                 <label><b>Attachments</b></label>
                 
                 @if($ticket->active_attachments->count() > 0)
-                    <div class="table-responsive">
+                    
                         <table class="attachments-table">
                             <tbody>
                                 @foreach($ticket->active_attachments as $attachment)
@@ -292,7 +315,6 @@
                                 @endforeach
                             </tbody>
                         </table>
-                    </div>
                     <small class="text-muted">Tích vào ô "Xóa file này" nếu muốn gỡ bỏ file đính kèm trước đó.</small>
                 @else
                     <p class="text-muted">Không có file nào được đính kèm</p>

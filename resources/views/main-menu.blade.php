@@ -154,6 +154,23 @@
                 
             </a>
 
+            <a href="#">
+
+                <div class="overheat-request-btn">
+                    <div class="ticket-img-description">
+                        <img src="{{ asset('imgs/overheat.png') }}" alt="">
+                    </div>
+                    
+                    <h2>Thermal Event</h2>
+                    <p>Xin approve exceptional cho các trường hợp quá nhiệt</p>
+                    <div class="card-footer">
+                        <div class="card-footer-text">Learn more</div>
+                        <div class="card-footer-icon"><i class="ti-angle-right"></i></div>
+                    </div>
+                </div>
+                
+            </a>
+
         </div>
         
         
