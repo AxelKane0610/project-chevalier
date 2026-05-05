@@ -45,4 +45,8 @@ document.addEventListener('submit', function (e) {
         });
 
     }
+
+    if (e.target && e.target.id === 'send-approval-form') {
+        e.preventDefault();
+    }
 });

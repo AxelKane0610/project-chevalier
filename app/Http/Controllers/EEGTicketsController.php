@@ -34,13 +34,14 @@ class EEGTicketsController extends Controller
         if ($request->hasFile('attachments')) { //Kiểm tra xem có file nào được upload lên không
 
             foreach ($request->file('attachments') as $file) { //Duyệt qua từng file được upload lên
-                $filePath = $file->store('attachments', 'public'); // Lưu file vào thư mục 'storage/app/public/attachments'
+                $originalName = $file->getClientOriginalName();
+                $filePath = $file->storeAs('attachments', $originalName, 'public'); // Lưu file vào thư mục 'storage/app/public/attachments'
                 
                 Attachments_Model::create([
                     'type_of_ticket' => 1, // Giả sử 1 là mã cho software ticket
                     'ticket_id' => $ticket->id,
                     'file_path' => $filePath,
-                    'name' => $file->getClientOriginalName(),// Lưu tên gốc của file vào cơ sở dữ liệu
+                    'name' => $originalName,// Lưu tên gốc của file vào cơ sở dữ liệu
                 ]);
             }
             
@@ -111,15 +112,51 @@ class EEGTicketsController extends Controller
     }
 
     public function Send_Approval_Request($id){
-        $ticket = EEG_Software_Ticket::with('user_owner')->findOrFail($id);
+        $ticket = EEG_Software_Ticket::with('user_owner', 'active_attachments')->findOrFail($id);
         $ticket->status = 3;
         $ticket->save();
-        $response = Http::post('https://defaultca7981a2785a463db82a3db87dfc3c.e6.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/02e7dce1f8724f49a897de0ee8a58568/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=zC58zM_5pldekMYNMUI_yLYF-31LYLG5A2rE0tOqy6o', [
-            'ticket_id'   => $ticket->id,
-            'reciept' => $ticket->ticket_reciept,
-        ]);
 
-        return back()->with('success', 'Approval sent!');
+        $attachments = $ticket->active_attachments->map(function ($file) { //Duyệt qua từng attachment của ticket này, rồi lấy đường dẫn file để đọc nội dung file đó, rồi mã hóa nội dung file đó thành base64 để gửi qua API
+            $filePath = storage_path('app/public/' . $file->file_path); //Lấy đường dẫn đầy đủ của file, vì trong cơ sở dữ liệu chỉ lưu đường dẫn tương đối (relative path) nên phải nối thêm storage_path('app/public/') vào trước để có được đường dẫn đầy đủ (full path) của file đó
+
+            return [
+                'fileName'    => basename($filePath),
+                'fileContent' => base64_encode(file_get_contents($filePath)),
+            ];
+        });
+
+        try 
+        {
+            $send_approval = Http::post('https://defaultca7981a2785a463db82a3db87dfc3c.e6.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/02e7dce1f8724f49a897de0ee8a58568/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=zC58zM_5pldekMYNMUI_yLYF-31LYLG5A2rE0tOqy6o', [
+                'ticket_owner'   => $ticket->user_owner->fullname,
+                'reciept' => $ticket->ticket_reciept,
+                'description' => $ticket->description,
+                'attachments' => $attachments,
+            
+            ]);
+            if ($send_approval->successful()) {
+                // Xử lý phản hồi thành công nếu cần
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Approval request sent successfully',
+                ]);
+            } else {
+                // Xử lý lỗi nếu phản hồi không thành công
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Failed to send approval request. API responded with status: ' . $send_approval->status(),
+                ], 500);
+            } 
+        } catch (\Exception $e) {
+            // Xử lý lỗi nếu có
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to send approval request: ' . $e->getMessage(),
+            ], 500);
+        }
+        
+
+        
     }
 
     public function Close_Software_Ticket(Request $request, $id){
@@ -170,13 +207,14 @@ class EEGTicketsController extends Controller
         if ($request->hasFile('attachments')) { //Kiểm tra xem có file nào được upload lên không
 
             foreach ($request->file('attachments') as $file) { //Duyệt qua từng file được upload lên
-                $filePath = $file->store('attachments', 'public'); // Lưu file vào thư mục 'storage/app/public/attachments'
+                $originalName = $file->getClientOriginalName();
+                $filePath = $file->storeAs('attachments', $originalName, 'public'); // Lưu file vào thư mục 'storage/app/public/attachments'
                 
                 Attachments_Model::create([
                     'type_of_ticket' => 1, // Giả sử 1 là mã cho software ticket
                     'ticket_id' => $ticket->id,
                     'file_path' => $filePath,
-                    'name' => $file->getClientOriginalName(),// Lưu tên gốc của file vào cơ sở dữ liệu
+                    'name' => $originalName,// Lưu tên gốc của file vào cơ sở dữ liệu
                 ]);
             }
             

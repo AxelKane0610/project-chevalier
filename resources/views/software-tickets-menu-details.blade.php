@@ -42,7 +42,7 @@
                                 </li>
 
                                 <li>
-                                    <form action="{{ route('send-approval-request', $ticket->id) }}" method="POST">
+                                    <form action="{{ route('send-approval-request', $ticket->id) }}" method="POST" id = "send-approval-form">
                                         @csrf
                                         <button type="submit"><i class="ti-angle-double-right"></i>Send Approval </button>
                                     </form>
