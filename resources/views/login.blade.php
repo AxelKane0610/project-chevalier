@@ -6,8 +6,7 @@
         <meta charset="utf-8">
 
         
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-        <link rel="stylesheet" href="{{ asset('icons/themify-icons.css') }}">
+        @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/css/icons/themify-icons.css'])
     </head>
 
     <body>
