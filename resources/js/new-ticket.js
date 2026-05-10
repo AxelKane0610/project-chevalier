@@ -59,7 +59,7 @@ document.addEventListener('submit', function (e) {
                 <tr>
                     <td>
                         <a href="/software-tickets-menu-details/${new_ticket.ticket_id}">
-                            <i class="ti-arrow-right" ></i>
+                            <button><i class="ti-arrow-right" ></i></button>
                         </a>
                     </td>
                     <td>${new_ticket.ticket_reciept}</td>

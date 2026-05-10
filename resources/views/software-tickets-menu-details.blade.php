@@ -78,6 +78,7 @@
 
                         @case(4)
                         @case(5)
+                        @case(6)
                             @if($ticket->user_id == auth()->user()->id)
                             <li>
                                 <form action="#">
@@ -215,13 +216,36 @@
 
             </x-common-ticket-detail-form>
                 
-            <div class="software-tickets-comments">
+            <!-- <div class="software-tickets-comments">
                 <form class="software-tickets-comment-form">
                     <label>Write a comment</label>
                     <textarea name="" id="" style="height: 100px; font-family: inherit ;" placeholder="Nhập comment tại đây"></textarea>
                     <button type="submit">Comment</button>
                 </form>
-            </div>
+            </div> -->
+
+            <x-common-ticket-comments action1="{{ route('add-comment-software-ticket', $ticket->id) }}" id="add-comment-form">
+                @foreach($ticket->ticket_comments as $comment)
+                <li>
+                    <h2>{{ $comment->fullname }}</h2>
+                    <h3>{{ $comment->created_at }}</h3>
+                    <p>{{ $comment->comment }}</p>
+                </li>
+                @endforeach
+
+                
+
+                <x-slot:footer>
+                    
+                    <label>Write a comment</label>
+                    <textarea name="comment" style="height: 100px; font-family: inherit ;" placeholder="Nhập comment tại đây"></textarea>
+                    <!-- <label class="ticket-form-body-input">Attach File:</label>
+                    <input class="ticket-form-body-input" type="file" name="attachments[]" multiple id="fileInput">
+                    <ul id="fileList"></ul> -->
+                    <button type="submit"><i class="ti-comment"></i>Comment</button>
+
+                </x-slot:footer>
+            </x-common-ticket-comments>
 
             <div class="software-tickets-tracking-info">
                 <h2>Tracking Info</h2>

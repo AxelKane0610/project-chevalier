@@ -10,6 +10,7 @@ use App\Http\Controllers\AttachmentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Models\Attachments_Model;
+use App\Models\Comments_Model;
 
 class EEGTicketsController extends Controller
 {
@@ -97,7 +98,14 @@ class EEGTicketsController extends Controller
     }
 
     public function Show_Software_Ticket_Details($id, $type_of_ticket = 1){
-        $ticket = EEG_Software_Ticket::with('user_owner', 'active_attachments')->findOrFail($id); //gọi tới function "user" trong model EEG_Software_Ticket để lấy thông tin user của ticket đó, rồi mới trả về view
+        $ticket = EEG_Software_Ticket::with('user_owner', 'active_attachments', 'ticket_comments')->findOrFail($id); //gọi tới function "user" trong model EEG_Software_Ticket để lấy thông tin user của ticket đó, rồi mới trả về view
+        $ticket->ticket_comments = DB::table('comments_table') //gọi trực tiếp tới bảng comments_table để lấy thông tin comment của ticket này, vì trong model Comments_Model có điều kiện where(['type_of_ticket' => 1]) rồi nên khi gọi tới function "ticket_comments" trong model EEG_Software_Ticket thì nó sẽ chỉ lấy những comment có type_of_ticket là 1 (software ticket) thôi, còn nếu muốn lấy thêm thông tin user của comment đó nữa thì phải join thêm với bảng users nữa
+            ->join('users', 'comments_table.user_id', '=', 'users.id') //join với bảng users để lấy thông tin user của comment đó
+            ->where('comments_table.ticket_id', $id) //lọc ra comment của ticket này dựa vào ticket_id
+            ->where('comments_table.type_of_ticket', $type_of_ticket) //lọc ra comment của software ticket dựa vào type_of_ticket
+            ->select('comments_table.*', 'users.fullname') //chọn tất cả cột của comments_table và cột fullname của users để trả về
+            ->get();//Lấy tất cả comment của ticket này rồi trả về dưới dạng collection
+        // dd($ticket->ticket_comments);
         return view('software-tickets-menu-details', compact('ticket'));
     }
 
@@ -154,6 +162,14 @@ class EEGTicketsController extends Controller
                 'message' => 'Failed to send approval request: ' . $e->getMessage(),
             ], 500);
         }
+
+        // $send_approval = Http::post('https://defaultca7981a2785a463db82a3db87dfc3c.e6.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/02e7dce1f8724f49a897de0ee8a58568/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=zC58zM_5pldekMYNMUI_yLYF-31LYLG5A2rE0tOqy6o', [
+        //     'ticket_owner'   => $ticket->user_owner->fullname,
+        //     'reciept' => $ticket->ticket_reciept,
+        //     'description' => $ticket->description,
+        //     'attachments' => $attachments,
+        
+        // ]);
         
 
         
@@ -228,6 +244,21 @@ class EEGTicketsController extends Controller
         return back()->with('success');
 
 
+    }
+
+    public function Add_Comment_Software_Ticket(Request $request, $id){
+        $comment_info_input = $request->validate([
+            'comment' => 'required',
+        ]);
+
+        $comment_info_input['comment'] = strip_tags($comment_info_input['comment']);
+        $comment_info_input['ticket_id'] = $id;
+        $comment_info_input['type_of_ticket'] = 1; //1 là mã cho software ticket
+        $comment_info_input['user_id'] = auth()->id();
+
+        Comments_Model::create($comment_info_input);
+
+        return back()->with('success');
     }
 
     

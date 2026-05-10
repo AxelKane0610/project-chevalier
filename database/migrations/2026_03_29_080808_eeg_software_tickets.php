@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('eeg_software_tickets', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
-            $table->string('eeg_software_tickets_reciept'); //->unique()
+            $table->string('eeg_software_tickets_reciept');
             $table->enum('support_type', [1, 2, 3, 4]);
             $table->enum('priority', [1, 2, 3, 4]);
             $table->longText('description');

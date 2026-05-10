@@ -43,6 +43,7 @@ Route::middleware(['auth'])->group(function () {
         // Thêm các route khác vào đây...
         Route::post('/create-software-ticket', [EEGTicketsController::class, 'Create_Software_Ticket']);
         Route::post('/send-approval-request/{id}', [EEGTicketsController::class, 'Send_Approval_Request']) ->name('send-approval-request');
+        Route::post('/add-comment-software-ticket/{id}', [EEGTicketsController::class, 'Add_Comment_Software_Ticket']) ->name('add-comment-software-ticket');
         Route::patch('/change-ticket-status/{id}/status', [EEGTicketsController::class, 'Change_Software_Ticket_Status']);
         Route::patch('/close-software-ticket/{id}', [EEGTicketsController::class, 'Close_Software_Ticket']) ->name('close-software-ticket');
         Route::patch('/edit-software-ticket/{id}',[EEGTicketsController::class, 'Edit_Software_Ticket'])->name('edit-software-ticket');
