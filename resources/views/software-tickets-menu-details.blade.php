@@ -42,9 +42,9 @@
                                 </li>
 
                                 <li>
-                                    <form action="{{ route('send-approval-request', $ticket->id) }}" method="POST" id = "send-approval-form">
+                                    <form action="" method="POST" data-target="send-approval-form" class="js-input-required-btn">
                                         @csrf
-                                        <button type="submit"><i class="ti-angle-double-right"></i>Send Approval </button>
+                                        <button type="button"><i class="ti-angle-double-right"></i>Send Approval </button>
                                     </form>
                                 </li>
 
@@ -275,6 +275,22 @@
                 <textarea name="ticket_comment" class="ticket-form-body-input" placeholder="Comment cho người tạo ticket nếu có"></textarea>
                 <x-slot:footer>
                     <button type="submit" class="ticket-form-body-input">Close ticket</button>
+                </x-slot:footer>
+                
+            </x-common-ticket-form>
+
+            <x-common-ticket-form title="Send Approval" id="send-approval-form" action1="{{ route('send-approval-request', $ticket->id) }}">
+                @method('POST')
+                <label>Approval Type</label>
+                <select name="approval_type" class="ticket-form-body-input">
+                    <option value="1">Rollback Warranty</option>
+                    <option value="2">Rollback Trade</option>
+                    <option value="3">Cấp quyền export data</option>
+                </select>
+
+
+                <x-slot:footer>
+                    <button type="submit" class="ticket-form-body-input">Send Approval</button>
                 </x-slot:footer>
                 
             </x-common-ticket-form>

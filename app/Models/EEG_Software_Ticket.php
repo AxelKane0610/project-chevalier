@@ -26,12 +26,6 @@ class EEG_Software_Ticket extends Model
         return $this->belongsTo(User::class, 'user_id'); //Bảo model sang model User để lấy thông tin user của ticket đó, dựa vào "user_id"
     }
 
-    // public function attachments()
-    // {
-    //     // Giả sử ticket_id là khóa ngoại ở bảng attachments_table
-    //     return $this->hasMany(Attachments_Model::class, 'ticket_id', 'id') // Lấy tất cả attachment có ticket_id trùng với id của ticket này
-    //         ->where(['type_of_ticket' => 1, 'status' => '1']); // Chỉ lấy attachment có type_of_ticket là 1 (software ticket)
-    // }
 
     public function active_attachments()
     {
@@ -39,12 +33,12 @@ class EEG_Software_Ticket extends Model
             ->where(['type_of_ticket' => 1, 'status' => '1']); // Chỉ lấy những attachment có status = 1 (còn hiệu lực)
     }
 
-    public function ticket_comments()
-    {
-        return $this->hasMany(Comments_Model::class, 'ticket_id', 'id')
-            ->where(['type_of_ticket' => 1]); // Chỉ lấy những comment có type_of_ticket là 1 (software ticket)
+    // public function ticket_comments()
+    // {
+    //     return $this->hasMany(Comments_Model::class, 'ticket_id', 'id')
+    //         ->where(['type_of_ticket' => 1]); // Chỉ lấy những comment có type_of_ticket là 1 (software ticket)
         
-    }
+    // }
 
 
 }

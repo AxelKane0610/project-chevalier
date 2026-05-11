@@ -98,7 +98,7 @@ class EEGTicketsController extends Controller
     }
 
     public function Show_Software_Ticket_Details($id, $type_of_ticket = 1){
-        $ticket = EEG_Software_Ticket::with('user_owner', 'active_attachments', 'ticket_comments')->findOrFail($id); //gọi tới function "user" trong model EEG_Software_Ticket để lấy thông tin user của ticket đó, rồi mới trả về view
+        $ticket = EEG_Software_Ticket::with('user_owner', 'active_attachments')->findOrFail($id); //gọi tới function "user" trong model EEG_Software_Ticket để lấy thông tin user của ticket đó, rồi mới trả về view
         $ticket->ticket_comments = DB::table('comments_table') //gọi trực tiếp tới bảng comments_table để lấy thông tin comment của ticket này, vì trong model Comments_Model có điều kiện where(['type_of_ticket' => 1]) rồi nên khi gọi tới function "ticket_comments" trong model EEG_Software_Ticket thì nó sẽ chỉ lấy những comment có type_of_ticket là 1 (software ticket) thôi, còn nếu muốn lấy thêm thông tin user của comment đó nữa thì phải join thêm với bảng users nữa
             ->join('users', 'comments_table.user_id', '=', 'users.id') //join với bảng users để lấy thông tin user của comment đó
             ->where('comments_table.ticket_id', $id) //lọc ra comment của ticket này dựa vào ticket_id
@@ -119,10 +119,9 @@ class EEGTicketsController extends Controller
         ]);
     }
 
-    public function Send_Approval_Request($id){
+    public function Send_Approval_Request($id, Request $request){
         $ticket = EEG_Software_Ticket::with('user_owner', 'active_attachments')->findOrFail($id);
-        $ticket->status = 3;
-        $ticket->save();
+        $approval_type = $request->input('approval_type');
 
         $attachments = $ticket->active_attachments->map(function ($file) { //Duyệt qua từng attachment của ticket này, rồi lấy đường dẫn file để đọc nội dung file đó, rồi mã hóa nội dung file đó thành base64 để gửi qua API
             $filePath = storage_path('app/public/' . $file->file_path); //Lấy đường dẫn đầy đủ của file, vì trong cơ sở dữ liệu chỉ lưu đường dẫn tương đối (relative path) nên phải nối thêm storage_path('app/public/') vào trước để có được đường dẫn đầy đủ (full path) của file đó
@@ -140,10 +139,12 @@ class EEGTicketsController extends Controller
                 'reciept' => $ticket->ticket_reciept,
                 'description' => $ticket->description,
                 'attachments' => $attachments,
-            
+                'approval_type' => $approval_type
             ]);
             if ($send_approval->successful()) {
                 // Xử lý phản hồi thành công nếu cần
+                $ticket->status = 2;
+                $ticket->save();
                 return response()->json([
                     'success' => true,
                     'message' => 'Approval request sent successfully',
@@ -163,16 +164,6 @@ class EEGTicketsController extends Controller
             ], 500);
         }
 
-        // $send_approval = Http::post('https://defaultca7981a2785a463db82a3db87dfc3c.e6.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/02e7dce1f8724f49a897de0ee8a58568/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=zC58zM_5pldekMYNMUI_yLYF-31LYLG5A2rE0tOqy6o', [
-        //     'ticket_owner'   => $ticket->user_owner->fullname,
-        //     'reciept' => $ticket->ticket_reciept,
-        //     'description' => $ticket->description,
-        //     'attachments' => $attachments,
-        
-        // ]);
-        
-
-        
     }
 
     public function Close_Software_Ticket(Request $request, $id){
