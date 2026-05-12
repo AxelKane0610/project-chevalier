@@ -36,7 +36,8 @@ class EEGTicketsController extends Controller
 
             foreach ($request->file('attachments') as $file) { //Duyệt qua từng file được upload lên
                 $originalName = $file->getClientOriginalName();
-                $filePath = $file->storeAs('attachments', $originalName, 'public'); // Lưu file vào thư mục 'storage/app/public/attachments'
+                $folderPath = 'attachments/1/'.$ticket->id;
+                $filePath = $file->storeAs($folderPath, $originalName, 'public'); // Lưu file vào thư mục '/'
                 
                 Attachments_Model::create([
                     'type_of_ticket' => 1, // Giả sử 1 là mã cho software ticket
@@ -135,6 +136,8 @@ class EEGTicketsController extends Controller
         try 
         {
             $send_approval = Http::post('https://defaultca7981a2785a463db82a3db87dfc3c.e6.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/02e7dce1f8724f49a897de0ee8a58568/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=zC58zM_5pldekMYNMUI_yLYF-31LYLG5A2rE0tOqy6o', [
+                'type_of_ticket' => 1,
+                'ticket_id' => $ticket->id,
                 'ticket_owner'   => $ticket->user_owner->fullname,
                 'reciept' => $ticket->ticket_reciept,
                 'description' => $ticket->description,
@@ -215,7 +218,8 @@ class EEGTicketsController extends Controller
 
             foreach ($request->file('attachments') as $file) { //Duyệt qua từng file được upload lên
                 $originalName = $file->getClientOriginalName();
-                $filePath = $file->storeAs('attachments', $originalName, 'public'); // Lưu file vào thư mục 'storage/app/public/attachments'
+                $folderPath = 'attachments/1/'.$id;
+                $filePath = $file->storeAs($folderPath, $originalName, 'public'); // Lưu file vào thư mục 'storage/app/public/attachments'
                 
                 Attachments_Model::create([
                     'type_of_ticket' => 1, // Giả sử 1 là mã cho software ticket
