@@ -13,7 +13,7 @@ class ApprovalController extends Controller
     public function handleCallback(Request $request)
     {
         // 1. Log dữ liệu để kiểm tra (tùy chọn)
-        \Log::info('Power Automate Callback:', $request->all());
+        Log::info('Power Automate Callback:', $request->all());
 
         // 2. Lấy dữ liệu từ Power Automate gửi sang
         $approval_response['ticket_id'] = $request->input('ticket_id');

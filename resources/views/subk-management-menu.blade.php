@@ -5,7 +5,6 @@
         <title>Project Chevalier</title>
         <meta charset="utf-8">
         @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/css/icons/themify-icons.css'])
-        <link rel="stylesheet" href="{{ asset('./themify-icons.css') }}">
     
     </head>
 
