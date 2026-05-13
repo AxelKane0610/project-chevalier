@@ -42,7 +42,7 @@ class EEGTicketsController extends Controller
                 Attachments_Model::create([
                     'type_of_ticket' => 1, // Giả sử 1 là mã cho software ticket
                     'ticket_id' => $ticket->id,
-                    'file_path' => $filePath,
+                    'file_path' => $filePath,   
                     'name' => $originalName,// Lưu tên gốc của file vào cơ sở dữ liệu
                 ]);
             }
@@ -218,8 +218,8 @@ class EEGTicketsController extends Controller
 
             foreach ($request->file('attachments') as $file) { //Duyệt qua từng file được upload lên
                 $originalName = $file->getClientOriginalName();
-                $folderPath = 'attachments/1/'.$id;
-                $filePath = $file->storeAs($folderPath, $originalName, 'public'); // Lưu file vào thư mục 'storage/app/public/attachments'
+                $folderPath = '1/'.$id;
+                $filePath = $file->storeAs($folderPath, $originalName, 'attachments'); // Lưu file vào thư mục 'storage/app/public/attachments'
                 
                 Attachments_Model::create([
                     'type_of_ticket' => 1, // Giả sử 1 là mã cho software ticket

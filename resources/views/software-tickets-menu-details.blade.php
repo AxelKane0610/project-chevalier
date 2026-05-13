@@ -190,12 +190,12 @@
                                         <td>
                                             
                                             
-                                            <a href="{{ asset('storage/' . $attachment->file_path) }}" target="_blank" class="btn btn-info">
+                                            <a href="{{ asset('attachments/' . $attachment->file_path) }}" target="_blank" class="btn btn-info">
                                                 <i class="ti-eye"></i>
                                             </a>
                                             
                                             
-                                            <a href="{{ asset('storage/' . $attachment->file_path) }}" download="{{ $attachment->name }}" class="btn btn-secondary">
+                                            <a href="{{ asset('attachments/' . $attachment->file_path) }}" download="{{ $attachment->name }}" class="btn btn-secondary">
                                                 <i class="ti-download"></i>
                                             </a>
                                         </td>
@@ -335,14 +335,14 @@
                                     <tr>
                                         <td class="align-middle">
                                             
-                                            <a href="{{ asset('storage/' . $attachment->path) }}" target="_blank">
+                                            <a href="{{ asset('attachments/' . $attachment->path) }}" target="_blank">
                                                 {{ $attachment->name ?? 'File đính kèm' }}
                                             </a>
                                         </td>
                                         <td class="align-middle text-center" width="150">
                                             <div class="form-check">
                                                 
-                                                <a href="{{ asset('storage/' . $attachment->file_path) }}" target="_blank" class="btn btn-info">
+                                                <a href="{{ asset('attachments/' . $attachment->file_path) }}" target="_blank" class="btn btn-info">
                                                     <i class="ti-eye"></i>
                                                 </a>
                                                 <input class="form-check-input" type="checkbox" name="delete_files[]" value="{{ $attachment->id }}" id="del_{{ $attachment->id }}">

@@ -60,6 +60,15 @@ return [
             'report' => false,
         ],
 
+        'attachments' => [
+            'driver' => 'local',
+            'root' => env('ATTACHMENT_PATH'),
+            'url' => env('APP_URL').'/attachments',
+            'visibility' => 'public',
+        ]
+
+        
+
     ],
 
     /*
