@@ -124,12 +124,9 @@
                         <lable>Priority</lable>
                         
                             <h2>
-                                @switch($ticket->priority)
-                                    @case(1) Normal @break
-                                    @case(2) Critical @break
-                                    @case(3) High @break
-                                    @case(4) Low @break
-                                @endswitch
+                                <span class="ticket-priority {{ $ticket->priority_data['class'] }}">
+                                    {{ $ticket->priority_data['text'] }}
+                                </span>
                             </h2>
                             
                     </li>
@@ -137,18 +134,10 @@
                         <lable>Support type</lable>
                         
                             <h2>
-                                
-                                @switch($ticket->support_type)
-                                    @case(1) Thêm mã part/product @break
-                                    @case(2) Rollback @break
-                                    @case(3) Hủy số phiếu/Ẩn lịch sử bảo hành @break
-                                    @case(4) Điều chỉnh thông tin @break
-                                    @case(5) Unmark Re-Repair @break
-                                    @case(6) Lỗi hệ thống @break
-                                    @case(7) Cấp quyền export data @break
-                                    @case(8) Đề xuất thay đổi/cải tiến @break
-                                    @case(9) Vấn đề khác @break
-                                @endswitch
+                                <span class="ticket-support-type {{ $ticket->support_type_data['class'] }}">
+                                    {{ $ticket->support_type_data['text'] }}
+                                </span>
+
                             </h2>
                             
                     </li>
@@ -156,13 +145,10 @@
                         <lable>Status</lable>
                         
                             <h2>
-                                @switch($ticket->status)
-                                    @case(1) Open @break
-                                    @case(2) In Progress @break
-                                    @case(3) Waiting Approval @break
-                                    @case(4) Complete @break
-                                    @case(5) Rejected @break
-                                @endswitch
+                                <span class="ticket-status {{ $ticket->status_data['class'] }}">
+                                    {{ $ticket->status_data['text'] }}
+                                </span>
+
                             </h2>
                             
                     </li>
@@ -215,14 +201,7 @@
                 
 
             </x-common-ticket-detail-form>
-                
-            <!-- <div class="software-tickets-comments">
-                <form class="software-tickets-comment-form">
-                    <label>Write a comment</label>
-                    <textarea name="" id="" style="height: 100px; font-family: inherit ;" placeholder="Nhập comment tại đây"></textarea>
-                    <button type="submit">Comment</button>
-                </form>
-            </div> -->
+
 
             <x-common-ticket-comments action1="{{ route('add-comment-software-ticket', $ticket->id) }}" id="add-comment-form">
                 @foreach($ticket->ticket_comments as $comment)

@@ -42,10 +42,10 @@
                         <tr>
                             <th width="5%"></th>
                             <th width="14%">Reciept</th>
-                            <th width="14%">Type of request</th>
+                            <th width="20%">Type of request</th>
                             <th width="39%">Issue Description</th>
-                            <th width="14%">Status</th>
-                            <th width="14%">Latest comment</th>
+                            <th width="11%">Priority</th>
+                            <th width="11%">Status</th>
                         </tr>
                     
                         <tbody>
@@ -59,28 +59,23 @@
                                         </td>
                                         <td>{{ $ticket->ticket_reciept }}</td>
                                         <td>
-                                            @switch($ticket->support_type)
-                                                @case(1) Thêm mã part/product @break
-                                                @case(2) Rollback @break
-                                                @case(3) Hủy số phiếu/Ẩn lịch sử bảo hành @break
-                                                @case(4) Điều chỉnh thông tin @break
-                                                @case(5) Unmark Re-Repair @break
-                                                @case(6) Lỗi hệ thống @break
-                                                @case(7) Cấp quyền export data @break
-                                                @case(8) Đề xuất thay đổi/cải tiến @break
-                                                @case(9) Vấn đề khác @break
-                                            @endswitch
+                                            
+                                            <span class="ticket-support-type {{ $ticket->support_type_data['class'] }}">
+                                                {{ $ticket->support_type_data['text'] }}
+                                            </span>
                                         </td>
                                         <td>{{ $ticket->description }}</td>
                                         <td>
-                                            @switch($ticket->priority)
-                                                @case(1) Normal @break
-                                                @case(2) Critical @break
-                                                @case(3) High @break
-                                                @case(4) Low @break
-                                            @endswitch
+
+                                            <span class="ticket-priority {{ $ticket->priority_data['class'] }}">
+                                                {{ $ticket->priority_data['text'] }}
+                                            </span>
                                         </td>
-                                        <td></td>
+                                        <td>
+                                            <span class="ticket-status {{ $ticket->status_data['class'] }}">
+                                                {{ $ticket->status_data['text'] }}
+                                            </span>
+                                        </td>
                                     </tr>
                                     
                             @endforeach
@@ -98,10 +93,10 @@
                             <tr>
                                 <th width="5%"></th>
                                 <th width="14%">Reciept</th>
-                                <th width="14%">Type of request</th>
+                                <th width="20%">Type of request</th>
                                 <th width="39%">Issue Description</th>
-                                <th width="14%">Status</th>
-                                <th width="14%">Latest comment</th>
+                                <th width="11%">Priority</th>
+                                <th width="11%">Status</th>
                             </tr>
                             <tr>
                                 @foreach ($tickets_waiting_approval as $ticket)
@@ -114,31 +109,26 @@
                                         </td>
                                         <td>{{ $ticket->ticket_reciept }}</td>
                                         <td>
-                                            @switch($ticket->support_type)
-                                                @case(1) Thêm mã part/product @break
-                                                @case(2) Rollback @break
-                                                @case(3) Hủy số phiếu/Ẩn lịch sử bảo hành @break
-                                                @case(4) Điều chỉnh thông tin @break
-                                                @case(5) Unmark Re-Repair @break
-                                                @case(6) Lỗi hệ thống @break
-                                                @case(7) Cấp quyền export data @break
-                                                @case(8) Đề xuất thay đổi/cải tiến @break
-                                                @case(9) Vấn đề khác @break
-                                            @endswitch
+
+                                            <span class="ticket-support-type {{ $ticket->support_type_data['class'] }}">
+                                                {{ $ticket->support_type_data['text'] }}
+                                            </span>
+
                                         </td>
                                         <td>{{ $ticket->description }}</td>
                                         <td>
-                                            @switch($ticket->priority)
-                                                @case(1) Normal @break
-                                                @case(2) Critical @break
-                                                @case(3) High @break
-                                                @case(4) Low @break
-                                            @endswitch
+                                            <span class="ticket-priority {{ $ticket->priority_data['class'] }}">
+                                                {{ $ticket->priority_data['text'] }}
+                                            </span>
                                         </td>
-                                        <td></td>
+                                        <td>
+                                            <span class="ticket-status {{ $ticket->status_data['class'] }}">
+                                                {{ $ticket->status_data['text'] }}
+                                            </span>
+                                        </td>
                                     </tr>
                                     
-                            @endforeach
+                                @endforeach
                                 
                             </tr>
                             

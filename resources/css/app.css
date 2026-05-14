@@ -642,3 +642,89 @@ h1, h2, h3 {
     
 }
 
+
+.ticket-status,
+.ticket-support-type,
+.ticket-priority{
+    padding: 5px;
+    border-radius: 10px;
+    color: white;
+}
+
+.ticket-priority.normal{
+    background: rgb(72,176,79);
+}
+
+.ticket-priority.critical {
+    background: rgb(239,81,34);
+}
+
+.ticket-priority.high {
+    background: rgb(244,128,32);
+}
+
+.ticket-priority.low {
+    background: rgb(84,195,240);
+}
+
+.ticket-status.complete,
+.ticket-status.open {
+    background: rgb(72,176,79);
+}
+
+.ticket-status.in-progress {
+    background: rgb(244,128,32);
+}
+
+.ticket-status.waiting-approval {
+    background: rgb(39,116,186);
+}
+
+.ticket-status.cancel,
+.ticket-status.rejected {
+    background: rgb(239,81,34);
+}
+
+.ticket-support-type.add-part-product {
+    background: rgb(51,106,51);
+}
+
+.ticket-support-type.rollback {
+    background: rgb(136,25,81);
+}
+
+.ticket-support-type.cancel-reciept {
+    background: rgb(75,46,138);
+}
+
+.ticket-support-type.adjust-information {
+    background: rgb(54,47,140);
+}
+
+.ticket-support-type.unmark-rerepair {
+    background: rgb(45,47,122);
+}
+
+.ticket-support-type.system-issue {
+    background: rgb(22,72,159);
+}
+
+.ticket-support-type.data-export-request {
+    background: rgb(7,88,157);
+}
+
+.ticket-support-type.request-improvement {
+    background: rgb(14,97,101);
+}
+
+.ticket-support-type.others {
+    background: rgb(12,78,66);
+}
+
+
+
+
+
+-
+
+

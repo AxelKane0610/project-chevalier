@@ -27,7 +27,7 @@ class ApprovalController extends Controller
         $ticket = Comments_Model::create([
             'ticket_id' => $approval_response['ticket_id'],
             'type_of_ticket' => $approval_response['type_of_ticket'],
-            'user_id' => 0,
+            'user_id' => 10,
             'comment'=> $approval_response['approver_comment']
 
         ]);
