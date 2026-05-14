@@ -27,6 +27,7 @@ class User extends Authenticatable
         'learner_id',
         'site_id',
         'roles',
+        'leader_id',
         
     ];
 

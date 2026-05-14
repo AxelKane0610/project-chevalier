@@ -75,23 +75,24 @@
         
         <x-common-ticket-form title="Tạo user mới" id="create-user-form" action1="create-new-user">
             <label class="ticket-form-body-input">Username</label>
-            <input name="Username" class="ticket-form-body-input"></input>
+            <input name="Username" class="ticket-form-body-input" required></input>
             <label class="ticket-form-body-input">Password</label>
-            <input name="Password" class="ticket-form-body-input" type="password"></input>
+            <input name="Password" class="ticket-form-body-input" type="password" required></input>
             <label class="ticket-form-body-input">Fullname</label>
             <input name="Fullname" class="ticket-form-body-input"></input>
             
             <label class="ticket-form-body-input">Leader</label>
-            <select name="Leader" class="ticket-form-body-input">
-                <option value="1">Lê Thế Cường</option>
-                <option value="2">Nguyễn Tấn Hạ</option>
-                <option value="3">Phan Quốc Phương</option>
-                <option value="4">Đặng Thanh Hương</option>
-                <option value="5">Lê Quang Khoa Duy</option>
+            <select name="Leader" class="ticket-form-body-input" required>
+                <option value="Lê Thế Cường">Lê Thế Cường</option>
+                <option value="Nguyễn Tấn Hạ">Nguyễn Tấn Hạ</option>
+                <option value="Phan Quốc Phương">Phan Quốc Phương</option>
+                <option value="Đặng Thanh Hương">Đặng Thanh Hương</option>
+                <option value="Lê Quang Khoa Duy">Lê Quang Khoa Duy</option>
+                <option value="Lê Thị Thu Ngọc">Lê Thị Thu Ngọc</option>
             </select>
 
             <label class="ticket-form-body-input">Site</label>
-            <select name="Site" class="ticket-form-body-input">
+            <select name="Site" class="ticket-form-body-input" required>
                 <option value="1">Hồ Chí Minh</option>
                 <option value="2">Hà Nội</option>
                 <option value="3">Đà Nẵng</option>
@@ -100,13 +101,13 @@
             </select>
 
             <label class="ticket-form-body-input">Email</label>
-            <input name="Email" class="ticket-form-body-input"></input>
+            <input name="Email" class="ticket-form-body-input" required></input>
 
             <label class="ticket-form-body-input">Learner ID</label>
-            <input name="Learner_Id" class="ticket-form-body-input"></input>
+            <input name="Learner_Id" class="ticket-form-body-input" required></input>
 
             <label class="ticket-form-body-input">Roles</label>
-            <select multiple name="roles[]" class="ticket-form-body-input">
+            <select multiple name="roles[]" class="ticket-form-body-input" required>
                 <option value="ROLE_SUPER_ADMIN">ROLE_SUPER_ADMIN</option>
                 <option value="ROLE_SW_TICKET_ADMIN">ROLE_SW_TICKET_ADMIN</option>
                 <option value="ROLE_SW_TICKET_USER">ROLE_SW_TICKET_USER</option>

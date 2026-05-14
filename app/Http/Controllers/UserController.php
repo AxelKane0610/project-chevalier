@@ -69,7 +69,7 @@ class UserController extends Controller
             'password' => bcrypt($user_info_input['Password']),
             'fullname' => $user_info_input['Fullname'],
             'site_id' => $user_info_input['Site'], 
-            'leader_id' => $user_info_input['Leader'],
+            'leader_id' => User::where('fullname', $user_info_input['Leader'])->first()->id ?? null,
             'email' => $user_info_input['Email'],
             'learner_id' => $user_info_input['Learner_Id'],
             'roles' => $user_info_input['roles'],

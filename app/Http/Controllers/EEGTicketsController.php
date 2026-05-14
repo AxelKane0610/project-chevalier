@@ -201,11 +201,11 @@ class EEGTicketsController extends Controller
             'attachments.*' => 'file|max:5120|mimes:jpg,png,pdf,jpeg,xlsx'
         ]);
 
-        $ticket_info_input['ticket_reciept'] = strip_tags($ticket_info_input['ticket_reciept']);
-        $ticket_info_input['support_type'] = strip_tags($ticket_info_input['support_type']);
-        $ticket_info_input['priority'] = strip_tags($ticket_info_input['priority']);
-        $ticket_info_input['description'] = strip_tags($ticket_info_input['description']);
-        
+        $ticket_info_input['ticket_reciept'] = trim(strip_tags($ticket_info_input['ticket_reciept']));
+        $ticket_info_input['support_type'] = trim(strip_tags($ticket_info_input['support_type']));
+        $ticket_info_input['priority'] = trim(strip_tags($ticket_info_input['priority']));
+        $ticket_info_input['description'] = trim(strip_tags($ticket_info_input['description']));
+
         $ticket = EEG_Software_Ticket::with('user_owner')->findOrFail($id);
         $ticket->ticket_reciept = $ticket_info_input['ticket_reciept'];
         $ticket->support_type = $ticket_info_input['support_type'];
@@ -219,7 +219,7 @@ class EEGTicketsController extends Controller
             foreach ($request->file('attachments') as $file) { //Duyệt qua từng file được upload lên
                 $originalName = $file->getClientOriginalName();
                 $folderPath = '1/'.$id;
-                $filePath = $file->storeAs($folderPath, $originalName, 'attachments'); // Lưu file vào thư mục 'storage/app/public/attachments'
+                $filePath = $file->storeAs($folderPath, $originalName, 'attachments'); // Lưu file vào thư mục 'attachments' đã được cấu hình trong config/filesystems.php, với đường dẫn là 'attachments/1/{ticket_id}/{original_file_name}'
                 
                 Attachments_Model::create([
                     'type_of_ticket' => 1, // Giả sử 1 là mã cho software ticket
