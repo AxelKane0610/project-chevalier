@@ -38,7 +38,7 @@ class EEGTicketsController extends Controller
 
             foreach ($request->file('attachments') as $file) { //Duyệt qua từng file được upload lên
                 $originalName = $file->getClientOriginalName();
-                $folderPath = 'attachments/1/'.$ticket->id;
+                $folderPath = '1/'.$ticket->id;
                 $filePath = $file->storeAs($folderPath, $originalName, 'public'); // Lưu file vào thư mục '/'
                 
                 Attachments_Model::create([
