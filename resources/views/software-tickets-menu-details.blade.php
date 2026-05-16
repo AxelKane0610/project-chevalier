@@ -269,7 +269,6 @@
 
             <x-common-ticket-form title="Send Approval" id="send-approval-form" action1="{{ route('send-approval-request', $ticket->id) }}">
                 @method('POST')
-                @csrf
                 <label>Approval Type</label>
                 <select name="approval_type" class="ticket-form-body-input">
                     <option value="1">Rollback Warranty</option>

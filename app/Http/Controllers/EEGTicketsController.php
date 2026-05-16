@@ -142,7 +142,7 @@ class EEGTicketsController extends Controller
         $approval_type = $request->input('approval_type');
 
         $attachments = $ticket->active_attachments->map(function ($file) { //Duyệt qua từng attachment của ticket này, rồi lấy đường dẫn file để đọc nội dung file đó, rồi mã hóa nội dung file đó thành base64 để gửi qua API
-            $filePath = storage_path('app/public/attachments/' . $file->file_path);
+            $filePath = ('attachments/' . $file->file_path);
 
             return [
                 'fileName'    => basename($filePath),
