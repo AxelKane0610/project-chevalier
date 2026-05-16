@@ -43,7 +43,6 @@
 
                                 <li>
                                     <form action="" method="POST" data-target="send-approval-form" class="js-input-required-btn">
-                                        @csrf
                                         <button type="button"><i class="ti-angle-double-right"></i>Send Approval </button>
                                     </form>
                                 </li>
@@ -61,7 +60,8 @@
                             @if(auth()->user()->hasRole('ROLE_APPROVE_ROLLBACK') ) <!-- Chỉ hiển thị nút action nếu người dùng là leader của ticket -->
                                 @can('is-leader-of-ticket', $ticket)
                                 <li>
-                                    <form action="#">
+                                    <form id="approve-rollback-form" class="js-input-required-btn" data-target="approve-rollback-form" action="{{ route('approve-rollback', $ticket->id) }}" method="POST">
+                                        @csrf
                                         <button type="submit"><i class="ti-thumb-up"></i>Approve</button>
                                     </form>
                                 </li>
@@ -228,8 +228,17 @@
 
             <div class="software-tickets-tracking-info">
                 <h2>Tracking Info</h2>
-                <h3>Nguyễn Thanh Hải create ticket at 26/10/2025 10:35 AM</h3>
-                <h3>Trịnh Minh Vương send approval at 26/10/2025 11:00 AM</h3>
+                    
+                @foreach($ticket->tracking_info as $tracking)
+                    <h3>
+                        {{ $tracking->fullname }}
+                        {{ $tracking->action }}
+                        {{ $tracking->created_at }}
+                    </h3>
+                    
+    
+                @endforeach
+                
             </div>
 
             <x-common-ticket-form title="EEG Ticket Close" id="close-ticket-form" action1="{{ route('close-software-ticket', $ticket->id) }}">
@@ -260,6 +269,7 @@
 
             <x-common-ticket-form title="Send Approval" id="send-approval-form" action1="{{ route('send-approval-request', $ticket->id) }}">
                 @method('POST')
+                @csrf
                 <label>Approval Type</label>
                 <select name="approval_type" class="ticket-form-body-input">
                     <option value="1">Rollback Warranty</option>

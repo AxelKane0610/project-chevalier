@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\EEG_Software_Ticket;
 use App\Models\Comments_Model;
+use App\Services\tracking_info_service;
+
 
 class ApprovalController extends Controller
 {
@@ -31,6 +33,36 @@ class ApprovalController extends Controller
             'comment'=> $approval_response['approver_comment']
 
         ]);
+
+        if ($approval_response['outcome'] === 'Approve' and $approval_response['type_of_ticket'] === '1') 
+        {
+            $ticket = EEG_Software_Ticket::find($approval_response['ticket_id']);
+            if ($ticket->status == 3) {
+                tracking_info_service::add(
+                    $ticket->id,
+                    10,
+                    1,
+                    'received approved response from Power Automate',
+                );
+                $ticket->status = 2; 
+                $ticket->save();
+            } 
+        }
+
+        if ($approval_response['outcome'] === 'Reject' and $approval_response['type_of_ticket'] === '1') 
+        {
+            $ticket = EEG_Software_Ticket::find($approval_response['ticket_id']);
+            if ($ticket->status == 3) {
+                tracking_info_service::add(
+                    $ticket->id,
+                    10,
+                    1,
+                    'received rejected response from Power Automate',
+                );
+                $ticket->status = 2; 
+                $ticket->save();
+            }
+        } 
 
         if (!$ticket) {
             return response()->json(['message' => 'Ticket không tồn tại'], 404);

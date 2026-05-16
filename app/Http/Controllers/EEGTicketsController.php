@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Models\Attachments_Model;
 use App\Models\Comments_Model;
+use App\Services\tracking_info_service;
+use App\Models\User;
 
 class EEGTicketsController extends Controller
 {
@@ -49,6 +51,13 @@ class EEGTicketsController extends Controller
             
         }
 
+        tracking_info_service::add(
+            $ticket->id, 
+            auth()->id(), 
+            1,
+            'created ticket at'
+        );
+
 
         return response()->json([
             'success' => true,
@@ -73,7 +82,7 @@ class EEGTicketsController extends Controller
         ]);
     }
 
-    public function Show_Pending_Tickets(){
+    public function Show_Pending_Tickets(){ 
         if (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_TICKET_SW_ADMIN')) {
             $tickets = EEG_Software_Ticket::whereIn('status', ['1', '2', '3'])->get();
             $tickets_waiting_approval = EEG_Software_Ticket::where('status', 3)->get();
@@ -84,12 +93,13 @@ class EEGTicketsController extends Controller
                 ->whereIn('status', ['1', '2', '3']) // lọc ra ticket đang pending
                 ->get();
 
-            $tickets_waiting_approval = DB::table('eeg_software_tickets as EEG_Software_Ticket')
-            ->join('users', 'EEG_Software_Ticket.user_id', '=', 'users.id') 
-            ->where('users.leader_id', auth()->id())
-            ->where('EEG_Software_Ticket.status', 3)
-            ->select('EEG_Software_Ticket.*')
-            ->get();
+            
+
+            $tickets_waiting_approval = EEG_Software_Ticket::where('status', 3)
+                ->whereHas('user_owner', function ($query) { //Lọc ra những ticket có user_owner có leader_id là id của user đang đăng nhập, tức là lọc ra những ticket của những user mà user đang đăng nhập là leader của họ, rồi mới lấy ra những ticket đó để trả về view
+                    $query->where('leader_id', auth()->id());
+                })
+                ->get();
             
             return view('software-tickets-menu', compact('tickets', 'tickets_waiting_approval'));
 
@@ -107,6 +117,13 @@ class EEGTicketsController extends Controller
             ->select('comments_table.*', 'users.fullname') //chọn tất cả cột của comments_table và cột fullname của users để trả về
             ->get();//Lấy tất cả comment của ticket này rồi trả về dưới dạng collection
         // dd($ticket->ticket_comments);
+
+        $ticket->tracking_info = DB::table('tracking_info') //gọi trực tiếp tới bảng tracking_info để lấy thông tin tracking của ticket này, vì trong model tracking_info_model có điều kiện where(['type_of_ticket' => 1]) rồi nên khi gọi tới function "tracking_info" trong model EEG_Software_Ticket để lấy thông tin tracking của ticket này thì nó sẽ chỉ lấy những tracking có type_of_ticket là 1 (software ticket) thôi, còn nếu muốn lấy thêm thông tin user của tracking đó nữa thì phải join thêm với bảng users nữa
+            ->join('users', 'tracking_info.user_id', '=', 'users.id') //join với bảng users để lấy thông tin user của tracking đó
+            ->where('tracking_info.ticket_id', $id) //lọc ra tracking của ticket này dựa vào ticket_id
+            ->where('tracking_info.type_of_ticket', $type_of_ticket) //lọc ra tracking của software ticket dựa vào type_of_ticket
+            ->select('tracking_info.*', 'users.fullname') //chọn tất cả cột của tracking_info và cột fullname của users để trả về
+            ->get();//Lấy tất cả tracking của ticket này rồi trả về dưới dạng collection
         return view('software-tickets-menu-details', compact('ticket'));
     }
 
@@ -125,7 +142,7 @@ class EEGTicketsController extends Controller
         $approval_type = $request->input('approval_type');
 
         $attachments = $ticket->active_attachments->map(function ($file) { //Duyệt qua từng attachment của ticket này, rồi lấy đường dẫn file để đọc nội dung file đó, rồi mã hóa nội dung file đó thành base64 để gửi qua API
-            $filePath = storage_path('app/public/' . $file->file_path); //Lấy đường dẫn đầy đủ của file, vì trong cơ sở dữ liệu chỉ lưu đường dẫn tương đối (relative path) nên phải nối thêm storage_path('app/public/') vào trước để có được đường dẫn đầy đủ (full path) của file đó
+            $filePath = storage_path('app/public/attachments/' . $file->file_path);
 
             return [
                 'fileName'    => basename($filePath),
@@ -133,6 +150,8 @@ class EEGTicketsController extends Controller
             ];
         });
 
+        $leader_email = User::where('id', $ticket->user_owner->leader_id)->value('email'); //Lấy email của leader của user owner của ticket này để gửi vào API, nếu không có leader thì trả về null
+        // dd($leader_email);
         try 
         {
             $send_approval = Http::post('https://defaultca7981a2785a463db82a3db87dfc3c.e6.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/02e7dce1f8724f49a897de0ee8a58568/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=zC58zM_5pldekMYNMUI_yLYF-31LYLG5A2rE0tOqy6o', [
@@ -142,11 +161,12 @@ class EEGTicketsController extends Controller
                 'reciept' => $ticket->ticket_reciept,
                 'description' => $ticket->description,
                 'attachments' => $attachments,
-                'approval_type' => $approval_type
+                'approval_type' => $approval_type,
+                'leader_email' => $leader_email,
             ]);
             if ($send_approval->successful()) {
                 // Xử lý phản hồi thành công nếu cần
-                $ticket->status = 2;
+                $ticket->status = 3;
                 $ticket->save();
                 return response()->json([
                     'success' => true,
@@ -156,7 +176,7 @@ class EEGTicketsController extends Controller
                 // Xử lý lỗi nếu phản hồi không thành công
                 return response()->json([
                     'success' => false,
-                    'message' => 'Failed to send approval request. API responded with status: ' . $send_approval->status(),
+                    'message' => 'Failed to send approval request. API responded with status: ' . $send_approval->body(),
                 ], 500);
             } 
         } catch (\Exception $e) {
@@ -185,6 +205,26 @@ class EEGTicketsController extends Controller
         $ticket->status = $ticket_info_input['ticket_status'];
         $ticket->issue_owner = $ticket_info_input['issue_owner'];
         $ticket->save();
+
+        switch ($ticket_info_input['ticket_status']) {
+            case '4':
+                $action = 'completed ticket at';
+                break;
+            case '5':
+                $action = 'rejected ticket at';
+                break;
+            case '6':
+                $action = 'canceled ticket at';
+                break;
+            default:
+                $action = 'updated ticket status to ' . $ticket_info_input['ticket_status'] . ' at';
+        }
+        tracking_info_service::add(
+            $ticket->id,
+            auth()->id(),
+            1, //1 là mã cho software ticket
+            $action,
+        );
         return response()->json([
             'success' => true,
             'message' => 'Ticket completed !',
@@ -254,6 +294,33 @@ class EEGTicketsController extends Controller
         Comments_Model::create($comment_info_input);
 
         return back()->with('success');
+    }
+
+    public function Approve_Rollback(Request $request, $id){
+        $ticket = EEG_Software_Ticket::with('user_owner')->findOrFail($id);
+        if ($ticket->status != 3) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Cannot approve rollback request. Ticket is not in pending approval status.',
+            ], 400);
+        }
+        else {
+            $ticket->status = 2; //đổi status thành "Đã hoàn thành"
+            $ticket->save();
+
+            tracking_info_service::add(
+                $ticket->id,
+                auth()->id(),
+                1, //1 là mã cho software ticket
+                'approved rollback at',
+            );
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Rollback request approved !',
+            ]);
+        }
+        
     }
 
     
