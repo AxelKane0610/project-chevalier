@@ -60,7 +60,7 @@
                             @if(auth()->user()->hasRole('ROLE_APPROVE_ROLLBACK') ) <!-- Chỉ hiển thị nút action nếu người dùng là leader của ticket -->
                                 @can('is-leader-of-ticket', $ticket)
                                 <li>
-                                    <form id="approve-rollback-form" class="js-input-required-btn" data-target="approve-rollback-form" action="{{ route('approve-rollback', $ticket->id) }}" method="POST">
+                                    <form id="approve-ticket-form" class="js-input-required-btn" data-target="approve-ticket-form" action="{{ route('approve-ticket', $ticket->id) }}" method="POST">
                                         @csrf
                                         <button type="submit"><i class="ti-thumb-up"></i>Approve</button>
                                     </form>
@@ -184,6 +184,8 @@
                                             <a href="{{ asset('attachments/' . $attachment->file_path) }}" download="{{ $attachment->name }}" class="btn btn-secondary">
                                                 <i class="ti-download"></i>
                                             </a>
+
+                                            
                                         </td>
                                     </tr>
                                     @endif

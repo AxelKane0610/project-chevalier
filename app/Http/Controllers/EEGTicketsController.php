@@ -296,28 +296,28 @@ class EEGTicketsController extends Controller
         return back()->with('success');
     }
 
-    public function Approve_Rollback(Request $request, $id){
+    public function Approve_Ticket(Request $request, $id){
         $ticket = EEG_Software_Ticket::with('user_owner')->findOrFail($id);
         if ($ticket->status != 3) {
             return response()->json([
                 'success' => false,
-                'message' => 'Cannot approve rollback request. Ticket is not in pending approval status.',
+                'message' => 'Cannot approve ticket. Ticket is not in pending approval status.',
             ], 400);
         }
         else {
-            $ticket->status = 2; //đổi status thành "Đã hoàn thành"
+            $ticket->status = 2;
             $ticket->save();
 
             tracking_info_service::add(
                 $ticket->id,
                 auth()->id(),
                 1, //1 là mã cho software ticket
-                'approved rollback at',
+                'approved ticket at',
             );
 
             return response()->json([
                 'success' => true,
-                'message' => 'Rollback request approved !',
+                'message' => 'Ticket approved !',
             ]);
         }
         

@@ -5,6 +5,8 @@ use App\Http\Controllers\EEGTicketsController;
 use App\Models\EEG_Software_Ticket;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\Rules\Can;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\AttachmentController;
 
 Route::get('/', function () {
     // Auth::logout();
@@ -25,6 +27,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/main-menu', function () {
         return view('main-menu');
     });
+
+    Route::get('/attachments/{folder}/{id}/{filename}', [AttachmentController::class, 'show']);
 
     // Chỉ cho phép ROLE_SUPER_ADMIN truy cập vào route này, nếu không sẽ bị trả về lỗi 403 Forbidden
     // Route::get('/software-tickets-menu', function () {
@@ -47,7 +51,7 @@ Route::middleware(['auth'])->group(function () {
         Route::patch('/change-ticket-status/{id}/status', [EEGTicketsController::class, 'Change_Software_Ticket_Status']);
         Route::patch('/close-software-ticket/{id}', [EEGTicketsController::class, 'Close_Software_Ticket']) ->name('close-software-ticket');
         Route::patch('/edit-software-ticket/{id}',[EEGTicketsController::class, 'Edit_Software_Ticket'])->name('edit-software-ticket');
-        Route::post('/approve-rollback/{id}', [EEGTicketsController::class, 'Approve_Rollback'])->name('approve-rollback');
+        Route::post('/approve-ticket/{id}', [EEGTicketsController::class, 'Approve_Ticket'])->name('approve-ticket');
     });
 
     Route::middleware(['role:ROLE_SUPER_ADMIN'])->group(function () {
