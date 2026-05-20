@@ -33,12 +33,12 @@ class EEG_Software_Ticket extends Model
             ->where(['type_of_ticket' => 1, 'status' => '1']); // Chỉ lấy những attachment có status = 1 (còn hiệu lực)
     }
 
-    // public function ticket_comments()
-    // {
-    //     return $this->hasMany(Comments_Model::class, 'ticket_id', 'id')
-    //         ->where(['type_of_ticket' => 1]); // Chỉ lấy những comment có type_of_ticket là 1 (software ticket)
+    public function ticket_comments()
+    {
+        return $this->hasMany(Comments_Model::class, 'ticket_id', 'id')
+            ->where(['type_of_ticket' => 1]); // Chỉ lấy những comment có type_of_ticket là 1 (software ticket)
         
-    // }
+    }
 
     public function getPriorityDataAttribute()
     {

@@ -208,8 +208,20 @@
             <x-common-ticket-comments action1="{{ route('add-comment-software-ticket', $ticket->id) }}" id="add-comment-form">
                 @foreach($ticket->ticket_comments as $comment)
                 <li>
-                    <h2>{{ $comment->fullname }}</h2>
+                    <h2>{{ $comment->user->fullname }}</h2>
                     <h3>{{ $comment->created_at }}</h3>
+                    <tbody>
+                        @foreach($comment->attachments as $attachment)
+                            <tr>
+                                <td>{{ $attachment->name }}</td>
+                                <td>
+                                    <a href="{{ asset('attachments/' . $attachment->file_path) }}" target="_blank" class="btn btn-info">
+                                        <i class="ti-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
                     <p>{{ $comment->comment }}</p>
                 </li>
                 @endforeach
@@ -220,9 +232,9 @@
                     
                     <label>Write a comment</label>
                     <textarea name="comment" style="height: 100px; font-family: inherit ;" placeholder="Nhập comment tại đây"></textarea>
-                    <!-- <label class="ticket-form-body-input">Attach File:</label>
+                    <label class="ticket-form-body-input">Attach File:</label>
                     <input class="ticket-form-body-input" type="file" name="attachments[]" multiple id="fileInput">
-                    <ul id="fileList"></ul> -->
+                    <ul id="fileList"></ul>
                     <button type="submit"><i class="ti-comment"></i>Comment</button>
 
                 </x-slot:footer>

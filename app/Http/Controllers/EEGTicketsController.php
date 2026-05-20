@@ -109,13 +109,14 @@ class EEGTicketsController extends Controller
     }
 
     public function Show_Software_Ticket_Details($id, $type_of_ticket = 1){
-        $ticket = EEG_Software_Ticket::with('user_owner', 'active_attachments')->findOrFail($id); //gọi tới function "user" trong model EEG_Software_Ticket để lấy thông tin user của ticket đó, rồi mới trả về view
-        $ticket->ticket_comments = DB::table('comments_table') //gọi trực tiếp tới bảng comments_table để lấy thông tin comment của ticket này, vì trong model Comments_Model có điều kiện where(['type_of_ticket' => 1]) rồi nên khi gọi tới function "ticket_comments" trong model EEG_Software_Ticket thì nó sẽ chỉ lấy những comment có type_of_ticket là 1 (software ticket) thôi, còn nếu muốn lấy thêm thông tin user của comment đó nữa thì phải join thêm với bảng users nữa
-            ->join('users', 'comments_table.user_id', '=', 'users.id') //join với bảng users để lấy thông tin user của comment đó
-            ->where('comments_table.ticket_id', $id) //lọc ra comment của ticket này dựa vào ticket_id
-            ->where('comments_table.type_of_ticket', $type_of_ticket) //lọc ra comment của software ticket dựa vào type_of_ticket
-            ->select('comments_table.*', 'users.fullname') //chọn tất cả cột của comments_table và cột fullname của users để trả về
-            ->get();//Lấy tất cả comment của ticket này rồi trả về dưới dạng collection
+        $ticket = EEG_Software_Ticket::with('user_owner', 'active_attachments', 'ticket_comments.attachments', 'ticket_comments.user')->findOrFail($id);
+        
+        // $ticket->ticket_comments = DB::table('comments_table') 
+        //     ->join('users', 'comments_table.user_id', '=', 'users.id') 
+        //     ->where('comments_table.ticket_id', $id) 
+        //     ->where('comments_table.type_of_ticket', $type_of_ticket) 
+        //     ->select('comments_table.*', 'users.fullname') 
+        //     ->get();
         // dd($ticket->ticket_comments);
 
         $ticket->tracking_info = DB::table('tracking_info') //gọi trực tiếp tới bảng tracking_info để lấy thông tin tracking của ticket này, vì trong model tracking_info_model có điều kiện where(['type_of_ticket' => 1]) rồi nên khi gọi tới function "tracking_info" trong model EEG_Software_Ticket để lấy thông tin tracking của ticket này thì nó sẽ chỉ lấy những tracking có type_of_ticket là 1 (software ticket) thôi, còn nếu muốn lấy thêm thông tin user của tracking đó nữa thì phải join thêm với bảng users nữa
@@ -290,8 +291,47 @@ class EEGTicketsController extends Controller
         $comment_info_input['ticket_id'] = $id;
         $comment_info_input['type_of_ticket'] = 1; //1 là mã cho software ticket
         $comment_info_input['user_id'] = auth()->id();
+        
+        
+        $comment = Comments_Model::create($comment_info_input);
+        // if ($request->hasFile('attachments')) { //Kiểm tra xem có file nào được upload lên không
 
-        Comments_Model::create($comment_info_input);
+        //     foreach ($request->file('attachments') as $file) { //Duyệt qua từng file được upload lên
+        //         $originalName = $file->getClientOriginalName();
+        //         $folderPath = '1/'.$ticket->id;
+        //         $filePath = $file->storeAs($folderPath, $originalName, 'attachments'); // Lưu file vào thư mục '/'
+                
+        //         Attachments_Model::create([
+        //             'type_of_ticket' => 1, // Giả sử 1 là mã cho software ticket
+        //             'ticket_id' => $ticket->id,
+        //             'file_path' => $filePath,   
+        //             'name' => $originalName,// Lưu tên gốc của file vào cơ sở dữ liệu
+        //         ]);
+        //     }
+            
+        // }
+
+        if($request->hasFile('attachments'))
+        {
+            foreach($request->file('attachments') as $file)
+            {
+                $originalName = $file->getClientOriginalName();
+                $folderPath = '1/'.$id;
+                $filePath = $file->storeAs($folderPath, $originalName, 'attachments'); // Lưu file vào thư mục 'attachments' đã được cấu hình trong config/filesystems.php, với đường dẫn là 'attachments/1/{ticket_id}/{original_file_name}'
+                
+                Attachments_Model::create([
+                    'type_of_ticket' => 1,
+                    'ticket_id' => $id,
+                    'comment_id' => $comment->id,
+
+                    'file_path' => $filePath,
+                    'name' => $originalName,
+
+                    'status' => 1
+                ]);
+            }
+        }
+        
 
         return back()->with('success');
     }

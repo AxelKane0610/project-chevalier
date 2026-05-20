@@ -18,6 +18,7 @@ class Attachments_Model extends Model
         'id',
         'file_path',
         'name',
+        'comment_id',
     ];
 
     // public function attachments()
@@ -31,6 +32,11 @@ class Attachments_Model extends Model
     //     return $this->hasMany(Attachments_Model::class, 'ticket_id', 'id')
     //         ->where('status', '1'); // Chỉ lấy những attachment có status = 1 (còn hiệu lực)
     // }
+
+    public function comment()
+    {
+        return $this->belongsTo(Comments_Model::class);
+    }
 
     
 }
