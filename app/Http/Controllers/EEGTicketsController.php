@@ -155,7 +155,7 @@ class EEGTicketsController extends Controller
         // dd($leader_email);
         try 
         {
-            $send_approval = Http::post('https://defaultca7981a2785a463db82a3db87dfc3c.e6.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/02e7dce1f8724f49a897de0ee8a58568/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=zC58zM_5pldekMYNMUI_yLYF-31LYLG5A2rE0tOqy6o', [
+            $send_approval = Http::post(API_POWER_AUTOMATE_EEG, [
                 'type_of_ticket' => 1,
                 'ticket_id' => $ticket->id,
                 'ticket_owner'   => $ticket->user_owner->fullname,
