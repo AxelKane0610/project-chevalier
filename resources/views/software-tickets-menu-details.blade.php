@@ -67,7 +67,8 @@
                                 </li>
 
                                 <li>
-                                    <form action="#">
+                                    <form id="reject-ticket-form" class="js-input-required-btn" data-target="reject-ticket-form" action="{{ route('reject-ticket', $ticket->id) }}" method="POST">
+                                        @csrf
                                         <button type="submit"><i class="ti-thumb-down"></i>Reject</button>
                                     </form>
                                 </li>
@@ -81,7 +82,8 @@
                         @case(6)
                             @if($ticket->user_id == auth()->user()->id)
                             <li>
-                                <form action="#">
+                                <form id="re-open-ticket-form" class="js-input-required-btn" data-target="re-open-ticket-form" action="{{ route('re-open-ticket', $ticket->id) }}" method="PATCH">
+                                    @csrf
                                     <button type="submit"><i class="ti-back-left"></i>Request Re-Open</button>
                                 </form>
                             </li>
@@ -210,19 +212,33 @@
                 <li>
                     <h2>{{ $comment->user->fullname }}</h2>
                     <h3>{{ $comment->created_at }}</h3>
-                    <tbody>
-                        @foreach($comment->attachments as $attachment)
-                            <tr>
-                                <td>{{ $attachment->name }}</td>
-                                <td>
-                                    <a href="{{ asset('attachments/' . $attachment->file_path) }}" target="_blank" class="btn btn-info">
-                                        <i class="ti-eye"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
                     <p>{{ $comment->comment }}</p>
+                    @if ($comment->attachments->count() > 0)
+                    <table class="attachments-table">
+                        <thead>
+                            <tr>
+                                <th>File Name</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($comment->attachments as $attachment)
+                                <tr>
+                                    <td>{{ $attachment->name }}</td>
+                                    <td>
+                                        <a href="{{ asset('attachments/' . $attachment->file_path) }}" target="_blank" class="btn btn-info">
+                                            <i class="ti-eye"></i>
+                                        </a>
+                                        <a href="{{ asset('attachments/' . $attachment->file_path) }}" download="{{ $attachment->name }}" class="btn btn-secondary">
+                                            <i class="ti-download"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    @endif
+                    
                 </li>
                 @endforeach
 
@@ -243,9 +259,9 @@
             <div class="software-tickets-tracking-info">
                 <h2>Tracking Info</h2>
                     
-                @foreach($ticket->tracking_info as $tracking)
+                @foreach($ticket->ticket_tracking_info as $tracking)
                     <h3>
-                        {{ $tracking->fullname }}
+                        {{ $tracking->user->fullname }}
                         {{ $tracking->action }}
                         {{ $tracking->created_at }}
                     </h3>

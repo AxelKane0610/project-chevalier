@@ -25,6 +25,7 @@
 }
 .swal2-popup {
     box-shadow: none !important;
+    font-family: var(--font-sans) !important;
 }
 .swal2-container {
     z-index: 999999999999999 !important;
@@ -79,11 +80,29 @@ button:hover {
     cursor: pointer;
 }
 
-button:disabled {
+/* button:disabled {
     background-color: #cccccc !important;
     color: #666666 !important;
     cursor: not-allowed !important;
-    pointer-events: none; /* Ngăn chặn hoàn toàn mọi sự kiện chuột */
+    pointer-events: none; /* Ngăn chặn hoàn toàn mọi sự kiện chuột 
+} */
+
+.spinner {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid #fff;
+    border-top: 2px solid transparent;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-right: 6px;
+    vertical-align: middle;
+}
+
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 

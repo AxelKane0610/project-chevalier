@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'api_service' => [
+        'sw_ticket_url' => env('API_POWER_AUTOMATE_EEG_TICKET'),
+    ],
+
 ];

@@ -48,10 +48,11 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/create-software-ticket', [EEGTicketsController::class, 'Create_Software_Ticket']);
         Route::post('/send-approval-request/{id}', [EEGTicketsController::class, 'Send_Approval_Request']) ->name('send-approval-request');
         Route::post('/add-comment-software-ticket/{id}', [EEGTicketsController::class, 'Add_Comment_Software_Ticket']) ->name('add-comment-software-ticket');
-        Route::patch('/change-ticket-status/{id}/status', [EEGTicketsController::class, 'Change_Software_Ticket_Status']);
+        Route::patch('/re-open-ticket/{id}', [EEGTicketsController::class, 'Re_Open_Ticket']) ->name('re-open-ticket');
         Route::patch('/close-software-ticket/{id}', [EEGTicketsController::class, 'Close_Software_Ticket']) ->name('close-software-ticket');
         Route::patch('/edit-software-ticket/{id}',[EEGTicketsController::class, 'Edit_Software_Ticket'])->name('edit-software-ticket');
         Route::post('/approve-ticket/{id}', [EEGTicketsController::class, 'Approve_Ticket'])->name('approve-ticket');
+        Route::post('/reject-ticket/{id}', [EEGTicketsController::class, 'Reject_Ticket'])->name('reject-ticket');
     });
 
     Route::middleware(['role:ROLE_SUPER_ADMIN'])->group(function () {

@@ -18,5 +18,10 @@ class tracking_info_model extends Model
         'action',
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
 
 }

@@ -35,9 +35,15 @@ class EEG_Software_Ticket extends Model
 
     public function ticket_comments()
     {
-        return $this->hasMany(Comments_Model::class, 'ticket_id', 'id')
+        return $this->hasMany(Comments_Model::class, 'ticket_id', 'id') // Liên kết với model Comments_Model, dựa vào "ticket_id" để lấy những comment có ticket_id trùng với id của ticket này
             ->where(['type_of_ticket' => 1]); // Chỉ lấy những comment có type_of_ticket là 1 (software ticket)
         
+    }
+
+    public function ticket_tracking_info()
+    {
+        return $this->hasMany(tracking_info_model::class, 'ticket_id', 'id') // Liên kết với model tracking_info_model, dựa vào "ticket_id" để lấy những tracking có ticket_id trùng với id của ticket này
+            ->where('type_of_ticket', 1);
     }
 
     public function getPriorityDataAttribute()

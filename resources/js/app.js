@@ -91,3 +91,105 @@ function updateInputFiles() {
 
     fileInput.files = dataTransfer.files;
 }
+
+
+// document.addEventListener('DOMContentLoaded', function () {
+
+//     document.querySelectorAll('form').forEach(form => {
+
+//         form.addEventListener('submit', function () {
+
+//             const submitButtons = form.querySelectorAll(
+//                 'button[type="submit"], input[type="submit"]'
+//             );
+
+//             submitButtons.forEach(button => {
+
+//                 button.disabled = true;
+
+//                 if (button.tagName === 'BUTTON') {
+
+//                     button.dataset.originalText = button.innerHTML;
+
+//                     button.innerHTML = `
+//                         <span class="spinner"></span>
+//                         Loading...
+//                     `;
+//                 } else {
+
+//                     button.dataset.originalText = button.value;
+//                     button.value = 'Loading...';
+//                 }
+
+//             });
+
+//         });
+
+//     });
+
+// });
+
+document.addEventListener('submit', function (e) {
+
+    const form = e.target;
+
+    const buttons = form.querySelectorAll(
+        'button[type="submit"], input[type="submit"]'
+    );
+
+    buttons.forEach(button => {
+
+        // lưu text cũ
+        if (!button.dataset.original) {
+
+            button.dataset.original =
+                button.tagName === 'BUTTON'
+                    ? button.innerHTML
+                    : button.value;
+        }
+
+        // loading ngay
+        button.disabled = true;
+
+        if (button.tagName === 'BUTTON') {
+
+            button.innerHTML = `
+                <span class="spinner"></span>
+                Loading...
+            `;
+
+        } else {
+
+            button.value = 'Loading...';
+        }
+
+    });
+
+    // kiểm tra sau 300ms
+    setTimeout(() => {
+
+        // nếu form bị preventDefault
+        if (e.defaultPrevented) {
+
+            buttons.forEach(button => {
+
+                button.disabled = false;
+
+                if (button.tagName === 'BUTTON') {
+
+                    button.innerHTML =
+                        button.dataset.original;
+
+                } else {
+
+                    button.value =
+                        button.dataset.original;
+                }
+
+            });
+
+        }
+
+    }, 300);
+
+});
