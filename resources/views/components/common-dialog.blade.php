@@ -12,7 +12,7 @@
     </div>
 </div>  
 
-<script>
+<!-- <script>
     const dialog = document.querySelector('.dialog-box')
     const closeBtn = document.querySelector('.js-close-dialog')
 
@@ -27,4 +27,4 @@
     if (closeBtn) {
         closeBtn.addEventListener('click', hideDialog)
     }
-</script>
+</script> -->

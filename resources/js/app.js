@@ -129,9 +129,7 @@ function updateInputFiles() {
 
 // });
 
-document.addEventListener('submit', function (e) {
-
-    const form = e.target;
+window.startButtonLoading = function(form) {
 
     const buttons = form.querySelectorAll(
         'button[type="submit"], input[type="submit"]'
@@ -139,7 +137,6 @@ document.addEventListener('submit', function (e) {
 
     buttons.forEach(button => {
 
-        // lưu text cũ
         if (!button.dataset.original) {
 
             button.dataset.original =
@@ -148,7 +145,6 @@ document.addEventListener('submit', function (e) {
                     : button.value;
         }
 
-        // loading ngay
         button.disabled = true;
 
         if (button.tagName === 'BUTTON') {
@@ -165,31 +161,31 @@ document.addEventListener('submit', function (e) {
 
     });
 
-    // kiểm tra sau 300ms
-    setTimeout(() => {
+    form.dataset.loading = "true";
+};
 
-        // nếu form bị preventDefault
-        if (e.defaultPrevented) {
+window.stopButtonLoading = function(form) {
 
-            buttons.forEach(button => {
+    const buttons = form.querySelectorAll(
+        'button[type="submit"], input[type="submit"]'
+    );
 
-                button.disabled = false;
+    buttons.forEach(button => {
 
-                if (button.tagName === 'BUTTON') {
+        button.disabled = false;
 
-                    button.innerHTML =
-                        button.dataset.original;
+        if (button.tagName === 'BUTTON') {
 
-                } else {
+            button.innerHTML =
+                button.dataset.original;
 
-                    button.value =
-                        button.dataset.original;
-                }
+        } else {
 
-            });
-
+            button.value =
+                button.dataset.original;
         }
 
-    }, 300);
+    });
 
-});
+    form.dataset.loading = "false";
+};

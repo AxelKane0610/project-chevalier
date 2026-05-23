@@ -42,7 +42,7 @@
                                 </li>
 
                                 <li>
-                                    <form action="" method="POST" data-target="send-approval-form" class="js-input-required-btn">
+                                    <form method="POST" data-target="send-approval-form" class="js-input-required-btn">
                                         <button type="button"><i class="ti-angle-double-right"></i>Send Approval </button>
                                     </form>
                                 </li>
@@ -103,7 +103,7 @@
         <div class="software-tickets-content">
 
             <x-common-ticket-detail-form>
-                
+                <h2>Tickets Details</h2>
                     <li>
                         <lable>Reciept</lable>
                         
@@ -162,15 +162,8 @@
                     </li>
 
                     <li>
-                        <lable>Attachments</lable>
-                        <table class="attachments-table">
-                            <thead>
-                                <tr>
-                                    <th>File Name</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                        <lable>Attachments ({{ $ticket->active_attachments->count() }} files)</lable>
+                        <x-common-attachments-table>
                                 @foreach ($ticket->active_attachments as $attachment)
                                     @if(in_array($attachment->type_of_ticket, [1])) {{-- Cách viết gọn thay cho switch --}}
                                     <tr>
@@ -192,8 +185,8 @@
                                     </tr>
                                     @endif
                                 @endforeach
-                            </tbody>
-                        </table>
+                        </x-common-attachments-table>
+                            
                         
                     </li>
                     
@@ -208,20 +201,14 @@
 
 
             <x-common-ticket-comments action1="{{ route('add-comment-software-ticket', $ticket->id) }}" id="add-comment-form">
+                <h2>Comments</h2>
                 @foreach($ticket->ticket_comments as $comment)
                 <li>
                     <h2>{{ $comment->user->fullname }}</h2>
                     <h3>{{ $comment->created_at }}</h3>
                     <p>{{ $comment->comment }}</p>
                     @if ($comment->attachments->count() > 0)
-                    <table class="attachments-table">
-                        <thead>
-                            <tr>
-                                <th>File Name</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                    <x-common-attachments-table>
                             @foreach($comment->attachments as $attachment)
                                 <tr>
                                     <td>{{ $attachment->name }}</td>
@@ -235,8 +222,7 @@
                                     </td>
                                 </tr>
                             @endforeach
-                        </tbody>
-                    </table>
+                    </x-common-attachments-table>
                     @endif
                     
                 </li>
@@ -345,35 +331,44 @@
                 
                 <label><b>Attachments</b></label>
                 
-                @if($ticket->active_attachments->count() > 0)
-                    
-                        <table class="attachments-table">
-                            <tbody>
-                                @foreach($ticket->active_attachments as $attachment)
-                                    <tr>
-                                        <td class="align-middle">
-                                            
-                                            <a href="{{ asset('attachments/' . $attachment->path) }}" target="_blank">
-                                                {{ $attachment->name ?? 'File đính kèm' }}
-                                            </a>
-                                        </td>
-                                        <td class="align-middle text-center" width="150">
-                                            <div class="form-check">
-                                                
-                                                <a href="{{ asset('attachments/' . $attachment->file_path) }}" target="_blank" class="btn btn-info">
-                                                    <i class="ti-eye"></i>
-                                                </a>
-                                                <input class="form-check-input" type="checkbox" name="delete_files[]" value="{{ $attachment->id }}" id="del_{{ $attachment->id }}">
-                                                <label class="form-check-label text-danger" for="del_{{ $attachment->id }}">
-                                                    Xóa
-                                                </label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    <small class="text-muted">Tích vào ô "Xóa file này" nếu muốn gỡ bỏ file đính kèm trước đó.</small>
+                @if($ticket->active_attachments->count() > 0) 
+                    <x-common-attachments-table>
+                        @foreach($ticket->active_attachments as $attachment)
+                            <tr>
+                                <td>
+                                    
+                                    <!-- <a href="{{ asset('attachments/' . $attachment->path) }}" target="_blank"> -->
+                                        {{ $attachment->name ?? 'File đính kèm' }}
+                                    <!-- </a> -->
+                                </td>
+                                <td>
+                                    <!-- <div class="form-check">
+                                        
+                                        <a href="{{ asset('attachments/' . $attachment->file_path) }}" target="_blank" class="btn btn-info">
+                                            <i class="ti-eye"></i>
+                                        </a>
+                                        <input class="form-check-input" type="checkbox" name="delete_files[]" value="{{ $attachment->id }}" id="del_{{ $attachment->id }}">
+                                        <label class="form-check-label text-danger" for="del_{{ $attachment->id }}">
+                                            Xóa
+                                        </label>
+                                    </div> -->
+
+                                    <div>
+                                        
+                                        <a href="{{ asset('attachments/' . $attachment->file_path) }}" target="_blank" class="btn btn-info">
+                                            <i class="ti-eye"></i>
+                                        </a>
+                                        <input type="checkbox" name="delete_files[]" value="{{ $attachment->id }}" id="del_{{ $attachment->id }}">
+                                        <label for="del_{{ $attachment->id }}">
+                                            Xóa
+                                        </label>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </x-common-attachments-table>
+                            
+                    <small class="text-muted">Tích vào ô "Xóa" nếu muốn gỡ bỏ file đính kèm trước đó.</small>
                 @else
                     <p class="text-muted">Không có file nào được đính kèm</p>
                 @endif

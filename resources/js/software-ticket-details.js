@@ -51,48 +51,130 @@ document.addEventListener('submit', function (e) {
 
     }       
 
-    if (e.target && e.target.id === 'send-approval-form') 
-    {
-        e.preventDefault();
-        fetch(url, {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+    // if (e.target && e.target.id === 'send-approval-form') 
+    // {
+    //     e.preventDefault();
+    //     const form = e.target;
+    //     Swal.fire({
+    //         title: 'Are you sure?',
+    //         icon: 'warning',
+    //         showCancelButton: true
+    //     })
+    //     .then((result) => {
+    //         if (!result.isConfirmed) {
+    //             return;
+    //         }
+
+    //         startButtonLoading(form);
+    //         fetch(url, {
+    //             method: 'POST',
+    //             body: formData,
+    //             headers: {
+    //                 'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+    //             }
+    //         })
+    //     })
+    //         .then(response => response.json()) 
+    //         .then(ticket_approval_response => { 
+    //             console.log(ticket_approval_response);
+    //             window.stopButtonLoading(e.target);
+    //             Swal.fire({
+    //                 title: 'Success!',
+    //                 text: ticket_approval_response.message,
+    //                 icon: 'success',
+    //                 confirmButtonText: 'OK'
+    //             }).then((result) => {
+    //                 document.querySelector('.ticket-form-overlay').classList.remove('active');
+    //                 e.target.reset();
+    //                 location.reload();
+    //             });
+                
+                
+                
+    //         })
+    //         .catch(error => {
+    //             form.dataset.loading = "false";
+    //             Swal.fire({
+    //                 title: 'Error!',
+    //                 text: error,
+    //                 icon: 'error',
+    //                 confirmButtonText: 'OK'
+    //             })
+    //             console.error(error)
+    //         })
+    //         .finally(() => {
+    //             stopButtonLoading(form);
+    //         });
+            
+
+    // }
+
+    if (e.target && e.target.id === 'send-approval-form')
+{
+    e.preventDefault();
+
+    const form = e.target;
+
+    Swal.fire({
+        title: 'Are you sure?',
+        icon: 'warning',
+        showCancelButton: true
+    })
+    .then((result) => {
+
+        // Cancel
+        if (!result.isConfirmed) {
+            return;
+        }
+
+        // Confirm mới loading
+        startButtonLoading(form);
+
+        fetch(url,{
+            method:'POST',
+            body:formData,
+            headers:{
+                'X-CSRF-TOKEN':
+                    document.querySelector(
+                        'input[name="_token"]'
+                    ).value
             }
         })
-            .then(response => response.json()) 
-            .then(ticket_approval_response => { 
-                console.log(ticket_approval_response);
-                Swal.fire({
-                    title: 'Success!',
-                    text: ticket_approval_response.message,
-                    icon: 'success',
-                    confirmButtonText: 'OK'
-                }).then((result) => {
-                    document.querySelector('.ticket-form-overlay').classList.remove('active');
-                    e.target.reset();
-                    location.reload();
-                });
-                
-                
-                
-            })
-            .catch(error => {
-                Swal.fire({
-                    title: 'Error!',
-                    text: error,
-                    icon: 'error',
-                    confirmButtonText: 'OK'
-                })
-                console.error(error)
+        .then(response => response.json())
+        .then(data => {
+
+            Swal.fire({
+                title:'Success',
+                text:data.message,
+                icon:'success'
+            }).then(()=>{
+                location.reload();
             });
 
-    }
+        })
+        .catch(error => {
+
+            Swal.fire({
+                title:'Error',
+                text:error,
+                icon:'error'
+            });
+
+        })
+        .finally(() => {
+
+            stopButtonLoading(form);
+
+        });
+
+    });
+}
 
     if (e.target && e.target.id === 'approve-ticket-form')
     {
         e.preventDefault();
+        const form = e.target;
+        form.dataset.loading = "true";
         Swal.fire({
             title: 'Are you sure?',
             text: "You are about to approve this ticket.",
@@ -113,6 +195,7 @@ document.addEventListener('submit', function (e) {
                 })
                 .then(response => response.json())
                 .then(ticket_approval_response => {
+                    form.dataset.loading = "false";
                     console.log(ticket_approval_response);
                     Swal.fire({
                         title: 'Success!',
@@ -126,6 +209,7 @@ document.addEventListener('submit', function (e) {
                     });
                 })
                 .catch(error => {
+                    form.dataset.loading = "false";
                     Swal.fire({
                         title: 'Error!',
                         text: error,

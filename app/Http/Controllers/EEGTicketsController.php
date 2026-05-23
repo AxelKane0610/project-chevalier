@@ -375,7 +375,7 @@ class EEGTicketsController extends Controller
             ], 400);
         }
         else {
-            $ticket->status = 5;
+            $ticket->status = 2;
             $ticket->save();
 
             tracking_info_service::add(
