@@ -1,43 +1,13 @@
 console.log("JS LOADEDD");
 
-
-
-
-// document.addEventListener('DOMContentLoaded', function () {
-//     const openBtns = document.querySelectorAll('.js-input-required-btn');
-
-//     openBtns.forEach(btn => {
-//         btn.addEventListener('click', function() {
-//             // Lấy ID form từ data-target của nút vừa nhấn
-//             const targetId = this.getAttribute('data-target'); 
-//             const targetForm = document.getElementById(targetId);
-
-//             if (targetForm) {
-//                 // Từ thẻ form, tìm ngược lên thẻ cha .ticket-form-overlay gần nhất
-//                 const overlay = targetForm.closest('.ticket-form-overlay');
-//                 overlay.classList.add('active');
-//             }
-//         });
-//     });
-
-//     const closeBtns = document.querySelectorAll('.js-close-input-form');
-
-//     closeBtns.forEach(btn => {
-//         btn.addEventListener('click', function() {
-//             // Chỉ đóng cái overlay chứa cái nút X vừa được nhấn
-//             this.closest('.ticket-form-overlay').classList.remove('active');
-//         });
-//     });
-// });
-
 document.addEventListener('submit', function (e) {
     // Kiểm tra xem form nào đang được submit dựa vào ID
-    if (e.target && e.target.id === 'create-sw-ticket-form') {
+    if (e.target && e.target.id === 'create-laser-engraving-ticket-form') {
         e.preventDefault();
         const buttons = this.querySelectorAll('button');
         buttons.forEach(btn => btn.disabled = true);
         const formData = new FormData(e.target);
-        fetch('/create-software-ticket', {
+        fetch('/create-laser-engraving-ticket', {
             method: 'POST',
             body: formData,
             headers: {
@@ -58,7 +28,7 @@ document.addEventListener('submit', function (e) {
             `
                 <tr>
                     <td>
-                        <a href="/software-tickets-menu-details/${new_ticket.ticket_id}">
+                        <a href="/laser-engraving-tickets-menu-details/${new_ticket.ticket_id}">
                             <button><i class="ti-arrow-right" ></i></button>
                         </a>
                     </td>
@@ -70,7 +40,7 @@ document.addEventListener('submit', function (e) {
             
             `;
             document
-            .querySelector('#pending-software-tickets-table tbody')
+            .querySelector('#pending-laser-engraving-tickets-table tbody')
             .insertAdjacentHTML('beforeend', newRow);
             
             document.querySelector('.ticket-form-overlay').classList.remove('active');
@@ -80,7 +50,3 @@ document.addEventListener('submit', function (e) {
 
     }
 });
-
-
-
-

@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\Rules\Can;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\AttachmentController;
+use App\Models\Laser_Engraving_Tickets_Model;
+use App\Http\Controllers\LaserEngravingTicketsController;
 
 Route::get('/', function () {
     // Auth::logout();
@@ -53,6 +55,11 @@ Route::middleware(['auth'])->group(function () {
         Route::patch('/edit-software-ticket/{id}',[EEGTicketsController::class, 'Edit_Software_Ticket'])->name('edit-software-ticket');
         Route::post('/approve-ticket/{id}', [EEGTicketsController::class, 'Approve_Ticket'])->name('approve-ticket');
         Route::post('/reject-ticket/{id}', [EEGTicketsController::class, 'Reject_Ticket'])->name('reject-ticket');
+    });
+
+    Route::middleware(['role:ROLE_SUPER_ADMIN,ROLE_TICKET_SW_ADMIN'])->group(function () {
+        Route::get('/laser-engraving-menu', [LaserEngravingTicketsController::class, 'Show_Pending_Tickets']);
+        Route::post('/create-laser-engraving-ticket', [LaserEngravingTicketsController::class, 'Create_Laser_Engraving_Ticket']);
     });
 
     Route::middleware(['role:ROLE_SUPER_ADMIN'])->group(function () {

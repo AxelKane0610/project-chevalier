@@ -46,19 +46,22 @@
                 </div>
             </div>
             
-
-            <div class="laser-engraving-btn">
-                <div class="ticket-img-description">
-                    <img src="{{ asset('imgs/laser_engraving_image.png') }}" alt="">
+            <a href="{{ url('/laser-engraving-menu') }}">
+                <div class="laser-engraving-btn">
+                    
+                    <div class="ticket-img-description">
+                        <img src="{{ asset('imgs/laser_engraving_image.png') }}" alt="">
+                    </div>
+                    
+                    <h2>Khắc base</h2>
+                    <p>Khắc base (Mặt D) sau khi thay</p>
+                    <div class="card-footer">
+                        <div class="card-footer-text">Learn more</div>
+                        <div class="card-footer-icon"><i class="ti-angle-right"></i></div>
+                    </div>
+                    
                 </div>
-                
-                <h2>Khắc base</h2>
-                <p>Khắc base (Mặt D) sau khi thay</p>
-                <div class="card-footer">
-                    <div class="card-footer-text">Learn more</div>
-                    <div class="card-footer-icon"><i class="ti-angle-right"></i></div>
-                </div>
-            </div>
+            </a>
 
             <div class="loanunit-tickets-btn">
                 <div class="ticket-img-description">
