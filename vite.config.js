@@ -5,7 +5,7 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
     plugins: [
         laravel({
-            input: ['resources/css/app.css', 'resources/js/app.js', 'resources/js/new-ticket.js', 'resources/js/software-ticket-details.js', 'resources/css/icons/themify-icons.css'],
+            input: ['resources/css/app.css', 'resources/js/app.js', 'resources/js/new-ticket.js', 'resources/js/software-ticket-details.js', 'resources/js/laser-engraving.js', 'resources/css/icons/themify-icons.css'],
             refresh: true,
         }),
         tailwindcss(),

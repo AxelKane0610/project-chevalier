@@ -14,10 +14,12 @@ class EEG_Software_Ticket extends Model
     
     protected $fillable = [
         'user_id',
-        'ticket_reciept',
+        'ticket_receipt',
         'support_type',
         'priority',
         'description',
+        'ticket_completed_by',
+        'completed_date'
     ];
 
     public function user_owner(): BelongsTo
@@ -95,8 +97,8 @@ class EEG_Software_Ticket extends Model
             ],
 
             "4" => [
-                'text' => 'Complete',
-                'class' => 'complete'
+                'text' => 'Completed',
+                'class' => 'completed'
             ],
 
             "5" => [

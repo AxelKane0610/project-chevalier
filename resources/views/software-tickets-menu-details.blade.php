@@ -19,7 +19,6 @@
 
             <li>
                 <form>
-                    @csrf
                     <button type="submit"><i class="ti-search test-js"></i>Search</button>
                 </form>
 
@@ -36,13 +35,14 @@
                         @case(2)
                             @if(auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_TICKET_SW_ADMIN'))
                                 <li>
-                                    <form action="#">
+                                    <form id="change-ticket-software-status-to-in-progress" class="js-input-required-btn" data-target="change-ticket-software-status-to-in-progress" action="{{ route('change-ticket-software-status-to-in-progress', $ticket->id) }}" method="PATCH">
+                                        @csrf
                                         <button type="submit"><i class="ti-alarm-clock"></i>In Progress</button>
                                     </form>
                                 </li>
 
                                 <li>
-                                    <form method="POST" data-target="send-approval-form" class="js-input-required-btn">
+                                    <form data-target="send-approval-form" class="js-input-required-btn">
                                         <button type="button"><i class="ti-angle-double-right"></i>Send Approval </button>
                                     </form>
                                 </li>
@@ -93,102 +93,98 @@
                         
                     @endswitch
             
-                
-
-            
-        
         </x-common-header>
 
                 
-        <div class="software-tickets-content">
+        <div class="software-ticket-content">
 
             <x-common-ticket-detail-form>
                 <h2>Tickets Details</h2>
-                    <li>
-                        <lable>Reciept</lable>
+                <li>
+                    <lable>Receipt</lable>
+                    
+                    <h2>{{ $ticket->ticket_receipt }}</h2>
+                    
+                </li>
+                <li>
+                    <lable>Người request</lable>
+                    
+                    <h2>{{ $ticket->user_owner->fullname }}</h2>
+                    
+                </li>
+                <li>
+                    <lable>Ngày request</lable>
+                    
+                    <h2>{{ $ticket->created_at }}</h2>
+                    
+                </li>
+                <li>
+                    <lable>Priority</lable>
+                    
+                        <h2>
+                            <span class="ticket-priority {{ $ticket->priority_data['class'] }}">
+                                {{ $ticket->priority_data['text'] }}
+                            </span>
+                        </h2>
                         
-                        <h2>{{ $ticket->ticket_reciept }}</h2>
-                        
-                    </li>
-                    <li>
-                        <lable>Người request</lable>
-                        
-                        <h2>{{ $ticket->user_owner->fullname }}</h2>
-                        
-                    </li>
-                    <li>
-                        <lable>Ngày request</lable>
-                        
-                        <h2>{{ $ticket->created_at }}</h2>
-                        
-                    </li>
-                    <li>
-                        <lable>Priority</lable>
-                        
-                            <h2>
-                                <span class="ticket-priority {{ $ticket->priority_data['class'] }}">
-                                    {{ $ticket->priority_data['text'] }}
-                                </span>
-                            </h2>
-                            
-                    </li>
-                    <li>
-                        <lable>Support type</lable>
-                        
-                            <h2>
-                                <span class="ticket-support-type {{ $ticket->support_type_data['class'] }}">
-                                    {{ $ticket->support_type_data['text'] }}
-                                </span>
+                </li>
+                <li>
+                    <lable>Support type</lable>
+                    
+                        <h2>
+                            <span class="ticket-support-type {{ $ticket->support_type_data['class'] }}">
+                                {{ $ticket->support_type_data['text'] }}
+                            </span>
 
-                            </h2>
-                            
-                    </li>
-                    <li>
-                        <lable>Status</lable>
+                        </h2>
                         
-                            <h2>
-                                <span class="ticket-status {{ $ticket->status_data['class'] }}">
-                                    {{ $ticket->status_data['text'] }}
-                                </span>
+                </li>
+                <li>
+                    <lable>Status</lable>
+                    
+                        <h2>
+                            <span class="ticket-status {{ $ticket->status_data['class'] }}">
+                                {{ $ticket->status_data['text'] }}
+                            </span>
 
-                            </h2>
-                            
-                    </li>
-                    <li style="height: 200px;">
-                        <lable>Issue description</lable>
+                        </h2>
                         
-                        <p>{{ $ticket->description }}</p>
-                        
-                    </li>
+                </li>
+                <li style="height: 200px;">
+                    <lable>Issue description</lable>
+                    
+                    <p>{{ $ticket->description }}</p>
+                    
+                </li>
 
-                    <li>
-                        <lable>Attachments ({{ $ticket->active_attachments->count() }} files)</lable>
-                        <x-common-attachments-table>
-                                @foreach ($ticket->active_attachments as $attachment)
-                                    @if(in_array($attachment->type_of_ticket, [1])) {{-- Cách viết gọn thay cho switch --}}
-                                    <tr>
-                                        <td>{{ $attachment->name }}</td>
-                                        <td>
-                                            
-                                            
-                                            <a href="{{ asset('attachments/' . $attachment->file_path) }}" target="_blank" class="btn btn-info">
-                                                <i class="ti-eye"></i>
-                                            </a>
-                                            
-                                            
-                                            <a href="{{ asset('attachments/' . $attachment->file_path) }}" download="{{ $attachment->name }}" class="btn btn-secondary">
-                                                <i class="ti-download"></i>
-                                            </a>
+                <li>
+                    <lable>Attachments ({{ $ticket->active_attachments->count() }} files)</lable>
+                    <x-common-attachments-table>
+                            @foreach ($ticket->active_attachments as $attachment)
+                                @if(in_array($attachment->type_of_ticket, [1])) {{-- Cách viết gọn thay cho switch --}}
+                                <tr>
+                                    <td>{{ $attachment->name }}</td>
+                                    <td>
+                                        
+                                        
+                                        <a href="{{ asset('attachments/' . $attachment->file_path) }}" target="_blank" class="btn btn-info">
+                                            <i class="ti-eye"></i>
+                                        </a>
+                                        
+                                        
+                                        <a href="{{ asset('attachments/' . $attachment->file_path) }}" download="{{ $attachment->name }}" class="btn btn-secondary">
+                                            <i class="ti-download"></i>
+                                        </a>
 
-                                            
-                                        </td>
-                                    </tr>
-                                    @endif
-                                @endforeach
-                        </x-common-attachments-table>
-                            
+                                        
+                                    </td>
+                                </tr>
+                                @endif
+                            @endforeach
+                    </x-common-attachments-table>
                         
-                    </li>
+                    
+                </li>
                     
                 @if(($ticket->status == 1 || $ticket->status == 4 || $ticket->status == 5) && $ticket->user_id == auth()->user()->id)
                 <x-slot:footer>
@@ -301,8 +297,8 @@
 
             <x-common-ticket-form title="Edit Ticket EEG" id="edit-ticket-details" action1="{{ route('edit-software-ticket', $ticket->id) }}">
                 @method('PATCH')
-                <label>Reciept</label>
-                <input type="text" class="ticket-form-body-input" name="ticket_reciept" value=" {{ $ticket->ticket_reciept }}">
+                <label>Receipt</label>
+                <input type="text" class="ticket-form-body-input" name="ticket_receipt" value=" {{ $ticket->ticket_receipt }}">
 
                 <label>Support Type</label>
                 <select name="support_type" class="ticket-form-body-input">

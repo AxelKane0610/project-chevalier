@@ -632,7 +632,8 @@ h1, h2, h3 {
     justify-content: space-evenly;
 }
 
-.software-tickets-content {
+.laser-engraving-ticket-content,
+.software-ticket-content {
     display: grid;
     grid-template-columns: 30vw 30vw 30vw;
     width: 100%;
@@ -710,7 +711,7 @@ h1, h2, h3 {
     background: rgb(84,195,240);
 }
 
-.ticket-status.complete,
+.ticket-status.completed,
 .ticket-status.open {
     background: rgb(72,176,79);
 }
@@ -726,6 +727,10 @@ h1, h2, h3 {
 .ticket-status.cancel,
 .ticket-status.rejected {
     background: rgb(239,81,34);
+}
+
+.ticket-status.not-started {
+    background: rgb(128,128,128);
 }
 
 .ticket-support-type.add-part-product {
@@ -765,9 +770,5 @@ h1, h2, h3 {
 }
 
 
-
-
-
--
 
 

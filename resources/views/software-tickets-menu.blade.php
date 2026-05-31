@@ -40,7 +40,7 @@
                     <table id="pending-software-tickets-table" class="common-table" width="100%" >
                         <tr>
                             <th width="5%"></th>
-                            <th width="14%">Reciept</th>
+                            <th width="14%">Receipt</th>
                             <th width="20%">Type of request</th>
                             <th width="39%">Issue Description</th>
                             <th width="11%">Priority</th>
@@ -56,7 +56,7 @@
                                                 <button><i class="ti-arrow-right" ></i></button>
                                             </a>
                                         </td>
-                                        <td>{{ $ticket->ticket_reciept }}</td>
+                                        <td>{{ $ticket->ticket_receipt }}</td>
                                         <td>
                                             
                                             <span class="ticket-support-type {{ $ticket->support_type_data['class'] }}">
@@ -143,8 +143,8 @@
 
         <x-common-ticket-form title="EEG Software Support" action1="/create-software-ticket" id="create-sw-ticket-form"> <!-- action="/create-software-ticket" method="POST"> -->
 
-            <label class="ticket-form-body-input">Reciept</label>
-            <input type="text" class="ticket-form-body-input" placeholder="Nhập số phiếu tại đây" name="ticket_reciept" required>
+            <label class="ticket-form-body-input">Receipt</label>
+            <input type="text" class="ticket-form-body-input" placeholder="Nhập số phiếu tại đây" name="ticket_receipt" required>
 
             <label class="ticket-form-body-input">Support Type</label>
             <select name="support_type" class="ticket-form-body-input">

@@ -54,11 +54,18 @@
                                                 <button><i class="ti-arrow-right" ></i></button>
                                             </a>
                                         </td>
-                                        <td>{{ $ticket->receipt }}</td>
+                                        <td>{{ $ticket->ticket_receipt }}</td>
                                         <td>{{ $ticket->info_base }}</td>
                                         <td>{{ $ticket->description }}</td>
-                                        <td>{{ $ticket->priority }}</td>
-                                        <td>{{ $ticket->status }}</td>
+                                        <td>
+                                            <span class="ticket-priority {{ $ticket->priority_data['class'] }}">
+                                                {{ $ticket->priority_data['text'] }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="ticket-status {{ $ticket->status_data['class'] }}">
+                                                {{ $ticket->status_data['text'] }}
+                                            </span></td>
                                     </tr>
                                 
                             @endforeach

@@ -32,13 +32,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/attachments/{folder}/{id}/{filename}', [AttachmentController::class, 'show']);
 
-    // Chỉ cho phép ROLE_SUPER_ADMIN truy cập vào route này, nếu không sẽ bị trả về lỗi 403 Forbidden
-    // Route::get('/software-tickets-menu', function () {
-    //     $tickets = EEG_Software_Ticket::where('user_id', auth()->id())->get();
-    //     return view('software-tickets-menu', compact('tickets'));
-    // })->middleware('role:ROLE_SUPER_ADMIN,ROLE_SW_TICKET_USER,ROLE_TICKET_SW_ADMIN'); // Sử dụng Gate 'check_role' để kiểm tra nếu user có role 'ROLE_SUPER_ADMIN' thì mới cho phép truy cập vào route này
-
-    // Route::get('/software-tickets-menu-details/{id}', [EEGTicketsController::class, 'Show_Software_Ticket_Details'])->middleware('role:ROLE_SUPER_ADMIN,ROLE_SW_TICKET_USER,ROLE_TICKET_SW_ADMIN');
+    
 
     Route::middleware(['role:ROLE_SUPER_ADMIN,ROLE_SW_TICKET_USER,ROLE_TICKET_SW_ADMIN'])->group(function () {
     
@@ -53,18 +47,25 @@ Route::middleware(['auth'])->group(function () {
         Route::patch('/re-open-ticket/{id}', [EEGTicketsController::class, 'Re_Open_Ticket']) ->name('re-open-ticket');
         Route::patch('/close-software-ticket/{id}', [EEGTicketsController::class, 'Close_Software_Ticket']) ->name('close-software-ticket');
         Route::patch('/edit-software-ticket/{id}',[EEGTicketsController::class, 'Edit_Software_Ticket'])->name('edit-software-ticket');
+        Route::patch('/change-ticket-software-status-to-in-progress/{id}', [EEGTicketsController::class, 'Change_Ticket_Software_Status_To_In_Progress'])->name('change-ticket-software-status-to-in-progress');
         Route::post('/approve-ticket/{id}', [EEGTicketsController::class, 'Approve_Ticket'])->name('approve-ticket');
         Route::post('/reject-ticket/{id}', [EEGTicketsController::class, 'Reject_Ticket'])->name('reject-ticket');
     });
 
-    Route::middleware(['role:ROLE_SUPER_ADMIN,ROLE_TICKET_SW_ADMIN'])->group(function () {
+    Route::middleware(['role:ROLE_LASER_ENGRAVING_USER,ROLE_LASER_ENGRAVING_ADMIN'])->group(function () {
         Route::get('/laser-engraving-menu', [LaserEngravingTicketsController::class, 'Show_Pending_Tickets']);
+        Route::get('/laser-engraving-menu-details/{id}', [LaserEngravingTicketsController::class, 'Show_Laser_Engraving_Ticket_Details']);
         Route::post('/create-laser-engraving-ticket', [LaserEngravingTicketsController::class, 'Create_Laser_Engraving_Ticket']);
+        Route::patch('/edit-laser-engraving-ticket/{id}', [LaserEngravingTicketsController::class, 'Edit_Laser_Engraving_Ticket'])->name('edit-laser-engraving-ticket');
+        Route::post('/add-comment-laser-engraving-ticket/{id}', [LaserEngravingTicketsController::class, 'Add_Comment_Laser_Engraving_Ticket']) ->name('add-comment-laser-engraving-ticket');
+        Route::patch('/change-laser-engraving-status-to-in-progress/{id}', [LaserEngravingTicketsController::class, 'Change_Laser_Engraving_Status_To_In_Progress'])->name('change-laser-engraving-status-to-in-progress');
+        Route::patch('/close-laser-engraving-ticket/{id}', [LaserEngravingTicketsController::class, 'Close_Laser_Engraving_Ticket'])->name('close-laser-engraving-ticket');
     });
 
     Route::middleware(['role:ROLE_SUPER_ADMIN'])->group(function () {
         // Các route chỉ dành cho ROLE_SUPER_ADMIN
         Route::get('/subk-management', [UserController::class, 'index']);
+        
         Route::post('/create-new-user', [UserController::class,'Create_New_User']) ->name('create-new-user');
     });
 

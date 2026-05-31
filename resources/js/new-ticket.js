@@ -62,7 +62,7 @@ document.addEventListener('submit', function (e) {
                             <button><i class="ti-arrow-right" ></i></button>
                         </a>
                     </td>
-                    <td>${new_ticket.ticket_reciept}</td>
+                    <td>${new_ticket.ticket_receipt}</td>
                     <td>${new_ticket.support_type}</td>
                     <td>${new_ticket.description}</td>
                     <td>${new_ticket.priority}</td>
