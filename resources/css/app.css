@@ -427,6 +427,7 @@ h1, h2, h3 {
     margin-left: auto;
 }
 
+.thermal-event-tickets-menu-content,
 .laser-engraving-menu-content,
 .software-tickets-menu-content {
     padding: 20px;
@@ -461,7 +462,10 @@ h1, h2, h3 {
     border-radius: 5%;
     padding: 20px;
     box-shadow: 0 4px 10px 5px rgba(0,0,0,0.2);
+    
 }
+
+
 
 
 .ticket-form-header {
@@ -486,7 +490,7 @@ h1, h2, h3 {
 .ticket-form-body {
     display: flex;
     flex-direction: column;
-    max-height: 80vh;
+    max-height: 70vh;
     /* gap: 10px; */
     overflow-y:auto;
     /* box-sizing: border-box; */
@@ -513,7 +517,7 @@ h1, h2, h3 {
 
 .ticket-form-footer {
     display: flex;
-    align-items: center;
+    /* align-items: center; */
     justify-content: center;
 }
 .ticket-form-footer > button {
@@ -532,7 +536,8 @@ h1, h2, h3 {
 
 #fileList > li > button > i {
     color: red;
-    padding: 5px;
+    /* margin-left: 10px; */
+    /* padding: 5px; */
 }
 
 #fileList > li > button > i:hover {

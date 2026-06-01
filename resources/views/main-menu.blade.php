@@ -157,7 +157,7 @@
                 
             </a>
 
-            <a href="#">
+            <a href="{{ url('/thermal-event-tickets-menu') }}">
 
                 <div class="overheat-request-btn">
                     <div class="ticket-img-description">

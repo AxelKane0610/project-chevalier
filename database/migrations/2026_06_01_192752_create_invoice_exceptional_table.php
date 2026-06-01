@@ -11,15 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('laser_engraving_tickets', function (Blueprint $table) {
+        Schema::create('invoice_exceptional_tickets', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->string('ticket_receipt');
             $table->enum('status', ['1', '2', '3', '4'])->default('1');
-            $table->enum('priority', ['1', '2', '3']);
-            $table->string('info_base');
-            $table->string('barcode_info')->nullable()->change(); // Thêm trường barcode_info, cho phép null và có thể thay đổi kiểu dữ liệu nếu cần
-            $table->longText('description');
+            $table->string('invoice_number');
+            $table->string('serial_number');
+            $table->string('product_number');
+            $table->date('expired_date');
+            $table->date('invoice_date');
+            $table->string('product_model');
+            $table->string('description');
+            $table->string('retail_name');
+            $table->string('company_customer_name');
             $table->timestamps();
         });
     }
@@ -29,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('laser_engraving_tickets');
+        Schema::dropIfExists('invoice_exceptional_tickets');
     }
 };

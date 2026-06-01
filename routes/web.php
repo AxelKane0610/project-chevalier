@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\AttachmentController;
 use App\Models\Laser_Engraving_Tickets_Model;
 use App\Http\Controllers\LaserEngravingTicketsController;
+use App\Http\Controllers\ThermalEventExceptionalTicketsController;
 
 Route::get('/', function () {
     // Auth::logout();
@@ -52,7 +53,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/reject-ticket/{id}', [EEGTicketsController::class, 'Reject_Ticket'])->name('reject-ticket');
     });
 
-    Route::middleware(['role:ROLE_LASER_ENGRAVING_USER,ROLE_LASER_ENGRAVING_ADMIN'])->group(function () {
+    Route::middleware(['role:ROLE_LASER_ENGRAVING_USER,ROLE_LASER_ENGRAVING_ADMIN,ROLE_SUPER_ADMIN'])->group(function () {
         Route::get('/laser-engraving-menu', [LaserEngravingTicketsController::class, 'Show_Pending_Tickets']);
         Route::get('/laser-engraving-menu-details/{id}', [LaserEngravingTicketsController::class, 'Show_Laser_Engraving_Ticket_Details']);
         Route::post('/create-laser-engraving-ticket', [LaserEngravingTicketsController::class, 'Create_Laser_Engraving_Ticket']);
@@ -60,6 +61,16 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/add-comment-laser-engraving-ticket/{id}', [LaserEngravingTicketsController::class, 'Add_Comment_Laser_Engraving_Ticket']) ->name('add-comment-laser-engraving-ticket');
         Route::patch('/change-laser-engraving-status-to-in-progress/{id}', [LaserEngravingTicketsController::class, 'Change_Laser_Engraving_Status_To_In_Progress'])->name('change-laser-engraving-status-to-in-progress');
         Route::patch('/close-laser-engraving-ticket/{id}', [LaserEngravingTicketsController::class, 'Close_Laser_Engraving_Ticket'])->name('close-laser-engraving-ticket');
+    });
+
+    Route::middleware(['role:ROLE_THERMAL_EVENT_USER,ROLE_THERMAL_EVENT_ADMIN,ROLE_SUPER_ADMIN'])->group(function () {
+        Route::get('/thermal-event-tickets-menu', [ThermalEventExceptionalTicketsController::class, 'Show_Pending_Tickets']);
+        Route::get('/thermal-event-tickets-menu-details/{id}', [ThermalEventExceptionalTicketsController::class, 'Show_Thermal_Event_Ticket_Details']);
+        Route::post('/create-thermal-event-ticket', [ThermalEventExceptionalTicketsController::class, 'Create_Thermal_Event_Ticket']);
+        Route::patch('/edit-thermal-event-ticket/{id}', [ThermalEventExceptionalTicketsController::class, 'Edit_Thermal_Event_Ticket'])->name('edit-thermal-event-ticket');
+        Route::post('/add-comment-thermal-event-ticket/{id}', [ThermalEventExceptionalTicketsController::class, 'Add_Comment_Thermal_Event_Ticket']) ->name('add-comment-thermal-event-ticket');
+        Route::patch('/change-thermal-event-status-to-in-progress/{id}', [ThermalEventExceptionalTicketsController::class, 'Change_Thermal_Event_Status_To_In_Progress'])->name('change-thermal-event-status-to-in-progress');
+        Route::patch('/close-thermal-event-ticket/{id}', [ThermalEventExceptionalTicketsController::class, 'Close_Thermal_Event_Ticket'])->name('close-thermal-event-ticket');
     });
 
     Route::middleware(['role:ROLE_SUPER_ADMIN'])->group(function () {
