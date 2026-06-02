@@ -3,7 +3,7 @@
     <head>
         <title>Project Chevalier</title>
         <meta charset="utf-8">
-        @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/css/icons/themify-icons.css'])
+        @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/thermal-event.js', 'resources/css/icons/themify-icons.css'])
         
     </head>
 
@@ -38,6 +38,7 @@
                         <tr>
                             <th width="5%"></th>
                             <th width="14%">Receipt</th>
+                            <th width="15%">User Owner</th>
                             <th width="39%">Issue Description</th>
                             <th width="11%">Status</th>
                         </tr>
@@ -52,6 +53,7 @@
                                             </a>
                                         </td>
                                         <td>{{ $ticket->ticket_receipt }}</td>
+                                        <td>{{ $ticket->user_owner->fullname ?? 'N/A' }}</td>
                                         <td>{{ $ticket->description }}</td>
                                         
                                         <td>

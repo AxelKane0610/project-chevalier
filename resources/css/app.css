@@ -637,6 +637,7 @@ h1, h2, h3 {
     justify-content: space-evenly;
 }
 
+.thermal-event-ticket-content,
 .laser-engraving-ticket-content,
 .software-ticket-content {
     display: grid;

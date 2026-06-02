@@ -165,25 +165,17 @@
                                 <tr>
                                     <td>{{ $attachment->name }}</td>
                                     <td>
-                                        
-                                        
                                         <a href="{{ asset('attachments/' . $attachment->file_path) }}" target="_blank" class="btn btn-info">
                                             <i class="ti-eye"></i>
                                         </a>
-                                        
-                                        
                                         <a href="{{ asset('attachments/' . $attachment->file_path) }}" download="{{ $attachment->name }}" class="btn btn-secondary">
                                             <i class="ti-download"></i>
                                         </a>
-
-                                        
                                     </td>
                                 </tr>
                                 @endif
                             @endforeach
                     </x-common-attachments-table>
-                        
-                    
                 </li>
                     
                 @if(($ticket->status == 1 || $ticket->status == 4 || $ticket->status == 5) && $ticket->user_id == auth()->user()->id)

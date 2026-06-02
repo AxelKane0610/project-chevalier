@@ -56,8 +56,8 @@ class Thermal_Event_Exceptional_Tickets_Model extends Model
     {
         return match ($this->status){
              "1" => [
-                'text' => 'Not started',
-                'class' => 'not-started'
+                'text' => 'Open',
+                'class' => 'open'
             ],
 
             "2" => [
