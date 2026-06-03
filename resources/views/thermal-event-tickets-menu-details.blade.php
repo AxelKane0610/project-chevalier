@@ -26,6 +26,60 @@
                     <button type="submit"><i class="ti-layout-grid2"></i>Quick Navigation</button>
                 </form>
             </li>
+
+            @switch($ticket->status)
+                @case(1)
+                    @if( (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_THERMAL_EVENT_USER')) && $ticket->user_id == auth()->user()->id)
+                        <li>
+                            <form data-target="send-approval-form" class="js-input-required-btn">
+                                <button type="button"><i class="ti-angle-double-right"></i>Send Approval </button>
+                            </form>
+                        </li>
+
+                    @endif
+                @break
+
+                @case(2)
+                    @if(auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_THERMAL_EVENT_LV1_APPROVER') )
+                        <li>
+                            <form id="approve-ticket-form" class="js-input-required-btn" data-target="approve-ticket-form" action="{{ route('thermal-event-approve-lv1', $ticket->id) }}" method="POST">
+                                
+                                <button type="submit"><i class="ti-thumb-up"></i>Approve Lv1</button>
+                            </form>
+                        </li>
+
+                        <li>
+                            <form id="reject-ticket-form" class="js-input-required-btn" data-target="reject-ticket-form" action="{{ route('thermal-event-reject', $ticket->id) }}" method="POST">
+                                @csrf
+                                <button type="submit"><i class="ti-thumb-down"></i>Reject</button>
+                            </form>
+                        </li>
+                    @endif
+                    
+                @break
+
+                @case(3)
+                    @if(auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_THERMAL_EVENT_LV2_APPROVER') )
+                        <li>
+                            <form id="approve-ticket-form" class="js-input-required-btn" data-target="approve-ticket-form" action="{{ route('thermal-event-approve-lv2', $ticket->id) }}" method="POST">
+                                @csrf
+                                <button type="submit"><i class="ti-thumb-up"></i>Fully approve</button>
+                            </form>
+                        </li>
+
+                        <li>
+                            <form id="reject-ticket-form" class="js-input-required-btn" data-target="reject-ticket-form" action="{{ route('thermal-event-reject', $ticket->id) }}" method="POST">
+                                @csrf
+                                <button type="submit"><i class="ti-thumb-down"></i>Reject</button>
+                            </form>
+                        </li>
+                    @endif
+                    
+                @break
+
+                
+                
+            @endswitch
         </x-common-header>
 
         <div class="thermal-event-ticket-content">
@@ -33,10 +87,21 @@
                 <h2>Tickets Details</h2>
                 <li>
                     <lable>Receipt</lable>
-                    
                     <h2>{{ $ticket->ticket_receipt }}</h2>
                     
                 </li>
+
+                <li>
+                    <lable>Status</lable>
+                        <h2>
+                            <span class="ticket-status {{ $ticket->status_data['class'] }}">
+                                {{ $ticket->status_data['text'] }}
+                            </span>
+
+                        </h2>
+                        
+                </li>
+
                 <li>
                     <lable>Serial Number</lable>
                     <h2>{{ $ticket->serial_number }}</h2>
@@ -62,7 +127,13 @@
 
                 <li>
                     <lable>Customer Type</lable>
-                    <h2>{{ $ticket->customer_type }}</h2>
+                    <!-- <h2>{{ $ticket->customer_type }}</h2> -->
+                     <h2>
+                        <span class="ticket-customer-type {{ $ticket->customer_type_data['class'] }}">
+                            {{ $ticket->customer_type_data['text'] }}
+                        </span>
+                     </h2>
+                    
                     
                 </li>
 
@@ -102,16 +173,7 @@
                     
                 </li>
 
-                <li>
-                    <lable>Status</lable>
-                        <h2>
-                            <span class="ticket-status {{ $ticket->status_data['class'] }}">
-                                {{ $ticket->status_data['text'] }}
-                            </span>
-
-                        </h2>
-                        
-                </li>
+                
                 <li style="height: 200px;">
                     <lable>Issue description</lable>
                     

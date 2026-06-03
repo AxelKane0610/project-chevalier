@@ -61,20 +61,51 @@ class Thermal_Event_Exceptional_Tickets_Model extends Model
             ],
 
             "2" => [
-                'text' => 'In Progress',
-                'class' => 'in-progress'
+                'text' => 'Waiting for verifier',
+                'class' => 'waiting-for-verifier'
             ],
 
             "3" => [
+                'text' => 'Waiting for approver',
+                'class' => 'waiting-for-approver'
+            ],
+
+            "4" => [
                 'text' => 'Completed',
                 'class' => 'completed'
             ],
 
-            "4" => [
+            "5" => [
                 'text' => 'Rejected',
                 'class' => 'rejected'
             ],
 
+
+
+            default => [
+                'text' => 'Unknown',
+                'class' => 'unknown'
+            ]
+        };
+    }
+
+    public function getCustomerTypeDataAttribute()
+    {
+        return match ($this->customer_type){
+             "1" => [
+                'text' => 'Khách hàng lẻ',
+                'class' => 'open'
+            ],
+
+            "2" => [
+                'text' => 'Khách hàng công ty/doanh nghiệp',
+                'class' => 'waiting-for-verifier'
+            ],
+
+            "3" => [
+                'text' => 'T1/Đại lý bán lẻ',
+                'class' => 'waiting-for-approver'
+            ],
 
 
             default => [

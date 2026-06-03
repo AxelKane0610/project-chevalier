@@ -739,6 +739,14 @@ h1, h2, h3 {
     background: rgb(128,128,128);
 }
 
+.ticket-status.waiting-for-verifier {
+    background: rgb(51,106,51);
+}
+
+.ticket-status.waiting-for-approver {
+    background: rgb(136,25,81);
+}
+
 .ticket-support-type.add-part-product {
     background: rgb(51,106,51);
 }

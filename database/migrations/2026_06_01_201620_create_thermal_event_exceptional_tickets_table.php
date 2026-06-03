@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->string('ticket_receipt');
-            $table->enum('status', ['1', '2', '3', '4'])->default('1');
+            $table->enum('status', ['1', '2', '3', '4','5'])->default('1');
             $table->string('serial_number');
             $table->string('product_number');
             $table->string('product_model');

@@ -59,7 +59,7 @@ class ThermalEventExceptionalTicketsController extends Controller
 
         $validate_data['user_id'] = auth()->id();
         $validate_data['ticket_receipt'] = strip_tags($validate_data['ticket_receipt']);
-        $validate_data['status'] = 1;
+        $validate_data['status'] = 2;
         $validate_data['serial_number'] = strip_tags($validate_data['serial_number']);
         $validate_data['product_number'] = strip_tags($validate_data['product_number']);
         $validate_data['product_model'] = strip_tags($validate_data['product_model']);
@@ -239,6 +239,85 @@ class ThermalEventExceptionalTicketsController extends Controller
         
 
         return back()->with('success');
+    }
+
+    public function Thermal_Event_Approve_Lv1(Request $request, $id){
+        $ticket = Thermal_Event_Exceptional_Tickets_Model::with('user_owner')->findOrFail($id);
+        if ($ticket->status != 2) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Không thể approve ticket. Ticket không ở trạng thái đang chờ phê duyệt level 1.',
+            ], 400);
+        }
+        else if ($ticket->status == 2){
+            $ticket->status = 3;
+            $ticket->save();
+
+            tracking_info_service::add(
+                $ticket->id,
+                auth()->id(),
+                10, //1 là mã cho software ticket
+                'approved ticket at',
+            );
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Ticket approved !',
+            ]);
+        }
+    }
+
+    public function Thermal_Event_Approve_Lv2(Request $request, $id){
+        $ticket = Thermal_Event_Exceptional_Tickets_Model::with('user_owner')->findOrFail($id);
+        if ($ticket->status != 3) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Không thể approve ticket. Ticket không ở trạng thái đang chờ phê duyệt level 1.',
+            ], 400);
+        }
+        else if ($ticket->status == 3){
+            $ticket->status = 4;
+            $ticket->save();
+
+            tracking_info_service::add(
+                $ticket->id,
+                auth()->id(),
+                10, //1 là mã cho software ticket
+                'fully approved ticket at',
+            );
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Ticket approved !',
+            ]);
+        }
+    }
+
+    public function Thermal_Event_Reject(Request $request, $id){
+        $ticket = Thermal_Event_Exceptional_Tickets_Model::with('user_owner')->findOrFail($id);
+        if ($ticket->status == 1 || $ticket->status == 4 || $ticket->status == 5) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Không thể reject ticket. Ticket không ở trạng thái đang chờ phê duyệt.',
+            ], 400);
+        }
+        else {
+            $ticket->status = 5;
+            $ticket->save();
+
+            tracking_info_service::add(
+                $ticket->id,
+                auth()->id(),
+                10, //1 là mã cho software ticket
+                'rejected ticket at',
+            );
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Ticket rejected !',
+            ]);
+        }
+        
     }
 
     
