@@ -77,6 +77,18 @@
                     
                 @break
 
+                @case(4)
+                @case(5)
+                    @if($ticket->user_id == auth()->user()->id || auth()->user()->hasRole('ROLE_SUPER_ADMIN'))
+                        <li>
+                            <form id="re-open-ticket-form" class="js-input-required-btn" data-target="re-open-ticket-form" action="{{ route('re-open-thermal-event-ticket', $ticket->id) }}" method="PATCH">
+                                @csrf
+                                <button type="submit"><i class="ti-back-left"></i>Request Re-Open</button>
+                            </form>
+                        </li>
+                    @endif
+                @break
+
                 
                 
             @endswitch

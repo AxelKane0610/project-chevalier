@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\Rules\Can;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\AttachmentController;
+use App\Http\Controllers\InvoiceExceptionalTicketsController;
 use App\Models\Laser_Engraving_Tickets_Model;
 use App\Http\Controllers\LaserEngravingTicketsController;
 use App\Http\Controllers\ThermalEventExceptionalTicketsController;
@@ -73,6 +74,13 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/thermal-event-approve-lv1/{id}', [ThermalEventExceptionalTicketsController::class,'Thermal_Event_Approve_Lv1'])->name('thermal-event-approve-lv1');
         Route::post('/thermal-event-approve-lv2/{id}', [ThermalEventExceptionalTicketsController::class,'Thermal_Event_Approve_Lv2'])->name('thermal-event-approve-lv2');
         Route::post('/thermal-event-reject/{id}', [ThermalEventExceptionalTicketsController::class,'Thermal_Event_Reject'])->name('thermal-event-reject');
+        Route::patch('/re-open-thermal-event-ticket/{id}', [ThermalEventExceptionalTicketsController::class,'Thermal_Event_Re_Open'])->name('re-open-thermal-event-ticket');
+    });
+
+    Route::middleware(['role:ROLE_SUPER_ADMIN'])->group(function () {
+        Route::get('/invoice-exceptional-menu', [InvoiceExceptionalTicketsController::class, 'Show_Pending_Tickets']);
+        Route::post('/create-invoice-exceptional-ticket', [InvoiceExceptionalTicketsController::class, 'Create_Invoice_Exceptional_Tickets']);
+
     });
 
     Route::middleware(['role:ROLE_SUPER_ADMIN'])->group(function () {

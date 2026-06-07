@@ -106,7 +106,7 @@
 
             </a>
 
-            <a href="#">
+            <a href="{{ url('/invoice-exceptional-menu') }}">
 
                 <div class="invoice-exceptional-btn">
                     <div class="ticket-img-description">
@@ -114,7 +114,7 @@
                     </div>
                     
                     <h2>Invoice Exceptional</h2>
-                    <p>Xin approve đối với các trường hợp hóa đơn không hợp lệ</p>
+                    <p>Xin approve đối với các trường hợp hóa đơn xuất sau hoặc cần active bảo hành </p>
                     <div class="card-footer">
                         <div class="card-footer-text">Learn more</div>
                         <div class="card-footer-icon"><i class="ti-angle-right"></i></div>

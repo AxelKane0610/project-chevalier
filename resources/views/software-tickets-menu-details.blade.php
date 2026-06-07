@@ -80,7 +80,7 @@
                         @case(4)
                         @case(5)
                         @case(6)
-                            @if($ticket->user_id == auth()->user()->id)
+                            @if($ticket->user_id == auth()->user()->id || auth()->user()->hasRole('ROLE_SUPER_ADMIN'))
                             <li>
                                 <form id="re-open-ticket-form" class="js-input-required-btn" data-target="re-open-ticket-form" action="{{ route('re-open-ticket', $ticket->id) }}" method="PATCH">
                                     @csrf

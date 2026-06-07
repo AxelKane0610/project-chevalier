@@ -12,7 +12,9 @@ export default defineConfig({
                 'resources/js/software-ticket-details.js', 
                 'resources/js/laser-engraving.js', 
                 'resources/js/thermal-event.js',
-                'resources/css/icons/themify-icons.css'],
+                'resources/css/icons/themify-icons.css',
+                'resources/js/invoice-exceptional.js'
+            ],
             refresh: true,
         }),
         tailwindcss(),
