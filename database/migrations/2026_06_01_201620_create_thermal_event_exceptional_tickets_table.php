@@ -23,10 +23,6 @@ return new class extends Migration
             $table->string('cdax_id');
             $table->enum('customer_type', ['1', '2', '3']);
             $table->string('company_customer_name');
-            $table->string('part_mo_number');
-            $table->string('part_number');
-            $table->string('part_description');
-            $table->string('part_ct_number');
             $table->string('user_observations');
             $table->timestamps();
         });

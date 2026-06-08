@@ -20,10 +20,6 @@ class Thermal_Event_Exceptional_Tickets_Model extends Model
         'cdax_id',
         'customer_type',
         'company_customer_name',
-        'part_mo_number',
-        'part_number',
-        'part_description',
-        'part_ct_number',
         'user_observations',
     ];
 

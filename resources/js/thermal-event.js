@@ -32,14 +32,14 @@ document.addEventListener('submit', function (e) {
             `
                 <tr>
                     <td>
-                        <a href="/software-tickets-menu-details/${new_ticket.ticket_id}">
+                        <a href="/thermal-event-tickets-menu-details/${new_ticket.ticket_id}">
                             <button><i class="ti-arrow-right" ></i></button>
                         </a>
                     </td>
                     <td>${new_ticket.ticket_receipt}</td>
-                    <td>${new_ticket.support_type}</td>
+                    <td>${new_ticket.user_owner.name}</td>
                     <td>${new_ticket.description}</td>
-                    <td>${new_ticket.priority}</td>
+                    <td>${new_ticket.status}</td>
                 </tr>
             
             `;
@@ -312,3 +312,36 @@ document.addEventListener('submit', function (e) {
                 });
     }
 });
+
+const check_multipart_affected = document.getElementById('multipart_affected_check');
+const partsDetailsContainer = document.getElementById('thermal_event_parts_details');
+
+function togglePartFields() {
+
+    const inputs = partsDetailsContainer.querySelectorAll('input');
+
+    if (check_multipart_affected.value === '1') {
+
+        partsDetailsContainer.style.display = 'block';
+
+        inputs.forEach(input => {
+            input.required = true;
+            input.disabled = false;
+        });
+
+    } else {
+
+        partsDetailsContainer.style.display = 'none';
+
+        inputs.forEach(input => {
+            input.required = false;
+            input.disabled = true;
+        });
+
+    }
+}
+
+check_multipart_affected.addEventListener('change', togglePartFields);
+
+// Chạy khi load trang
+togglePartFields();

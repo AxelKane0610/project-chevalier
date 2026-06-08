@@ -100,22 +100,30 @@
                 <label>Company/Customer Name</label>
                 <input type="text" class="ticket-form-body-input" placeholder="Nhập tên khách hàng/công ty" name="company_customer_name" required>
 
-                <label>Part MO Number</label>
-                <input type="text" class="ticket-form-body-input" placeholder="Nhập số MO của part" name="part_mo_number" required>
-
-                <label>Part Number</label>
-                <input type="text" class="ticket-form-body-input" placeholder="Nhập mã part" name="part_number" required>
-
-                <label>Part Description</label>
-                <input type="text" class="ticket-form-body-input" placeholder="Nhập tên part" name="part_description" required>
-
-                <label>Part CT Number</label>
-                <input type="text" class="ticket-form-body-input" placeholder="Nhập CT của part, nếu không có để N/A" name="part_ct_number" required>
-
                 <label>Quan sát thực tế</label>
                 <input type="text" class="ticket-form-body-input" placeholder="Nhập quan sát thực tế (không nước, không côn trùng, ...)" name="user_observations" required>
 
-                <label class="ticket-form-body-input">Attach File:</label>
+                <label>Nhiều part bị ảnh hưởng ?</label>
+                <select name="multipart_affected_check" class="ticket-form-body-input" id="multipart_affected_check">
+                    <option value="1">Chỉ có 1 part bị ảnh hưởng</option>
+                    <option value="2">Có nhiều hơn 1 part bị ảnh hưởng</option>
+                </select>
+
+                <div id="thermal_event_parts_details">
+                    <label>Part MO Number</label>
+                    <input type="text" class="ticket-form-body-input" placeholder="Nhập số MO của part" name="part_mo_number" required>
+
+                    <label>Part Number</label>
+                    <input type="text" class="ticket-form-body-input" placeholder="Nhập mã part" name="part_number" required>
+
+                    <label>Part Description</label>
+                    <input type="text" class="ticket-form-body-input" placeholder="Nhập tên part" name="part_description" required>
+
+                    <label>Part CT Number</label>
+                    <input type="text" class="ticket-form-body-input" placeholder="Nhập CT của part, nếu không có để N/A" name="part_ct_number" required>
+                </div>
+                
+                <label>Attach File:</label>
                 <input class="ticket-form-body-input" type="file" name="attachments[]" multiple id="fileInput">
                 <ul id="fileList"></ul>
 

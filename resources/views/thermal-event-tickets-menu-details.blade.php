@@ -156,30 +156,6 @@
                 </li>
 
                 <li>
-                    <lable>Part MO Number</lable>
-                    <h2>{{ $ticket->part_mo_number }}</h2>
-                    
-                </li>
-
-                <li>
-                    <lable>Part Number</lable>
-                    <h2>{{ $ticket->part_number }}</h2>
-                    
-                </li>
-
-                <li>
-                    <lable>Part Description</lable>
-                    <h2>{{ $ticket->part_description }}</h2>
-                    
-                </li>
-
-                <li>
-                    <lable>Part CT Number</lable>
-                    <h2>{{ $ticket->part_ct_number }}</h2>
-                    
-                </li>
-
-                <li>
                     <lable>User Observation</lable>
                     <h2>{{ $ticket->user_observations }}</h2>
                     
@@ -292,22 +268,22 @@
             <x-common-ticket-form title="Edit Thermal Event Ticket" id="edit-ticket-details" action1="{{ route('edit-thermal-event-ticket', $ticket->id) }}">
                 @method('PATCH')
                 <label>Receipt</label>
-                <input type="text" class="ticket-form-body-input" name="ticket_receipt" value=" {{ $ticket->ticket_receipt }}">
+                <input type="text" class="ticket-form-body-input" name="ticket_receipt" value="{{ $ticket->ticket_receipt }}">
 
                 <label>Serial Number</label>
-                <input type="text" class="ticket-form-body-input" name="serial_number" value=" {{ $ticket->serial_number }}">
+                <input type="text" class="ticket-form-body-input" name="serial_number" value="{{ $ticket->serial_number }}">
 
                 <label>Product Number</label>
-                <input type="text" class="ticket-form-body-input" name="product_number" value=" {{ $ticket->product_number }}">
+                <input type="text" class="ticket-form-body-input" name="product_number" value="{{ $ticket->product_number }}">
 
                 <label>Product Model</label>
-                <input type="text" class="ticket-form-body-input" name="product_model" value=" {{ $ticket->product_model }}">
+                <input type="text" class="ticket-form-body-input" name="product_model" value="{{ $ticket->product_model }}">
 
                 <label>Description</label>
-                <input type="text" class="ticket-form-body-input" name="description" value=" {{ $ticket->description }}">
+                <input type="text" class="ticket-form-body-input" name="description" value="{{ $ticket->description }}">
 
                 <label>CDAX ID</label>
-                <input type="text" class="ticket-form-body-input" name="cdax_id" value=" {{ $ticket->description }}">
+                <input type="text" class="ticket-form-body-input" name="cdax_id" value="{{ $ticket->cdax_id }}">
 
                 <label>Customer Type</label>
                 <select name="customer_type" class="ticket-form-body-input">
@@ -318,22 +294,10 @@
                 </select>
 
                 <label>Company/Customer Name</label>
-                <input type="text" class="ticket-form-body-input" name="company_customer_name" value=" {{ $ticket->company_customer_name }}">
-
-                <label>Part MO Number</label>
-                <input type="text" class="ticket-form-body-input" name="part_mo_number" value=" {{ $ticket->part_mo_number }}">
-
-                <label>Part Number</label>
-                <input type="text" class="ticket-form-body-input" name="part_number" value=" {{ $ticket->part_number }}">
-
-                <label>Part Description</label>
-                <input type="text" class="ticket-form-body-input" name="part_description" value=" {{ $ticket->part_description }}">
-
-                <label>Part CT Number</label>
-                <input type="text" class="ticket-form-body-input" name="part_ct_number" value=" {{ $ticket->part_ct_number }}">
+                <input type="text" class="ticket-form-body-input" name="company_customer_name" value="{{ $ticket->company_customer_name }}">
 
                 <label>User Observations</label>
-                <input type="text" class="ticket-form-body-input" name="user_observations" value=" {{ $ticket->user_observations }}">
+                <input type="text" class="ticket-form-body-input" name="user_observations" value="{{ $ticket->user_observations }}">
 
                 <label><b>Attachments</b></label>
                 

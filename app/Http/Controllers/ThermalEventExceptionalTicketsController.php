@@ -49,10 +49,10 @@ class ThermalEventExceptionalTicketsController extends Controller
             'cdax_id' => 'required',
             'customer_type' => 'required',
             'company_customer_name' => 'required',
-            'part_mo_number' => 'required',
-            'part_number' => 'required',
-            'part_description' => 'required',
-            'part_ct_number' => 'required',
+            'part_mo_number' => 'required_if:multipart_affected_check,1',
+            'part_number' => 'required_if:multipart_affected_check,1',
+            'part_description' => 'required_if:multipart_affected_check,1',
+            'part_ct_number' => 'required_if:multipart_affected_check,1',
             'user_observations' => 'required',
             'attachments.*' => 'file|max:20480|mimes:jpg,png,pdf,jpeg,xlsx'
         ]);
@@ -67,11 +67,15 @@ class ThermalEventExceptionalTicketsController extends Controller
         $validate_data['cdax_id'] = strip_tags($validate_data['cdax_id']);
         $validate_data['customer_type'] = strip_tags($validate_data['customer_type']);
         $validate_data['company_customer_name'] = strip_tags($validate_data['company_customer_name']);
-        $validate_data['part_mo_number'] = strip_tags($validate_data['part_mo_number']);
-        $validate_data['part_number'] = strip_tags($validate_data['part_number']);
-        $validate_data['part_description'] = strip_tags($validate_data['part_description']);
-        $validate_data['part_ct_number'] = strip_tags($validate_data['part_ct_number']);
         $validate_data['user_observations'] = strip_tags($validate_data['user_observations']);
+
+        if ($request->input('multipart_affected_check') == '1') {
+            $validate_data['part_mo_number'] = strip_tags($validate_data['part_mo_number']);
+            $validate_data['part_number'] = strip_tags($validate_data['part_number']);
+            $validate_data['part_description'] = strip_tags($validate_data['part_description']);
+            $validate_data['part_ct_number'] = strip_tags($validate_data['part_ct_number']);
+        }
+        
 
         $ticket = Thermal_Event_Exceptional_Tickets_Model::create($validate_data);
 
@@ -103,6 +107,15 @@ class ThermalEventExceptionalTicketsController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Ticket created successfully',
+            'ticket_id' => $ticket->id,
+            'ticket_receipt' => $ticket->ticket_receipt,
+            'status' => match ($ticket->status) {
+                '1' => 'Open',
+                '2' => 'Waiting for verifier',
+                default => 'Unknown',
+            },
+            'user_owner' => $ticket->user_owner->name,
+            'description' => $ticket->description,
         ]);
     }
 
