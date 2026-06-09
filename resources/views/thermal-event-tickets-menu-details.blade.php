@@ -93,7 +93,20 @@
                 
             @endswitch
         </x-common-header>
+        <table>
+            <th width="25%">Part MO Number</th>
+            <th width="25%">Part Description</th>   
+            <th width="25%">Part Number</th>
+            <th width="25%">Part CT Number</th> 
 
+            
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
         <div class="thermal-event-ticket-content">
             <x-common-ticket-detail-form>
                 <h2>Tickets Details</h2>

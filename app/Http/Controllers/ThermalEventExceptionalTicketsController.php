@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Thermal_Event_Exceptional_Tickets_Model;
 use App\Models\Attachments_Model;
 use App\Models\Comments_Model;
+use App\Models\Thermal_Event_Parts_Details_Model;
 use App\Models\User;
 use App\Services\tracking_info_service;
 
@@ -59,7 +60,6 @@ class ThermalEventExceptionalTicketsController extends Controller
 
         $validate_data['user_id'] = auth()->id();
         $validate_data['ticket_receipt'] = strip_tags($validate_data['ticket_receipt']);
-        $validate_data['status'] = 2;
         $validate_data['serial_number'] = strip_tags($validate_data['serial_number']);
         $validate_data['product_number'] = strip_tags($validate_data['product_number']);
         $validate_data['product_model'] = strip_tags($validate_data['product_model']);
@@ -68,16 +68,26 @@ class ThermalEventExceptionalTicketsController extends Controller
         $validate_data['customer_type'] = strip_tags($validate_data['customer_type']);
         $validate_data['company_customer_name'] = strip_tags($validate_data['company_customer_name']);
         $validate_data['user_observations'] = strip_tags($validate_data['user_observations']);
+        
 
         if ($request->input('multipart_affected_check') == '1') {
+            $validate_data['status'] = 2;
+            $ticket = Thermal_Event_Exceptional_Tickets_Model::create($validate_data);
+
+            $validate_data['ticket_id'] = $ticket->id;
+            $validate_data['status'] = 1;
             $validate_data['part_mo_number'] = strip_tags($validate_data['part_mo_number']);
             $validate_data['part_number'] = strip_tags($validate_data['part_number']);
             $validate_data['part_description'] = strip_tags($validate_data['part_description']);
             $validate_data['part_ct_number'] = strip_tags($validate_data['part_ct_number']);
+            $parts_details = Thermal_Event_Parts_Details_Model::create($validate_data);
+
+            dd($parts_details);
         }
         
 
-        $ticket = Thermal_Event_Exceptional_Tickets_Model::create($validate_data);
+        
+        
 
         if ($request->hasFile('attachments')) { //Kiểm tra xem có file nào được upload lên không
 
@@ -103,18 +113,17 @@ class ThermalEventExceptionalTicketsController extends Controller
             'created ticket at'
         );
 
-        $ticket->save();
         return response()->json([
             'success' => true,
             'message' => 'Ticket created successfully',
             'ticket_id' => $ticket->id,
             'ticket_receipt' => $ticket->ticket_receipt,
             'status' => match ($ticket->status) {
-                '1' => 'Open',
-                '2' => 'Waiting for verifier',
-                default => 'Unknown',
+                1 => 'Open',
+                2 => 'Waiting for verifier',
+                // default => 'Unknown',
             },
-            'user_owner' => $ticket->user_owner->name,
+            'user_owner' => $ticket->user_owner->fullname,
             'description' => $ticket->description,
         ]);
     }

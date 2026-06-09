@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('part_number');
             $table->string('part_description');
             $table->string('part_ct_number');
+            $table->enum('status', [0, 1])->default(1);
             $table->timestamps();
         });
     }
