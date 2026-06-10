@@ -28,27 +28,32 @@ document.addEventListener('submit', function (e) {
                 confirmButtonText: 'OK'
             });
             buttons.forEach(btn => btn.disabled = false);
-            const newRow = 
-            `
-                <tr>
-                    <td>
-                        <a href="/thermal-event-tickets-menu-details/${new_ticket.ticket_id}">
-                            <button><i class="ti-arrow-right" ></i></button>
-                        </a>
-                    </td>
-                    <td>${new_ticket.ticket_receipt}</td>
-                    <td>${new_ticket.user_owner}</td>
-                    <td>${new_ticket.description}</td>
-                    <td>${new_ticket.status}</td>
-                </tr>
+            if (check_multipart_affected.value === '1') {
+                const newRow = 
+                `
+                    <tr>
+                        <td>
+                            <a href="/thermal-event-tickets-menu-details/${new_ticket.ticket_id}">
+                                <button><i class="ti-arrow-right" ></i></button>
+                            </a>
+                        </td>
+                        <td>${new_ticket.ticket_receipt}</td>
+                        <td>${new_ticket.user_owner}</td>
+                        <td>${new_ticket.description}</td>
+                        <td>${new_ticket.status}</td>
+                    </tr>
+                
+                `;
+                document
+                .querySelector('#pending-thermal-event-tickets-table tbody')
+                .insertAdjacentHTML('beforeend', newRow);
+                
+                document.querySelector('.ticket-form-overlay').classList.remove('active');
+                e.target.reset();
+            } else {
+                window.location.href = `/thermal-event-tickets-menu-details/${new_ticket.ticket_id}`;
+            }
             
-            `;
-            document
-            .querySelector('#pending-thermal-event-tickets-table tbody')
-            .insertAdjacentHTML('beforeend', newRow);
-            
-            document.querySelector('.ticket-form-overlay').classList.remove('active');
-            e.target.reset();
         })
         .catch(error => console.error(error));
 

@@ -93,20 +93,30 @@
                 
             @endswitch
         </x-common-header>
-        <table>
-            <th width="25%">Part MO Number</th>
-            <th width="25%">Part Description</th>   
-            <th width="25%">Part Number</th>
-            <th width="25%">Part CT Number</th> 
+        <div class="common-table-container">
+            <table class="common-table" width="100%">
+                <th width="5%"></th>
+                <th width="25%">Part MO Number</th>
+                <th width="25%">Part Description</th>   
+                <th width="25%">Part Number</th>
+                <th width="25%">Part CT Number</th> 
 
-            
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-        </table>
+                @foreach($ticket->parts_details as $parts)
+                <tr>
+                    <td>
+                        <button><i class="ti-pencil"></i></button>
+                        <button><i class="ti-na"></i></button>
+                    </td>
+                    
+                    <td>{{$parts->part_mo_number}}</td>
+                    <td>{{$parts->part_number}}</td>
+                    <td>{{$parts->part_description}}</td>
+                    <td>{{$parts->part_ct_number}}</td>
+                </tr>
+                @endforeach
+            </table>
+        </div>
+        
         <div class="thermal-event-ticket-content">
             <x-common-ticket-detail-form>
                 <h2>Tickets Details</h2>

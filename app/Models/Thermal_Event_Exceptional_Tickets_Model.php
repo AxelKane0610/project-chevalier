@@ -48,6 +48,12 @@ class Thermal_Event_Exceptional_Tickets_Model extends Model
             ->where('type_of_ticket', 10);
     }
 
+    public function parts_details()
+    {
+        return $this->hasMany(Thermal_Event_Parts_Details_Model::class,'ticket_id','id')
+            ->where('status', '1'); // Liên kết với model Thermal_Event_Parts_Details_Model, dựa vào "ticket_id" để lấy những part details có ticket_id trùng với id của ticket này
+    }
+
     public function getStatusDataAttribute()
     {
         return match ($this->status){

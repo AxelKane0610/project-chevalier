@@ -545,9 +545,6 @@ h1, h2, h3 {
     cursor: pointer;
 }
 
-/* .ti-close {
-    color: red;
-} */
 
 
 /* CSS CHO TABLE TICKET PENDING */
@@ -555,11 +552,13 @@ h1, h2, h3 {
 .common-table-container {
     padding: 10px;
     margin-top: 10px;
-    width: 99%;
-    height: 80vh;
+    width: 100%;
+    height: auto;
     background-color: white;
     border-radius: 10px;
     overflow-y: scroll;
+
+    
 }
 
 .common-table {

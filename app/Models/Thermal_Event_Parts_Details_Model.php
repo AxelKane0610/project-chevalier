@@ -20,6 +20,6 @@ class Thermal_Event_Parts_Details_Model extends Model
 
     public function ticket_owner(): BelongsTo
     {
-        return $this->belongsTo(Thermal_Event_Exceptional_Tickets_Model::class, 'ticket_id');
+        return $this->belongsTo(Thermal_Event_Exceptional_Tickets_Model::class, 'ticket_id', 'id'); //Bảo model sang model Thermal_Event_Exceptional_Tickets_Model để lấy thông tin ticket của part details đó, dựa vào "ticket_id"
     }
 }
