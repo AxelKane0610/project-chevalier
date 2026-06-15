@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('company_customer_name');
             $table->enum('support_type', [1, 2, 3, 4]);
             $table->enum('status', [1, 2, 3, 4, 5]);
+            $table->enum('highest_approved_step', [1, 2, 3])->default(1);
             $table->timestamps();
         });
     }

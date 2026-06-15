@@ -24,7 +24,8 @@ class Invoice_Exceptional_Tickets_Model extends Model
         'retail_name',
         'company_customer_name',
         'support_type',
-        'status'
+        'status',
+        'highest_approved_step'
     ];
 
     public function user_owner(): BelongsTo
@@ -68,7 +69,7 @@ class Invoice_Exceptional_Tickets_Model extends Model
 
             "3" => [
                 'text' => 'Waiting re-activate',
-                'class' => 'waiting re-activate'
+                'class' => 'waiting-re-activate'
             ],
 
             "4" => [
@@ -95,22 +96,22 @@ class Invoice_Exceptional_Tickets_Model extends Model
         return match ($this->status){
              "1" => [
                 'text' => 'Hóa đơn xuất sau (1 máy)',
-                'class' => 'open'
+                'class' => 'approve-invoice-1-unit'
             ],
 
             "2" => [
                 'text' => 'Hóa đơn xuất sau (Nhiều máy)',
-                'class' => 'waiting-approve-invoice'
+                'class' => 'approve-invoice-multiples-units'
             ],
 
             "3" => [
                 'text' => 'Kích hoạt bảo hành (1 máy)',
-                'class' => 'waiting re-activate'
+                'class' => 're-activate-warranty-1-unit'
             ],
 
             "4" => [
                 'text' => 'Kích hoạt bảo hành (Nhiều máy)',
-                'class' => 'completed'
+                'class' => 're-activate-warranty-multiples-units'
             ],
 
 

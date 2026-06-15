@@ -31,6 +31,15 @@
     z-index: 999999999999999 !important;
 }
 
+
+.swal2-confirm {
+    background-color: #3085d6 !important;
+}
+
+.swal2-cancel {
+    background-color: #d33 !important;
+}
+
 :root {
     --button-background-color: rgb(40,104,245);
     --button-text-color: white;
@@ -783,6 +792,21 @@ h1, h2, h3 {
     background: rgb(12,78,66);
 }
 
+
+.approve-invoice-1-unit,
+.re-activate-warranty-1-unit {
+    background: rgb(73 163 160);
+}
+
+.approve-invoice-multiples-units,
+.re-activate-warranty-multiples-units {
+    background: rgb(66 27 38);
+}
+
+.waiting-approve-invoice,
+.waiting-re-activate {
+    background: rgb(21 16 66);
+}
 
 
 

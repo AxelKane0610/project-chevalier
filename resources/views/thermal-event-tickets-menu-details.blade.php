@@ -35,6 +35,11 @@
                                 <button type="button"><i class="ti-angle-double-right"></i>Send Approval </button>
                             </form>
                         </li>
+                        <li>
+                            <form class="js-input-required-btn" data-target="add-thermal-event-parts">
+                                <button type="button"><i class="ti-plus"></i> Add part</button>
+                            </form>
+                        </li>
 
                     @endif
                 @break
@@ -93,6 +98,7 @@
                 
             @endswitch
         </x-common-header>
+        
         <div class="common-table-container">
             <table class="common-table" width="100%">
                 <th width="5%"></th>
@@ -104,8 +110,19 @@
                 @foreach($ticket->parts_details as $parts)
                 <tr>
                     <td>
-                        <button><i class="ti-pencil"></i></button>
-                        <button><i class="ti-na"></i></button>
+                        <form class="js-input-required-btn" data-target="edit-thermal-event-part-details" action="" method="PATCH">
+                            <button type="button" 
+                            class="btn-edit-part"
+                            data-id="{{ $parts->id }}"
+                            data-mo="{{ $parts->part_mo_number }}"
+                            data-number="{{ $parts->part_number }}"
+                            data-description="{{ $parts->part_description }}"
+                            data-ct="{{ $parts->part_ct_number }}"><i class="ti-pencil"></i></button>
+                        </form>
+
+                        <form class="js-input-required-btn" data-target="delete-thermal-event-part-details" id="delete-thermal-event-part-details" action="{{ route('delete-thermal-event-part-details', $parts->id) }}" method="PATCH">
+                            <button type="submit"><i class="ti-na"></i></button>
+                        </form>
                     </td>
                     
                     <td>{{$parts->part_mo_number}}</td>
@@ -360,6 +377,45 @@
                     <button class="ticket-form-body-input" type="submit" >Save</button> 
                 </x-slot:footer>
             </x-common-ticket-form>
+
+            <x-common-ticket-form title="Add Thermal Event Part" id="add-thermal-event-parts" action1="{{ route('add-thermal-event-part', $ticket->id) }}">
+                <label>Part MO Number</label>
+                <input type="text" class="ticket-form-body-input" placeholder="Nhập số MO của part" name="part_mo_number" required>
+
+                <label>Part Number</label>
+                <input type="text" class="ticket-form-body-input" placeholder="Nhập mã part" name="part_number" required>
+
+                <label>Part Description</label>
+                <input type="text" class="ticket-form-body-input" placeholder="Nhập tên part" name="part_description" required>
+
+                <label>Part CT Number</label>
+                <input type="text" class="ticket-form-body-input" placeholder="Nhập CT của part, nếu không có để N/A" name="part_ct_number" required>
+
+                <x-slot:footer>
+                    <button class="ticket-form-body-input" type="submit">Add part</button> 
+                </x-slot:footer>
+            </x-common-ticket-form>
+
+            <x-common-ticket-form title="Edit Thermal Event Part Details" id="edit-thermal-event-part-details" action1="">
+                @method('PATCH')
+                <label>Part MO Number</label>
+                <input type="text" class="ticket-form-body-input" id="edit-part-mo-number" placeholder="Nhập số MO của part" name="part_mo_number" required>
+
+                <label>Part Number</label>
+                <input type="text" class="ticket-form-body-input" id="edit-part-number" placeholder="Nhập mã part" name="part_number" required>
+
+                <label>Part Description</label>
+                <input type="text" class="ticket-form-body-input" id="edit-part-description" placeholder="Nhập tên part" name="part_description" required>
+
+                <label>Part CT Number</label>
+                <input type="text" class="ticket-form-body-input" id="edit-part-ct-number" placeholder="Nhập CT của part, nếu không có để N/A" name="part_ct_number" required>
+
+                <x-slot:footer>
+                    <button class="ticket-form-body-input" type="submit">Edit</button> 
+                </x-slot:footer>
+            </x-common-ticket-form>
+
+            
 
             
         </div>

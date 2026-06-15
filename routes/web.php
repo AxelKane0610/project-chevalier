@@ -69,12 +69,17 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/thermal-event-tickets-menu-details/{id}', [ThermalEventExceptionalTicketsController::class, 'Show_Thermal_Event_Ticket_Details']);
         Route::post('/create-thermal-event-ticket', [ThermalEventExceptionalTicketsController::class, 'Create_Thermal_Event_Ticket']);
         Route::patch('/edit-thermal-event-ticket/{id}', [ThermalEventExceptionalTicketsController::class, 'Edit_Thermal_Event_Ticket'])->name('edit-thermal-event-ticket');
+        
         Route::post('/add-comment-thermal-event-ticket/{id}', [ThermalEventExceptionalTicketsController::class, 'Add_Comment_Thermal_Event_Ticket']) ->name('add-comment-thermal-event-ticket');
         Route::patch('/close-thermal-event-ticket/{id}', [ThermalEventExceptionalTicketsController::class, 'Close_Thermal_Event_Ticket'])->name('close-thermal-event-ticket');
         Route::post('/thermal-event-approve-lv1/{id}', [ThermalEventExceptionalTicketsController::class,'Thermal_Event_Approve_Lv1'])->name('thermal-event-approve-lv1');
         Route::post('/thermal-event-approve-lv2/{id}', [ThermalEventExceptionalTicketsController::class,'Thermal_Event_Approve_Lv2'])->name('thermal-event-approve-lv2');
         Route::post('/thermal-event-reject/{id}', [ThermalEventExceptionalTicketsController::class,'Thermal_Event_Reject'])->name('thermal-event-reject');
         Route::patch('/re-open-thermal-event-ticket/{id}', [ThermalEventExceptionalTicketsController::class,'Thermal_Event_Re_Open'])->name('re-open-thermal-event-ticket');
+        Route::post('/add-thermal-event-part/{id}',[ThermalEventExceptionalTicketsController::class,'Add_Thermal_Event_Part'])->name('add-thermal-event-part');
+
+        Route::patch('/edit-thermal-event-part-details/{id}', [ThermalEventExceptionalTicketsController::class, 'Edit_Thermal_Event_Part_Details'])->name('edit-thermal-event-part-details');
+        Route::patch('/delete-thermal-event-part-details/{id}', [ThermalEventExceptionalTicketsController::class, 'Delete_Thermal_Event_Part_Details'])->name('delete-thermal-event-part-details');
     });
 
     Route::middleware(['role:ROLE_SUPER_ADMIN'])->group(function () {

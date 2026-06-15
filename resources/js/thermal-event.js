@@ -1,10 +1,18 @@
 import Swal from "sweetalert2";
 
 console.log("JS LOADEDD");
+
+
 document.addEventListener('submit', function (e) {
     // Kiểm tra xem form nào đang được submit dựa vào ID
     const formData = new FormData(e.target);
     const url = e.target.getAttribute('action');
+
+    console.log(
+        'FORM SUBMITTED:',
+        e.target.id,
+        e.target.action
+    );
     
     if (e.target && e.target.id === 'create-thermal-event-ticket-form') {
         e.preventDefault();
@@ -28,7 +36,7 @@ document.addEventListener('submit', function (e) {
                 confirmButtonText: 'OK'
             });
             buttons.forEach(btn => btn.disabled = false);
-            if (check_multipart_affected.value === '1') {
+            if (checkMultipartAffected.value === '1') {
                 const newRow = 
                 `
                     <tr>
@@ -316,37 +324,270 @@ document.addEventListener('submit', function (e) {
                     }
                 });
     }
-});
 
-const check_multipart_affected = document.getElementById('multipart_affected_check');
-const partsDetailsContainer = document.getElementById('thermal_event_parts_details');
+    if (e.target && e.target.id === 'add-thermal-event-parts') {
+        e.preventDefault();
+        const form = e.target;
 
-function togglePartFields() {
+        Swal.fire({
+            title: 'Bạn có chắc muốn add thêm part này ?',
+            icon: 'warning',
+            showCancelButton: true
+        })
+        .then((result) => {
 
-    const inputs = partsDetailsContainer.querySelectorAll('input');
+            // Cancel
+            if (!result.isConfirmed) {
+                return;
+            }
 
-    if (check_multipart_affected.value === '1') {
+            // Confirm mới loading
+            startButtonLoading(form);
 
-        partsDetailsContainer.style.display = 'block';
+            fetch(url,{
+                method:'POST',
+                body:formData,
+                headers:{
+                    'X-CSRF-TOKEN':
+                        document.querySelector(
+                            'input[name="_token"]'
+                        ).value
+                }
+            })
+            .then(response => response.json())
+            .then(data => 
+            {
+                if (data.success === true) {
+                    Swal.fire({
+                        title:'Success',
+                        text:data.message,
+                        icon:'success'
+                    }).then(()=>{
+                    location.reload();
+                });
+                }
+                else {
+                    Swal.fire({
+                        title:'Error',
+                        text:data.message,
+                        icon:'error'
+                    }).then(()=>{
+                    location.reload();
+                });
+                }
 
-        inputs.forEach(input => {
-            input.required = true;
-            input.disabled = false;
-        });
+            })
+            .catch(error => {
 
-    } else {
+                Swal.fire({
+                    title:'Error',
+                    text:error,
+                    icon:'error'
+                });
 
-        partsDetailsContainer.style.display = 'none';
+            })
+            .finally(() => {
 
-        inputs.forEach(input => {
-            input.required = false;
-            input.disabled = true;
+                stopButtonLoading(form);
+
+            });
+
         });
 
     }
+
+    if (e.target && e.target.id === 'edit-thermal-event-part-details') {
+        e.preventDefault();
+        const form = e.target;
+        
+        Swal.fire({
+            title: 'Bạn có chắc muốn edit part này ?',
+            icon: 'warning',
+            showCancelButton: true
+        })
+        .then((result) => {
+
+            // Cancel
+            if (!result.isConfirmed) {
+                return;
+            }
+
+            // Confirm mới loading
+            startButtonLoading(form);
+            fetch(url,{
+                method:'POST',
+                body:formData,
+                headers:{
+                    'X-CSRF-TOKEN':
+                        document.querySelector(
+                            'input[name="_token"]'
+                        ).value
+                }
+            })
+            .then(response => response.json())
+            .then(data => 
+            {
+                if (data.success === true) {
+                    Swal.fire({
+                        title:'Success',
+                        text:data.message,
+                        icon:'success'
+                    }).then(()=>{
+                    location.reload();
+                });
+                }
+                else {
+                    Swal.fire({
+                        title:'Error',
+                        text:data.message,
+                        icon:'error'
+                    }).then(()=>{
+                    location.reload();
+                });
+                }
+
+            })
+            .catch(error => {
+
+                Swal.fire({
+                    title:'Error',
+                    text:error,
+                    icon:'error'
+                });
+
+            })
+            .finally(() => {
+
+                stopButtonLoading(form);
+
+            });
+
+        });
+
+    }
+
+    if (e.target && e.target.id === 'delete-thermal-event-part-details') {
+        e.preventDefault();
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You are about to delete this part.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => 
+                {
+                    if (result.isConfirmed) {
+                        // Proceed with the deletion logic
+                        fetch(url, {
+                            method: 'PATCH',
+                            body: formData,
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(ticket_approval_response => {
+                            if (ticket_approval_response.success == true) {
+                                Swal.fire({
+                                    title: 'Success!',
+                                    text: ticket_approval_response.message,
+                                    icon: 'success',
+                                    confirmButtonText: 'OK'
+                                }).then((result) => {
+                                    document.querySelector('.ticket-form-overlay').classList.remove('active');
+                                    e.target.reset();
+                                    location.reload();
+                                });
+                            } else {
+                                Swal.fire({
+                                    title: 'Error!',
+                                    text: ticket_approval_response.message,
+                                    icon: 'error',
+                                    confirmButtonText: 'OK'
+                                }).then(()=>{
+                                    location.reload();
+                                });
+                            }
+                            
+                        })
+                        .catch(error => {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: error,
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            })
+                            console.error(error)
+                        });
+
+                    }
+                });
+    }
+
+});
+
+
+const checkMultipartAffected =
+    document.getElementById('multipart_affected_check');
+
+const partsDetailsContainer =
+    document.getElementById('thermal_event_parts_details');
+
+if (checkMultipartAffected && partsDetailsContainer) {
+
+    function togglePartFields() {
+        const inputs = partsDetailsContainer.querySelectorAll('input');
+
+        if (checkMultipartAffected.value === '1') {
+
+            partsDetailsContainer.style.display = 'block';
+
+            inputs.forEach(input => {
+                input.required = true;
+                input.disabled = false;
+            });
+
+        } else {
+
+            partsDetailsContainer.style.display = 'none';
+
+            inputs.forEach(input => {
+                input.required = false;
+                input.disabled = true;
+            });
+
+        }
+    }
+
+    checkMultipartAffected.addEventListener(
+        'change',
+        togglePartFields
+    );
+
+    togglePartFields();
 }
 
-check_multipart_affected.addEventListener('change', togglePartFields);
+document.querySelectorAll('.btn-edit-part').forEach(button => {
 
-// Chạy khi load trang
-togglePartFields();
+    button.addEventListener('click', function () {
+        document.getElementById('edit-part-mo-number').value =
+            this.dataset.mo;
+
+        document.getElementById('edit-part-number').value =
+            this.dataset.number;
+
+        document.getElementById('edit-part-description').value =
+            this.dataset.description;
+
+        document.getElementById('edit-part-ct-number').value =
+            this.dataset.ct;
+
+        document.getElementById('edit-thermal-event-part-details').action =
+            '/edit-thermal-event-part-details/' + this.dataset.id;
+
+        
+        // console.log(document.getElementById('edit-thermal-event-part-details').action);
+
+    });
+
+});
