@@ -78,6 +78,10 @@ class UserController extends Controller
         return redirect()->back()->with('success', 'Tạo người dùng thành công!');
     }
 
+    public function User_Profile(){
+        return view('/user-profile');
+    }
+
     
 
     

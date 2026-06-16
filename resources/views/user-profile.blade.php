@@ -8,7 +8,7 @@
     </head>
 
     <body class="background-enable">
-        <x-common-header>   
+        <x-common-header title="User Profile">   
             
         </x-common-header>
     </body>

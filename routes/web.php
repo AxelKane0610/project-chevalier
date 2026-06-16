@@ -32,6 +32,8 @@ Route::middleware(['auth'])->group(function () {
         return view('main-menu');
     });
 
+    Route::get('/user-profile', [UserController::class,'User_Profile'])->name('user-profile');
+
     Route::get('/attachments/{folder}/{id}/{filename}', [AttachmentController::class, 'show']);
 
     

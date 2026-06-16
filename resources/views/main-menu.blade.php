@@ -13,7 +13,13 @@
         
         <div class="main-menu-categories-header">
             <h1>Xin chào, hôm nay bạn cần hỗ trợ gì ?</h1>
+            <div class="search-box">
+                <i class="ti-search"></i>
+                <input type="text" placeholder="Quick Search Reciept">
+            </div>
         </div>
+
+        
         
         <div id="main-menu-categories-container">
             

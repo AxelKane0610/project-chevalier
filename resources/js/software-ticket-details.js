@@ -10,49 +10,138 @@ document.addEventListener('submit', function (e) {
     const formData = new FormData(e.target);
     const url = e.target.getAttribute('action');
 
+    if (e.target && e.target.id === 'create-sw-ticket-form') {
+        e.preventDefault();
+
+        const form = e.target;
+
+        Swal.fire({
+            title: 'Bạn có chắc muốn tạo ticket này ?',
+            icon: 'warning',
+            showCancelButton: true
+        })
+        .then((result) => {
+            if (!result.isConfirmed) {
+                return;
+            }
+
+            // Confirm mới loading
+            startButtonLoading(form);
+            fetch('/create-software-ticket', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                }
+            })
+            .then(response => response.json())
+            .then(new_ticket => {
+
+                if (new_ticket.success === true) {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: 'Ticket created successfully.',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    });
+                    const newRow = 
+                    `
+                        <tr>
+                            <td>
+                                <a href="/software-tickets-menu-details/${new_ticket.ticket_id}">
+                                    <button><i class="ti-arrow-right" ></i></button>
+                                </a>
+                            </td>
+                            <td>${new_ticket.ticket_receipt}</td>
+                            <td>${new_ticket.support_type}</td>
+                            <td>${new_ticket.description}</td>
+                            <td>${new_ticket.priority}</td>
+                        </tr>
+                    
+                    `;
+                    document
+                    .querySelector('#pending-software-tickets-table tbody')
+                    .insertAdjacentHTML('beforeend', newRow);
+                    
+                    document.querySelector('.ticket-form-overlay').classList.remove('active');
+                    e.target.reset();
+                } else {
+                    Swal.fire({
+                            title:'Error',
+                            text:new_ticket.message,
+                            icon:'error'
+                        }).then(()=>{
+                        location.reload();
+                    });
+                }
+                
+            })
+            .catch(error => console.error(error));
+        });
+        
+
+    }
+
     if (e.target && e.target.id === 'close-ticket-form') 
     {
         e.preventDefault();
-        fetch(url, {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
-            }
+        const form = e.target;
+
+        Swal.fire({
+            title: 'Bạn có chắc muốn đóng ticket này ?',
+            icon: 'warning',
+            showCancelButton: true
         })
-        .then(response => response.json()) 
-        .then(ticket_complete_response => { 
-            if (ticket_complete_response.success === true) {
-                Swal.fire({
-                    title: 'Success!',
-                    text: ticket_complete_response.message,
-                    icon: 'success',
-                    confirmButtonText: 'OK'
-                }).then((result) => {
-                    document.querySelector('.ticket-form-overlay').classList.remove('active');
-                    e.target.reset();
-                    location.reload();
-                });
-            } else {
+        .then((result) => {
+            if (!result.isConfirmed) {
+                return;
+            }
+
+            // Confirm mới loading
+            startButtonLoading(form);
+            fetch(url, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                }
+            })
+            .then(response => response.json()) 
+            .then(ticket_complete_response => { 
+                if (ticket_complete_response.success === true) {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: ticket_complete_response.message,
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        document.querySelector('.ticket-form-overlay').classList.remove('active');
+                        e.target.reset();
+                        location.reload();
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: ticket_complete_response.message,
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    }).then(()=>{
+                        location.reload();
+                    });
+                }
+            })
+            .catch(error => {
                 Swal.fire({
                     title: 'Error!',
-                    text: ticket_complete_response.message,
+                    text: error,
                     icon: 'error',
                     confirmButtonText: 'OK'
-                }).then(()=>{
-                    location.reload();
-                });
-            }
-        })
-        .catch(error => {
-            Swal.fire({
-                title: 'Error!',
-                text: error,
-                icon: 'error',
-                confirmButtonText: 'OK'
-            })
-            console.error(error)
+                })
+                console.error(error)
+            });
         });
+
+        
 
     }       
 

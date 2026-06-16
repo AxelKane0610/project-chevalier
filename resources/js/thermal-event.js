@@ -7,12 +7,6 @@ document.addEventListener('submit', function (e) {
     // Kiểm tra xem form nào đang được submit dựa vào ID
     const formData = new FormData(e.target);
     const url = e.target.getAttribute('action');
-
-    console.log(
-        'FORM SUBMITTED:',
-        e.target.id,
-        e.target.action
-    );
     
     if (e.target && e.target.id === 'create-thermal-event-ticket-form') {
         e.preventDefault();
