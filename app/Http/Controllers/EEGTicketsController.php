@@ -487,9 +487,4 @@ class EEGTicketsController extends Controller
     }
     
 
-    
-
-    
-
-    
 }

@@ -84,56 +84,59 @@
 
                 </div>
 
+
                 @if(auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_TICKET_SW_ADMIN') || auth()->user()->hasRole('ROLE_APPROVE_ROLLBACK'))
-                    <div class="common-table-container">
-                        <h2>Waiting Approval</h2>
+                    @if($tickets_waiting_approval->count() > 0)
+                        <div class="common-table-container">
+                            <h2>Waiting Approval</h2>
 
-                        <table class="common-table" width="100%" >
-                            <tr>
-                                <th width="5%"></th>
-                                <th width="14%">Reciept</th>
-                                <th width="20%">Type of request</th>
-                                <th width="39%">Issue Description</th>
-                                <th width="11%">Priority</th>
-                                <th width="11%">Status</th>
-                            </tr>
-                            <tr>
-                                @foreach ($tickets_waiting_approval as $ticket)
-                                
-                                    <tr>
-                                        <td>
-                                            <a href="/software-tickets-menu-details/{{ $ticket->id }}">
-                                                <button><i class="ti-arrow-right" ></i></button>
-                                            </a>
-                                        </td>
-                                        <td>{{ $ticket->ticket_reciept }}</td>
-                                        <td>
-
-                                            <span class="ticket-support-type {{ $ticket->support_type_data['class'] }}">
-                                                {{ $ticket->support_type_data['text'] }}
-                                            </span>
-
-                                        </td>
-                                        <td>{{ $ticket->description }}</td>
-                                        <td>
-                                            <span class="ticket-priority {{ $ticket->priority_data['class'] }}">
-                                                {{ $ticket->priority_data['text'] }}
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <span class="ticket-status {{ $ticket->status_data['class'] }}">
-                                                {{ $ticket->status_data['text'] }}
-                                            </span>
-                                        </td>
-                                    </tr>
+                            <table class="common-table" width="100%" >
+                                <tr>
+                                    <th width="5%"></th>
+                                    <th width="14%">Receipt</th>
+                                    <th width="20%">Type of request</th>
+                                    <th width="39%">Issue Description</th>
+                                    <th width="11%">Priority</th>
+                                    <th width="11%">Status</th>
+                                </tr>
+                                <tr>
+                                    @foreach ($tickets_waiting_approval as $ticket)
                                     
-                                @endforeach
-                                
-                            </tr>
-                            
-                        </table>
+                                        <tr>
+                                            <td>
+                                                <a href="/software-tickets-menu-details/{{ $ticket->id }}">
+                                                    <button><i class="ti-arrow-right" ></i></button>
+                                                </a>
+                                            </td>
+                                            <td>{{ $ticket->ticket_receipt }}</td>
+                                            <td>
 
-                    </div>
+                                                <span class="ticket-support-type {{ $ticket->support_type_data['class'] }}">
+                                                    {{ $ticket->support_type_data['text'] }}
+                                                </span>
+
+                                            </td>
+                                            <td>{{ $ticket->description }}</td>
+                                            <td>
+                                                <span class="ticket-priority {{ $ticket->priority_data['class'] }}">
+                                                    {{ $ticket->priority_data['text'] }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="ticket-status {{ $ticket->status_data['class'] }}">
+                                                    {{ $ticket->status_data['text'] }}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        
+                                    @endforeach
+                                    
+                                </tr>
+                                
+                            </table>
+
+                        </div>
+                    @endif
                 @endif
 
             </div>

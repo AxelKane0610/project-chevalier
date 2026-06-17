@@ -3,7 +3,7 @@
     <head>
         <title>Project Chevalier</title>
         <meta charset="utf-8">
-        @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/new-ticket.js', 'resources/css/icons/themify-icons.css'])
+        @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/laser-engraving.js', 'resources/css/icons/themify-icons.css'])
         
     </head>
 
@@ -38,7 +38,7 @@
                     <table id="pending-laser-engraving-tickets-table" class="common-table" width="100%" >
                         <tr>
                             <th width="5%"></th>
-                            <th width="14%">Reciept</th>
+                            <th width="14%">Receipt</th>
                             <th width="20%">Info Base</th>
                             <th width="39%">Description</th>
                             <th width="11%">Priority</th>
@@ -77,8 +77,8 @@
 
                     <x-common-ticket-form title="Laser Engraving Support" action1="/create-laser-engraving-ticket" id="create-laser-engraving-ticket-form"> <!-- action="/create-laser-engraving-ticket" method="POST"> -->
 
-                        <label class="ticket-form-body-input">Reciept</label>
-                        <input type="text" class="ticket-form-body-input" placeholder="Nhập số phiếu tại đây" name="ticket_reciept" required>
+                        <label class="ticket-form-body-input">Receipt</label>
+                        <input type="text" class="ticket-form-body-input" placeholder="Nhập số phiếu tại đây" name="ticket_receipt" required>
 
 
                         <label class="ticket-form-body-input">Priority</label>

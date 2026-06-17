@@ -7,49 +7,71 @@ document.addEventListener('submit', function (e) {
     // Kiểm tra xem form nào đang được submit dựa vào ID
     if (e.target && e.target.id === 'create-laser-engraving-ticket-form') {
         e.preventDefault();
-        const buttons = this.querySelectorAll('button');
-        buttons.forEach(btn => btn.disabled = true);
-        const formData = new FormData(e.target);
-        fetch('/create-laser-engraving-ticket', {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+
+        const form = e.target;
+
+        Swal.fire({
+            title: 'Bạn có chắc muốn tạo ticket này ?',
+            icon: 'warning',
+            showCancelButton: true
+        })
+        .then((result) => {
+            if (!result.isConfirmed) {
+                return;
             }
-        })
-        .then(response => response.json())
-        .then(new_ticket => {
-            console.log(new_ticket);
-            Swal.fire({
-                title: 'Success!',
-                text: 'Ticket created successfully.',
-                icon: 'success',
-                confirmButtonText: 'OK'
-            });
-            buttons.forEach(btn => btn.disabled = false);
-            const newRow = 
-            `
-                <tr>
-                    <td>
-                        <a href="/laser-engraving-tickets-menu-details/${new_ticket.ticket_id}">
-                            <button><i class="ti-arrow-right" ></i></button>
-                        </a>
-                    </td>
-                    <td>${new_ticket.ticket_reciept}</td>
-                    <td>${new_ticket.support_type}</td>
-                    <td>${new_ticket.description}</td>
-                    <td>${new_ticket.priority}</td>
-                </tr>
-            
-            `;
-            document
-            .querySelector('#pending-laser-engraving-tickets-table tbody')
-            .insertAdjacentHTML('beforeend', newRow);
-            
-            document.querySelector('.ticket-form-overlay').classList.remove('active');
-            e.target.reset();
-        })
-        .catch(error => console.error(error));
+
+            startButtonLoading(form);
+            fetch(url, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                }
+            })
+            .then(response => response.json())
+            .then(new_ticket => {
+                if (new_ticket.success === true) {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: new_ticket.message,
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    });
+                    const newRow = 
+                    `
+                        <tr>
+                            <td>
+                                <a href="/laser-engraving-menu-details/${new_ticket.id}">
+                                    <button><i class="ti-arrow-right" ></i></button>
+                                </a>
+                            </td>
+                            <td>${new_ticket.receipt}</td>
+                            <td>${new_ticket.info_base}</td>
+                            <td>${new_ticket.description}</td>
+                            <td>${new_ticket.priority}</td>
+                            <td>
+                        </tr>
+                    
+                    `;
+                    document
+                    .querySelector('#pending-laser-engraving-tickets-table tbody')
+                    .insertAdjacentHTML('beforeend', newRow);
+                    
+                    document.querySelector('.ticket-form-overlay').classList.remove('active');
+                    e.target.reset();
+                } else {
+                    Swal.fire({
+                        title:'Error',
+                        text:new_ticket.message,
+                        icon:'error'
+                    }).then(()=>{
+                    location.reload();
+                });
+                }
+            })
+            .catch(error => console.error(error));
+        });
+        
 
     }
 
@@ -59,8 +81,6 @@ document.addEventListener('submit', function (e) {
             title: 'Chuyển ticket sang In Progress ?',
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
             confirmButtonText: 'Yes'
         }).then((result) => {
             if (result.isConfirmed) {
@@ -73,11 +93,17 @@ document.addEventListener('submit', function (e) {
                 })
                 .then(response => response.json())
                 .then(data => {
-                    Swal.fire(
-                        'Success!',
-                        'Ticket status updated successfully.',
-                        'success'
-                    );
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: 'Ticket status updated successfully.',
+                        timer: 3000, // 3 giây
+                        timerProgressBar: true,
+                        showConfirmButton: false
+                    })
+                    .then(() => {
+                        location.reload();
+                    });
                 })
                 .catch(error => {
                     form.dataset.loading = "false";
