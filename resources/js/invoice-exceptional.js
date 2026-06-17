@@ -6,9 +6,7 @@ document.addEventListener('submit', function (e) {
 
     if (e.target && e.target.id === 'create-invoice-exceptional-ticket-form') {
         e.preventDefault();
-        const buttons = this.querySelectorAll('button');
-        buttons.forEach(btn => btn.disabled = true);
-        const formData = new FormData(e.target);
+        
         fetch('/create-invoice-exceptional-ticket', {
             method: 'POST',
             body: formData,
@@ -25,7 +23,6 @@ document.addEventListener('submit', function (e) {
                 icon: 'success',
                 confirmButtonText: 'OK'
             });
-            buttons.forEach(btn => btn.disabled = false);
             const newRow = 
             `
                 <tr>

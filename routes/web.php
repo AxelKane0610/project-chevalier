@@ -86,6 +86,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::middleware(['role:ROLE_SUPER_ADMIN'])->group(function () {
         Route::get('/invoice-exceptional-menu', [InvoiceExceptionalTicketsController::class, 'Show_Pending_Tickets']);
+        Route::get('/invoice-exceptional-menu-details/{id}', [InvoiceExceptionalTicketsController::class, 'Show_Invoice_Exceptional_Ticket_Details']);
         Route::post('/create-invoice-exceptional-ticket', [InvoiceExceptionalTicketsController::class, 'Create_Invoice_Exceptional_Tickets']);
 
     });

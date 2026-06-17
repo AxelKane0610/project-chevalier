@@ -144,6 +144,12 @@
                 </li>
 
                 <li>
+                    <lable>User Owner</lable>
+                    <h2>{{ $ticket->user_owner->fullname }}</h2>
+                    
+                </li>
+
+                <li>
                     <lable>Status</lable>
                         <h2>
                             <span class="ticket-status {{ $ticket->status_data['class'] }}">

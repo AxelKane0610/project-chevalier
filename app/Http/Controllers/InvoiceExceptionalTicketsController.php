@@ -68,7 +68,7 @@ class InvoiceExceptionalTicketsController extends Controller
         $validate_data['support_type'] = strip_tags($validate_data['support_type']);
         $validate_data['description'] = strip_tags($validate_data['description']);
 
-        $$ticket = Invoice_Exceptional_Tickets_Model::create($validate_data);
+        $ticket = Invoice_Exceptional_Tickets_Model::create($validate_data);
         if ($request->hasFile('attachments')) { //Kiểm tra xem có file nào được upload lên không
 
             foreach ($request->file('attachments') as $file) { //Duyệt qua từng file được upload lên
@@ -108,4 +108,11 @@ class InvoiceExceptionalTicketsController extends Controller
         }
 
     }
+
+    public function Show_Invoice_Exceptional_Ticket_Details($id) {
+        $ticket = Invoice_Exceptional_Tickets_Model::with(['user_owner', 'active_attachments','ticket_tracking_info','ticket_comments.attachments', 'ticket_comments.user'])->findOrFail($id);
+        return view('invoice-exceptional-menu-details', compact('ticket'));
+    }
+
+    
 }
