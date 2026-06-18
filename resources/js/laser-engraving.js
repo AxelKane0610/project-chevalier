@@ -186,4 +186,48 @@ document.addEventListener('submit', function (e) {
 
         });
     }
+
+    if (e.target && e.target.id === 're-open-laser-engraving-ticket') {
+        e.preventDefault();
+        Swal.fire({
+            title: 'Bạn có chắc muốn mở lại ticket ?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch(url, {
+                    method: 'PATCH',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success == true) {
+                        Swal.fire({
+                            title: 'Success!',
+                            text: data.message,
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        }).then((result) => {
+                            document.querySelector('.ticket-form-overlay').classList.remove('active');
+                            e.target.reset();
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: data.message,
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        }).then(()=>{
+                            location.reload();
+                        });
+                    }
+                });
+            }
+        });
+    }
 });

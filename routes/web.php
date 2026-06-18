@@ -61,6 +61,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/laser-engraving-menu-details/{id}', [LaserEngravingTicketsController::class, 'Show_Laser_Engraving_Ticket_Details']);
         Route::post('/create-laser-engraving-ticket', [LaserEngravingTicketsController::class, 'Create_Laser_Engraving_Ticket']);
         Route::patch('/edit-laser-engraving-ticket/{id}', [LaserEngravingTicketsController::class, 'Edit_Laser_Engraving_Ticket'])->name('edit-laser-engraving-ticket');
+        Route::patch('/re-open-laser-engraving-ticket/{id}', [LaserEngravingTicketsController::class,'Re_Open_Laser_Engraving_Ticket'])->name('re-open-laser-engraving-ticket');
         Route::post('/add-comment-laser-engraving-ticket/{id}', [LaserEngravingTicketsController::class, 'Add_Comment_Laser_Engraving_Ticket']) ->name('add-comment-laser-engraving-ticket');
         Route::patch('/change-laser-engraving-status-to-in-progress/{id}', [LaserEngravingTicketsController::class, 'Change_Laser_Engraving_Status_To_In_Progress'])->name('change-laser-engraving-status-to-in-progress');
         Route::patch('/close-laser-engraving-ticket/{id}', [LaserEngravingTicketsController::class, 'Close_Laser_Engraving_Ticket'])->name('close-laser-engraving-ticket');

@@ -256,4 +256,36 @@ class LaserEngravingTicketsController extends Controller
         ]);
     }
 
+    public function Re_Open_Laser_Engraving_Ticket($id){
+        $ticket = Laser_Engraving_Tickets_Model::with('user_owner')->findOrFail($id);
+        try {
+            if ($ticket->status == 3 || $ticket->status == 4) {
+                $ticket->status = 1; //đổi status thành "Đang chờ"
+                tracking_info_service::add(
+                    $ticket->id,
+                    auth()->id(),
+                    3, //1 là mã cho software ticket
+                    're-opened ticket at',
+                );
+                $ticket->save();
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Ticket re-opened successfully',
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Chỉ có ticket ở trạng thái "Completed", "Rejected" hoặc "Canceled" mới có thể re-open !',
+                ], 400);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to create ticket due to ' .$e->getMessage(),
+            ], 500);
+        }
+        
+        
+    }
+
 }

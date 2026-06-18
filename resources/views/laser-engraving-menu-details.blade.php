@@ -48,6 +48,14 @@
                 
                 @case(3)
                 @case(4)
+                    @if($ticket->user_id == auth()->user()->id || auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_LASER_ENGRAVING_ADMIN'))
+                        <li>
+                            <form id="re-open-laser-engraving-ticket" class="js-input-required-btn" data-target="re-open-laser-engraving-ticket" action="{{ route('re-open-laser-engraving-ticket', $ticket->id) }}" method="PATCH">
+                                @csrf
+                                <button type="submit"><i class="ti-back-left"></i>Request Re-Open</button>
+                            </form>
+                        </li>
+                    @endif
                     
                 @break
             @endswitch
