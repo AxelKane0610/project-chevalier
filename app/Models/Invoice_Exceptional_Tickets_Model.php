@@ -93,7 +93,7 @@ class Invoice_Exceptional_Tickets_Model extends Model
 
     public function getSupportTypeDataAttribute()
     {
-        return match ($this->status){
+        return match ($this->support_type){
              "1" => [
                 'text' => 'Hóa đơn xuất sau (1 máy)',
                 'class' => 'approve-invoice-1-unit'

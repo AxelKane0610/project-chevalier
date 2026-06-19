@@ -49,4 +49,191 @@ document.addEventListener('submit', function (e) {
         .catch(error => console.error(error));
 
     }
+
+    if (e.target && e.target.id === 'edit-ticket-details') {
+        e.preventDefault();
+
+        const form = e.target;
+        
+        Swal.fire({
+            title: 'Bạn có chắc muốn edit ticket này ?',
+            icon: 'warning',
+            showCancelButton: true
+        })
+        .then((result) => {
+
+            // Cancel
+            if (!result.isConfirmed) {
+                return;
+            }
+
+            // Confirm mới loading
+            startButtonLoading(form);
+
+            fetch(url,{
+                method:'POST',
+                body:formData,
+                headers:{
+                    'X-CSRF-TOKEN':
+                        document.querySelector(
+                            'input[name="_token"]'
+                        ).value
+                }
+            })
+            .then(response => response.json())
+            .then(data => 
+            {
+                if (data.success === true) {
+                    Swal.fire({
+                        title:'Success',
+                        text:data.message,
+                        icon:'success'
+                    }).then(()=>{
+                    location.reload();
+                });
+                }
+                else {
+                    Swal.fire({
+                        title:'Error',
+                        text:data.message,
+                        icon:'error'
+                    }).then(()=>{
+                    location.reload();
+                });
+                }
+
+            })
+            .catch(error => {
+
+                Swal.fire({
+                    title:'Error',
+                    text:error,
+                    icon:'error'
+                });
+
+            })
+            .finally(() => {
+
+                stopButtonLoading(form);
+
+            });
+
+        });
+    }
+
+    if (e.target && e.target.id === 'send-approve-invoice-exceptional') {
+        e.preventDefault();
+        Swal.fire({
+            title: 'Bạn có chắc muốn xin approve cho ticket này ?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, send it !'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Proceed with the approval logic
+                fetch(url, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                    }
+                })
+                .then(response => response.json())
+                .then(ticket_approval_response => {
+                    if (ticket_approval_response.success == true) {
+                        Swal.fire({
+                            title: 'Success!',
+                            text: ticket_approval_response.message,
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        }).then((result) => {
+                            document.querySelector('.ticket-form-overlay').classList.remove('active');
+                            e.target.reset();
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: ticket_approval_response.message,
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        }).then(()=>{
+                            location.reload();
+                        });
+                    }
+                    
+                })
+                .catch(error => {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: error,
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    })
+                    console.error(error)
+                });
+
+            }
+        });
+    }
+
+    if (e.target && e.target.id === 'approve-invoice-exceptional') {
+        e.preventDefault();
+        Swal.fire({
+            title: 'Bạn có chắc approve cho ticket này ?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, send it !'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Proceed with the approval logic
+                fetch(url, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                    }
+                })
+                .then(response => response.json())
+                .then(ticket_approval_response => {
+                    if (ticket_approval_response.success == true) {
+                        Swal.fire({
+                            title: 'Success!',
+                            text: ticket_approval_response.message,
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        }).then((result) => {
+                            document.querySelector('.ticket-form-overlay').classList.remove('active');
+                            e.target.reset();
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: ticket_approval_response.message,
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        }).then(()=>{
+                            location.reload();
+                        });
+                    }
+                    
+                })
+                .catch(error => {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: error,
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    })
+                    console.error(error)
+                });
+
+            }
+        });
+    }
 });

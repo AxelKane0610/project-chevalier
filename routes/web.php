@@ -89,7 +89,12 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/invoice-exceptional-menu', [InvoiceExceptionalTicketsController::class, 'Show_Pending_Tickets']);
         Route::get('/invoice-exceptional-menu-details/{id}', [InvoiceExceptionalTicketsController::class, 'Show_Invoice_Exceptional_Ticket_Details']);
         Route::post('/create-invoice-exceptional-ticket', [InvoiceExceptionalTicketsController::class, 'Create_Invoice_Exceptional_Tickets']);
-
+        Route::post('/add-comment-invoice-exceptional-ticket/{id}', [InvoiceExceptionalTicketsController::class, 'Add_Comment_Invoice_Exceptional_Ticket']) ->name('add-comment-invoice-exceptional-ticket');
+        Route::patch('/edit-invoice-exceptional-ticket/{id}', [InvoiceExceptionalTicketsController::class, 'Edit_Invoice_Exceptional_Ticket'])->name('edit-invoice-exceptional-ticket');
+        Route::post('/send-approve-invoice-exceptional/{id}', [InvoiceExceptionalTicketsController::class, 'Send_Approve_Invoice_Exceptional']) ->name('send-approve-invoice-exceptional');
+        Route::post('/invoice-exceptional-approve-lv1/{id}', [InvoiceExceptionalTicketsController::class,'Invoice_Exceptional_Approve_Lv1'])->name('invoice-exceptional-approve-lv1');
+        Route::post('/invoice-exceptional-approve-lv2/{id}', [InvoiceExceptionalTicketsController::class,'Invoice_Exceptional_Approve_Lv2'])->name('invoice-exceptional-approve-lv2');
+        Route::post('/invoice-exceptional-reject/{id}', [InvoiceExceptionalTicketsController::class,'Invoice_Exceptional_Reject'])->name('invoice-exceptional-reject');
     });
 
     Route::middleware(['role:ROLE_SUPER_ADMIN'])->group(function () {
