@@ -95,6 +95,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/invoice-exceptional-approve-lv1/{id}', [InvoiceExceptionalTicketsController::class,'Invoice_Exceptional_Approve_Lv1'])->name('invoice-exceptional-approve-lv1');
         Route::post('/invoice-exceptional-approve-lv2/{id}', [InvoiceExceptionalTicketsController::class,'Invoice_Exceptional_Approve_Lv2'])->name('invoice-exceptional-approve-lv2');
         Route::post('/invoice-exceptional-reject/{id}', [InvoiceExceptionalTicketsController::class,'Invoice_Exceptional_Reject'])->name('invoice-exceptional-reject');
+        Route::patch('/re-open-invoice-exceptional-ticket/{id}', [InvoiceExceptionalTicketsController::class,'Re_Open_Invoice_Exceptional_Ticket'])->name('re-open-invoice-exceptional-ticket');
+
     });
 
     Route::middleware(['role:ROLE_SUPER_ADMIN'])->group(function () {

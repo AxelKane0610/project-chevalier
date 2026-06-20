@@ -179,7 +179,7 @@ document.addEventListener('submit', function (e) {
         });
     }
 
-    if (e.target && e.target.id === 'approve-invoice-exceptional') {
+    if (e.target && e.target.id === 'approve-invoice-exceptional-lv1') {
         e.preventDefault();
         Swal.fire({
             title: 'Bạn có chắc approve cho ticket này ?',
@@ -235,5 +235,185 @@ document.addEventListener('submit', function (e) {
 
             }
         });
+    }
+
+    if (e.target && e.target.id === 'approve-invoice-exceptional-lv2') {
+        e.preventDefault();
+        Swal.fire({
+            title: 'Bạn có chắc approve cho ticket này ?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, send it !'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Proceed with the approval logic
+                fetch(url, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                    }
+                })
+                .then(response => response.json())
+                .then(ticket_approval_response => {
+                    if (ticket_approval_response.success == true) {
+                        Swal.fire({
+                            title: 'Success!',
+                            text: ticket_approval_response.message,
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        }).then((result) => {
+                            document.querySelector('.ticket-form-overlay').classList.remove('active');
+                            e.target.reset();
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: ticket_approval_response.message,
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        }).then(()=>{
+                            location.reload();
+                        });
+                    }
+                    
+                })
+                .catch(error => {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: error,
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    })
+                    console.error(error)
+                });
+
+            }
+        });
+    }
+
+    if (e.target && e.target.id === 'reject-invoice-exceptional')
+        {
+            e.preventDefault();
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You are about to reject this ticket.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, reject it!'
+                }).then((result) => 
+                    {
+                        if (result.isConfirmed) {
+                            // Proceed with the rejection logic
+                            fetch(url, {
+                                method: 'POST',
+                                body: formData,
+                                headers: {
+                                    'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                                }
+                            })
+                            .then(response => response.json())
+                            .then(ticket_approval_response => {
+                                if (ticket_approval_response.success == true) {
+                                    Swal.fire({
+                                        title: 'Success!',
+                                        text: ticket_approval_response.message,
+                                        icon: 'success',
+                                        confirmButtonText: 'OK'
+                                    }).then((result) => {
+                                        document.querySelector('.ticket-form-overlay').classList.remove('active');
+                                        e.target.reset();
+                                        location.reload();
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        title: 'Error!',
+                                        text: ticket_approval_response.message,
+                                        icon: 'error',
+                                        confirmButtonText: 'OK'
+                                    }).then(()=>{
+                                        location.reload();
+                                    });
+                                }
+                                
+                            })
+                            .catch(error => {
+                                Swal.fire({
+                                    title: 'Error!',
+                                    text: error,
+                                    icon: 'error',
+                                    confirmButtonText: 'OK'
+                                })
+                                console.error(error)
+                            });
+    
+                        }
+                    });
+    }
+
+    if (e.target && e.target.id === 're-open-invoice-exceptional-ticket')
+    {
+        e.preventDefault();
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You are about to re-open this ticket.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, re-open it!'
+            }).then((result) => 
+                {
+                    if (result.isConfirmed) {
+                        // Proceed with the re-open logic
+                        fetch(url, {
+                            method: 'PATCH',
+                            body: formData,
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(ticket_re_open_response => {
+                            if (ticket_re_open_response.success == true) {
+                                Swal.fire({
+                                    title: 'Success!',
+                                    text: ticket_re_open_response.message,
+                                    icon: 'success',
+                                    confirmButtonText: 'OK'
+                                }).then((result) => {
+                                    document.querySelector('.ticket-form-overlay').classList.remove('active');
+                                    e.target.reset();
+                                    location.reload();
+                                });
+                            } else {
+                                Swal.fire({
+                                    title: 'Error!',
+                                    text: ticket_re_open_response.message,
+                                    icon: 'error',
+                                    confirmButtonText: 'OK'
+                                }).then(()=>{
+                                    location.reload();
+                                });
+                            }
+                            
+                        })
+                        .catch(error => {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: error,
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            })
+                            console.error(error)
+                        });
+
+                    }
+                });
     }
 });

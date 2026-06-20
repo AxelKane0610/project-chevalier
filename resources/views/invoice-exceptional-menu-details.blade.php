@@ -36,14 +36,14 @@
                 @case(2)
                     @if(auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_INVOICE_EXCEPTIONAL_L1_APPROVER') )
                         <li>
-                            <form id="approve-invoice-exceptional" class="js-input-required-btn" data-target="approve-invoice-exceptional" action="{{ route('invoice-exceptional-approve-lv1', $ticket->id) }}" method="POST">
+                            <form id="approve-invoice-exceptional-lv1" class="js-input-required-btn" data-target="approve-invoice-exceptional-lv1" action="{{ route('invoice-exceptional-approve-lv1', $ticket->id) }}" method="POST">
                                 
                                 <button type="submit"><i class="ti-thumb-up"></i>Approve Lv1</button>
                             </form>
                         </li>
 
                         <li>
-                            <form id="reject-ticket-form" class="js-input-required-btn" data-target="reject-ticket-form" action="{{ route('invoice-exceptional-reject', $ticket->id) }}" method="POST">
+                            <form id="reject-invoice-exceptional" class="js-input-required-btn" data-target="reject-invoice-exceptional" action="{{ route('invoice-exceptional-reject', $ticket->id) }}" method="POST">
                                 @csrf
                                 <button type="submit"><i class="ti-thumb-down"></i>Reject</button>
                             </form>
@@ -55,14 +55,14 @@
                 @case(3)
                     @if(auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_INVOICE_EXCEPTIONAL_L2_APPROVER') )
                         <li>
-                            <form id="approve-invoice-exceptional" class="js-input-required-btn" data-target="approve-invoice-exceptional" action="{{ route('invoice-exceptional-approve-lv2', $ticket->id) }}" method="POST">
+                            <form id="approve-invoice-exceptional-lv2" class="js-input-required-btn" data-target="approve-invoice-exceptional-lv2" action="{{ route('invoice-exceptional-approve-lv2', $ticket->id) }}" method="POST">
                                 @csrf
                                 <button type="submit"><i class="ti-thumb-up"></i>Fully approve</button>
                             </form>
                         </li>
 
                         <li>
-                            <form id="reject-ticket-form" class="js-input-required-btn" data-target="reject-ticket-form" action="{{ route('invoice-exceptional-reject', $ticket->id) }}" method="POST">
+                            <form id="reject-invoice-exceptional" class="js-input-required-btn" data-target="reject-invoice-exceptional" action="{{ route('invoice-exceptional-reject', $ticket->id) }}" method="POST">
                                 @csrf
                                 <button type="submit"><i class="ti-thumb-down"></i>Reject</button>
                             </form>
@@ -75,7 +75,7 @@
                 @case(5)
                     @if($ticket->user_id == auth()->user()->id || auth()->user()->hasRole('ROLE_SUPER_ADMIN'))
                         <li>
-                            <form id="re-open-ticket-form" class="js-input-required-btn" data-target="re-open-ticket-form" action="{{ route('re-open-thermal-event-ticket', $ticket->id) }}" method="PATCH">
+                            <form id="re-open-invoice-exceptional-ticket" class="js-input-required-btn" data-target="re-open-invoice-exceptional-ticket" action="{{ route('re-open-invoice-exceptional-ticket', $ticket->id) }}" method="PATCH">
                                 @csrf
                                 <button type="submit"><i class="ti-back-left"></i>Request Re-Open</button>
                             </form>

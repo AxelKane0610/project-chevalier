@@ -262,7 +262,7 @@ class ThermalEventExceptionalTicketsController extends Controller
         return back()->with('success');
     }
 
-    public function Thermal_Event_Approve_Lv1(Request $request, $id){
+    public function Thermal_Event_Approve_Lv1($id){
         $ticket = Thermal_Event_Exceptional_Tickets_Model::with('user_owner')->findOrFail($id);
         if ($ticket->status != 2) {
             return response()->json([
@@ -288,7 +288,7 @@ class ThermalEventExceptionalTicketsController extends Controller
         }
     }
 
-    public function Thermal_Event_Approve_Lv2(Request $request, $id){
+    public function Thermal_Event_Approve_Lv2( $id){
         $ticket = Thermal_Event_Exceptional_Tickets_Model::with('user_owner')->findOrFail($id);
         if ($ticket->status != 3) {
             return response()->json([
@@ -314,7 +314,7 @@ class ThermalEventExceptionalTicketsController extends Controller
         }
     }
 
-    public function Thermal_Event_Reject(Request $request, $id){
+    public function Thermal_Event_Reject($id){
         $ticket = Thermal_Event_Exceptional_Tickets_Model::with('user_owner')->findOrFail($id);
         if ($ticket->status == 1 || $ticket->status == 4 || $ticket->status == 5) {
             return response()->json([

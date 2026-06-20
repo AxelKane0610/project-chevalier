@@ -246,8 +246,9 @@ class InvoiceExceptionalTicketsController extends Controller
 
     public function Send_Approve_Invoice_Exceptional($id) {
         $ticket = Invoice_Exceptional_Tickets_Model::with('user_owner', 'active_attachments')->findOrFail($id);
-        if ($ticket->status == '1' && $ticket->highest_approved_step == '1') {
-            try{
+        try {
+            if ($ticket->status == '1' && $ticket->highest_approved_step == '1') {
+                
                 $ticket->status = '2';
                 $ticket->save();
                 tracking_info_service::add(
@@ -260,18 +261,33 @@ class InvoiceExceptionalTicketsController extends Controller
                     'success' => true,
                     'message' => 'Approval request sent successfully',
                 ]);
-            } catch (\Exception $e) {
+                
+            } else if ($ticket->status == '1' && $ticket->highest_approved_step == '2') {
+                $ticket->status = '3';
+                $ticket->save();
+                tracking_info_service::add(
+                    $ticket->id, 
+                    auth()->id(), 
+                    7,
+                    'sent approval request at',
+                );
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Approval request sent successfully',
+                ]);
+
+            } else {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Failed to create ticket',
-                    'error' => $e->getMessage(), // Có thể bỏ ở môi trường production
-                ], 500);
+                    'message' => 'Chỉ có ticket đang ở trạng thái "Open" mới có thể request approve !',
+                ]);
             }
-        } else {
+        } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Chỉ có ticket đang ở trạng thái "Open" mới có thể request approve !',
-            ]);
+                'message' => 'Failed to send approve due to: ',
+                'error' => $e->getMessage(), // Có thể bỏ ở môi trường production
+            ], 500);
         }
 
     }
@@ -293,7 +309,7 @@ class InvoiceExceptionalTicketsController extends Controller
                     $ticket->id,
                     auth()->id(),
                     7, //1 là mã cho software ticket
-                    'approved ticket at',
+                    'approved invoice at',
                 );
 
                 return response()->json([
@@ -302,13 +318,14 @@ class InvoiceExceptionalTicketsController extends Controller
                 ], 200);
             } else if ($ticket->status == '2' && ($ticket->support_type == '3' || $ticket->support_type == '4'))  {
                 $ticket->status = '3';
+                $ticket->highest_approved_step = '2';
                 $ticket->save();
 
                 tracking_info_service::add(
                     $ticket->id,
                     auth()->id(),
                     7, //1 là mã cho software ticket
-                    'approved ticket at',
+                    'approved invoice at',
                 );
 
                 return response()->json([
@@ -320,6 +337,106 @@ class InvoiceExceptionalTicketsController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to approve due to ',
+                'error' => $e->getMessage(), // Có thể bỏ ở môi trường production
+            ], 500);
+        }
+    }
+
+    public function Invoice_Exceptional_Approve_Lv2($id){
+        $ticket = Invoice_Exceptional_Tickets_Model::with('user_owner')->findOrFail($id);
+        try {
+            if ($ticket->status != '3') {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Không thể approve ticket. Ticket không ở trạng thái đang chờ active warranty.',
+                ], 400);
+            }
+            else if ($ticket->status == '3' && ($ticket->support_type == '3' || $ticket->support_type == '4')){
+                $ticket->status = '4';
+                $ticket->save();
+
+                tracking_info_service::add(
+                    $ticket->id,
+                    auth()->id(),
+                    7, //1 là mã cho software ticket
+                    'approved ticket at',
+                );
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Re-active warranty completed !',
+                ], 200);
+            } 
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to approve due to ',
+                'error' => $e->getMessage(), // Có thể bỏ ở môi trường production
+            ], 500);
+        }
+    }
+
+    public function Invoice_Exceptional_Reject($id){
+        $ticket = Invoice_Exceptional_Tickets_Model::with('user_owner')->findOrFail($id);
+        try {
+            if ($ticket->status == 1 || $ticket->status == 4 || $ticket->status == 5) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Không thể reject ticket. Ticket không ở trạng thái đang chờ phê duyệt.',
+                ], 400);
+            }
+            else {
+                $ticket->status = '5';
+                $ticket->save();
+
+                tracking_info_service::add(
+                    $ticket->id,
+                    auth()->id(),
+                    7, //1 là mã cho software ticket
+                    'rejected ticket at',
+                );
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Ticket rejected !',
+                ]);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to reject ticket due to: ',
+                'error' => $e->getMessage(), // Có thể bỏ ở môi trường production
+            ], 500);
+        }
+        
+    }
+
+    public function Re_Open_Invoice_Exceptional_Ticket($id) {
+        $ticket = Invoice_Exceptional_Tickets_Model::with('user_owner')->findOrFail($id);
+        try {
+            if ($ticket->status == '4' || $ticket->status == '5') {
+                $ticket->status = '1'; //đổi status thành "Open"
+                tracking_info_service::add(
+                    $ticket->id,
+                    auth()->id(),
+                    7, //1 là mã cho software ticket
+                    're-opened ticket at',
+                );
+                $ticket->save();
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Ticket re-opened successfully',
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Chỉ có ticket ở trạng thái "Completed", "Rejected" hoặc "Canceled" mới có thể re-open !',
+                ], 400);
+            } 
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to re-open ticket due to: ',
                 'error' => $e->getMessage(), // Có thể bỏ ở môi trường production
             ], 500);
         }
