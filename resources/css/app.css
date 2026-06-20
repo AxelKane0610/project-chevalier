@@ -384,6 +384,7 @@ h1, h2, h3 {
 
 /* -------------------- CSS Cho main menu software tickets --------------------*/
 
+#out-of-office-tickets-menu,
 #software-tickets-menu {
     display: flex;
     flex-direction: column;
@@ -527,6 +528,7 @@ h1, h2, h3 {
     font-size: 15px;
 }
 
+.out-of-office-tickets-menu-content,
 .invoice-exceptional-tickets-menu-content,
 .thermal-event-tickets-menu-content,
 .laser-engraving-menu-content,
@@ -737,6 +739,7 @@ h1, h2, h3 {
     justify-content: space-evenly;
 }
 
+.out-of-office-tickets-menu-content,
 .invoice-exceptional-ticket-content,
 .thermal-event-ticket-content,
 .laser-engraving-ticket-content,

@@ -118,53 +118,67 @@ class LaserEngravingTicketsController extends Controller
             'priority' => 'required',
             'info_base' => 'required',
             'description' => 'required',
-            'attachments.*' => 'file|max:5120|mimes:jpg,png,pdf,jpeg,xlsx'
+            'attachments.*' => 'file|max:20480|mimes:jpg,png,pdf,jpeg,xlsx'
         ]);
-
-        $validatedData['ticket_receipt'] = strip_tags($validatedData['ticket_receipt']);
-        $validatedData['info_base'] = strip_tags($validatedData['info_base']);
-        $validatedData['description'] = strip_tags($validatedData['description']);
-
-        // Cập nhật thông tin ticket
         $ticket = Laser_Engraving_Tickets_Model::with('user_owner')->findOrFail($id);
-        $ticket->ticket_receipt = $validatedData['ticket_receipt'];
-        $ticket->priority = $validatedData['priority'];
-        $ticket->info_base = $validatedData['info_base'];
-        $ticket->description = $validatedData['description'];
-        
-        $ticket->save();
+        try {
+            if ($ticket->status == 1) {
+            $validatedData['ticket_receipt'] = strip_tags($validatedData['ticket_receipt']);
+            $validatedData['info_base'] = strip_tags($validatedData['info_base']);
+            $validatedData['description'] = strip_tags($validatedData['description']);
 
-
-        if ($request->hasFile('attachments')) { //Kiểm tra xem có file nào được upload lên không
-
-            foreach ($request->file('attachments') as $file) { //Duyệt qua từng file được upload lên
-                $originalName = $file->getClientOriginalName();
-                $folderPath = '3/'.$ticket->id;
-                $filePath = $file->storeAs($folderPath, $originalName, 'attachments'); // Lưu file vào thư mục '/'
-                
-                Attachments_Model::create([
-                    'type_of_ticket' => 3, // Giả sử 3 là mã cho laser engraving ticket
-                    'ticket_id' => $ticket->id,
-                    'file_path' => $filePath,   
-                    'name' => $originalName,// Lưu tên gốc của file vào cơ sở dữ liệu
-                ]);
-            }
+            // Cập nhật thông tin ticket
             
-        }
-        if ($request->has('delete_files')) {
-        // Cập nhật tất cả các ID được tích chọn thành status = 0 trong 1 câu lệnh duy nhất
-            Attachments_Model::whereIn('id', $request->input('delete_files'))->update(['status' => '0']);
-        }
+            $ticket->ticket_receipt = $validatedData['ticket_receipt'];
+            $ticket->priority = $validatedData['priority'];
+            $ticket->info_base = $validatedData['info_base'];
+            $ticket->description = $validatedData['description'];
+            
+            $ticket->save();
 
-        
-        tracking_info_service::add(
-            $ticket->id, 
-            auth()->id(), 
-            3,
-            'edited ticket at'
-        );
 
-        return back()->with('success');
+            if ($request->hasFile('attachments')) { //Kiểm tra xem có file nào được upload lên không
+
+                foreach ($request->file('attachments') as $file) { //Duyệt qua từng file được upload lên
+                    $originalName = $file->getClientOriginalName();
+                    $folderPath = '3/'.$ticket->id;
+                    $filePath = $file->storeAs($folderPath, $originalName, 'attachments'); // Lưu file vào thư mục '/'
+                    
+                    Attachments_Model::create([
+                        'type_of_ticket' => 3, // Giả sử 3 là mã cho laser engraving ticket
+                        'ticket_id' => $ticket->id,
+                        'file_path' => $filePath,   
+                        'name' => $originalName,// Lưu tên gốc của file vào cơ sở dữ liệu
+                    ]);
+                }
+                
+            }
+            if ($request->has('delete_files')) {
+            // Cập nhật tất cả các ID được tích chọn thành status = 0 trong 1 câu lệnh duy nhất
+                Attachments_Model::whereIn('id', $request->input('delete_files'))->update(['status' => '0']);
+            }
+
+            
+            tracking_info_service::add(
+                $ticket->id, 
+                auth()->id(), 
+                3,
+                'edited ticket at'
+            );
+            return response()->json([
+                        'success' => true,
+                        'message' => 'Ticket edited successfully',
+                    ]);
+                } else return response()->json([
+                    'success' => false,
+                    'message' => 'Chỉ có ticket đang ở trạng thái "Open" mới được phép edit !',
+                ], 400);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to create ticket due to ' .$e->getMessage(),
+            ], 500);
+        }
     }
 
     public function Add_Comment_Laser_Engraving_Ticket(Request $request, $id)

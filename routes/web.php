@@ -10,6 +10,7 @@ use App\Http\Controllers\AttachmentController;
 use App\Http\Controllers\InvoiceExceptionalTicketsController;
 use App\Models\Laser_Engraving_Tickets_Model;
 use App\Http\Controllers\LaserEngravingTicketsController;
+use App\Http\Controllers\OutOfOfficeTicketsController;
 use App\Http\Controllers\ThermalEventExceptionalTicketsController;
 
 Route::get('/', function () {
@@ -67,7 +68,7 @@ Route::middleware(['auth'])->group(function () {
         Route::patch('/close-laser-engraving-ticket/{id}', [LaserEngravingTicketsController::class, 'Close_Laser_Engraving_Ticket'])->name('close-laser-engraving-ticket');
     });
 
-    Route::middleware(['role:ROLE_THERMAL_EVENT_USER,ROLE_THERMAL_EVENT_ADMIN,ROLE_SUPER_ADMIN'])->group(function () {
+    Route::middleware(['role:ROLE_THERMAL_EVENT_USER,ROLE_THERMAL_EVENT_LV1_APPROVER,ROLE_THERMAL_EVENT_LV2_APPROVER,ROLE_SUPER_ADMIN'])->group(function () {
         Route::get('/thermal-event-tickets-menu', [ThermalEventExceptionalTicketsController::class, 'Show_Pending_Tickets']);
         Route::get('/thermal-event-tickets-menu-details/{id}', [ThermalEventExceptionalTicketsController::class, 'Show_Thermal_Event_Ticket_Details']);
         Route::post('/create-thermal-event-ticket', [ThermalEventExceptionalTicketsController::class, 'Create_Thermal_Event_Ticket']);
@@ -85,7 +86,7 @@ Route::middleware(['auth'])->group(function () {
         Route::patch('/delete-thermal-event-part-details/{id}', [ThermalEventExceptionalTicketsController::class, 'Delete_Thermal_Event_Part_Details'])->name('delete-thermal-event-part-details');
     });
 
-    Route::middleware(['role:ROLE_SUPER_ADMIN'])->group(function () {
+    Route::middleware(['role:ROLE_INVOICE_EXCEPTIONAL_USER,ROLE_SUPER_ADMIN,ROLE_INVOICE_EXCEPTIONAL_L1_APPROVER,ROLE_INVOICE_EXCEPTIONAL_L2_APPROVER'])->group(function () {
         Route::get('/invoice-exceptional-menu', [InvoiceExceptionalTicketsController::class, 'Show_Pending_Tickets']);
         Route::get('/invoice-exceptional-menu-details/{id}', [InvoiceExceptionalTicketsController::class, 'Show_Invoice_Exceptional_Ticket_Details']);
         Route::post('/create-invoice-exceptional-ticket', [InvoiceExceptionalTicketsController::class, 'Create_Invoice_Exceptional_Tickets']);
@@ -104,6 +105,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/subk-management', [UserController::class, 'index']);
         
         Route::post('/create-new-user', [UserController::class,'Create_New_User']) ->name('create-new-user');
+    });
+
+    Route::middleware(['role:ROLE_SUPER_ADMIN, ROLE_OUT_OF_OFFICE_USER, ROLE_OUT_OF_OFFICE_ADMIN'])->group(function () {
+        Route::get('/out-of-office-tickets-menu', [OutOfOfficeTicketsController::class, 'Show_Pending_Tickets']);
+
     });
 
     Route::post('/logout', [UserController::class, 'logout'])->name('logout');

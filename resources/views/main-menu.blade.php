@@ -146,7 +146,7 @@
                 
             </a>
 
-            <a href="#">
+            <a href="{{ url('/out-of-office-tickets-menu') }}">
 
                 <div class="offline-request-btn">
                     <div class="ticket-img-description">
