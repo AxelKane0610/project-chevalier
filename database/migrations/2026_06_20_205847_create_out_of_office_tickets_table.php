@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('out_of_office_tickets', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
+            $table->enum('type_of_leave', [1, 2, 3, 4, 5, 6]);
             $table->string('reasons_for_leave');
             $table->dateTime('start_date');
             $table->dateTime('end_date');

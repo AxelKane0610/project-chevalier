@@ -9,7 +9,7 @@
 
     <body>
 
-        <div id="thermal-event-tickets-menu">
+        <div>
 
             <x-common-header title="Thermal Event Exceptional">
                 <li>

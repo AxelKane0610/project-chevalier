@@ -13,7 +13,8 @@ export default defineConfig({
                 'resources/js/laser-engraving.js', 
                 'resources/js/thermal-event.js',
                 'resources/css/icons/themify-icons.css',
-                'resources/js/invoice-exceptional.js'
+                'resources/js/invoice-exceptional.js',
+                'resources/js/out-of-office.js'
             ],
             refresh: true,
         }),

@@ -11,13 +11,38 @@
 
     <body class="background-enable">
         
-        <div class="main-menu-categories-header">
+        <!-- <div class="main-menu-categories-header">
             <h1>Xin chào, hôm nay bạn cần hỗ trợ gì ?</h1>
             <div class="search-box">
                 <i class="ti-search"></i>
                 <input type="text" placeholder="Quick Search Reciept">
             </div>
-        </div>
+        </div> -->
+
+        <x-common-header title="Xin chào, hôm nay bạn cần hỗ trợ gì ?">
+            <li>
+                <li>
+                    <div class="search-container">
+                        <form action="">
+                            @csrf
+                            <button type="button" id="btn-toggle-search" class="nav-btn search-btn">
+                                <i class="ti-search"></i> Search
+                            </button>
+
+                            <div id="search-dropdown" class="search-dropdown-box hidden">
+                                <div class="search-input-group">
+                                    <input type="text" id="input-receipt" placeholder="Nhập mã ticket receipt...">
+                                    <button type="button" id="btn-submit-search">Tìm</button>
+                                </div>
+                                <div id="search-results-area"></div>
+                            </div>
+                        </form>
+                    </div>
+                    
+                </li>
+            </li>
+
+        </x-common-header>
 
         
         

@@ -34,7 +34,73 @@ class OutOfOfficeTicketsController extends Controller
             return view('out-of-office-tickets-menu', compact('tickets', 'tickets_waiting_approval'));
 
             
+        } else {
+            $tickets = Out_Of_Office_Tickets_Model::where('user_id', auth()->id())
+                ->whereIn('status', ['1', '2'])
+                ->get();
+            return view('out-of-office-tickets-menu', compact('tickets'));
         }
         
+    }
+
+    public function Create_Out_Of_Office_Ticket(Request $request){
+        $validate_data = $request->validate([
+            'type_of_leave' => 'required',
+            'reasons_for_leave' => 'required|string|max:255',
+            'start_date' => 'required',
+            'end_date' => 'required',
+        ]);
+
+        $validate_data['user_id'] = auth()->id();
+        $validate_data['status'] = 2;
+        $validate_data['start_date'] = strip_tags($validate_data['start_date']);
+        $validate_data['end_date'] = strip_tags($validate_data['end_date']);
+        $validate_data['reasons_for_leave'] = strip_tags($validate_data['reasons_for_leave']);
+        $validate_data['type_of_leave'] = strip_tags($validate_data['type_of_leave']);
+
+        $ticket = Out_Of_Office_Tickets_Model::create($validate_data);
+        if ($request->hasFile('attachments')) { //Kiểm tra xem có file nào được upload lên không
+
+            foreach ($request->file('attachments') as $file) { //Duyệt qua từng file được upload lên
+                $originalName = $file->getClientOriginalName();
+                $folderPath = '9/'.$ticket->id;
+                $filePath = $file->storeAs($folderPath, $originalName, 'attachments'); // Lưu file vào thư mục '/'
+                
+                Attachments_Model::create([
+                    'type_of_ticket' => 9,
+                    'ticket_id' => $ticket->id,
+                    'file_path' => $filePath,   
+                    'name' => $originalName,// Lưu tên gốc của file vào cơ sở dữ liệu
+                ]);
+            }
+            
+        }
+
+        tracking_info_service::add(
+            $ticket->id, 
+            auth()->id(), 
+            9,
+            'created ticket at'
+        );
+
+        try {
+            $ticket->save();
+            return response()->json([
+                'success' => true,
+                'message' => 'Ticket created successfully',
+                'user_owner' => $ticket->user_owner->fullname,
+                'start_date' => $ticket->start_date,
+                'end_date' => $ticket->end_date,
+                'type_of_leave' => $ticket->type_of_leave,
+                'reasons_for_leave' => $ticket->reasons_for_leave,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to create ticket due to: ',
+                'error' => $e->getMessage(), // Có thể bỏ ở môi trường production
+            ], 500);
+        }
+
     }
 }

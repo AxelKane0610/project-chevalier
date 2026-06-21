@@ -11,7 +11,9 @@ use App\Http\Controllers\InvoiceExceptionalTicketsController;
 use App\Models\Laser_Engraving_Tickets_Model;
 use App\Http\Controllers\LaserEngravingTicketsController;
 use App\Http\Controllers\OutOfOfficeTicketsController;
+use App\Models\Out_Of_Office_Tickets_Model;
 use App\Http\Controllers\ThermalEventExceptionalTicketsController;
+use App\Http\Controllers\SearchController;
 
 Route::get('/', function () {
     // Auth::logout();
@@ -28,7 +30,7 @@ Route::post('/login', [UserController::class, 'authenticate']);
 
 
 Route::middleware(['auth'])->group(function () {
-    
+    Route::get('/search-receipt', [SearchController::class, 'search'])->name('search.receipt');
     Route::get('/main-menu', function () {
         return view('main-menu');
     });
@@ -42,7 +44,7 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:ROLE_SUPER_ADMIN,ROLE_SW_TICKET_USER,ROLE_TICKET_SW_ADMIN'])->group(function () {
     
         Route::get('/software-tickets-menu', [EEGTicketsController::class, 'Show_Pending_Tickets']);
-
+        
         Route::get('/software-tickets-menu-details/{id}', [EEGTicketsController::class, 'Show_Software_Ticket_Details']);
         
         // Thêm các route khác vào đây...
@@ -109,6 +111,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::middleware(['role:ROLE_SUPER_ADMIN, ROLE_OUT_OF_OFFICE_USER, ROLE_OUT_OF_OFFICE_ADMIN'])->group(function () {
         Route::get('/out-of-office-tickets-menu', [OutOfOfficeTicketsController::class, 'Show_Pending_Tickets']);
+        Route::post('/create-out-of-office-ticket', [OutOfOfficeTicketsController::class, 'Create_Out_Of_Office_Ticket']);
 
     });
 

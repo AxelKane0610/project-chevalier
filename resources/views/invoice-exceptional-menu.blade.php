@@ -29,7 +29,7 @@
 
             <div class="invoice-exceptional-tickets-menu-content">
 
-                <form action=""  >
+                <form action="" >
                     <button type="button" class="js-input-required-btn" id="create-invoice-exceptional-ticket-btn" data-target="create-invoice-exceptional-ticket-form"><i class="ti-plus"></i> Create Ticket</button>
                 </form>
                 

@@ -739,7 +739,6 @@ h1, h2, h3 {
     justify-content: space-evenly;
 }
 
-.out-of-office-tickets-menu-content,
 .invoice-exceptional-ticket-content,
 .thermal-event-ticket-content,
 .laser-engraving-ticket-content,
@@ -903,5 +902,68 @@ h1, h2, h3 {
     background: rgb(21 16 66);
 }
 
+.leave {
+    background: rgb(91, 201, 47);
+}
 
+.late,
+.early,
+.no-check-in,
+.no-check-out,
+.forgot-check-in {
+    background: rgb(127 0 10);
+}
+
+
+
+.search-container {
+    position: relative; 
+    display: inline-block;
+}
+
+.search-dropdown-box {
+    position: absolute;
+    top: 110%; /* Nằm ngay dưới nút bấm (cách một khoảng nhỏ) */
+    left: 0;   /* Canh lề phải bằng với cạnh phải của nút search */
+    width: 350px; /* Độ rộng của khung search */
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); /* Tạo bóng đổ cho đẹp */
+    padding: 15px;
+    z-index: 999; /* Đảm bảo nổi lên trên tất cả nội dung khác của web */
+}
+
+/* Ô nhập liệu và nút Tìm bên trong dropdown */
+.search-input-group {
+    color: black;
+    display: flex;
+    gap: 8px;
+}
+.search-input-group input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.search-input-group button {
+    background-color: #10b981;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Khu vực kết quả bên dưới ô nhập */
+#search-results-area {
+    color: black;
+    margin-top: 10px;
+    max-height: 250px; /* Giới hạn chiều cao nếu quá nhiều kết quả */
+    overflow-y: auto;  /* Tự động xuất hiện thanh cuộn nếu kết quả quá dài */
+}
+
+/* Class ẩn */
+.hidden {
+    display: none !important;
+}
 
