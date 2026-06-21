@@ -34,15 +34,15 @@ document.addEventListener('submit', function (e) {
                     </td>
                     <td>${new_ticket.user_owner}</td>
                     <td>${new_ticket.type_of_leave}</td>
-                    <td>${new_ticket.reasons_for_leave}</td>
                     <td>${new_ticket.start_date}</td>
                     <td>${new_ticket.end_date}</td>
+                    <td>${new_ticket.reasons_for_leave}</td>
                     <td>${new_ticket.status}</td>
                 </tr>
             
             `;
             document
-            .querySelector('#pending-out-of-office-tickets-table tbody')
+            .querySelector('.pending-out-of-office-tickets-table tbody')
             .insertAdjacentHTML('beforeend', newRow);
             
             document.querySelector('.ticket-form-overlay').classList.remove('active');

@@ -27,7 +27,7 @@ document.addEventListener('submit', function (e) {
             `
                 <tr>
                     <td>
-                        <a href="/software-tickets-menu-details/${new_ticket.ticket_id}">
+                        <a href="/invoice-exceptional-menu-details/${new_ticket.ticket_id}">
                             <button><i class="ti-arrow-right" ></i></button>
                         </a>
                     </td>
@@ -40,7 +40,7 @@ document.addEventListener('submit', function (e) {
             
             `;
             document
-            .querySelector('#pending-invoice-exceptional-tickets-table tbody')
+            .querySelector('.pending-invoice-exceptional-tickets-table tbody')
             .insertAdjacentHTML('beforeend', newRow);
             
             document.querySelector('.ticket-form-overlay').classList.remove('active');

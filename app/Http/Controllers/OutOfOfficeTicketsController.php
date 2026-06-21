@@ -52,7 +52,7 @@ class OutOfOfficeTicketsController extends Controller
         ]);
 
         $validate_data['user_id'] = auth()->id();
-        $validate_data['status'] = 2;
+        $validate_data['status'] = '2';
         $validate_data['start_date'] = strip_tags($validate_data['start_date']);
         $validate_data['end_date'] = strip_tags($validate_data['end_date']);
         $validate_data['reasons_for_leave'] = strip_tags($validate_data['reasons_for_leave']);
@@ -89,10 +89,27 @@ class OutOfOfficeTicketsController extends Controller
                 'success' => true,
                 'message' => 'Ticket created successfully',
                 'user_owner' => $ticket->user_owner->fullname,
-                'start_date' => $ticket->start_date,
-                'end_date' => $ticket->end_date,
-                'type_of_leave' => $ticket->type_of_leave,
+                'start_date' => $ticket->start_date->format('Y-m-d H:i:s'),
+                'end_date' => $ticket->end_date->format('Y-m-d H:i:s'),
+                'type_of_leave' => match ($ticket->type_of_leave) 
+                    {
+                        '1' => 'Xin nghỉ phép',
+                        '2' => 'Xin đi trễ',
+                        '3' => 'Xin về sớm',
+                        '4' => 'Xin không chấm công vào',
+                        '5' => 'Xin không chấm công ra',
+                        '6' => 'Quên chấm công vào/ra',
+                        default => 'Unknown',
+                    },
                 'reasons_for_leave' => $ticket->reasons_for_leave,
+                'status' => match ($ticket->status) 
+                    {
+                        '1' => 'Open',
+                        '2' => 'Waiting for approval',
+                        '3' => 'Completed',
+                        '4' => 'Rejected',
+                        default => 'Unknown',
+                    },
             ]);
         } catch (\Exception $e) {
             return response()->json([

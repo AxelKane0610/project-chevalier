@@ -20,6 +20,11 @@ class Out_Of_Office_Tickets_Model extends Model
         'type_of_leave'
     ];
 
+    protected $casts = [
+        'start_date' => 'datetime',
+        'end_date' => 'datetime',
+    ];
+
     public function user_owner(): BelongsTo
     {
         // Một ticket thì "thuộc về" (belongsTo) một người dùng

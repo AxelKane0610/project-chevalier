@@ -215,11 +215,11 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // 3. Click ra ngoài vùng search thì tự động đóng khung lại
-    document.addEventListener('click', function (e) {
-        if (!btnToggle.contains(e.target) && !searchDropdown.contains(e.target)) {
-            searchDropdown.classList.add('hidden');
-        }
-    });
+    // document.addEventListener('click', function (e) {
+    //     if (!btnToggle.contains(e.target) && !searchDropdown.contains(e.target)) {
+    //         searchDropdown.classList.add('hidden');
+    //     }
+    // });
 
     // 4. Xử lý khi nhấn nút "Tìm"
     btnSubmit.addEventListener('click', function (e) {
