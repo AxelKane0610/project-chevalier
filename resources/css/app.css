@@ -586,6 +586,7 @@ h1, h2, h3 {
 
 .ticket-form-overlay.active {
     display: flex; /* HIỆN FORM KHI NHẤN NÚT CREATE TICKET */
+    z-index: 999999999999999;
 
 }
 

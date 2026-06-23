@@ -17,7 +17,8 @@ class Out_Of_Office_Tickets_Model extends Model
         'start_date',
         'end_date',
         'status',
-        'type_of_leave'
+        'type_of_leave',
+        'days_of_leave'
     ];
 
     protected $casts = [

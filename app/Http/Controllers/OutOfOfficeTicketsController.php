@@ -46,6 +46,7 @@ class OutOfOfficeTicketsController extends Controller
     public function Create_Out_Of_Office_Ticket(Request $request){
         $validate_data = $request->validate([
             'type_of_leave' => 'required',
+            'days_of_leave' => 'required',
             'reasons_for_leave' => 'required|string|max:255',
             'start_date' => 'required',
             'end_date' => 'required',
@@ -55,6 +56,7 @@ class OutOfOfficeTicketsController extends Controller
         $validate_data['status'] = '2';
         $validate_data['start_date'] = strip_tags($validate_data['start_date']);
         $validate_data['end_date'] = strip_tags($validate_data['end_date']);
+        $validate_data['days_of_leave'] = strip_tags($validate_data['days_of_leave']);
         $validate_data['reasons_for_leave'] = strip_tags($validate_data['reasons_for_leave']);
         $validate_data['type_of_leave'] = strip_tags($validate_data['type_of_leave']);
 

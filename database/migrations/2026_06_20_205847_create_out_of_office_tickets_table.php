@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained();
             $table->enum('type_of_leave', [1, 2, 3, 4, 5, 6]);
             $table->string('reasons_for_leave');
+            $table->float('days_of_leave');
             $table->dateTime('start_date');
             $table->dateTime('end_date');
             $table->enum('status', [1, 2, 3, 4])->default(1);

@@ -14,7 +14,8 @@ export default defineConfig({
                 'resources/js/thermal-event.js',
                 'resources/css/icons/themify-icons.css',
                 'resources/js/invoice-exceptional.js',
-                'resources/js/out-of-office.js'
+                'resources/js/out-of-office.js',
+                'resources/js/subk-management.js'
             ],
             refresh: true,
         }),

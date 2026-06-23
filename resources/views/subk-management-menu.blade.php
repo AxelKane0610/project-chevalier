@@ -4,7 +4,7 @@
 
         <title>Project Chevalier</title>
         <meta charset="utf-8">
-        @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/css/icons/themify-icons.css'])
+        @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/css/icons/themify-icons.css', 'resources/js/subk-management.js'])
     
     </head>
 
@@ -107,7 +107,7 @@
             <input name="Learner_Id" class="ticket-form-body-input" required></input>
 
             <label class="ticket-form-body-input">Roles</label>
-            <select multiple name="roles[]" class="ticket-form-body-input" required>
+            <select multiple name="roles[]" id="role-select" class="ticket-form-body-input" required>
                 <option value="ROLE_SUPER_ADMIN">ROLE_SUPER_ADMIN</option>
                 <option value="ROLE_SW_TICKET_ADMIN">ROLE_SW_TICKET_ADMIN</option>
                 <option value="ROLE_SW_TICKET_USER">ROLE_SW_TICKET_USER</option>

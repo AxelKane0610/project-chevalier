@@ -2,6 +2,21 @@ import './bootstrap';
 import '../css/app.css';
 
 import Swal from 'sweetalert2';
+import $ from 'jquery';
+
+window.$ = $;
+window.jQuery = $;
+
+
+import 'select2/dist/css/select2.min.css';
+
+window.select2 = require('select2');
+require('select2/dist/css/select2.min.css');
+
+console.log('jquery:', typeof $);
+console.log('select2:', typeof $.fn.select2);
+
+
 window.Swal = Swal;
 
 document.addEventListener("DOMContentLoaded", function() {
