@@ -28,6 +28,8 @@ class User extends Authenticatable
         'site_id',
         'roles',
         'leader_id',
+        'phone_number',
+        'team'
         
     ];
 
@@ -40,6 +42,11 @@ class User extends Authenticatable
     // Kiểm tra xem cái role cần tìm có nằm trong mảng roles của User không
         
         return in_array($role, $this->roles ?? []);
+    }
+
+    public function leader()
+    {
+        return $this->belongsTo(User::class, 'leader_id');
     }
 
     /**

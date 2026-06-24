@@ -586,7 +586,7 @@ h1, h2, h3 {
 
 .ticket-form-overlay.active {
     display: flex; /* HIỆN FORM KHI NHẤN NÚT CREATE TICKET */
-    z-index: 999999999999999;
+    z-index: 99999;
 
 }
 
@@ -966,5 +966,60 @@ h1, h2, h3 {
 /* Class ẩn */
 .hidden {
     display: none !important;
+}
+
+
+
+/* 1. Ẩn triệt để thẻ select cũ (Đoạn text thô bị tràn ở đáy modal) */
+select#role-select {
+    display: none !important;
+}
+
+/* 2. Sửa lỗi chiều cao quá to - Ép ô input Select2 nhỏ lại theo chuẩn các ô Username/Password phía trên */
+.select2-container--default .select2-selection--multiple {
+    border: 1px solid #ccc !important;
+    border-radius: 6px !important;
+    height: auto !important;
+    padding: 2px 6px !important;
+    display: flex !important;
+    align-items: center !important; /* Căn giữa tag và ô tìm kiếm theo chiều dọc */
+    flex-wrap: wrap !important;
+    overflow-y: scroll;
+}
+
+
+
+/* Kiềm chế chiều cao của vùng chứa các tag */
+.select2-container--default .select2-selection--multiple .select2-selection__rendered {
+    padding: 0 !important;
+    margin: 0 !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 4px !important;
+}
+
+/* Ô input gõ tìm kiếm */
+.select2-container--default .select2-selection--multiple .select2-search--inline .select2-search__field {
+    margin: 0 !important;
+    height: 10px !important;
+    padding: 0 4px !important;
+}
+
+/* 3. Đưa danh sách lựa chọn lên trên mặt Modal (Sửa lỗi nằm bên dưới) */
+.select2-container--open {
+    z-index: 9999999 !important; /* Đảm bảo con số này cao hơn z-index của Modal */
+}
+
+/* 4. Làm đẹp các tag quyền hạn (Chips) giống hệt hình mẫu số 1 */
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background-color: #e2e8f0 !important; /* Màu xám nhạt */
+    border: none !important;
+    border-radius: 16px !important;       /* Bo tròn viên thuốc */
+    padding: 2px 10px !important;
+    color: #4a5568 !important;
+    font-size: 13px !important;
+    margin: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
 }
 

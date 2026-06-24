@@ -46,21 +46,23 @@ class UserController extends Controller
     }
 
     public function index(){
-        $users = User::all();
+        $users = User::with('leader')->get();
         return view('/subk-management-menu', compact('users'));
     }
 
     public function Create_New_User(Request $request){
         // dd($request->all());
         $user_info_input = $request->validate([
-            'Username' => 'required',
-            'Password' => 'required',
-            'Fullname'   => 'required', // Bắt buộc phải khai báo ở đây
-            'Site'       => 'required', // Dùng nullable nếu trường này không bắt buộc
-            'Leader'     => 'required',
-            'Email'      => 'required|email',
-            'Learner_Id' => 'required',
-            'roles'      => 'required|array',
+            'username' => 'required',
+            'password' => 'required',
+            'fullname'   => 'required', // Bắt buộc phải khai báo ở đây
+            'team' => 'nullable',
+            'leader' => 'nullable',
+            'site' => 'required',
+            'email' => 'required',
+            'learner_id' => 'required',
+            'phone_number' => 'nullable',
+            'roles' => 'required|array',
         ]);
 
         
