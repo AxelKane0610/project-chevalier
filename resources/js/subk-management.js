@@ -42,6 +42,10 @@ $(document).on('click', '.btn-edit-user', function () {
         .val(roles)
         .trigger('change');
 
+    document.getElementById('edit-user-info').action =
+            '/edit-user-info/' + this.dataset.id;
+
+
 });
 
 document.addEventListener('submit', function (e) {
@@ -50,7 +54,7 @@ document.addEventListener('submit', function (e) {
     const formData = new FormData(e.target);
     const url = e.target.getAttribute('action');
 
-    if (e.target && e.target.id === 'create-sw-ticket-form') {
+    if (e.target && e.target.id === 'create-user-form') {
         e.preventDefault();
 
         const form = e.target;
@@ -67,7 +71,7 @@ document.addEventListener('submit', function (e) {
 
             // Confirm mới loading
             startButtonLoading(form);
-            fetch('/create-software-ticket', {
+            fetch(url, {
                 method: 'POST',
                 body: formData,
                 headers: {
@@ -80,11 +84,62 @@ document.addEventListener('submit', function (e) {
                 if (new_ticket.success === true) {
                     Swal.fire({
                         title: 'Success!',
-                        text: 'Ticket created successfully.',
+                        text: new_ticket.message,
                         icon: 'success',
                         confirmButtonText: 'OK'
+                    }).then(()=>{
+                        location.reload();
                     });
-                    location.reload();
+                } else {
+                    Swal.fire({
+                            title:'Error',
+                            text:new_ticket.message,
+                            icon:'error'
+                        }).then(()=>{
+                        location.reload();
+                    });
+                }
+                
+            })
+            .catch(error => console.error(error));
+        });
+    }
+
+    if (e.target && e.target.id === 'edit-user-info') {
+        e.preventDefault();
+
+        const form = e.target;
+        Swal.fire({
+            title: 'Bạn có chắc muốn edit user này ?',
+            icon: 'warning',
+            showCancelButton: true
+        })
+        .then((result) => {
+            if (!result.isConfirmed) {
+                return;
+            }
+
+            // Confirm mới loading
+            startButtonLoading(form);
+            fetch(url, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                }
+            })
+            .then(response => response.json())
+            .then(new_ticket => {
+
+                if (new_ticket.success === true) {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: new_ticket.message,
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then(()=>{
+                        location.reload();
+                    });
                 } else {
                     Swal.fire({
                             title:'Error',

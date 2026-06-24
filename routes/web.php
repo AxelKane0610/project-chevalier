@@ -107,6 +107,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/subk-management', [UserController::class, 'index']);
         
         Route::post('/create-new-user', [UserController::class,'Create_New_User']) ->name('create-new-user');
+        Route::patch('/edit-user-info/{id}', [UserController::class,'Edit_User_Info'])->name('edit-user-info');
     });
 
     Route::middleware(['role:ROLE_SUPER_ADMIN, ROLE_OUT_OF_OFFICE_USER, ROLE_OUT_OF_OFFICE_ADMIN'])->group(function () {

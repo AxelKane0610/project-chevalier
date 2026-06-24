@@ -87,7 +87,7 @@
         
         <x-common-ticket-form title="Tạo user mới" id="create-user-form" action1="create-new-user">
             <label class="ticket-form-body-input">Username</label>
-            <input name="username" class="ticket-form-body-input" required></input>
+            <input name="name" class="ticket-form-body-input" required></input>
 
             <label class="ticket-form-body-input">Password</label>
             <input name="password" class="ticket-form-body-input" type="password" required></input>
@@ -108,20 +108,20 @@
             </select>
 
             <label class="ticket-form-body-input">Leader</label>
-            <select name="leader" class="ticket-form-body-input">
+            <select name="leader_id" class="ticket-form-body-input">
                 <option value="">--Select option--</option>
-                <option value="Lê Thế Cường">Lê Thế Cường</option>
-                <option value="Nguyễn Tấn Hạ">Nguyễn Tấn Hạ</option>
-                <option value="Phan Quốc Phương">Phan Quốc Phương</option>
-                <option value="Đặng Thanh Hương">Đặng Thanh Hương</option>
-                <option value="Lê Quang Khoa Duy">Lê Quang Khoa Duy</option>
-                <option value="Lê Thị Thu Ngọc">Lê Thị Thu Ngọc</option>
-                <option value="Trịnh Minh Hướng">Trịnh Minh Hướng</option>
-                <option value="Phạm Trung Hiếu">Phạm Trung Hiếu</option>
+                <option value="lecuong@hp.com">Lê Thế Cường</option>
+                <option value="ha.nguyen3@hp.com">Nguyễn Tấn Hạ</option>
+                <option value="phuong.phan-quoc@hp.com">Phan Quốc Phương</option>
+                <option value="huong.dang@hp.com">Đặng Thanh Hương</option>
+                <option value="leduy@hp.com">Lê Quang Khoa Duy</option>
+                <option value="le.ngoc@hp.com">Lê Thị Thu Ngọc</option>
+                <option value="trinh.huong@hp.com">Trịnh Minh Hướng</option>
+                <option value="phamhieu@hp.com">Phạm Trung Hiếu</option>
             </select>
 
             <label class="ticket-form-body-input">Site</label>
-            <select name="site" class="ticket-form-body-input" required>
+            <select name="site_id" class="ticket-form-body-input" required>
                 <option value="1">Hồ Chí Minh</option>
                 <option value="2">Hà Nội</option>
                 <option value="3">Đà Nẵng</option>
@@ -189,6 +189,7 @@
         </x-common-ticket-form>
 
         <x-common-ticket-form title="Edit User Info" id="edit-user-info" action1="">
+            @method('PATCH')
             <label>Fullname</label>
             <input type="text" class="ticket-form-body-input" id="edit-fullname" placeholder="Edit họ và tên" name="fullname" required>
 
@@ -202,7 +203,7 @@
             <input type="text" class="ticket-form-body-input" id="edit-learner-id" placeholder="Edit learner ID" name="learner_id" required>
 
             <label>Site</label>
-            <select name="site" class="ticket-form-body-input" id="site-change" required>
+            <select name="site_id" class="ticket-form-body-input" id="site-change" required>
                 <option value="1">Hồ Chí Minh</option>
                 <option value="2">Hà Nội</option>
                 <option value="3">Đà Nẵng</option>
@@ -212,6 +213,7 @@
 
             <label>Team</label>
             <select name="team" class="ticket-form-body-input" id="team-change" required>
+                <option value="">--Select option--</option>
                 <option value="1">ASRC</option>
                 <option value="2">Call Center</option>
                 <option value="3">Customer Engineer</option>
@@ -221,15 +223,16 @@
             </select>
 
             <label>Leader</label>
-            <select name="Leader" class="ticket-form-body-input" id="leader-change" required>
-                <option value="Lê Thế Cường">Lê Thế Cường</option>
-                <option value="Nguyễn Tấn Hạ">Nguyễn Tấn Hạ</option>
-                <option value="Phan Quốc Phương">Phan Quốc Phương</option>
-                <option value="Đặng Thanh Hương">Đặng Thanh Hương</option>
-                <option value="Lê Quang Khoa Duy">Lê Quang Khoa Duy</option>
-                <option value="Lê Thị Thu Ngọc">Lê Thị Thu Ngọc</option>
-                <option value="Trịnh Minh Hướng">Trịnh Minh Hướng</option>
-                <option value="Phạm Trung Hiếu">Phạm Trung Hiếu</option>
+            <select name="leader_id" class="ticket-form-body-input" id="leader-change" required>
+                <option value="">--Select option--</option>
+                <option value="lecuong@hp.com">Lê Thế Cường</option>
+                <option value="ha.nguyen3@hp.com">Nguyễn Tấn Hạ</option>
+                <option value="phuong.phan-quoc@hp.com">Phan Quốc Phương</option>
+                <option value="huong.dang@hp.com">Đặng Thanh Hương</option>
+                <option value="leduy@hp.com">Lê Quang Khoa Duy</option>
+                <option value="le.ngoc@hp.com">Lê Thị Thu Ngọc</option>
+                <option value="trinh.huong@hp.com">Trịnh Minh Hướng</option>
+                <option value="phamhieu@hp.com">Phạm Trung Hiếu</option>
             </select>
 
             <label class="ticket-form-body-input">Roles</label>

@@ -52,32 +52,76 @@ class UserController extends Controller
 
     public function Create_New_User(Request $request){
         // dd($request->all());
-        $user_info_input = $request->validate([
-            'username' => 'required',
-            'password' => 'required',
-            'fullname'   => 'required', // Bắt buộc phải khai báo ở đây
-            'team' => 'nullable',
-            'leader' => 'nullable',
-            'site' => 'required',
-            'email' => 'required',
-            'learner_id' => 'required',
-            'phone_number' => 'nullable',
-            'roles' => 'required|array',
-        ]);
+        try {
+            $user_info_input = $request->validate([
+                'name' => 'required',
+                'password' => 'required',
+                'fullname'   => 'required', // Bắt buộc phải khai báo ở đây
+                'team' => 'nullable',
+                'leader_id' => 'nullable',
+                'site_id' => 'required',
+                'email' => 'required',
+                'learner_id' => 'required',
+                'phone_number' => 'nullable',
+                'roles' => 'required|array',
+            ]);
 
-        
-        User::create([
-            'name'     => $user_info_input['Username'], // Map Username vào cột name
-            'password' => bcrypt($user_info_input['Password']),
-            'fullname' => $user_info_input['Fullname'],
-            'site_id' => $user_info_input['Site'], 
-            'leader_id' => User::where('fullname', $user_info_input['Leader'])->first()->id ?? null,
-            'email' => $user_info_input['Email'],
-            'learner_id' => $user_info_input['Learner_Id'],
-            'roles' => $user_info_input['roles'],
-        ]);
+            $user_info_input['name'] = strip_tags($user_info_input['name']); // Chuyển name thành chữ thường
+            $user_info_input['password'] = bcrypt(strip_tags($user_info_input['password']));
+            $user_info_input['fullname'] = strip_tags($user_info_input['fullname']);
+            $user_info_input['email'] = strip_tags($user_info_input['email']);
+            $user_info_input['learner_id'] = strip_tags($user_info_input['learner_id']);
+            $user_info_input['phone_number'] = strip_tags($user_info_input['phone_number']);
+            $user_info_input['leader_id'] = User::where('email', $user_info_input['leader_id'])->first()->id ?? null;
 
-        return redirect()->back()->with('success', 'Tạo người dùng thành công!');
+            
+            $new_user = User::create($user_info_input);
+
+            return response()->json([
+                'message' => 'User created successfully.',
+                'success' => true,
+                ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to create ticket due to: ' . $e->getMessage() // Có thể bỏ ở môi trường production
+            ], 500);
+        }
+    }
+
+    public function Edit_User_Info(Request $request, $id){
+        try {
+            $user_info_input = $request->validate([
+                'fullname'   => 'required', // Bắt buộc phải khai báo ở đây
+                'team' => 'nullable',
+                'leader_id' => 'nullable',
+                'site_id' => 'required',
+                'email' => 'required',
+                'learner_id' => 'required',
+                'phone_number' => 'nullable',
+                'roles' => 'required|array',
+            ]);
+
+            $user_info_input['fullname'] = strip_tags($user_info_input['fullname']);
+            $user_info_input['email'] = strip_tags($user_info_input['email']);
+            $user_info_input['learner_id'] = strip_tags($user_info_input['learner_id']);
+            $user_info_input['phone_number'] = strip_tags($user_info_input['phone_number']);
+            $user_info_input['leader_id'] = User::where('email', $user_info_input['leader_id'])->first()->id ?? null;
+
+            
+            $user = User::findOrFail($id);
+            $user->update($user_info_input);
+
+            return response()->json([
+                'message' => 'User updated successfully.',
+                'success' => true,
+                ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to update user due to: ' . $e->getMessage() // Có thể bỏ ở môi trường production
+            ], 500);
+        }
     }
 
     public function User_Profile(){
