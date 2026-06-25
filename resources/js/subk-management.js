@@ -1,5 +1,22 @@
 console.log('js loaded');
 
+document.getElementById('search-user-input').addEventListener('keyup', function () {
+
+    let keyword = this.value.toLowerCase();
+    let rows = document.querySelectorAll('#subk-management-users-table tbody tr');
+
+    rows.forEach(row => {
+        let text = row.textContent.toLowerCase();
+
+        if (text.includes(keyword)) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+
+});
+
 $(document).ready(function() {
     $('#role-select').select2({
         width: '100%', // Ép Select2 lấy toàn bộ chiều rộng của thẻ cha

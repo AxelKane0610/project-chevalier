@@ -33,8 +33,12 @@
 
                 <div class="common-table-container">
                     <h2>Users </h2>
+                    <div class="search-box">
+                        <i class="ti-search"></i>
+                        <input type="text" placeholder="Quick Search User" id="search-user-input">
+                    </div>
 
-                    <table id = "subk-management-users-table" class="common-table" width="100%" >
+                    <table id ="subk-management-users-table" class="common-table" width="100%" >
                         <tr>
                             <th width="10%">Actions</th>
                             <th width="14%">Username</th>
@@ -53,7 +57,7 @@
                                             <button type="button" 
                                             class="btn-edit-user"
                                             data-id="{{ $user->id }}"
-                                            data-leaderid="{{ $user->leader?->fullname  }}"
+                                            data-leaderid="{{ $user->leader?->email  }}"
                                             data-siteid="{{ $user->site_id }}"
                                             data-fullname="{{ $user->fullname }}"
                                             data-roles='@json($user->roles ?? [])'
