@@ -67,12 +67,11 @@ document.addEventListener('submit', function (e) {
                     e.target.reset();
                 } else {
                     Swal.fire({
-                            title:'Error',
-                            text:new_ticket.message,
-                            icon:'error'
-                        }).then(()=>{
-                        location.reload();
+                        title:'Error',
+                        text:new_ticket.message,
+                        icon:'error'
                     });
+                    stopButtonLoading(form);
                 }
                 
             })
@@ -130,15 +129,6 @@ document.addEventListener('submit', function (e) {
                     });
                 }
             })
-            .catch(error => {
-                Swal.fire({
-                    title: 'Error!',
-                    text: error,
-                    icon: 'error',
-                    confirmButtonText: 'OK'
-                })
-                console.error(error)
-            });
         });
 
         
@@ -192,26 +182,11 @@ document.addEventListener('submit', function (e) {
                         text: data.message,
                         icon: 'error',
                         confirmButtonText: 'OK'
-                    }).then(()=>{
-                        location.reload();
                     });
+                    stopButtonLoading(form);
                 }
 
             })
-            .catch(error => {
-
-                Swal.fire({
-                    title:'Error',
-                    text:error,
-                    icon:'error'
-                });
-
-            })
-            .finally(() => {
-
-                stopButtonLoading(form);
-
-            });
 
         });
     }
@@ -264,25 +239,11 @@ document.addEventListener('submit', function (e) {
                         text:data.message,
                         icon:'error'
                     }).then(()=>{
-                    location.reload();
+                    stopButtonLoading(form);
                 });
                 }
 
             })
-            .catch(error => {
-
-                Swal.fire({
-                    title:'Error',
-                    text:error,
-                    icon:'error'
-                });
-
-            })
-            .finally(() => {
-
-                stopButtonLoading(form);
-
-            });
 
         });
     }

@@ -20,69 +20,70 @@ class EEGTicketsController extends Controller
 {
     //
     public function Create_Software_Ticket(Request $request){
-        $ticket_info_input = $request->validate([
-            'ticket_receipt' => 'required',
-            'support_type' => 'required',
-            'priority' => 'required',
-            'description' => 'required',
-            'attachments.*' => 'file|max:5120|mimes:jpg,png,pdf,jpeg,xlsx'
-        ]);
-
-        $ticket_info_input['ticket_receipt'] = strip_tags($ticket_info_input['ticket_receipt']);//remove code xấu do người dùng input
-        $ticket_info_input['support_type'] = strip_tags($ticket_info_input['support_type']);
-        $ticket_info_input['priority'] = strip_tags($ticket_info_input['priority']);
-        $ticket_info_input['description'] = strip_tags($ticket_info_input['description']);
-        $ticket_info_input['user_id'] = auth()->id();
-
         try {
-            $ticket = EEG_Software_Ticket::create($ticket_info_input); //Phải tạo model EEG_Software_Ticket để có thể sử dụng hàm create() này, và phải khai báo fillable trong model đó nữa
-        
-            if ($request->hasFile('attachments')) { //Kiểm tra xem có file nào được upload lên không
-
-                foreach ($request->file('attachments') as $file) { //Duyệt qua từng file được upload lên
-                    $originalName = $file->getClientOriginalName();
-                    $folderPath = '1/'.$ticket->id;
-                    $filePath = $file->storeAs($folderPath, $originalName, 'attachments'); // Lưu file vào thư mục '/'
-                    
-                    Attachments_Model::create([
-                        'type_of_ticket' => 1, // Giả sử 1 là mã cho software ticket
-                        'ticket_id' => $ticket->id,
-                        'file_path' => $filePath,   
-                        'name' => $originalName,// Lưu tên gốc của file vào cơ sở dữ liệu
-                    ]);
-                }
-                
-            }
-
-            tracking_info_service::add(
-                $ticket->id, 
-                auth()->id(), 
-                1,
-                'created ticket at'
-            );
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Ticket created successfully !',
-                'ticket_id' => $ticket->id,
-                'ticket_receipt' => $ticket->ticket_receipt,
-                'support_type' => match ($ticket->support_type) 
-                    {
-                        '1' => 'Thêm mã part',
-                        '2' => 'Rollback',
-                        '3' => 'Hủy số phiếu',
-                        '4' => 'Điều chỉnh thông tin',
-                        default => 'Unknown',
-                    },
-                'priority' => match ($ticket->priority) {
-                        '1' => 'Normal',
-                        '2' => 'Critical',
-                        '3' => 'High',
-                        '4' => 'Low',
-                        default => 'Unknown',
-                    },
-                'description' => $ticket->description,
+            $ticket_info_input = $request->validate([
+                'ticket_receipt' => 'required',
+                'support_type' => 'required',
+                'priority' => 'required',
+                'description' => 'required',
+                'attachments.*' => 'file|max:5120|mimes:jpg,png,pdf,jpeg,xlsx'
             ]);
+
+            $ticket_info_input['ticket_receipt'] = strip_tags($ticket_info_input['ticket_receipt']);//remove code xấu do người dùng input
+            $ticket_info_input['support_type'] = strip_tags($ticket_info_input['support_type']);
+            $ticket_info_input['priority'] = strip_tags($ticket_info_input['priority']);
+            $ticket_info_input['description'] = strip_tags($ticket_info_input['description']);
+            $ticket_info_input['user_id'] = auth()->id();
+
+            
+                $ticket = EEG_Software_Ticket::create($ticket_info_input); //Phải tạo model EEG_Software_Ticket để có thể sử dụng hàm create() này, và phải khai báo fillable trong model đó nữa
+            
+                if ($request->hasFile('attachments')) { //Kiểm tra xem có file nào được upload lên không
+
+                    foreach ($request->file('attachments') as $file) { //Duyệt qua từng file được upload lên
+                        $originalName = $file->getClientOriginalName();
+                        $folderPath = '1/'.$ticket->id;
+                        $filePath = $file->storeAs($folderPath, $originalName, 'attachments'); // Lưu file vào thư mục '/'
+                        
+                        Attachments_Model::create([
+                            'type_of_ticket' => 1, // Giả sử 1 là mã cho software ticket
+                            'ticket_id' => $ticket->id,
+                            'file_path' => $filePath,   
+                            'name' => $originalName,// Lưu tên gốc của file vào cơ sở dữ liệu
+                        ]);
+                    }
+                    
+                }
+
+                tracking_info_service::add(
+                    $ticket->id, 
+                    auth()->id(), 
+                    1,
+                    'created ticket at'
+                );
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Ticket created successfully !',
+                    'ticket_id' => $ticket->id,
+                    'ticket_receipt' => $ticket->ticket_receipt,
+                    'support_type' => match ($ticket->support_type) 
+                        {
+                            '1' => 'Thêm mã part',
+                            '2' => 'Rollback',
+                            '3' => 'Hủy số phiếu',
+                            '4' => 'Điều chỉnh thông tin',
+                            default => 'Unknown',
+                        },
+                    'priority' => match ($ticket->priority) {
+                            '1' => 'Normal',
+                            '2' => 'Critical',
+                            '3' => 'High',
+                            '4' => 'Low',
+                            default => 'Unknown',
+                        },
+                    'description' => $ticket->description,
+                ]);
 
         } catch (\Exception $e) {
             return response()->json([
@@ -238,7 +239,7 @@ class EEGTicketsController extends Controller
     public function Close_Software_Ticket(Request $request, $id){
         $ticket = EEG_Software_Ticket::with('user_owner')->findOrFail($id);
         try {
-            if ($ticket->status == 1 || $ticket->status == 2) {
+            if ($ticket->status == '1' || $ticket->status == '2') {
                 $ticket_info_input = $request->validate([
                     'ticket_status' => 'required',
                     'issue_owner' => 'required',
@@ -463,27 +464,34 @@ class EEGTicketsController extends Controller
 
     public function Change_Ticket_Software_Status_To_In_Progress($id) {
         $ticket = EEG_Software_Ticket::findOrFail($id);
-        if ($ticket->status == 1) {
-            $ticket->status = 2; // Giả sử 2 là mã cho trạng thái "In Progress"
-            $ticket->save();
+        try {
+            if ($ticket->status == 1) {
+                $ticket->status = 2; // Giả sử 2 là mã cho trạng thái "In Progress"
+                $ticket->save();
 
-            tracking_info_service::add(
-                $ticket->id, 
-                auth()->id(), 
-                1,
-                'changed status to In Progress at'
-            );
+                tracking_info_service::add(
+                    $ticket->id, 
+                    auth()->id(), 
+                    1,
+                    'changed status to In Progress at'
+                );
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Ticket status updated to In Progress !',
-            ]);
-        } else {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Ticket status updated to In Progress !',
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Chỉ có ticket ở trạng thái "Open" mới có thể chuyển sang "In Progress" !',
+                ], 400);
+            }
+        } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Chỉ có ticket ở trạng thái "Open" mới có thể chuyển sang "In Progress" !',
-            ], 400);
-        }
+                'message' => 'Failed to change ticket status due to ' .$e->getMessage(),
+            ], 500);
+        } 
     }
     
 

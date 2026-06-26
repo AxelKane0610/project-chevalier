@@ -7,46 +7,69 @@ document.addEventListener('submit', function (e) {
     if (e.target && e.target.id === 'create-invoice-exceptional-ticket-form') {
         e.preventDefault();
         
-        fetch('/create-invoice-exceptional-ticket', {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+        const form = e.target;
+        
+        Swal.fire({
+            title: 'Bạn có chắc muốn tạo ticket này ?',
+            icon: 'warning',
+            showCancelButton: true
+        })
+        .then((result) => {
+            if (!result.isConfirmed) {
+                return;
+            }
+            startButtonLoading(form);
+            fetch('/create-invoice-exceptional-ticket', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                }
+            })
+            .then(response => response.json())
+            .then(new_ticket => {
+                if (new_ticket.success === true) {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: 'Ticket created successfully.',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    });
+                const newRow = 
+                `
+                    <tr>
+                        <td>
+                            <a href="/invoice-exceptional-menu-details/${new_ticket.ticket_id}">
+                                <button><i class="ti-arrow-right" ></i></button>
+                            </a>
+                        </td>
+                        <td>${new_ticket.ticket_receipt}</td>
+                        <td>${new_ticket.support_type}</td>
+                        <td>${new_ticket.description}</td>
+                        <td>${new_ticket.product_model}</td>
+                        <td>${new_ticket.status}</td>
+                    </tr>
+                
+                `;
+                document
+                .querySelector('.pending-invoice-exceptional-tickets-table tbody')
+                .insertAdjacentHTML('beforeend', newRow);
+                
+                document.querySelector('.ticket-form-overlay').classList.remove('active');
+                e.target.reset();
+
+            } else {
+                Swal.fire({
+                        title:'Error',
+                        text:new_ticket.message,
+                        icon:'error'
+                    }).then(()=>{
+                    location.reload();
+                });
             }
         })
-        .then(response => response.json())
-        .then(new_ticket => {
-            console.log(new_ticket);
-            Swal.fire({
-                title: 'Success!',
-                text: 'Ticket created successfully.',
-                icon: 'success',
-                confirmButtonText: 'OK'
-            });
-            const newRow = 
-            `
-                <tr>
-                    <td>
-                        <a href="/invoice-exceptional-menu-details/${new_ticket.ticket_id}">
-                            <button><i class="ti-arrow-right" ></i></button>
-                        </a>
-                    </td>
-                    <td>${new_ticket.ticket_receipt}</td>
-                    <td>${new_ticket.support_type}</td>
-                    <td>${new_ticket.description}</td>
-                    <td>${new_ticket.product_model}</td>
-                    <td>${new_ticket.status}</td>
-                </tr>
-            
-            `;
-            document
-            .querySelector('.pending-invoice-exceptional-tickets-table tbody')
-            .insertAdjacentHTML('beforeend', newRow);
-            
-            document.querySelector('.ticket-form-overlay').classList.remove('active');
-            e.target.reset();
-        })
         .catch(error => console.error(error));
+        })
 
     }
 
