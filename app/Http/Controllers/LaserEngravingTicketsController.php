@@ -30,21 +30,22 @@ class LaserEngravingTicketsController extends Controller
 
     public function Create_Laser_Engraving_Ticket(Request $request)
     {
+        try {
         // Validate dữ liệu đầu vào
-        $validatedData = $request->validate([
-            'ticket_receipt' => 'required|string|max:255',
-            'priority' => 'required|in:1,2,3,4',
-            'info_base' => 'required|string|max:255',
-            'description' => 'required|string',
-            'attachments.*' => 'file|max:5120|mimes:jpg,png,pdf,jpeg,xlsx'
-        ]);
+            $validatedData = $request->validate([
+                'ticket_receipt' => 'required|string|max:255',
+                'priority' => 'required|in:1,2,3,4',
+                'info_base' => 'required|string|max:255',
+                'description' => 'required|string',
+                'attachments.*' => 'file|max:20480|mimes:jpg,png,pdf,jpeg,xlsx,gif,cdr'
+            ]);
 
-        $validatedData['ticket_receipt'] = strip_tags($validatedData['ticket_receipt']);
-        $validatedData['info_base'] = strip_tags($validatedData['info_base']);
-        $validatedData['description'] = strip_tags($validatedData['description']);
+            $validatedData['ticket_receipt'] = strip_tags($validatedData['ticket_receipt']);
+            $validatedData['info_base'] = strip_tags($validatedData['info_base']);
+            $validatedData['description'] = strip_tags($validatedData['description']);
 
         // Tạo một ticket mới trong cơ sở dữ liệu
-        try {
+        
             $ticket = Laser_Engraving_Tickets_Model::create([
                 'user_id' => auth()->id(), // Lấy ID của người dùng hiện tại
                 'ticket_receipt' => $validatedData['ticket_receipt'],
@@ -238,43 +239,50 @@ class LaserEngravingTicketsController extends Controller
 
     public function Close_Laser_Engraving_Ticket(Request $request, $id)
     {
-        $ticket = Laser_Engraving_Tickets_Model::findOrFail($id);
-        $validatedData = $request->validate([
-            'ticket_status' => 'required',
-            'ticket_comment' => 'nullable|string',
-        ]);
-        if ($validatedData['ticket_status'] == '3') {
-            $ticket->status = 3; 
-            $ticket->save();
+        try {
+            $ticket = Laser_Engraving_Tickets_Model::findOrFail($id);
+            $validatedData = $request->validate([
+                'ticket_status' => 'required',
+                'ticket_comment' => 'nullable|string',
+            ]);
+            if ($validatedData['ticket_status'] == '3') {
+                $ticket->status = '3'; 
+                $ticket->save();
 
-            tracking_info_service::add(
-                $ticket->id, 
-                auth()->id(), 
-                3,
-                'completed ticket at'
-            );
-        } else {
-            $ticket->status = 4;
-            $ticket->save();
-            tracking_info_service::add(
-                $ticket->id, 
-                auth()->id(), 
-                3,
-                'rejected ticket at'
-            );
+                tracking_info_service::add(
+                    $ticket->id, 
+                    auth()->id(), 
+                    3,
+                    'completed ticket at'
+                );
+            } else {
+                $ticket->status = '4';
+                $ticket->save();
+                tracking_info_service::add(
+                    $ticket->id, 
+                    auth()->id(), 
+                    3,
+                    'rejected ticket at'
+                );
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Ticket closed successfully !',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to close ticket due to ' .$e->getMessage(),
+            ], 500);
         }
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Ticket closed successfully !',
-        ]);
     }
 
     public function Re_Open_Laser_Engraving_Ticket($id){
         $ticket = Laser_Engraving_Tickets_Model::with('user_owner')->findOrFail($id);
         try {
-            if ($ticket->status == 3 || $ticket->status == 4) {
-                $ticket->status = 1; //đổi status thành "Đang chờ"
+            if ($ticket->status == '3' || $ticket->status == '4') {
+                $ticket->status = '1'; //đổi status thành "Đang chờ"
                 tracking_info_service::add(
                     $ticket->id,
                     auth()->id(),

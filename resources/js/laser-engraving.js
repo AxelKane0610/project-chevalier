@@ -59,14 +59,14 @@ document.addEventListener('submit', function (e) {
                     
                     document.querySelector('.ticket-form-overlay').classList.remove('active');
                     e.target.reset();
+                    stopButtonLoading(form);
                 } else {
                     Swal.fire({
                         title:'Error',
                         text:new_ticket.message,
                         icon:'error'
-                    }).then(()=>{
-                    location.reload();
-                });
+                    });
+                    stopButtonLoading(form);
                 }
             })
             .catch(error => console.error(error));
@@ -163,27 +163,12 @@ document.addEventListener('submit', function (e) {
                         title:'Error',
                         text:data.message,
                         icon:'error'
-                    }).then(()=>{
-                    location.reload();
-                });
+                    });
+                    stopButtonLoading(form);
                 }
 
             })
-            .catch(error => {
-
-                Swal.fire({
-                    title:'Error',
-                    text:error,
-                    icon:'error'
-                });
-
-            })
-            .finally(() => {
-
-                stopButtonLoading(form);
-
-            });
-
+ 
         });
     }
 

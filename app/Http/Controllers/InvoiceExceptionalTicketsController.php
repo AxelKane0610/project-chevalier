@@ -56,7 +56,7 @@ class InvoiceExceptionalTicketsController extends Controller
             ]);
 
             $validate_data['user_id'] = auth()->id();
-            $validate_data['status'] = 2;
+            $validate_data['status'] = '2';
             $validate_data['ticket_receipt'] = strip_tags($validate_data['ticket_receipt']);
             $validate_data['invoice_number'] = strip_tags($validate_data['invoice_number']);
             $validate_data['serial_number'] = strip_tags($validate_data['serial_number']);
@@ -103,8 +103,7 @@ class InvoiceExceptionalTicketsController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to create ticket',
-                'error' => $e->getMessage(), // Có thể bỏ ở môi trường production
+                'message' => 'Failed to create ticket due to ' .$e->getMessage(),
             ], 500);
         }
 
@@ -157,7 +156,7 @@ class InvoiceExceptionalTicketsController extends Controller
     public function Edit_Invoice_Exceptional_Ticket(Request $request, $id){
         $ticket = Invoice_Exceptional_Tickets_Model::with('user_owner')->findOrFail($id);
         try {
-            if ($ticket->status == 1) {
+            if ($ticket->status == '1') {
                 $validate_data = $request->validate([
                     'ticket_receipt' => 'required',
                     'invoice_number' => 'required',

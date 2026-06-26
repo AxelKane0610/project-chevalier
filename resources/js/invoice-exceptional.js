@@ -63,9 +63,8 @@ document.addEventListener('submit', function (e) {
                         title:'Error',
                         text:new_ticket.message,
                         icon:'error'
-                    }).then(()=>{
-                    location.reload();
-                });
+                    });
+                stopButtonLoading(form);
             }
         })
         .catch(error => console.error(error));
@@ -120,26 +119,12 @@ document.addEventListener('submit', function (e) {
                         title:'Error',
                         text:data.message,
                         icon:'error'
-                    }).then(()=>{
-                    location.reload();
-                });
+                    });
+                    stopButtonLoading(form);
                 }
 
             })
-            .catch(error => {
-
-                Swal.fire({
-                    title:'Error',
-                    text:error,
-                    icon:'error'
-                });
-
-            })
-            .finally(() => {
-
-                stopButtonLoading(form);
-
-            });
+            .catch(error => console.error(error));
 
         });
     }
@@ -246,15 +231,8 @@ document.addEventListener('submit', function (e) {
                     }
                     
                 })
-                .catch(error => {
-                    Swal.fire({
-                        title: 'Error!',
-                        text: error,
-                        icon: 'error',
-                        confirmButtonText: 'OK'
-                    })
-                    console.error(error)
-                });
+                .catch(error => console.error(error));
+                
 
             }
         });
@@ -304,15 +282,7 @@ document.addEventListener('submit', function (e) {
                     }
                     
                 })
-                .catch(error => {
-                    Swal.fire({
-                        title: 'Error!',
-                        text: error,
-                        icon: 'error',
-                        confirmButtonText: 'OK'
-                    })
-                    console.error(error)
-                });
+                .catch(error => console.error(error));
 
             }
         });

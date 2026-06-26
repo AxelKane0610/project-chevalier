@@ -10,54 +10,72 @@ document.addEventListener('submit', function (e) {
     
     if (e.target && e.target.id === 'create-thermal-event-ticket-form') {
         e.preventDefault();
-        const buttons = this.querySelectorAll('button');
-        buttons.forEach(btn => btn.disabled = true);
-        const formData = new FormData(e.target);
-        fetch('/create-thermal-event-ticket', {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
-            }
+
+        const form = e.target;
+        
+        Swal.fire({
+            title: 'Bạn có chắc muốn tạo ticket này ?',
+            icon: 'warning',
+            showCancelButton: true
         })
-        .then(response => response.json())
-        .then(new_ticket => {
-            console.log(new_ticket);
-            Swal.fire({
-                title: 'Success!',
-                text: 'Ticket created successfully.',
-                icon: 'success',
-                confirmButtonText: 'OK'
-            });
-            buttons.forEach(btn => btn.disabled = false);
-            if (checkMultipartAffected.value === '1') {
-                const newRow = 
-                `
-                    <tr>
-                        <td>
-                            <a href="/thermal-event-tickets-menu-details/${new_ticket.ticket_id}">
-                                <button><i class="ti-arrow-right" ></i></button>
-                            </a>
-                        </td>
-                        <td>${new_ticket.ticket_receipt}</td>
-                        <td>${new_ticket.user_owner}</td>
-                        <td>${new_ticket.description}</td>
-                        <td>${new_ticket.status}</td>
-                    </tr>
-                
-                `;
-                document
-                .querySelector('#pending-thermal-event-tickets-table tbody')
-                .insertAdjacentHTML('beforeend', newRow);
-                
-                document.querySelector('.ticket-form-overlay').classList.remove('active');
-                e.target.reset();
-            } else {
-                window.location.href = `/thermal-event-tickets-menu-details/${new_ticket.ticket_id}`;
+        .then((result) => {
+            if (!result.isConfirmed) {
+                return;
             }
-            
+            startButtonLoading(form);
+
+            fetch('/create-thermal-event-ticket', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                }
+            })
+            .then(response => response.json())
+            .then(new_ticket => {
+                if (new_ticket.success === true) {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: 'Ticket created successfully.',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    });
+                    if (checkMultipartAffected.value === '1') {
+                        const newRow = 
+                        `
+                            <tr>
+                                <td>
+                                    <a href="/thermal-event-tickets-menu-details/${new_ticket.ticket_id}">
+                                        <button><i class="ti-arrow-right" ></i></button>
+                                    </a>
+                                </td>
+                                <td>${new_ticket.ticket_receipt}</td>
+                                <td>${new_ticket.user_owner}</td>
+                                <td>${new_ticket.description}</td>
+                                <td>${new_ticket.status}</td>
+                            </tr>
+                        
+                        `;
+                        document
+                        .querySelector('#pending-thermal-event-tickets-table tbody')
+                        .insertAdjacentHTML('beforeend', newRow);
+                        
+                        document.querySelector('.ticket-form-overlay').classList.remove('active');
+                        e.target.reset();
+                    } else {
+                        window.location.href = `/thermal-event-tickets-menu-details/${new_ticket.ticket_id}`;
+                    }
+                } else {
+                Swal.fire({
+                        title:'Error',
+                        text:new_ticket.message,
+                        icon:'error'
+                    });
+                stopButtonLoading(form);
+            }
         })
         .catch(error => console.error(error));
+        })
 
     }
 
@@ -108,26 +126,12 @@ document.addEventListener('submit', function (e) {
                         title:'Error',
                         text:data.message,
                         icon:'error'
-                    }).then(()=>{
-                    location.reload();
-                });
+                    });
+                    stopButtonLoading(form);
                 }
 
             })
-            .catch(error => {
-
-                Swal.fire({
-                    title:'Error',
-                    text:error,
-                    icon:'error'
-                });
-
-            })
-            .finally(() => {
-
-                stopButtonLoading(form);
-
-            });
+            .catch(error => console.error(error));
 
         });
     }
@@ -435,26 +439,12 @@ document.addEventListener('submit', function (e) {
                         title:'Error',
                         text:data.message,
                         icon:'error'
-                    }).then(()=>{
-                    location.reload();
-                });
+                    });
+                    stopButtonLoading(form);
                 }
 
             })
-            .catch(error => {
-
-                Swal.fire({
-                    title:'Error',
-                    text:error,
-                    icon:'error'
-                });
-
-            })
-            .finally(() => {
-
-                stopButtonLoading(form);
-
-            });
+            .catch(error => console.error(error));
 
         });
 
