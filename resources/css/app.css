@@ -293,6 +293,7 @@ h1, h2, h3 {
 
 }
 
+.spectre-crown-warehouse-btn,
 .software-tickets-btn, 
 .ttex-tickets-btn, 
 .laser-engraving-btn, 
@@ -340,6 +341,7 @@ h1, h2, h3 {
     color: black;
 }
 
+.spectre-crown-warehouse-btn:hover,
 .software-tickets-btn:hover, 
 .ttex-tickets-btn:hover, 
 .laser-engraving-btn:hover, 
@@ -378,6 +380,7 @@ h1, h2, h3 {
 
 /* -------------------- CSS Cho main menu software tickets --------------------*/
 
+#crown-spectre-warehouse-menu,
 #out-of-office-tickets-menu,
 #software-tickets-menu {
     display: flex;
@@ -523,6 +526,8 @@ h1, h2, h3 {
     font-size: 15px;
 }
 
+.spectre-crown-warehouse-menu-content,
+.subk-management-menu-content,
 .out-of-office-tickets-menu-content,
 .invoice-exceptional-tickets-menu-content,
 .thermal-event-tickets-menu-content,
@@ -663,6 +668,21 @@ h1, h2, h3 {
     text-align: left;
     text-decoration: none;
     line-height: 30px;
+}
+
+.common-table th {
+    position: sticky;
+    top: 0;
+    /* background: white; */
+    z-index: 10;
+}
+
+.common-table-filter {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
 }
 
 
@@ -909,6 +929,54 @@ h1, h2, h3 {
 .forgot-check-in {
     background: rgb(127 0 10);
 }
+
+
+.good-working,
+.available,
+.crown-hcm {
+    background: rgb(91, 201, 47);
+}
+
+.can-t-use,
+.not-available,
+.crown-hn {
+    background: rgb(127 0 10);
+}
+
+.not-tested,
+.in-use,
+.spectre {
+    background: rgb(66 27 38);
+}
+
+.laptop,
+.accessories,
+.monitor,
+.scanner,
+.pc,
+.large-format-printer,
+.small-format-printer,
+.others {
+    background: rgb(27, 132, 255);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

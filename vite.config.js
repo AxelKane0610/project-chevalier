@@ -15,7 +15,8 @@ export default defineConfig({
                 'resources/css/icons/themify-icons.css',
                 'resources/js/invoice-exceptional.js',
                 'resources/js/out-of-office.js',
-                'resources/js/subk-management.js'
+                'resources/js/subk-management.js',
+                'resources/js/spectre-crown-warehouse.js'
             ],
             refresh: true,
         }),

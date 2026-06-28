@@ -14,6 +14,7 @@ use App\Http\Controllers\OutOfOfficeTicketsController;
 use App\Models\Out_Of_Office_Tickets_Model;
 use App\Http\Controllers\ThermalEventExceptionalTicketsController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\SpectreCrownWarehouseController;
 
 Route::get('/', function () {
     // Auth::logout();
@@ -102,6 +103,7 @@ Route::middleware(['auth'])->group(function () {
 
     });
 
+
     Route::middleware(['role:ROLE_SUPER_ADMIN'])->group(function () {
         // Các route chỉ dành cho ROLE_SUPER_ADMIN
         Route::get('/subk-management', [UserController::class, 'index']);
@@ -110,9 +112,17 @@ Route::middleware(['auth'])->group(function () {
         Route::patch('/edit-user-info/{id}', [UserController::class,'Edit_User_Info'])->name('edit-user-info');
     });
 
+
     Route::middleware(['role:ROLE_SUPER_ADMIN, ROLE_OUT_OF_OFFICE_USER, ROLE_OUT_OF_OFFICE_ADMIN'])->group(function () {
         Route::get('/out-of-office-tickets-menu', [OutOfOfficeTicketsController::class, 'Show_Pending_Tickets']);
         Route::post('/create-out-of-office-ticket', [OutOfOfficeTicketsController::class, 'Create_Out_Of_Office_Ticket']);
+
+    });
+
+
+    Route::middleware(['role:ROLE_SUPER_ADMIN'])->group(function () {
+        Route::get('/spectre-crown-warehouse-menu', [SpectreCrownWarehouseController::class, 'index']);
+
 
     });
 

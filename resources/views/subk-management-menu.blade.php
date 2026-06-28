@@ -10,7 +10,7 @@
 
     <body class="background-enable">
 
-        <div class="" id="subk-management-menu">
+        <div id="subk-management-menu">
 
             <x-common-header title="SubK Management">
             <li>
@@ -39,14 +39,14 @@
                     </div>
 
                     <table id ="subk-management-users-table" class="common-table" width="100%" >
-                        <tr>
+                        <thead>
                             <th width="10%">Actions</th>
                             <th width="14%">Username</th>
                             <th width="14%">Fullname</th>
                             <th width="39%">Roles</th>
                             <th width="14%">Email</th>
                             <th width="9%">Site</th>
-                        </tr>
+                        </thead>
                     
                         <tbody>
                             @foreach ($users as $user)
@@ -77,9 +77,9 @@
                                 </tr>
                             @endforeach
                         </tbody>
+                        
 
                     </table>
-                
                 
                 </div>
 

@@ -164,7 +164,7 @@ class EEGTicketsController extends Controller
     public function Send_Approval_Request($id, Request $request){
         $ticket = EEG_Software_Ticket::with('user_owner', 'active_attachments')->findOrFail($id);
         try {
-            if ($ticket->status == 1 || $ticket->status == 2) {
+            if ($ticket->status == '1' || $ticket->status == '2') {
                 $approval_type = $request->input('approval_type');
 
                 $attachments = $ticket->active_attachments->map(function ($file) {

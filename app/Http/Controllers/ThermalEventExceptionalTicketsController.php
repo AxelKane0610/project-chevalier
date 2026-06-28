@@ -153,7 +153,7 @@ class ThermalEventExceptionalTicketsController extends Controller
                     'customer_type' => 'required',
                     'company_customer_name' => 'required',
                     'user_observations' => 'required',
-                    'attachments.*' => 'file|max:20480|mimes:jpg,png,pdf,jpeg,xlsx'
+                    'attachments.*' => 'file|max:20480|mimes:jpg,png,jpeg'
             ]);
 
                 $validate_data['ticket_receipt'] = strip_tags($validate_data['ticket_receipt']);

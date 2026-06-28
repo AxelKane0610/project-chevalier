@@ -10,14 +10,6 @@
     </head>
 
     <body class="background-enable">
-        
-        <!-- <div class="main-menu-categories-header">
-            <h1>Xin chào, hôm nay bạn cần hỗ trợ gì ?</h1>
-            <div class="search-box">
-                <i class="ti-search"></i>
-                <input type="text" placeholder="Quick Search Reciept">
-            </div>
-        </div> -->
 
         <x-common-header title="Xin chào, hôm nay bạn cần hỗ trợ gì ?">
             <li>
@@ -197,6 +189,23 @@
                     
                     <h2>Thermal Event</h2>
                     <p>Xin approve exceptional cho các trường hợp quá nhiệt</p>
+                    <div class="card-footer">
+                        <div class="card-footer-text">Learn more</div>
+                        <div class="card-footer-icon"><i class="ti-angle-right"></i></div>
+                    </div>
+                </div>
+                
+            </a>
+
+            <a href="{{ url('/spectre-crown-warehouse-menu') }}">
+
+                <div class="spectre-crown-warehouse-btn">
+                    <div class="ticket-img-description">
+                        <img src="{{ asset('imgs/spectre_crown_warehouse_image.png') }}" alt="">
+                    </div>
+                    
+                    <h2>Quản lý kho Crown - Spectre</h2>
+                    <p>Quản lý kho Crown Spectre</p>
                     <div class="card-footer">
                         <div class="card-footer-text">Learn more</div>
                         <div class="card-footer-icon"><i class="ti-angle-right"></i></div>
