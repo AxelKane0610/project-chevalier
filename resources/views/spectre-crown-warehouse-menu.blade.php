@@ -104,7 +104,7 @@
                                     data-condition="{{ $item->condition }}"
                                 >
                                     <td>
-                                        <a href="/spectre-crown-warehouse-menu-details/{{ $item->id }}">
+                                        <a href="/spectre-crown-warehouse-item-details/{{ $item->id }}">
                                             <button><i class="ti-arrow-right" ></i></button>
                                         </a>
                                     </td>
