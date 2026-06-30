@@ -15,6 +15,7 @@ use App\Models\Out_Of_Office_Tickets_Model;
 use App\Http\Controllers\ThermalEventExceptionalTicketsController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SpectreCrownWarehouseController;
+use App\Http\Controllers\LoanUnitPartTicketsController;
 
 Route::get('/', function () {
     // Auth::logout();
@@ -124,6 +125,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/spectre-crown-warehouse-menu', [SpectreCrownWarehouseController::class, 'index']);
         Route::get('/spectre-crown-warehouse-item-details/{id}', [SpectreCrownWarehouseController::class, 'Item_Details']);
 
+    });
+
+    Route::middleware(['role:ROLE_SUPER_ADMIN'])->group(function () {
+        Route::get('/loan-unit-part-menu',[LoanUnitPartTicketsController::class, 'Show_Pending_Tickets']);
+        Route::post('/create-loan-unit-part-ticket', [LoanUnitPartTicketsController::class, 'Create_Loan_Unit_Part_Ticket']);
     });
 
     Route::post('/logout', [UserController::class, 'logout'])->name('logout');

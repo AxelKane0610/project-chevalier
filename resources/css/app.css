@@ -380,6 +380,7 @@ h1, h2, h3 {
 
 /* -------------------- CSS Cho main menu software tickets --------------------*/
 
+
 #crown-spectre-warehouse-menu,
 #out-of-office-tickets-menu,
 #software-tickets-menu {
@@ -526,6 +527,7 @@ h1, h2, h3 {
     font-size: 15px;
 }
 
+.loan-unit-part-menu-content,
 .spectre-crown-warehouse-menu-content,
 .subk-management-menu-content,
 .out-of-office-tickets-menu-content,

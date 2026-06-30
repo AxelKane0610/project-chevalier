@@ -13,6 +13,7 @@ class Loan_Unit_Part_Tickets_Model extends Model
     protected $fillable = [
         'user_id',
         'ticket_receipt',
+        'status',
         'customer_unit_info',
         'part_request',
         'loan_unit_asset_tag',
@@ -52,5 +53,35 @@ class Loan_Unit_Part_Tickets_Model extends Model
     public function unit_belongs()
     {
         return $this->belongsTo(Spectre_Crown_Warehouse_Model::class, 'asset_tag', 'loan_unit_asset_tag');
+    }
+
+    public function getStatusDataAttribute()
+    {
+        return match ($this->status){
+             "1" => [
+                'text' => 'Open',
+                'class' => 'open'
+            ],
+
+            "2" => [
+                'text' => 'In Progress',
+                'class' => 'in-progress'
+            ],
+
+            "3" => [
+                'text' => 'Completed',
+                'class' => 'completed'
+            ],
+
+            "4" => [
+                'text' => 'Canceled',
+                'class' => 'canceled'
+            ],
+
+            default => [
+                'text' => 'Unknown',
+                'class' => 'unknown'
+            ]
+        };
     }
 }

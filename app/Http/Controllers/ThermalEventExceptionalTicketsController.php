@@ -83,6 +83,22 @@ class ThermalEventExceptionalTicketsController extends Controller
                 $validate_data['part_ct_number'] = strip_tags($validate_data['part_ct_number']);
                 $parts_details = Thermal_Event_Parts_Details_Model::create($validate_data);
 
+                if ($request->hasFile('attachments')) { //Kiểm tra xem có file nào được upload lên không
+
+                    foreach ($request->file('attachments') as $file) { //Duyệt qua từng file được upload lên
+                        $originalName = $file->getClientOriginalName();
+                        $folderPath = '10/'.$ticket->id;
+                        $filePath = $file->storeAs($folderPath, $originalName, 'attachments'); // Lưu file vào thư mục '/'
+                        
+                        Attachments_Model::create([
+                            'type_of_ticket' => 10,
+                            'ticket_id' => $ticket->id,
+                            'file_path' => $filePath,   
+                            'name' => $originalName,// Lưu tên gốc của file vào cơ sở dữ liệu
+                        ]);
+                    }
+                    
+                }
                 tracking_info_service::add(
                     $ticket->id, 
                     auth()->id(), 
@@ -105,6 +121,22 @@ class ThermalEventExceptionalTicketsController extends Controller
             } else {
                 $validate_data['status'] = '1';
                 $ticket = Thermal_Event_Exceptional_Tickets_Model::create($validate_data);
+                if ($request->hasFile('attachments')) { //Kiểm tra xem có file nào được upload lên không
+
+                    foreach ($request->file('attachments') as $file) { //Duyệt qua từng file được upload lên
+                        $originalName = $file->getClientOriginalName();
+                        $folderPath = '10/'.$ticket->id;
+                        $filePath = $file->storeAs($folderPath, $originalName, 'attachments'); // Lưu file vào thư mục '/'
+                        
+                        Attachments_Model::create([
+                            'type_of_ticket' => 10,
+                            'ticket_id' => $ticket->id,
+                            'file_path' => $filePath,   
+                            'name' => $originalName,// Lưu tên gốc của file vào cơ sở dữ liệu
+                        ]);
+                    }
+                    
+                }
                 tracking_info_service::add(
                     $ticket->id, 
                     auth()->id(), 

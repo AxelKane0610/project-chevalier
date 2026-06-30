@@ -86,18 +86,20 @@
                 </div>
             </a>
 
-            <div class="loanunit-tickets-btn">
-                <div class="ticket-img-description">
-                    <img src="{{ asset('imgs/loanunit_image.png') }}" alt="">
+            <a href="{{ url('/loan-unit-part-menu') }}">
+                <div class="loanunit-tickets-btn">
+                    <div class="ticket-img-description">
+                        <img src="{{ asset('imgs/loanunit_image.png') }}" alt="">
+                    </div>
+                    
+                    <h2>Mượn máy & parts</h2>
+                    <p>Mượn máy/part để bảo hành hoặc test</p>
+                    <div class="card-footer">
+                        <div class="card-footer-text">Learn more</div>
+                        <div class="card-footer-icon"><i class="ti-angle-right"></i></div>
+                    </div>
                 </div>
-                
-                <h2>Mượn máy & parts</h2>
-                <p>Mượn máy/part để bảo hành hoặc test</p>
-                <div class="card-footer">
-                    <div class="card-footer-text">Learn more</div>
-                    <div class="card-footer-icon"><i class="ti-angle-right"></i></div>
-                </div>
-            </div>
+            </a>
 
             <div class="training-submit-btn">
                 <div class="ticket-img-description">
