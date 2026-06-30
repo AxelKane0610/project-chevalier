@@ -46,7 +46,6 @@ document.addEventListener('submit', function (e) {
                         <td>${new_ticket.ticket_receipt}</td>
                         <td>${new_ticket.status}</td>
                         <td>${new_ticket.customer_unit_info}</td>
-                        <td>${new_ticket.part_request}</td>
                     </tr>
                 
                 `;

@@ -1,0 +1,39 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('loan_unit_ticket_parts_details', function (Blueprint $table) {
+            $table->id();
+            $table->string('ticket_id')->nullable();
+            $table->foreignId('user_id')->constrained()->nullable();
+            $table->string('ticket_receipt')->nullable();
+            $table->string('part_request')->nullable();
+            $table->enum('status',[1, 2, 3, 4])->nullable();
+            $table->string('loan_unit_asset_tag')->nullable();
+            $table->string('loan_unit_serial_number')->nullable();
+            $table->string('ct_loaned')->nullable();
+            $table->string('new_ct_return')->nullable();
+            $table->enum('original', [1, 2, 3])->nullable();
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('loan_unit_ticket_parts_details');
+    }
+};

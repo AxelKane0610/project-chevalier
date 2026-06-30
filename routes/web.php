@@ -42,7 +42,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/attachments/{folder}/{id}/{filename}', [AttachmentController::class, 'show']);
 
     
-
+    //1. EEG Ticket
     Route::middleware(['role:ROLE_SUPER_ADMIN,ROLE_SW_TICKET_USER,ROLE_TICKET_SW_ADMIN'])->group(function () {
     
         Route::get('/software-tickets-menu', [EEGTicketsController::class, 'Show_Pending_Tickets']);
@@ -61,6 +61,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/reject-ticket/{id}', [EEGTicketsController::class, 'Reject_Ticket'])->name('reject-ticket');
     });
 
+    //3. Khắc base
     Route::middleware(['role:ROLE_LASER_ENGRAVING_USER,ROLE_LASER_ENGRAVING_ADMIN,ROLE_SUPER_ADMIN'])->group(function () {
         Route::get('/laser-engraving-menu', [LaserEngravingTicketsController::class, 'Show_Pending_Tickets']);
         Route::get('/laser-engraving-menu-details/{id}', [LaserEngravingTicketsController::class, 'Show_Laser_Engraving_Ticket_Details']);
@@ -72,6 +73,7 @@ Route::middleware(['auth'])->group(function () {
         Route::patch('/close-laser-engraving-ticket/{id}', [LaserEngravingTicketsController::class, 'Close_Laser_Engraving_Ticket'])->name('close-laser-engraving-ticket');
     });
 
+    //10. Thermal Event
     Route::middleware(['role:ROLE_THERMAL_EVENT_USER,ROLE_THERMAL_EVENT_LV1_APPROVER,ROLE_THERMAL_EVENT_LV2_APPROVER,ROLE_SUPER_ADMIN'])->group(function () {
         Route::get('/thermal-event-tickets-menu', [ThermalEventExceptionalTicketsController::class, 'Show_Pending_Tickets']);
         Route::get('/thermal-event-tickets-menu-details/{id}', [ThermalEventExceptionalTicketsController::class, 'Show_Thermal_Event_Ticket_Details']);
@@ -90,6 +92,7 @@ Route::middleware(['auth'])->group(function () {
         Route::patch('/delete-thermal-event-part-details/{id}', [ThermalEventExceptionalTicketsController::class, 'Delete_Thermal_Event_Part_Details'])->name('delete-thermal-event-part-details');
     });
 
+    //7. Invoice Exceptional
     Route::middleware(['role:ROLE_INVOICE_EXCEPTIONAL_USER,ROLE_SUPER_ADMIN,ROLE_INVOICE_EXCEPTIONAL_L1_APPROVER,ROLE_INVOICE_EXCEPTIONAL_L2_APPROVER'])->group(function () {
         Route::get('/invoice-exceptional-menu', [InvoiceExceptionalTicketsController::class, 'Show_Pending_Tickets']);
         Route::get('/invoice-exceptional-menu-details/{id}', [InvoiceExceptionalTicketsController::class, 'Show_Invoice_Exceptional_Ticket_Details']);
@@ -104,7 +107,7 @@ Route::middleware(['auth'])->group(function () {
 
     });
 
-
+    //6. Quản lý SubK
     Route::middleware(['role:ROLE_SUPER_ADMIN'])->group(function () {
         // Các route chỉ dành cho ROLE_SUPER_ADMIN
         Route::get('/subk-management', [UserController::class, 'index']);
@@ -113,22 +116,24 @@ Route::middleware(['auth'])->group(function () {
         Route::patch('/edit-user-info/{id}', [UserController::class,'Edit_User_Info'])->name('edit-user-info');
     });
 
-
+    //9. Nghỉ phép
     Route::middleware(['role:ROLE_SUPER_ADMIN, ROLE_OUT_OF_OFFICE_USER, ROLE_OUT_OF_OFFICE_ADMIN'])->group(function () {
         Route::get('/out-of-office-tickets-menu', [OutOfOfficeTicketsController::class, 'Show_Pending_Tickets']);
         Route::post('/create-out-of-office-ticket', [OutOfOfficeTicketsController::class, 'Create_Out_Of_Office_Ticket']);
 
     });
 
-
+    //11. Quản lý kho Crown - Spectre
     Route::middleware(['role:ROLE_SUPER_ADMIN'])->group(function () {
         Route::get('/spectre-crown-warehouse-menu', [SpectreCrownWarehouseController::class, 'index']);
         Route::get('/spectre-crown-warehouse-item-details/{id}', [SpectreCrownWarehouseController::class, 'Item_Details']);
 
     });
 
+    //4. Ticket mượn máy & mượn part
     Route::middleware(['role:ROLE_SUPER_ADMIN'])->group(function () {
         Route::get('/loan-unit-part-menu',[LoanUnitPartTicketsController::class, 'Show_Pending_Tickets']);
+        Route::get('/loan-unit-part-ticket-details/{id}', [LoanUnitPartTicketsController::class, 'Show_Loan_Unit_Part_Ticket_Details']);
         Route::post('/create-loan-unit-part-ticket', [LoanUnitPartTicketsController::class, 'Create_Loan_Unit_Part_Ticket']);
     });
 

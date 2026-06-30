@@ -45,7 +45,7 @@ class Spectre_Crown_Warehouse_Model extends Model
 
     public function loan_unit_part_tickets()
     {
-        return $this->hasMany(Loan_Unit_Part_Tickets_Model::class, 'loan_unit_asset_tag', 'asset_tag');
+        return $this->hasMany(Loan_Unit_Ticket_Parts_Details_Model::class, 'loan_unit_asset_tag', 'asset_tag');
     }
 
     public function getWarehouseDataAttribute()

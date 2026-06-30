@@ -18,13 +18,7 @@ return new class extends Migration
             $table->enum('status',[1, 2, 3, 4])->nullable();
             $table->string('customer_unit_info')->nullable();
             $table->string('part_request')->nullable();
-            $table->string('loan_unit_asset_tag')->nullable();
-            $table->string('loan_unit_serial_number')->nullable();
-            $table->string('ct_loaned')->nullable();
-            $table->string('new_ct_return')->nullable();
-            $table->enum('original', [1, 2, 3])->nullable();
-            $table->date('start_date')->nullable();
-            $table->date('end_date')->nullable();
+            
             $table->timestamps();
         });
     }

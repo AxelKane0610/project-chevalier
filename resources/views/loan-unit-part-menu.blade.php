@@ -37,9 +37,6 @@
                             <th width="15%">Receipt</th>
                             <th width="15%">Status</th>
                             <th width="15%">Customer Unit Info</th>
-                            <th width="15%">Part Request</th>
-                            <th width="15%">Loan Unit Asset Tag</th>
-                            <th width="15%">Loan Unit Serial Number</th>
                             
 
                         </thead>
@@ -59,9 +56,6 @@
                                         </span>
                                     </td>
                                     <td>{{ $ticket->customer_unit_info }}</td>
-                                    <td>{{ $ticket->part_request }}</td>
-                                    <td>{{ $ticket->loan_unit_asset_tag }}</td>
-                                    <td>{{ $ticket->loan_unit_serial_number }}</td>
 
                                 </tr>
                             @endforeach

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Loan_Unit_Part_Tickets_Model;
+use App\Models\Loan_Unit_Ticket_Parts_Details_Model;
 use App\Models\Attachments_Model;
 use App\Models\Comments_Model;
 use App\Services\tracking_info_service;
@@ -63,14 +64,15 @@ class LoanUnitPartTicketsController extends Controller
             }
             
             $ticket = Loan_Unit_Part_Tickets_Model::create($validate_data);
+            $validate_data['ticket_id'] = $ticket->id;
+            $part_details = Loan_Unit_Ticket_Parts_Details_Model::create($validate_data);
             tracking_info_service::add(
                 $ticket->id, 
                 auth()->id(), 
                 4,
                 'created ticket at'
             );
-
-            $ticket->save();
+            
             return response()->json([
                 'success' => true,
                 'message' => 'Ticket created successfully',
@@ -78,7 +80,6 @@ class LoanUnitPartTicketsController extends Controller
                 'ticket_receipt' => $ticket->ticket_receipt,
                 'status' => $ticket->status,
                 'customer_unit_info' => $ticket->customer_unit_info,
-                'part_request' => $ticket->part_request
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -86,5 +87,10 @@ class LoanUnitPartTicketsController extends Controller
                 'message' => 'Failed to create ticket due to ' .$e->getMessage(),
             ], 500);
         }
+    }
+
+    public function Show_Loan_Unit_Part_Ticket_Details($id){
+        $ticket = Loan_Unit_Part_Tickets_Model::with(['user_owner', 'active_attachments','ticket_tracking_info','ticket_comments.attachments', 'ticket_comments.user', 'parts_details'])->findOrFail($id);
+        return view('loan-unit-part-ticket-details', compact('ticket'));
     }
 }
