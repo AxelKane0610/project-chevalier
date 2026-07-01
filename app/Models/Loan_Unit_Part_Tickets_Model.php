@@ -15,14 +15,6 @@ class Loan_Unit_Part_Tickets_Model extends Model
         'ticket_receipt',
         'status',
         'customer_unit_info',
-        'part_request',
-        'loan_unit_asset_tag',
-        'loan_unit_serial_number',
-        'ct_loaned',
-        'new_ct_return',
-        'original',
-        'start_date',
-        'end_date',
     ];
 
     public function user_owner(): BelongsTo

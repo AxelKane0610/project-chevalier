@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('ticket_receipt')->nullable();
             $table->enum('status',[1, 2, 3, 4])->nullable();
             $table->string('customer_unit_info')->nullable();
-            $table->string('part_request')->nullable();
             
             $table->timestamps();
         });
