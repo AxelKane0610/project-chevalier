@@ -148,6 +148,11 @@ th, td {
     justify-content: center;
 }
 
+td > form {
+    display: inline-block;
+    margin: 0;
+}
+
 .attachments-name-header {
     width: 70%;
 }

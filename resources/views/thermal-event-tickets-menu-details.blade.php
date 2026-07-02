@@ -208,7 +208,7 @@
                 </li>
 
                 
-                <li style="height: 200px;">
+                <li style="height: auto;">
                     <lable>Issue description</lable>
                     
                     <p>{{ $ticket->description }}</p>

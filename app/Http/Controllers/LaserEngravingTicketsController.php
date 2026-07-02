@@ -185,7 +185,9 @@ class LaserEngravingTicketsController extends Controller
     public function Add_Comment_Laser_Engraving_Ticket(Request $request, $id)
     {
         $validatedData = $request->validate([
-            'comment' => 'required|string',
+            'comment' => 'required_without_all:attachments|string|nullable',
+            'attachments' => 'required_without_all:comment|array|nullable',
+            'attachments.*' => 'file|max:20480|mimes:jpg,jpeg,png,pdf,xlsx,docx',
         ]);
 
         $validatedData['comment'] = strip_tags($validatedData['comment']);

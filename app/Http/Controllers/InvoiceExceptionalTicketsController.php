@@ -116,7 +116,9 @@ class InvoiceExceptionalTicketsController extends Controller
 
     public function Add_Comment_Invoice_Exceptional_Ticket(Request $request, $id){
         $comment_info_input = $request->validate([
-            'comment' => 'required',
+            'comment' => 'required_without_all:attachments|string|nullable',
+            'attachments' => 'required_without_all:comment|array|nullable',
+            'attachments.*' => 'file|max:20480|mimes:jpg,jpeg,png,pdf,xlsx,docx',
         ]);
 
         $comment_info_input['comment'] = strip_tags($comment_info_input['comment']);
