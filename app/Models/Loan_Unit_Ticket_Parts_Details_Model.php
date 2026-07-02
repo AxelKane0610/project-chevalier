@@ -35,4 +35,34 @@ class Loan_Unit_Ticket_Parts_Details_Model extends Model
         // Một ticket thì "thuộc về" (belongsTo) một người dùng
         return $this->belongsTo(User::class, 'user_id'); //Bảo model sang model User để lấy thông tin user của ticket đó, dựa vào "user_id"
     }
+
+    public function getStatusDataAttribute()
+    {
+        return match ($this->status){
+             "1" => [
+                'text' => 'Requested',
+                'class' => 'open'
+            ],
+
+            "2" => [
+                'text' => 'Borrowed, not return yet',
+                'class' => 'in-progress'
+            ],
+
+            "3" => [
+                'text' => 'Returned',
+                'class' => 'completed'
+            ],
+
+            "4" => [
+                'text' => 'Canceled',
+                'class' => 'canceled'
+            ],
+
+            default => [
+                'text' => 'Unknown',
+                'class' => 'unknown'
+            ]
+        };
+    }
 }

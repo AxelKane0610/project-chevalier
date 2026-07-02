@@ -117,7 +117,7 @@ Route::middleware(['auth'])->group(function () {
     });
 
     //9. Nghỉ phép
-    Route::middleware(['role:ROLE_SUPER_ADMIN, ROLE_OUT_OF_OFFICE_USER, ROLE_OUT_OF_OFFICE_ADMIN'])->group(function () {
+    Route::middleware(['role:ROLE_SUPER_ADMIN,ROLE_OUT_OF_OFFICE_USER,ROLE_OUT_OF_OFFICE_ADMIN'])->group(function () {
         Route::get('/out-of-office-tickets-menu', [OutOfOfficeTicketsController::class, 'Show_Pending_Tickets']);
         Route::post('/create-out-of-office-ticket', [OutOfOfficeTicketsController::class, 'Create_Out_Of_Office_Ticket']);
 
@@ -131,10 +131,13 @@ Route::middleware(['auth'])->group(function () {
     });
 
     //4. Ticket mượn máy & mượn part
-    Route::middleware(['role:ROLE_SUPER_ADMIN'])->group(function () {
+    Route::middleware(['role:ROLE_SUPER_ADMIN,ROLE_LOAN_UNIT_ADMIN,ROLE_LOAN_UNIT_USER'])->group(function () {
         Route::get('/loan-unit-part-menu',[LoanUnitPartTicketsController::class, 'Show_Pending_Tickets']);
         Route::get('/loan-unit-part-ticket-details/{id}', [LoanUnitPartTicketsController::class, 'Show_Loan_Unit_Part_Ticket_Details']);
         Route::post('/create-loan-unit-part-ticket', [LoanUnitPartTicketsController::class, 'Create_Loan_Unit_Part_Ticket']);
+        Route::post('/add-comment-loan-unit-part-ticket/{id}', [LoanUnitPartTicketsController::class, 'Add_Comment_Loan_Unit_Part_Ticket']) ->name('add-comment-loan-unit-part-ticket');
+        Route::patch('/edit-loan-unit-part-ticket/{id}', [LoanUnitPartTicketsController::class, 'Edit_Loan_Unit_Part_Ticket'])->name('edit-loan-unit-part-ticket');
+        Route::patch('/edit-loan-unit-part-details/{id}', [LoanUnitPartTicketsController::class, 'Edit_Loan_Unit_Part_Details'])->name('edit-loan-unit-part-details');
     });
 
     Route::post('/logout', [UserController::class, 'logout'])->name('logout');
