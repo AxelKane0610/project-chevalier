@@ -26,6 +26,24 @@
                     <button type="submit"><i class="ti-layout-grid2"></i>Quick Navigation</button>
                 </form>
             </li>
+            @if(auth()->user()->hasRole('ROLE_LOAN_UNIT_USER') && ($ticket->status == '1' || $ticket->status == '2') && $ticket->user_id == auth()->user()->id)
+                <li>
+                    <form class="js-input-required-btn" data-target="add-loan-unit-part">
+                        <button type="button"><i class="ti-plus"></i> Add part</button>
+                    </form>
+                </li>
+            @endif
+
+            @if((auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_LOAN_UNIT_ADMIN')) && ($ticket->status == '1' || $ticket->status == '2'))
+                <li>
+                    <form class="js-input-required-btn" data-target="close-loan-unit-part-ticket" action="" method="PATCH">
+                        <button type="button" ><i class="ti-check"></i>Close Ticket</button>
+                    </form>
+                </li>
+            
+            @endif
+
+
         </x-common-header>
 
         <div class="common-table-container">
@@ -74,6 +92,14 @@
                                 <button type="button" class="issue-loan-unit-part-btn" data-id="{{ $parts->id }}"><i class="ti-hand-point-right"></i></button>
                             </form>
                         @endif
+
+                        @if((auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_LOAN_UNIT_ADMIN')) && $parts->status == '2')
+                            <form class="js-input-required-btn" data-target="return-loan-unit-part" action="" method="PATCH">
+                                <button type="button" class="return-loan-unit-part-btn" data-id="{{ $parts->id }}"><i class="ti-check"></i></button>
+                            </form>
+                        @endif
+
+                        
                         
 
                         
@@ -324,13 +350,13 @@
                 @method('PATCH')
 
                 <label>Loan Unit Asset Tag</label>
-                <input type="text" class="ticket-form-body-input" name="loan_unit_asset_tag" value="" >
+                <input type="text" class="ticket-form-body-input" name="loan_unit_asset_tag" placeholder="Khi issue phải điền 1 trong 2 trường Asset Tag hoặc Serial Number" value="" >
 
                 <label>Loan Unit Serial Number</label>
-                <input type="text" class="ticket-form-body-input" name="loan_unit_serial_number" value="" >
+                <input type="text" class="ticket-form-body-input" name="loan_unit_serial_number" placeholder="Khi issue phải điền 1 trong 2 trường Asset Tag hoặc Serial Number" value="" >
 
                 <label>CT Loaned</label>
-                <input type="text" class="ticket-form-body-input" name="ct_loaned" value="" >
+                <input type="text" class="ticket-form-body-input" name="ct_loaned" placeholder="CT của linh kiện cho mượn, nếu không có thì có thể để trống" >
 
                 <label>Original</label>
                 <select name="original" class="ticket-form-body-input" id="edit-original">
@@ -344,6 +370,44 @@
 
                 <x-slot:footer>
                     <button class="ticket-form-body-input" type="submit">Issue unit/part</button> 
+                </x-slot:footer>
+            </x-common-ticket-form>
+
+            <x-common-ticket-form title="Add Loan Unit & Part" id="add-loan-unit-part" action1="{{ route('add-loan-unit-part', $ticket->id) }}">
+                @method('POST')
+
+                <label>Part Request</label>
+                <input type="text" class="ticket-form-body-input" name="part_request" placeholder="Điền mã part & tên part muốn mượn thêm" required>
+
+                <x-slot:footer>
+                    <button class="ticket-form-body-input" type="submit">Add unit/part</button> 
+                </x-slot:footer>
+            </x-common-ticket-form>
+
+            <x-common-ticket-form title="Confirm Unit/Part Return" id="return-loan-unit-part" action1="">
+                @method('PATCH')
+
+                <label>New CT Return</label>
+                <input type="text" class="ticket-form-body-input" name="new_ct_return" value="" placeholder="Điền CT của linh kiện trả về, có thể để trống hoặc N/A">
+
+                <label>End Date</label>
+                <input type="date" class="ticket-form-body-input" name="end_date" value="" required>
+
+                <x-slot:footer>
+                    <button class="ticket-form-body-input" type="submit">Return unit/part</button> 
+                </x-slot:footer>
+            </x-common-ticket-form>
+
+            <x-common-ticket-form title="Close ticket" id="close-loan-unit-part-ticket" action1="{{ route('close-loan-unit-part-ticket', $ticket->id) }}">
+                @method('PATCH')
+                <label>Status</label>
+                <select name="status" class="ticket-form-body-input" required>
+                    <option value="3" @selected($ticket->status == '3')>Completed</option>
+                    <option value="4" @selected($ticket->status == '4')>Canceled</option>
+                </select>
+
+                <x-slot:footer>
+                    <button class="ticket-form-body-input" type="submit">Close ticket</button> 
                 </x-slot:footer>
             </x-common-ticket-form>
 

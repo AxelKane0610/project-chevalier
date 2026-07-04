@@ -239,6 +239,174 @@ document.addEventListener('submit', function (e) {
         });
 
     }
+
+    if (e.target && e.target.id === 'add-loan-unit-part') {
+        e.preventDefault();
+        const form = e.target;
+        
+        Swal.fire({
+            title: 'Bạn có chắc muốn thêm unit/part này ?',
+            icon: 'warning',
+            showCancelButton: true
+        })
+        .then((result) => {
+
+            // Cancel
+            if (!result.isConfirmed) {
+                return;
+            }
+
+            // Confirm mới loading
+            startButtonLoading(form);
+            fetch(url,{
+                method:'POST',
+                body:formData,
+                headers:{
+                    'X-CSRF-TOKEN':
+                        document.querySelector(
+                            'input[name="_token"]'
+                        ).value
+                }
+            })
+            .then(response => response.json())
+            .then(data => 
+            {
+                if (data.success === true) {
+                    Swal.fire({
+                        title:'Success',
+                        text:data.message,
+                        icon:'success'
+                    }).then(()=>{
+                    location.reload();
+                });
+                }
+                else {
+                    Swal.fire({
+                        title:'Error',
+                        text:data.message,
+                        icon:'error'
+                    });
+                    stopButtonLoading(form);
+                }
+
+            })
+            .catch(error => console.error(error));
+
+        });
+
+    }
+
+    if (e.target && e.target.id === 'return-loan-unit-part') {
+        e.preventDefault();
+        const form = e.target;
+        
+        Swal.fire({
+            title: 'Xác nhận đã hoàn trả unit/part này ?',
+            icon: 'warning',
+            showCancelButton: true
+        })
+        .then((result) => {
+
+            // Cancel
+            if (!result.isConfirmed) {
+                return;
+            }
+
+            // Confirm mới loading
+            startButtonLoading(form);
+            fetch(url,{
+                method:'POST',
+                body:formData,
+                headers:{
+                    'X-CSRF-TOKEN':
+                        document.querySelector(
+                            'input[name="_token"]'
+                        ).value
+                }
+            })
+            .then(response => response.json())
+            .then(data => 
+            {
+                if (data.success === true) {
+                    Swal.fire({
+                        title:'Success',
+                        text:data.message,
+                        icon:'success'
+                    }).then(()=>{
+                    location.reload();
+                });
+                }
+                else {
+                    Swal.fire({
+                        title:'Error',
+                        text:data.message,
+                        icon:'error'
+                    });
+                    stopButtonLoading(form);
+                }
+
+            })
+            .catch(error => console.error(error));
+
+        });
+
+    }
+
+    if (e.target && e.target.id === 'close-loan-unit-part-ticket') {
+        e.preventDefault();
+        const form = e.target;
+        
+        Swal.fire({
+            title: 'Close ticket ?',
+            icon: 'warning',
+            showCancelButton: true
+        })
+        .then((result) => {
+
+            // Cancel
+            if (!result.isConfirmed) {
+                return;
+            }
+
+            // Confirm mới loading
+            startButtonLoading(form);
+            fetch(url,{
+                method:'POST',
+                body:formData,
+                headers:{
+                    'X-CSRF-TOKEN':
+                        document.querySelector(
+                            'input[name="_token"]'
+                        ).value
+                }
+            })
+            .then(response => response.json())
+            .then(data => 
+            {
+                if (data.success === true) {
+                    Swal.fire({
+                        title:'Success',
+                        text:data.message,
+                        icon:'success'
+                    }).then(()=>{
+                    location.reload();
+                });
+                }
+                else {
+                    Swal.fire({
+                        title:'Error',
+                        text:data.message,
+                        icon:'error'
+                    });
+                    stopButtonLoading(form);
+                }
+
+            })
+            .catch(error => console.error(error));
+
+        });
+
+    }
 });
 
 
@@ -285,3 +453,13 @@ document.querySelectorAll('.issue-loan-unit-part-btn').forEach(button => {
     });
 
 });
+
+document.querySelectorAll('.return-loan-unit-part-btn').forEach(button => {
+
+    button.addEventListener('click', function () {
+        document.getElementById('return-loan-unit-part').action =
+            '/return-loan-unit-part/' + this.dataset.id;
+    });
+
+});
+

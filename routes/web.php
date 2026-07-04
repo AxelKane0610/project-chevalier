@@ -139,8 +139,10 @@ Route::middleware(['auth'])->group(function () {
         Route::patch('/edit-loan-unit-part-ticket/{id}', [LoanUnitPartTicketsController::class, 'Edit_Loan_Unit_Part_Ticket'])->name('edit-loan-unit-part-ticket');
         Route::patch('/edit-loan-unit-part-details/{id}', [LoanUnitPartTicketsController::class, 'Edit_Loan_Unit_Part_Details'])->name('edit-loan-unit-part-details');
         Route::patch('/issue-loan-unit-part/{id}', [LoanUnitPartTicketsController::class, 'Issue_Loan_Unit_Part'])->name('issue-loan-unit-part');
+        Route::post('/add-loan-unit-part/{id}', [LoanUnitPartTicketsController::class, 'Add_Loan_Unit_Part'])->name('add-loan-unit-part');
+        Route::patch('/return-loan-unit-part/{id}', [LoanUnitPartTicketsController::class, 'Return_Loan_Unit_Part'])->name('return-loan-unit-part');
+        Route::patch('/close-loan-unit-part-ticket/{id}', [LoanUnitPartTicketsController::class, 'Close_Loan_Unit_Part_Ticket'])->name('close-loan-unit-part-ticket');
         
-
 
 
     });

@@ -286,6 +286,8 @@ class LoanUnitPartTicketsController extends Controller
                 $part->start_date = strip_tags($validate_data['start_date']);
 
                 $part->save();
+                $ticket->status = '2';
+                $ticket->save();
 
                 tracking_info_service::add(
                     $ticket->id,
@@ -308,6 +310,130 @@ class LoanUnitPartTicketsController extends Controller
             ], 500);
         }
 
+    }
+
+    public function Add_Loan_Unit_Part (Request $request, $id){
+        try {
+            $ticket = Loan_Unit_Part_Tickets_Model::with('user_owner')->findOrFail($id);
+            if (in_array($ticket->status, ['3', '4'])) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Chỉ có ticket đang ở trạng thái "Open" hoặc "In progress" mới được add thêm part !',
+                ], 400);
+            } else {
+                $validate_data = $request->validate([
+                    'part_request' => 'required'
+                ]);
+
+                $validate_data['ticket_id'] = $id;
+                $validate_data['user_id'] = auth()->id();
+                $validate_data['ticket_receipt'] = $ticket->ticket_receipt;
+                $validate_data['part_request'] = strip_tags($validate_data['part_request']);
+                $validate_data['status'] = '1';
+
+                Loan_Unit_Ticket_Parts_Details_Model::create($validate_data);
+
+                tracking_info_service::add(
+                    $ticket->id,
+                    auth()->id(),
+                    4,
+                    'add another part at'
+                );
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Part added successfully',
+                ]);
+
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to edit part detail due to ' .$e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function Return_Loan_Unit_Part (Request $request, $id){
+        try {
+            $part = Loan_Unit_Ticket_Parts_Details_Model::findOrFail($id);
+            $ticket = Loan_Unit_Part_Tickets_Model::with('user_owner')->findOrFail($part->ticket_id);
+
+            if ($part->status != '2') {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Chỉ có part đang ở trạng thái "Borrowed" mới có thể trả !',
+                ], 400);
+            } else {
+                $validate_data = $request->validate([
+                    'new_ct_return' => 'nullable',
+                    'end_date' => 'required'
+                ]);
+
+                $part->status = '3';
+                $part->end_date = strip_tags($validate_data['end_date']);
+
+                $part->save();
+
+                tracking_info_service::add(
+                    $ticket->id,
+                    auth()->id(),
+                    4,
+                    'confirm part returned at'
+                );
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Part confirm returned successfully',
+                ]);
+
+
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to confirm return part due to ' .$e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function Close_Loan_Unit_Part_Ticket (Request $request, $id){
+        try {
+            $ticket = Loan_Unit_Part_Tickets_Model::with('user_owner')->findOrFail($id);
+
+            if (in_array($ticket->status, ['3', '4'])) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Chỉ có ticket đang ở trạng thái "Open" hoặc "In progress" mới có thể đóng !',
+                ], 400);
+            } else {
+                $validate_data = $request->validate([
+                    'status' => 'required',
+                ]);
+                
+                $ticket->status = $validate_data['status'];
+                $ticket->save();
+
+                tracking_info_service::add(
+                    $ticket->id,
+                    auth()->id(),
+                    4,
+                    'closed ticket at'
+                );
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Ticket closed successfully',
+                ]);
+
+
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to close ticket due to ' .$e->getMessage(),
+            ], 500);
+        }
     }
 
 
