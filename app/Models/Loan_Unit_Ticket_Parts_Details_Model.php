@@ -16,7 +16,7 @@ class Loan_Unit_Ticket_Parts_Details_Model extends Model
         'user_id',
         'part_request',
         'status',
-        'loan_unit_asset_ta',
+        'loan_unit_asset_tag',
         'loan_unit_serial_number',
         'ct_loaned',
         'new_ct_return',
@@ -57,6 +57,32 @@ class Loan_Unit_Ticket_Parts_Details_Model extends Model
             "4" => [
                 'text' => 'Canceled',
                 'class' => 'canceled'
+            ],
+
+            default => [
+                'text' => 'Unknown',
+                'class' => 'unknown'
+            ]
+        };
+    }
+
+    public function getOriginalDataAttribute()
+    {
+        // Sử dụng getAttribute() để tránh xung đột với thuộc tính hệ thống của Laravel
+        return match ($this->getAttribute('original')) {
+            "1" => [
+                'text' => 'Crown',
+                'class' => 'crown'
+            ],
+
+            "2" => [
+                'text' => 'Spectre',
+                'class' => 'spectre'
+            ],
+
+            "3" => [
+                'text' => 'T1 (FPT, DGW, Elite)',
+                'class' => 't1'
             ],
 
             default => [

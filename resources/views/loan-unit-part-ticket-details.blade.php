@@ -30,7 +30,7 @@
 
         <div class="common-table-container">
             <table class="common-table" width="100%">
-                <th width="5%"></th>
+                <th width="50px"></th>
                 <th width="50px">Part Request</th>
                 <th width="50px">Status</th>
                 <th width="50px">Loan Unit Asset Tag</th> 
@@ -47,21 +47,34 @@
                 @foreach($ticket->parts_details as $parts)
                 <tr>
                     <td>
-                        <form class="js-input-required-btn" data-target="edit-loan-unit-part-details" action="" method="PATCH">
-                            <button type="button" 
-                            class="btn-edit-part"
-                            data-id="{{ $parts->id }}"
-                            data-receipt = "{{$parts->ticket_receipt}}"
-                            data-status ="{{ $parts->status }}"
-                            data-part_request="{{ $parts->part_request }}"
-                            data-asset_tag="{{ $parts->loan_unit_asset_tag }}"
-                            data-serial_number="{{ $parts->loan_unit_serial_number }}"
-                            data-ct_loaned="{{ $parts->ct_loaned }}"><i class="ti-pencil"></i></button>
-                        </form>
+                        @if($parts->status == '1' && $ticket->user_id == auth()->user()->id)
+                            <form class="js-input-required-btn" data-target="edit-loan-unit-part-details" action="" method="PATCH">
+                                <button type="button" 
+                                class="btn-edit-part"
+                                data-id="{{ $parts->id }}"
+                                data-receipt = "{{$parts->ticket_receipt}}"
+                                data-status ="{{ $parts->status }}"
+                                data-part_request="{{ $parts->part_request }}"
+                                data-asset_tag="{{ $parts->loan_unit_asset_tag }}"
+                                data-serial_number="{{ $parts->loan_unit_serial_number }}"
+                                data-ct_loaned="{{ $parts->ct_loaned }}"
+                                data-new_ct_return="{{ $parts->new_ct_return }}"
+                                data-original="{{ $parts->original }}"
+                                data-start_date="{{ $parts->start_date }}"
+                                data-end_date="{{ $parts->end_date }}"
 
-                        <form class="js-input-required-btn" data-target="delete-thermal-event-part-details" id="delete-thermal-event-part-details" action="{{ route('delete-thermal-event-part-details', $parts->id) }}" method="PATCH">
-                            <button type="submit"><i class="ti-na"></i></button>
-                        </form>
+
+                                
+                                ><i class="ti-pencil"></i></button>
+                            </form>
+                        @endif
+
+                        @if((auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_LOAN_UNIT_ADMIN')) && $parts->status == '1')
+                            <form class="js-input-required-btn" data-target="issue-loan-unit-part" action="" method="PATCH">
+                                <button type="button" class="issue-loan-unit-part-btn" data-id="{{ $parts->id }}"><i class="ti-hand-point-right"></i></button>
+                            </form>
+                        @endif
+                        
 
                         
                     </td>
@@ -76,7 +89,12 @@
                     <td>{{$parts->loan_unit_serial_number}}</td>
                     <td>{{$parts->ct_loaned}}</td>
                     <td>{{$parts->new_ct_return}}</td>
-                    <td>{{$parts->original}}</td>
+                    <td>
+                        <span class="ticket-status {{ $parts->original_data['class'] }}">
+                            {{ $parts->original_data['text'] }}
+                        </span>
+                    </td>
+                    
                     <td>{{$parts->start_date}}</td>
                     <td>{{$parts->end_date}}</td>
 
@@ -262,18 +280,71 @@
 
             <x-common-ticket-form title="Edit Loan Unit & Part Details" id="edit-loan-unit-part-details" action1="">
                 @method('PATCH')
-                <label>Receipt</label>
-                <input type="text" class="ticket-form-body-input" name="ticket_receipt" value="" id="edit-receipt-part-details">
 
                 <label>Part Request</label>
                 <input type="text" class="ticket-form-body-input" name="part_request" value="" id="edit-part-request-part-details">
 
                 @if((auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_LOAN_UNIT_ADMIN')))
                     <label>Loan Unit Asset Tag</label>
-                    <input type="text" class="ticket-form-body-input" name="loan_unit_asset_tag" value="">
+                    <input type="text" class="ticket-form-body-input" name="loan_unit_asset_tag" value="" id="edit-loan-unit-asset-tag">
+
+                    <label>Loan Unit Serial Number</label>
+                    <input type="text" class="ticket-form-body-input" name="loan_unit_serial_number" value="" id="edit-loan-unit-serial-number">
+
+                    <label>CT Loaned</label>
+                    <input type="text" class="ticket-form-body-input" name="ct_loaned" value="" id="edit-ct-loaned">
+
+                    <label>New CT Return</label>
+                    <input type="text" class="ticket-form-body-input" name="new_ct_return" value="" id="edit-new-ct-return">
+
+                    <label>Original</label>
+                    <select name="original" class="ticket-form-body-input" id="edit-original">
+                        <option value="1" @selected($parts->original == '1')>Crown</option>
+                        <option value="2" @selected($parts->original == '2')>Spectre</option>
+                        <option value="3" @selected($parts->original == '3')>T1 (FPT, DGW, Elite)</option>
+                        
+                    </select>
+
+                    <label>Start Date</label>
+                    <input type="date" class="ticket-form-body-input" name="start_date" value="" id="edit-start-date">
+
+                    <label>End Date</label>
+                    <input type="date" class="ticket-form-body-input" name="end_date" value="" id="edit-end-date">
+
+                    <x-slot:footer>
+                        <button class="ticket-form-body-input" type="submit">Edit</button> 
+                    </x-slot:footer>
+
                 @endif
 
                 
+            </x-common-ticket-form>
+
+            <x-common-ticket-form title="Issue Loan Unit & Part" id="issue-loan-unit-part" action1="">
+                @method('PATCH')
+
+                <label>Loan Unit Asset Tag</label>
+                <input type="text" class="ticket-form-body-input" name="loan_unit_asset_tag" value="" >
+
+                <label>Loan Unit Serial Number</label>
+                <input type="text" class="ticket-form-body-input" name="loan_unit_serial_number" value="" >
+
+                <label>CT Loaned</label>
+                <input type="text" class="ticket-form-body-input" name="ct_loaned" value="" >
+
+                <label>Original</label>
+                <select name="original" class="ticket-form-body-input" id="edit-original">
+                    <option value="1" @selected($parts->original == '1')>Crown</option>
+                    <option value="2" @selected($parts->original == '2')>Spectre</option>
+                    <option value="3" @selected($parts->original == '3')>T1 (FPT, DGW, Elite)</option>
+                </select>
+
+                <label>Start Date</label>
+                <input type="date" class="ticket-form-body-input" name="start_date" value="" id="edit-start-date" >
+
+                <x-slot:footer>
+                    <button class="ticket-form-body-input" type="submit">Issue unit/part</button> 
+                </x-slot:footer>
             </x-common-ticket-form>
 
         </div>

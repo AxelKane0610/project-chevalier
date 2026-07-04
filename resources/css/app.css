@@ -941,19 +941,21 @@ h1, h2, h3 {
     background: rgb(127 0 10);
 }
 
-
+.crown,
 .good-working,
 .available,
 .crown-hcm {
     background: rgb(91, 201, 47);
 }
 
+.t1,
 .can-t-use,
 .not-available,
 .crown-hn {
     background: rgb(127 0 10);
 }
 
+.spectre,
 .not-tested,
 .in-use,
 .spectre {

@@ -204,7 +204,111 @@ class LoanUnitPartTicketsController extends Controller
         }
     }
 
-    public function Edit_Loan_Unit_Part_Details (Request $request, $id){}
+    public function Edit_Loan_Unit_Part_Details (Request $request, $id){
+        try {
+            $part = Loan_Unit_Ticket_Parts_Details_Model::findOrFail($id);
+            $ticket = Loan_Unit_Part_Tickets_Model::with('user_owner')->findOrFail($part->ticket_id);
+
+            if ($part->status != '1') {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Chỉ có part đang ở trạng thái "Requested" mới được phép edit part details !',
+                ], 400);
+            } else {
+                $validate_data = $request->validate([
+                    'part_request' => 'nullable',
+                    'loan_unit_asset_tag' => 'nullable',
+                    'loan_unit_serial_number' => 'nullable',
+                    'ct_loaned' => 'nullable',
+                    'new_ct_return' => 'nullable',
+                    'original' => 'nullable',
+                    'start_date' => 'nullable',
+                    'end_date' => 'nullable',
+                ]);
+
+                $part->part_request = strip_tags($validate_data['part_request']);
+                $part->loan_unit_asset_tag = strip_tags($validate_data['loan_unit_asset_tag']);
+                $part->loan_unit_serial_number = strip_tags($validate_data['loan_unit_serial_number']);
+                $part->ct_loaned = strip_tags($validate_data['ct_loaned']);
+                $part->new_ct_return = strip_tags($validate_data['new_ct_return']);
+                $part->original = strip_tags($validate_data['original']);
+                $part->start_date = strip_tags($validate_data['start_date']);
+                $part->end_date = strip_tags($validate_data['end_date']);
+
+                $part->save();
+
+                tracking_info_service::add(
+                    $ticket->id,
+                    auth()->id(),
+                    4,
+                    'edited part details at'
+                );
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Part details edited successfully',
+                ]);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to edit part detail due to ' .$e->getMessage(),
+            ], 500);
+        }
+
+
+    }
+
+    public function Issue_Loan_Unit_Part (Request $request, $id ){
+        try {
+            $part = Loan_Unit_Ticket_Parts_Details_Model::findOrFail($id);
+            $ticket = Loan_Unit_Part_Tickets_Model::with('user_owner')->findOrFail($part->ticket_id);
+
+            if ($part->status != '1') {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Chỉ có part đang ở trạng thái "Requested" mới được phép issue !',
+                ], 400);
+            } else {
+                $validate_data = $request->validate([
+                    'loan_unit_asset_tag' => 'required_without_all:loan_unit_serial_number|string|nullable',
+                    'loan_unit_serial_number' => 'required_without_all:loan_unit_asset_tag|string|nullable',
+                    'ct_loaned' => 'nullable',
+                    'original' => 'nullable',
+                    'start_date' => 'nullable',
+                ]);
+
+                $part->status = '2'; //Cập nhật trạng thái part từ "Requested" sang "Borrowed, not return yet"
+                $part->loan_unit_asset_tag = strip_tags($validate_data['loan_unit_asset_tag']);
+                $part->loan_unit_serial_number = strip_tags($validate_data['loan_unit_serial_number']);
+                $part->ct_loaned = strip_tags($validate_data['ct_loaned']);
+                $part->original = strip_tags($validate_data['original']);
+                $part->start_date = strip_tags($validate_data['start_date']);
+
+                $part->save();
+
+                tracking_info_service::add(
+                    $ticket->id,
+                    auth()->id(),
+                    4,
+                    'issued part at'
+                );
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Part issued successfully',
+                ]);
+
+
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to issue part due to ' .$e->getMessage(),
+            ], 500);
+        }
+
+    }
 
 
 }

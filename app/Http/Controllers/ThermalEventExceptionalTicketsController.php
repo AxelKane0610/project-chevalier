@@ -439,38 +439,45 @@ class ThermalEventExceptionalTicketsController extends Controller
     }
 
     public function Edit_Thermal_Event_Part_Details(Request $request, $id){
-        $part = Thermal_Event_Parts_Details_Model::findOrFail($id);
-        $ticket = Thermal_Event_Exceptional_Tickets_Model::with('user_owner')->findOrFail($part->ticket_id);
-        if ($ticket->status == 1) {
-            $validate_data = $request->validate([
-                'part_mo_number' => 'required',
-                'part_number' => 'required',
-                'part_description' => 'required',
-                'part_ct_number' => 'required',
-            ]);
+        try {
+            $part = Thermal_Event_Parts_Details_Model::findOrFail($id);
+            $ticket = Thermal_Event_Exceptional_Tickets_Model::with('user_owner')->findOrFail($part->ticket_id);
+            if ($ticket->status == 1) {
+                $validate_data = $request->validate([
+                    'part_mo_number' => 'required',
+                    'part_number' => 'required',
+                    'part_description' => 'required',
+                    'part_ct_number' => 'required',
+                ]);
 
-            $part->part_mo_number = strip_tags($validate_data['part_mo_number']);
-            $part->part_number = strip_tags($validate_data['part_number']);
-            $part->part_description = strip_tags($validate_data['part_description']);
-            $part->part_ct_number = strip_tags($validate_data['part_ct_number']);
-            $part->save();
+                $part->part_mo_number = strip_tags($validate_data['part_mo_number']);
+                $part->part_number = strip_tags($validate_data['part_number']);
+                $part->part_description = strip_tags($validate_data['part_description']);
+                $part->part_ct_number = strip_tags($validate_data['part_ct_number']);
+                $part->save();
 
-            tracking_info_service::add(
-                $ticket->id, 
-                auth()->id(), 
-                10,
-                'edited part details at'
-            );
+                tracking_info_service::add(
+                    $ticket->id, 
+                    auth()->id(), 
+                    10,
+                    'edited part details at'
+                );
 
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Part details edited successfully',
+                ]);
+
+            } else return response()->json([
+                'success' => false,
+                'message' => 'Chỉ có ticket đang ở trạng thái "Open" mới được phép edit part details !',
+            ], 400);
+        } catch (\Exception $e) {
             return response()->json([
-                'success' => true,
-                'message' => 'Part details edited successfully',
-            ]);
-
-        } else return response()->json([
-            'success' => false,
-            'message' => 'Chỉ có ticket đang ở trạng thái "Open" mới được phép edit part details !',
-        ], 400);
+                'success' => false,
+                'message' => 'Failed to edit part detail due to ' .$e->getMessage(),
+            ], 500);
+        }
 
     
     }

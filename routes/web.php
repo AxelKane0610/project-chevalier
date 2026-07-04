@@ -138,6 +138,11 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/add-comment-loan-unit-part-ticket/{id}', [LoanUnitPartTicketsController::class, 'Add_Comment_Loan_Unit_Part_Ticket']) ->name('add-comment-loan-unit-part-ticket');
         Route::patch('/edit-loan-unit-part-ticket/{id}', [LoanUnitPartTicketsController::class, 'Edit_Loan_Unit_Part_Ticket'])->name('edit-loan-unit-part-ticket');
         Route::patch('/edit-loan-unit-part-details/{id}', [LoanUnitPartTicketsController::class, 'Edit_Loan_Unit_Part_Details'])->name('edit-loan-unit-part-details');
+        Route::patch('/issue-loan-unit-part/{id}', [LoanUnitPartTicketsController::class, 'Issue_Loan_Unit_Part'])->name('issue-loan-unit-part');
+        
+
+
+
     });
 
     Route::post('/logout', [UserController::class, 'logout'])->name('logout');
