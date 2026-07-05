@@ -114,7 +114,7 @@
             <input type="text" class="ticket-form-body-input" placeholder="Nhập lý do" name="reasons_for_leave" required>
 
             <label class="ticket-form-body-input">Days of leave</label>
-            <input type="number" class="ticket-form-body-input" placeholder="Nhập số ngày nghỉ. (vd: 0.5, 1.0, 1.5,...); Nếu xin đi trễ/về sớm/không chấm công nhập: 0.5" step="0.5" name="days_of_leave" required>
+            <input type="number" class="ticket-form-body-input" placeholder="Nhập số ngày nghỉ.(Ex: 0.5, 1.0, 1.5). Nhập 0.5 nếu đi trễ/về sớm/không chấm công" step="0.5" name="days_of_leave" required>
 
             <label class="ticket-form-body-input">Start Date</label>
             <input type="datetime-local" class="ticket-form-body-input" name="start_date" required>

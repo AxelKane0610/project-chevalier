@@ -120,7 +120,9 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:ROLE_SUPER_ADMIN,ROLE_OUT_OF_OFFICE_USER,ROLE_OUT_OF_OFFICE_ADMIN'])->group(function () {
         Route::get('/out-of-office-tickets-menu', [OutOfOfficeTicketsController::class, 'Show_Pending_Tickets']);
         Route::post('/create-out-of-office-ticket', [OutOfOfficeTicketsController::class, 'Create_Out_Of_Office_Ticket']);
-
+        Route::get('/out-of-office-tickets-menu-details/{id}', [OutOfOfficeTicketsController::class, 'Show_Out_Of_Office_Ticket_Details']);
+        Route::patch('/edit-out-of-office-ticket/{id}', [OutOfOfficeTicketsController::class, 'Edit_Out_Of_Office_Ticket'])->name('edit-out-of-office-ticket');
+        Route::post('/add-comment-out-of-office-ticket/{id}', [OutOfOfficeTicketsController::class, 'Add_Comment_Out_Of_Office_Ticket']) ->name('add-comment-out-of-office-ticket');
     });
 
     //11. Quản lý kho Crown - Spectre
@@ -133,7 +135,7 @@ Route::middleware(['auth'])->group(function () {
     //4. Ticket mượn máy & mượn part
     Route::middleware(['role:ROLE_SUPER_ADMIN,ROLE_LOAN_UNIT_ADMIN,ROLE_LOAN_UNIT_USER'])->group(function () {
         Route::get('/loan-unit-part-menu',[LoanUnitPartTicketsController::class, 'Show_Pending_Tickets']);
-        Route::get('/loan-unit-part-ticket-details/{id}', [LoanUnitPartTicketsController::class, 'Show_Loan_Unit_Part_Ticket_Details']);
+        Route::get('/loan-unit-part-ticket-details/{id}', [LoanUnitPartTicketsController::class, 'Show_Loan_Unit_Part_Ticket_Details']) ->name('loan-unit-part-ticket-details');
         Route::post('/create-loan-unit-part-ticket', [LoanUnitPartTicketsController::class, 'Create_Loan_Unit_Part_Ticket']);
         Route::post('/add-comment-loan-unit-part-ticket/{id}', [LoanUnitPartTicketsController::class, 'Add_Comment_Loan_Unit_Part_Ticket']) ->name('add-comment-loan-unit-part-ticket');
         Route::patch('/edit-loan-unit-part-ticket/{id}', [LoanUnitPartTicketsController::class, 'Edit_Loan_Unit_Part_Ticket'])->name('edit-loan-unit-part-ticket');

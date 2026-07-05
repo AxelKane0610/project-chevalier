@@ -35,6 +35,7 @@
                         <thead>
                             <th width="5%"></th>
                             <th width="15%">Receipt</th>
+                            <th width="15%">User Owner</th>
                             <th width="15%">Status</th>
                             <th width="15%">Customer Unit Info</th>
                             
@@ -48,8 +49,10 @@
                                         <a href="/loan-unit-part-ticket-details/{{ $ticket->id }}">
                                             <button><i class="ti-arrow-right" ></i></button>
                                         </a>
+                                        
                                     </td>
                                     <td>{{ $ticket->ticket_receipt }}</td>
+                                    <td>{{ $ticket->user_owner->fullname }}</td>
                                     <td>
                                         <span class="ticket-status {{ $ticket->status_data['class'] }}">
                                             {{ $ticket->status_data['text'] }}

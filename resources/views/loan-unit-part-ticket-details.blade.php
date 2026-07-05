@@ -65,7 +65,7 @@
                 @foreach($ticket->parts_details as $parts)
                 <tr>
                     <td>
-                        @if($parts->status == '1' && $ticket->user_id == auth()->user()->id)
+                        @if($parts->status == '1' && $ticket->user_id == auth()->user()->id && ($ticket->status == '1' || $ticket->status == '2'))
                             <form class="js-input-required-btn" data-target="edit-loan-unit-part-details" action="" method="PATCH">
                                 <button type="button" 
                                 class="btn-edit-part"
@@ -87,13 +87,13 @@
                             </form>
                         @endif
 
-                        @if((auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_LOAN_UNIT_ADMIN')) && $parts->status == '1')
+                        @if((auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_LOAN_UNIT_ADMIN')) && $parts->status == '1' && ($ticket->status == '1' || $ticket->status == '2'))
                             <form class="js-input-required-btn" data-target="issue-loan-unit-part" action="" method="PATCH">
                                 <button type="button" class="issue-loan-unit-part-btn" data-id="{{ $parts->id }}"><i class="ti-hand-point-right"></i></button>
                             </form>
                         @endif
 
-                        @if((auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_LOAN_UNIT_ADMIN')) && $parts->status == '2')
+                        @if((auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_LOAN_UNIT_ADMIN')) && $parts->status == '2' && ($ticket->status == '1' || $ticket->status == '2'))
                             <form class="js-input-required-btn" data-target="return-loan-unit-part" action="" method="PATCH">
                                 <button type="button" class="return-loan-unit-part-btn" data-id="{{ $parts->id }}"><i class="ti-check"></i></button>
                             </form>
@@ -192,7 +192,7 @@
                         @endforeach
                     </x-common-attachments-table>
 
-                    @if(($ticket->status == 1) && $ticket->user_id == auth()->user()->id)
+                    @if(($ticket->status == 1') && $ticket->user_id == auth()->user()->id)
                         <x-slot:footer>
                             <button type="button" class="js-input-required-btn" data-target="edit-ticket-details"><i class="ti-pencil"></i> Edit</button>
                         </x-slot:footer>

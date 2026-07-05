@@ -766,6 +766,7 @@ h1, h2, h3 {
     justify-content: space-evenly;
 }
 
+.out-of-office-tickets-content,
 .loan-unit-part-ticket-content,
 .invoice-exceptional-ticket-content,
 .thermal-event-ticket-content,

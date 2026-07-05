@@ -122,4 +122,118 @@ class OutOfOfficeTicketsController extends Controller
         }
 
     }
+
+    public function Show_Out_Of_Office_Ticket_Details($id){
+        $ticket = Out_Of_Office_Tickets_Model::with(['user_owner', 'active_attachments','ticket_tracking_info','ticket_comments.attachments', 'ticket_comments.user'])->findOrFail($id);
+        return view('out-of-office-tickets-menu-details', compact('ticket'));
+    }
+
+    public function Edit_Out_Of_Office_Ticket(Request $request, $id){
+        $ticket = Out_Of_Office_Tickets_Model::with('user_owner')->findOrFail($id);
+        
+        try {
+            if ($ticket->status == '1') {
+                $validate_data = $request->validate([
+                    'type_of_leave' => 'required',
+                    'reasons_for_leave' => 'required',
+                    'days_of_leave' => 'required',
+                    'start_date' => 'required',
+                    'end_date' => 'required',
+                    'attachments.*' => 'file|max:20480|mimes:jpg,png,pdf,jpeg,xlsx'
+            ]);
+
+                $validate_data['type_of_leave'] = strip_tags($validate_data['type_of_leave']);
+                $validate_data['reasons_for_leave'] = strip_tags($validate_data['reasons_for_leave']);
+                $validate_data['days_of_leave'] = strip_tags($validate_data['days_of_leave']);
+                $validate_data['start_date'] = strip_tags($validate_data['start_date']);
+                $validate_data['end_date'] = strip_tags($validate_data['end_date']);
+
+                $ticket->update($validate_data);
+
+                tracking_info_service::add(
+                    $ticket->id, 
+                    auth()->id(), 
+                    9,
+                    'edited ticket at'
+                );
+
+
+                if ($request->hasFile('attachments')) { //Kiểm tra xem có file nào được upload lên không
+
+                    foreach ($request->file('attachments') as $file) { //Duyệt qua từng file được upload lên
+                        $originalName = $file->getClientOriginalName();
+                        $folderPath = '9/'.$id;
+                        $filePath = $file->storeAs($folderPath, $originalName, 'attachments'); // Lưu file vào thư mục 'attachments' đã được cấu hình trong config/filesystems.php, với đường dẫn là 'attachments/1/{ticket_id}/{original_file_name}'
+                        
+                        Attachments_Model::create([
+                            'type_of_ticket' => 9, // Giả sử 1 là mã cho software ticket
+                            'ticket_id' => $ticket->id,
+                            'file_path' => $filePath,
+                            'name' => $originalName,// Lưu tên gốc của file vào cơ sở dữ liệu
+                        ]);
+                    }
+                    
+                }
+
+                if ($request->has('delete_files')) {
+                // Cập nhật tất cả các ID được tích chọn thành status = 0 trong 1 câu lệnh duy nhất
+                    Attachments_Model::whereIn('id', $request->input('delete_files'))->update(['status' => '0']);
+                }
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Ticket edited successfully',
+                ]);
+            } else return response()->json([
+                'success' => false,
+                'message' => 'Chỉ có ticket đang ở trạng thái "Open" mới được phép edit !',
+            ], 400);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to edit ticket due to ' .$e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function Add_Comment_Out_Of_Office_Ticket(Request $request, $id){
+        $comment_info_input = $request->validate([
+            'comment' => 'required_without_all:attachments|string|nullable',
+            'attachments' => 'required_without_all:comment|array|nullable',
+            'attachments.*' => 'file|max:20480|mimes:jpg,jpeg,png,pdf,xlsx,docx',
+        ]);
+
+        $comment_info_input['comment'] = strip_tags($comment_info_input['comment']);
+        $comment_info_input['ticket_id'] = $id;
+        $comment_info_input['type_of_ticket'] = 9; 
+        $comment_info_input['user_id'] = auth()->id();
+        
+        
+        $comment = Comments_Model::create($comment_info_input);
+        
+
+        if($request->hasFile('attachments'))
+        {
+            foreach($request->file('attachments') as $file)
+            {
+                $originalName = $file->getClientOriginalName();
+                $folderPath = '9/'.$id;
+                $filePath = $file->storeAs($folderPath, $originalName, 'attachments'); // Lưu file vào thư mục 'attachments' đã được cấu hình trong config/filesystems.php, với đường dẫn là 'attachments/1/{ticket_id}/{original_file_name}'
+                
+                Attachments_Model::create([
+                    'type_of_ticket' => 9,
+                    'ticket_id' => $id,
+                    'comment_id' => $comment->id,
+
+                    'file_path' => $filePath,
+                    'name' => $originalName,
+
+                    'status' => 1
+                ]);
+            }
+        }
+        
+
+        return back()->with('success');
+    }
 }

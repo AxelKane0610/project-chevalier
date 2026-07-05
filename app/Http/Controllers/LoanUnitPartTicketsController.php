@@ -400,12 +400,18 @@ class LoanUnitPartTicketsController extends Controller
     public function Close_Loan_Unit_Part_Ticket (Request $request, $id){
         try {
             $ticket = Loan_Unit_Part_Tickets_Model::with('user_owner')->findOrFail($id);
-
+            $parts_not_returned = Loan_Unit_Ticket_Parts_Details_Model::where('ticket_id', $id)->whereNotIn('status', ['1', '3', '4'])->exists();
             if (in_array($ticket->status, ['3', '4'])) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Chỉ có ticket đang ở trạng thái "Open" hoặc "In progress" mới có thể đóng !',
                 ], 400);
+            } else if ($parts_not_returned) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Không thể đóng ticket do vẫn còn part chưa được trả !',
+                ], 400);
+
             } else {
                 $validate_data = $request->validate([
                     'status' => 'required',
