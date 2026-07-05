@@ -108,4 +108,233 @@ document.addEventListener('submit', function (e) {
 
         });
     }
+
+    if (e.target && e.target.id === 'send-approve-out-of-office-ticket') {
+        e.preventDefault();
+
+        const form = e.target;
+        
+        Swal.fire({
+            title: 'Bạn có chắc muốn request approve nghỉ phép ?',
+            icon: 'warning',
+            showCancelButton: true,
+            heightAuto: false
+        })
+        .then((result) => {
+
+            // Cancel
+            if (!result.isConfirmed) {
+                return;
+            }
+
+            // Confirm mới loading
+            startButtonLoading(form);
+
+            fetch(url,{
+                method:'POST',
+                body:formData,
+                headers:{
+                    'X-CSRF-TOKEN':
+                        document.querySelector(
+                            'input[name="_token"]'
+                        ).value
+                }
+            })
+            .then(response => response.json())
+            .then(data => 
+            {
+                if (data.success === true) {
+                    Swal.fire({
+                        title:'Success',
+                        text:data.message,
+                        icon:'success'
+                    }).then(()=>{
+                    location.reload();
+                });
+                }
+                else {
+                    Swal.fire({
+                        title:'Error',
+                        text:data.message,
+                        icon:'error'
+                    });
+                    stopButtonLoading(form);
+                }
+
+            })
+            .catch(error => console.error(error));
+
+        });
+    }
+
+    if (e.target && e.target.id === 'approve-out-of-office-ticket') {
+        e.preventDefault();
+
+        const form = e.target;
+        
+        Swal.fire({
+            title: 'Bạn có chắc muốn approve cho ticket này ?',
+            icon: 'warning',
+            showCancelButton: true
+        })
+        .then((result) => {
+
+            // Cancel
+            if (!result.isConfirmed) {
+                return;
+            }
+
+            // Confirm mới loading
+            startButtonLoading(form);
+
+            fetch(url,{
+                method:'POST',
+                body:formData,
+                headers:{
+                    'X-CSRF-TOKEN':
+                        document.querySelector(
+                            'input[name="_token"]'
+                        ).value
+                }
+            })
+            .then(response => response.json())
+            .then(data => 
+            {
+                if (data.success === true) {
+                    Swal.fire({
+                        title:'Success',
+                        text:data.message,
+                        icon:'success'
+                    }).then(()=>{
+                    location.reload();
+                });
+                }
+                else {
+                    Swal.fire({
+                        title:'Error',
+                        text:data.message,
+                        icon:'error'
+                    });
+                    stopButtonLoading(form);
+                }
+
+            })
+            .catch(error => console.error(error));
+
+        });
+    }
+
+    if (e.target && e.target.id === 'reject-out-of-office-ticket') {
+        e.preventDefault();
+
+        const form = e.target;
+        
+        Swal.fire({
+            title: 'Bạn có chắc muốn reject ticket này ?',
+            icon: 'warning',
+            showCancelButton: true
+        })
+        .then((result) => {
+
+            // Cancel
+            if (!result.isConfirmed) {
+                return;
+            }
+
+            // Confirm mới loading
+            startButtonLoading(form);
+
+            fetch(url,{
+                method:'POST',
+                body:formData,
+                headers:{
+                    'X-CSRF-TOKEN':
+                        document.querySelector(
+                            'input[name="_token"]'
+                        ).value
+                }
+            })
+            .then(response => response.json())
+            .then(data => 
+            {
+                if (data.success === true) {
+                    Swal.fire({
+                        title:'Success',
+                        text:data.message,
+                        icon:'success'
+                    }).then(()=>{
+                    location.reload();
+                });
+                }
+                else {
+                    Swal.fire({
+                        title:'Error',
+                        text:data.message,
+                        icon:'error'
+                    });
+                    stopButtonLoading(form);
+                }
+
+            })
+            .catch(error => console.error(error));
+
+        });
+    }
+
+    if (e.target && e.target.id === 're-open-out-of-office-ticket') {
+        e.preventDefault();
+
+        const form = e.target;
+        
+        Swal.fire({
+            title: 'Bạn có chắc muốn mở lại ticket này ?',
+            icon: 'warning',
+            showCancelButton: true
+        })
+        .then((result) => {
+
+            // Cancel
+            if (!result.isConfirmed) {
+                return;
+            }
+
+            // Confirm mới loading
+            startButtonLoading(form);
+
+            fetch(url,{
+                method:'POST',
+                body:formData,
+                headers:{
+                    'X-CSRF-TOKEN':
+                        document.querySelector(
+                            'input[name="_token"]'
+                        ).value
+                }
+            })
+            .then(response => response.json())
+            .then(data => 
+            {
+                if (data.success === true) {
+                    Swal.fire({
+                        title:'Success',
+                        text:data.message,
+                        icon:'success'
+                    }).then(()=>{
+                    location.reload();
+                });
+                }
+                else {
+                    Swal.fire({
+                        title:'Error',
+                        text:data.message,
+                        icon:'error'
+                    });
+                    stopButtonLoading(form);
+                }
+
+            })
+            .catch(error => console.error(error));
+
+        });
+    }
 });

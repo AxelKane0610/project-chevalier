@@ -123,6 +123,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/out-of-office-tickets-menu-details/{id}', [OutOfOfficeTicketsController::class, 'Show_Out_Of_Office_Ticket_Details']);
         Route::patch('/edit-out-of-office-ticket/{id}', [OutOfOfficeTicketsController::class, 'Edit_Out_Of_Office_Ticket'])->name('edit-out-of-office-ticket');
         Route::post('/add-comment-out-of-office-ticket/{id}', [OutOfOfficeTicketsController::class, 'Add_Comment_Out_Of_Office_Ticket']) ->name('add-comment-out-of-office-ticket');
+        Route::post('/send-approve-out-of-office-ticket/{id}', [OutOfOfficeTicketsController::class, 'Send_Approve_Out_Of_Office_Ticket']) ->name('send-approve-out-of-office-ticket');
+        Route::post('/approve-out-of-office-ticket/{id}', [OutOfOfficeTicketsController::class, 'Approve_Out_Of_Office_Ticket']) ->name('approve-out-of-office-ticket');
+        Route::post('/reject-out-of-office-ticket/{id}', [OutOfOfficeTicketsController::class, 'Reject_Out_Of_Office_Ticket']) ->name('reject-out-of-office-ticket');
+        Route::post('/re-open-out-of-office-ticket/{id}', [OutOfOfficeTicketsController::class,'Out_Of_Office_Re_Open'])->name('re-open-out-of-office-ticket');
+
     });
 
     //11. Quản lý kho Crown - Spectre

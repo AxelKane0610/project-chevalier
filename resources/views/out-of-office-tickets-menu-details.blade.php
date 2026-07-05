@@ -21,6 +21,43 @@
                         <button type="submit"><i class="ti-search"></i>Search</button>
                     </form>
                 </li>
+                @if ($ticket->status == '1' && $ticket->user_id == auth()->user()->id)
+                    <li>
+                        <form id="send-approve-out-of-office-ticket" data-target="send-approve-out-of-office-ticket" action="{{route('send-approve-out-of-office-ticket', $ticket->id) }}">
+                            @method('POST')
+                            <button type="submit"><i class="ti-angle-double-right"></i>Send Approval </button>
+                        </form>
+                    </li>
+                @endif
+
+                @if ($ticket->status == '2' && auth()->user()->hasRole('ROLE_OUT_OF_OFFICE_ADMIN'))
+                    @can('is-leader-of-ticket', $ticket)
+                    <li>
+                        <form id="approve-out-of-office-ticket" class="js-input-required-btn" data-target="approve-out-of-office-ticket" action="{{ route('approve-out-of-office-ticket', $ticket->id) }}" method="POST">
+                            
+                            <button type="submit"><i class="ti-thumb-up"></i>Approve</button>
+                        </form>
+                    </li>
+
+                    <li>
+                        <form id="reject-out-of-office-ticket" class="js-input-required-btn" data-target="reject-out-of-office-ticket" action="{{ route('reject-out-of-office-ticket', $ticket->id) }}" method="POST">
+                            
+                            <button type="submit"><i class="ti-thumb-down"></i>Reject</button>
+                        </form>
+                    </li>
+                    @endcan
+                @endif
+
+                @if($ticket->user_id == auth()->user()->id && $ticket->status == '4')
+                    <li>
+                        <form id="re-open-out-of-office-ticket" class="js-input-required-btn" data-target="re-open-out-of-office-ticket" action="{{ route('re-open-out-of-office-ticket', $ticket->id) }}" method="POST">
+                            
+                            <button type="submit"><i class="ti-back-left"></i>Request Re-Open</button>
+                        </form>
+                    </li>
+                @endif
+
+
             </x-common-header>
 
             <div class="out-of-office-tickets-content">

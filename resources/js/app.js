@@ -13,7 +13,12 @@ import 'select2/dist/css/select2.min.css';
 select2(window, $);
 
 
+
 window.Swal = Swal;
+
+Swal.mixin({
+  heightAuto: false
+});
 
 document.addEventListener("DOMContentLoaded", function() {
     const url = new URL(window.location.href);

@@ -129,9 +129,10 @@ class OutOfOfficeTicketsController extends Controller
     }
 
     public function Edit_Out_Of_Office_Ticket(Request $request, $id){
+        try {
         $ticket = Out_Of_Office_Tickets_Model::with('user_owner')->findOrFail($id);
         
-        try {
+        
             if ($ticket->status == '1') {
                 $validate_data = $request->validate([
                     'type_of_leave' => 'required',
@@ -235,5 +236,137 @@ class OutOfOfficeTicketsController extends Controller
         
 
         return back()->with('success');
+    }
+
+    public function Send_Approve_Out_Of_Office_Ticket($id){
+        try {
+            $ticket = Out_Of_Office_Tickets_Model::with('user_owner')->findOrFail($id);
+
+            if($ticket->status != '1'){
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Không thể send approve do ticket không ở trạng thái "Open"',
+                ], 400);
+            } else {
+                $ticket->status = '2';
+                $ticket->save();
+
+                tracking_info_service::add(
+                    $ticket->id, 
+                    auth()->id(), 
+                    9,
+                    'send approve at'
+                );
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Ticket send approve successfully',
+                ]);
+            } 
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to edit ticket due to ' .$e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function Approve_Out_Of_Office_Ticket($id) {
+        try {
+            $ticket = Out_Of_Office_Tickets_Model::with('user_owner')->findOrFail($id);
+
+            if($ticket->status != '2'){
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Không thể approve do ticket không ở trạng thái "Waiting approval"',
+                ], 400);
+            } else {
+                $ticket->status = '3';
+                $ticket->save();
+
+                tracking_info_service::add(
+                    $ticket->id, 
+                    auth()->id(), 
+                    9,
+                    'approved ticket at'
+                );
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Ticket approved successfully',
+                ]);
+            } 
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to approve ticket due to ' .$e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function Reject_Out_Of_Office_Ticket($id) {
+        try {
+            $ticket = Out_Of_Office_Tickets_Model::with('user_owner')->findOrFail($id);
+
+            if($ticket->status != '2'){
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Không thể reject do ticket không ở trạng thái "Waiting approval"',
+                ], 400);
+            } else {
+                $ticket->status = '4';
+                $ticket->save();
+
+                tracking_info_service::add(
+                    $ticket->id, 
+                    auth()->id(), 
+                    9,
+                    'rejected ticket at'
+                );
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Ticket rejected successfully',
+                ]);
+            } 
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to reject ticket due to ' .$e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function Out_Of_Office_Re_Open($id){
+        try {
+            $ticket = Out_Of_Office_Tickets_Model::with('user_owner')->findOrFail($id);
+
+            if($ticket->status != '4'){
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Không thể mở lại ticket do ticket không ở trạng thái "Rejected"',
+                ], 400);
+            } else {
+                $ticket->status = '1';
+                $ticket->save();
+
+                tracking_info_service::add(
+                    $ticket->id, 
+                    auth()->id(), 
+                    9,
+                    're-opened ticket at'
+                );
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Ticket re-opened successfully',
+                ]);
+            } 
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to re-open ticket due to ' .$e->getMessage(),
+            ], 500);
+        }
     }
 }
