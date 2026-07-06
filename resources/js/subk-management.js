@@ -30,7 +30,7 @@ $(document).ready(function() {
     $('#role-select-change').select2({
         width: '100%', // Ép Select2 lấy toàn bộ chiều rộng của thẻ cha
         height: 'auto',
-        placeholder: "Chọn Roles...",
+        placeholder: "Chọn Roles...", 
         allowClear: true
     });
 });
@@ -65,11 +65,20 @@ $(document).on('click', '.btn-edit-user', function () {
 
 });
 
+// $(document).on('click', '.reset-user-password-btn', function () {
+
+//     document.getElementsByClassName('reset-password-form').action =
+//         '/reset-password-user/' + this.dataset.id;
+
+// });
+
 document.addEventListener('submit', function (e) {
     // Kiểm tra xem form nào đang được submit dựa vào ID
     
     const formData = new FormData(e.target);
     const url = e.target.getAttribute('action');
+
+    console.log(url);
 
     if (e.target && e.target.id === 'create-user-form') {
         e.preventDefault();
@@ -138,6 +147,56 @@ document.addEventListener('submit', function (e) {
 
             // Confirm mới loading
             startButtonLoading(form);
+            fetch(url, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                }
+            })
+            .then(response => response.json())
+            .then(new_ticket => {
+
+                if (new_ticket.success === true) {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: new_ticket.message,
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then(()=>{
+                        location.reload();
+                    });
+                } else {
+                    Swal.fire({
+                            title:'Error',
+                            text:new_ticket.message,
+                            icon:'error'
+                        }).then(()=>{
+                        location.reload();
+                    });
+                }
+                
+            })
+            .catch(error => console.error(error));
+        });
+    }
+
+    if (e.target && e.target.id === 'reset-user-password') {
+        e.preventDefault();
+
+        const form = e.target;
+        console.log(url);
+        Swal.fire({
+            title: 'Bạn có chắc muốn reset password cho user này ?',
+            icon: 'warning',
+            showCancelButton: true
+        })
+        .then((result) => {
+            if (!result.isConfirmed) {
+                return;
+            }
+
+
             fetch(url, {
                 method: 'POST',
                 body: formData,

@@ -114,6 +114,7 @@ Route::middleware(['auth'])->group(function () {
         
         Route::post('/create-new-user', [UserController::class,'Create_New_User']) ->name('create-new-user');
         Route::patch('/edit-user-info/{id}', [UserController::class,'Edit_User_Info'])->name('edit-user-info');
+        Route::post('/reset-password-user/{id}', [UserController::class, 'Reset_Password'])->name('reset-password-user');
     });
 
     //9. Nghỉ phép

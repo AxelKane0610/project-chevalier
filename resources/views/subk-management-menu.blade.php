@@ -38,7 +38,7 @@
                         <input type="text" placeholder="Quick Search User" id="search-user-input">
                     </div>
 
-                    <table id ="subk-management-users-table" class="common-table" width="100%" >
+                    <table id ="subk-management-users-table" class="common-table"   width="100%" >
                         <thead>
                             <th width="10%">Actions</th>
                             <th width="14%">Username</th>
@@ -66,7 +66,10 @@
                                             data-learnerid="{{ $user->learner_id }}"
                                             data-team="{{ $user->team }}"><i class="ti-pencil"></i></button>
                                         </form>
-                                        <button><i class="ti-na"></i></button>
+                                        <form id="reset-user-password" data-target="reset-user-password" action="{{ route('reset-password-user', $user->id)}}" method="POST">
+                                            <button class="reset-user-password-btn" type="submit"><i class="ti-settings"></i></button>
+                                        </form>
+                                        
                                         
                                     </td>
                                     <td>{{ $user->name }}</td>

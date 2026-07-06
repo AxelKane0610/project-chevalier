@@ -128,6 +128,24 @@ class UserController extends Controller
         return view('/user-profile');
     }
 
+    public function Reset_Password ($id){
+        try {
+            $user = User::findOrFail($id);
+            $defaultPassword = env('DEFAULT_USER_PASSWORD');; // Password mặc định
+            $user->password = bcrypt($defaultPassword);
+            $user->save();
+            return response()->json([
+                'message' => 'Password reset successfully.',
+                'success' => true,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to reset password due to: ' . $e->getMessage() // Có thể bỏ ở môi trường production
+            ], 500);
+        }
+    }
+
     
 
     
