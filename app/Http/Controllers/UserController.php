@@ -16,25 +16,57 @@ class UserController extends Controller
         return view('login');
     }
 
+    // public function authenticate(Request $request)
+    // {
+
+    //     $user_info_input = $request->validate([
+    //         'Username' => 'required',
+    //         'Password' => 'required',
+    //     ]);
+        
+        
+
+    //     if (auth()->attempt(['name' => $user_info_input['Username'], 'password' => $user_info_input['Password']])) {
+    //         $request->session()->regenerate(); // Bảo mật: chống tấn công Fixation
+    //         return redirect('/main-menu'); // Chuyển hướng đến trang chính sau khi đăng nhập thành công
+    //     }
+        
+    //     return back()->withInput()->with([
+    //     'login_error' => 'Sai username hoặc password'
+    //     ]);
+            
+    // }
+
     public function authenticate(Request $request)
     {
-
         $user_info_input = $request->validate([
             'Username' => 'required',
             'Password' => 'required',
         ]);
-        
-        
 
-        if (auth()->attempt(['name' => $user_info_input['Username'], 'password' => $user_info_input['Password']])) {
-            $request->session()->regenerate(); // Bảo mật: chống tấn công Fixation
-            return redirect('/main-menu'); // Chuyển hướng đến trang chính sau khi đăng nhập thành công
+        $user = User::where('name', $user_info_input['Username'])->first();
+
+        // Có tài khoản nhưng bị khóa
+        if ($user && $user->status === 'deactivate') {
+            return back()->withInput()->with([
+                'login_error' => 'Tài khoản của bạn đã bị vô hiệu hóa. Vui lòng liên hệ quản trị viên.'
+            ]);
         }
-        
+
+        // Kiểm tra đăng nhập
+        if (auth()->attempt([
+            'name' => $user_info_input['Username'],
+            'password' => $user_info_input['Password'],
+        ])) {
+
+            $request->session()->regenerate();
+
+            return redirect('/main-menu');
+        }
+
         return back()->withInput()->with([
-        'login_error' => 'Sai username hoặc password'
+            'login_error' => 'Sai username hoặc password'
         ]);
-            
     }
 
     public function logout(Request $request)

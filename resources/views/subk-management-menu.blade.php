@@ -69,6 +69,9 @@
                                         <form id="reset-user-password" data-target="reset-user-password" action="{{ route('reset-password-user', $user->id)}}" method="POST">
                                             <button class="reset-user-password-btn" type="submit"><i class="ti-settings"></i></button>
                                         </form>
+                                        <form id="deactivate-user" data-target="deactivate-user" action="" method="POST" title="Deactivate User">
+                                            <button type="submit"><i class="ti-trash"></i></button>
+                                        </form>
                                         
                                         
                                     </td>
@@ -76,7 +79,11 @@
                                     <td>{{ $user->fullname }}</td>
                                     <td>{{ implode(', ', $user->roles) }}</td>
                                     <td>{{ $user->email }}</td>
-                                    <td>{{ $user->site_id }}</td>
+                                    <td>
+                                        <span class="ticket-status {{ $user->site_id_data['class'] }}">
+                                            {{ $user->site_id_data['text'] }}
+                                        </span>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>

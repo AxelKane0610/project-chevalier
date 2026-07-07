@@ -72,5 +72,42 @@ class User extends Authenticatable
         ];
     }
 
+    public function getSiteIdDataAttribute()
+    {
+        return match ($this->site_id){
+            1 => [
+                'text' => 'Hồ Chí Minh',
+                'class' => 'open'
+            ],
+
+            2 => [
+                'text' => 'Hà Nội',
+                'class' => 'waiting-for-verifier'
+            ],
+
+            3 => [
+                'text' => 'Đà Nẵng',
+                'class' => 'waiting-for-approver'
+            ],
+
+            4 => [
+                'text' => 'Cần Thơ',
+                'class' => 'completed'
+            ],
+
+            5 => [
+                'text' => 'Call Center',
+                'class' => 'rejected'
+            ],
+
+
+
+            default => [
+                'text' => 'Unknown',
+                'class' => 'unknown'
+            ]
+        };
+    }
+
     
 }

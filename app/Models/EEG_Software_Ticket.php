@@ -48,6 +48,12 @@ class EEG_Software_Ticket extends Model
             ->where('type_of_ticket', 1);
     }
 
+    public function completed_by(): BelongsTo
+    {
+        // Một ticket thì "thuộc về" (belongsTo) một người dùng
+        return $this->belongsTo(User::class, 'ticket_completed_by'); 
+    }
+
     public function getPriorityDataAttribute()
     {
         return match($this->priority){

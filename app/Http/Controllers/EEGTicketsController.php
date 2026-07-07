@@ -237,7 +237,7 @@ class EEGTicketsController extends Controller
     }
 
     public function Close_Software_Ticket(Request $request, $id){
-        $ticket = EEG_Software_Ticket::with('user_owner')->findOrFail($id);
+        $ticket = EEG_Software_Ticket::with('user_owner','completed_by')->findOrFail($id);
         try {
             if ($ticket->status == '1' || $ticket->status == '2') {
                 $ticket_info_input = $request->validate([
@@ -260,12 +260,15 @@ class EEGTicketsController extends Controller
                 switch ($ticket_info_input['ticket_status']) {
                     case '4':
                         $action = 'completed ticket at';
+                        $status = 'Completed';
                         break;
                     case '5':
                         $action = 'rejected ticket at';
+                        $status = 'Rejected';
                         break;
                     case '6':
                         $action = 'canceled ticket at';
+                        $status = 'Canceled';
                         break;
                     default:
                         $action = 'updated ticket status to ' . $ticket_info_input['ticket_status'] . ' at';
@@ -276,10 +279,30 @@ class EEGTicketsController extends Controller
                     1, //1 là mã cho software ticket
                     $action,
                 );
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Ticket completed !',
+
+                $send_ticket_complete_notification = Http::post(config('services.api_service.sw_ticket_complete_url'), [
+                    'ticket_id' => $ticket->id,
+                    'ticket_owner_name'   => $ticket->user_owner->fullname,
+                    'ticket_owner_email' => $ticket->user_owner->email,
+                    'receipt' => $ticket->ticket_receipt,
+                    'description' => $ticket->description,
+                    'completed by' => $ticket->completed_by->fullname,
+                    'ticket_comment' => $ticket_info_input['ticket_comment'],
+                    'status' => $status,
                 ]);
+                if ($send_ticket_complete_notification->successful()) {
+                    
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'Approval request sent successfully',
+                    ]);
+                } else {
+                    // Xử lý lỗi nếu phản hồi không thành công
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Failed to send approval request. API responded with status: ' . $send_ticket_complete_notification->body(),
+                    ], 500);
+                } 
             } else {
                 return response()->json([
                     'success' => false,
@@ -289,7 +312,7 @@ class EEGTicketsController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to create ticket due to ' .$e->getMessage(),
+                'message' => 'Failed to close ticket due to ' .$e->getMessage(),
             ], 500);
         } 
         
