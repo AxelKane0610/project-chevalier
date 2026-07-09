@@ -192,7 +192,7 @@
                         @endforeach
                     </x-common-attachments-table>
 
-                    @if(($ticket->status == 1') && $ticket->user_id == auth()->user()->id)
+                    @if(($ticket->status == '1') && $ticket->user_id == auth()->user()->id)
                         <x-slot:footer>
                             <button type="button" class="js-input-required-btn" data-target="edit-ticket-details"><i class="ti-pencil"></i> Edit</button>
                         </x-slot:footer>

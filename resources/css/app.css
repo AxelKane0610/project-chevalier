@@ -612,7 +612,7 @@ h1, h2, h3 {
     align-items: left;
 }
 
-.ticket-form-body .ticket-form-body-input {
+.ticket-form-body-input {
     padding: 5px;
     font-size: 15px;
     width: 100%;
@@ -626,6 +626,8 @@ h1, h2, h3 {
 .ticket-form-body .multiple-row {
     height: 100px;
 }
+
+
 
 .ticket-form-footer {
     display: flex;

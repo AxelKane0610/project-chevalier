@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 use App\Services\tracking_info_service;
 use App\Models\Attachments_Model;
 use App\Models\Comments_Model;
+use App\Models\User;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Http;
+
+
 
 class LaserEngravingTicketsController extends Controller
 {
@@ -239,43 +244,225 @@ class LaserEngravingTicketsController extends Controller
         ]);
     }
 
+    // public function Close_Laser_Engraving_Ticket(Request $request, $id)
+    // {
+    //     try {
+    //         $ticket = Laser_Engraving_Tickets_Model::findOrFail($id);
+    //         $validatedData = $request->validate([
+    //             'ticket_status' => 'required',
+    //             'ticket_comment' => 'nullable|string',
+    //             'attachments.*' => 'file|max:20480|mimes:jpg,png,pdf,jpeg,xlsx,gif,cdr'
+    //         ]);
+
+    //         $validatedData['ticket_comment'] = strip_tags($validatedData['ticket_comment']);
+    //         $ticket->status = $validatedData['ticket_status'];
+    //         $ticket->save();
+
+    //         if ($request->hasFile('attachments')) { //Kiểm tra xem có file nào được upload lên không
+
+    //             foreach ($request->file('attachments') as $file) { //Duyệt qua từng file được upload lên
+    //                 $originalName = $file->getClientOriginalName();
+    //                 $folderPath = '3/'.$ticket->id;
+    //                 $filePath = $file->storeAs($folderPath, $originalName, 'attachments'); // Lưu file vào thư mục '/'
+                    
+    //                 $attachments = Attachments_Model::create([
+    //                     'type_of_ticket' => '3', // Giả sử 3 là mã cho laser engraving ticket
+    //                     'ticket_id' => $ticket->id,
+    //                     'file_path' => $filePath,   
+    //                     'name' => $originalName,// Lưu tên gốc của file vào cơ sở dữ liệu
+    //                 ]);
+    //             }
+                
+    //         }
+
+
+    //         switch ($ticket->status){
+    //             case '3':
+    //                 $action = 'completed ticket at';
+    //                 $status = 'Completed';
+    //                 break;
+    //             case '4':
+    //                 $action = 'rejected ticket at';
+    //                 $status = 'Rejected';
+    //                 break;
+    //         }
+            
+    //         tracking_info_service::add(
+    //             $ticket->id, 
+    //             auth()->id(), 
+    //             3,
+    //             $action,
+    //         );
+
+    //         $attachments = $attachments->map(function ($file) {
+    //             return [
+    //                 'fileName' => basename($file->file_path),
+    //                 'fileContent' => base64_encode(
+    //                     Storage::disk('attachments')->get(
+    //                         $file->file_path
+    //                     )
+    //                 ),
+    //             ];
+    //         });
+
+    //         $leader_email = User::where('id', $ticket->user_owner->leader_id)->value('email');
+    //         try 
+    //         {
+    //             $send_approval = Http::post(config('services.api_service.laser_engraving_complete_url'), [
+    //                 'ticket_id' => $ticket->id,
+    //                 'ticket_owner'   => $ticket->user_owner->fullname,
+    //                 'ticket_owner_email' => $ticket->user_owner->email,
+    //                 'receipt' => $ticket->ticket_receipt,
+    //                 'info_base' => $ticket->info_base,
+    //                 'attachments' => $attachments,
+    //                 'leader_email' => $leader_email,
+    //                 'status' => $status,
+    //                 'comment' => $validatedData['ticket_comment'],
+    //             ]);
+    //             if ($send_approval->successful()) {
+                    
+    //                 return response()->json([
+    //                     'success' => true,
+    //                     'message' => 'Ticket completed & Notification sent successfully',
+    //                 ]);
+    //             } else {
+    //                 // Xử lý lỗi nếu phản hồi không thành công
+    //                 return response()->json([
+    //                     'success' => false,
+    //                     'message' => 'Ticket completed but notification send failed due to:  ' . $send_approval->body(),
+    //                 ], 500);
+    //             } 
+    //         } catch (\Exception $e) {
+    //             // Xử lý lỗi nếu có
+    //             return response()->json([
+    //                 'success' => false,
+    //                 'message' => 'Failed to close ticket due to: ' . $e->getMessage(),
+    //             ], 500);
+    //         }
+            
+
+           
+    //     } catch (\Exception $e) {
+    //         return response()->json([
+    //             'success' => false,
+    //             'message' => 'Failed to close ticket due to ' .$e->getMessage(),
+    //         ], 500);
+    //     }
+    // }
     public function Close_Laser_Engraving_Ticket(Request $request, $id)
     {
         try {
-            $ticket = Laser_Engraving_Tickets_Model::findOrFail($id);
+            $ticket = Laser_Engraving_Tickets_Model::with('user_owner')->findOrFail($id);
             $validatedData = $request->validate([
                 'ticket_status' => 'required',
                 'ticket_comment' => 'nullable|string',
+                'attachments.*' => 'file|max:20480|mimes:jpg,png,pdf,jpeg,xlsx,gif,cdr'
             ]);
-            if ($validatedData['ticket_status'] == '3') {
-                $ticket->status = '3'; 
-                $ticket->save();
 
-                tracking_info_service::add(
-                    $ticket->id, 
-                    auth()->id(), 
-                    3,
-                    'completed ticket at'
-                );
-            } else {
-                $ticket->status = '4';
-                $ticket->save();
-                tracking_info_service::add(
-                    $ticket->id, 
-                    auth()->id(), 
-                    3,
-                    'rejected ticket at'
-                );
+            $validatedData['ticket_comment'] = strip_tags($validatedData['ticket_comment']);
+            $ticket->status = $validatedData['ticket_status'];
+            $ticket->save();
+
+            // 1. Khởi tạo một mảng rỗng để chứa các model attachments được tạo ra
+            $uploadedAttachments = [];
+
+            if ($request->hasFile('attachments')) { 
+                foreach ($request->file('attachments') as $file) { 
+                    $originalName = $file->getClientOriginalName();
+                    $folderPath = '3/' . $ticket->id;
+                    $filePath = $file->storeAs($folderPath, $originalName, 'attachments'); 
+                    
+                    // Thêm instance vừa tạo vào mảng thay vì ghi đè biến
+                    $uploadedAttachments[] = Attachments_Model::create([
+                        'type_of_ticket' => '3', 
+                        'ticket_id' => $ticket->id,
+                        'file_path' => $filePath,   
+                        'name' => $originalName,
+                    ]);
+                }
             }
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Ticket closed successfully !',
-            ]);
+            switch ($ticket->status) {
+                case '3':
+                    $action = 'completed ticket at';
+                    $status = 'Completed';
+                    break;
+                case '4':
+                    $action = 'rejected ticket at';
+                    $status = 'Rejected';
+                    break;
+                default:
+                    $action = 'updated ticket at';
+                    $status = 'Updated';
+                    break;
+            }
+            
+            
+            tracking_info_service::add(
+                $ticket->id, 
+                auth()->id(), 
+                3,
+                $action,
+            );
+
+            // 2. Chuyển đổi mảng thành Collection và thực hiện map() an toàn
+            $attachmentsData = collect($uploadedAttachments)->map(function ($file) {
+                return [
+                    'fileName' => basename($file->file_path),
+                    'fileContent' => base64_encode(
+                        Storage::disk('attachments')->get($file->file_path)
+                    ),
+                ];
+            })->toArray(); // Chuyển về mảng thuần để chuẩn bị gửi API
+
+            $leader_email = User::where('id', $ticket->user_owner->leader_id)->value('email');
+            // dd([
+            //     'ticket_id' => $ticket->id,
+            //     'ticket_owner' => $ticket->user_owner->fullname,
+            //     'ticket_owner_email' => $ticket->user_owner->email,
+            //     'receipt' => $ticket->ticket_receipt,
+            //     'info_base' => $ticket->info_base,
+            //     'attachments' => $attachmentsData, // Gửi mảng dữ liệu đã xử lý an toàn
+            //     'leader_email' => $leader_email,
+            //     'status' => $status,
+            //     'comment' => $validatedData['ticket_comment'],
+            // ]);
+            try {
+                // Gửi dữ liệu qua Http Post
+                $send_approval = Http::post(config('services.api_service.laser_engraving_complete_url'), [
+                    'ticket_id' => $ticket->id,
+                    'ticket_owner' => $ticket->user_owner->fullname,
+                    'ticket_owner_email' => $ticket->user_owner->email,
+                    'receipt' => $ticket->ticket_receipt,
+                    'info_base' => $ticket->info_base,
+                    'attachments' => $attachmentsData, // Gửi mảng dữ liệu đã xử lý an toàn
+                    'leader_email' => $leader_email,
+                    'status' => $status,
+                    'comment' => $validatedData['ticket_comment'],
+                ]);
+
+                if ($send_approval->successful()) {
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'Ticket completed & Notification sent successfully',
+                    ]);
+                } else {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Ticket completed but notification send failed due to: ' . $send_approval->body(),
+                    ], 500);
+                } 
+            } catch (\Exception $e) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Failed to send notification due to: ' . $e->getMessage(),
+                ], 500);
+            }
+
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to close ticket due to ' .$e->getMessage(),
+                'message' => 'Failed to close ticket due to: ' . $e->getMessage(),
             ], 500);
         }
     }

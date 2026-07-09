@@ -64,16 +64,12 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-const fileInput = document.getElementById('fileInput');
-const fileListUI = document.getElementById('fileList');
 
-let selectedFiles = [];
-if (fileInput) {
-    fileInput.addEventListener('change', function () {
-        selectedFiles = Array.from(this.files);
-        renderFileList();
-    });
-}
+
+// const fileInput = document.getElementById('fileInput');
+// const fileListUI = document.getElementById('fileList');
+
+// let selectedFiles = [];
 // if (fileInput) {
 //     fileInput.addEventListener('change', function () {
 //         selectedFiles = Array.from(this.files);
@@ -81,76 +77,99 @@ if (fileInput) {
 //     });
 // }
 
-function renderFileList() {
-    fileListUI.innerHTML = ''; //Clear UI cũ (re-render lại từ đầu)
+// function renderFileList() {
+//     fileListUI.innerHTML = ''; //Clear UI cũ (re-render lại từ đầu)
 
-    selectedFiles.forEach((file, index) => {
-        const li = document.createElement('li');
+//     selectedFiles.forEach((file, index) => {
+//         const li = document.createElement('li');
 
-        li.textContent = file.name;
+//         li.textContent = file.name;
 
-        const removeBtn = document.createElement('button');
-        // removeBtn.textContent = 'X';
-        removeBtn.innerHTML = '<i class="ti-close"></i>';
-        removeBtn.onclick = () => removeFile(index);
+//         const removeBtn = document.createElement('button');
+//         // removeBtn.textContent = 'X';
+//         removeBtn.innerHTML = '<i class="ti-close"></i>';
+//         removeBtn.onclick = () => removeFile(index);
  
-        li.appendChild(removeBtn);
-        fileListUI.appendChild(li);
-    });
-}
+//         li.appendChild(removeBtn);
+//         fileListUI.appendChild(li);
+//     });
+// }
 
-function removeFile(index) {
-    selectedFiles.splice(index, 1);
-    updateInputFiles();
-    renderFileList();
-}
+// function removeFile(index) {
+//     selectedFiles.splice(index, 1);
+//     updateInputFiles();
+//     renderFileList();
+// }
 
-function updateInputFiles() {
-    const dataTransfer = new DataTransfer();
+// function updateInputFiles() {
+//     const dataTransfer = new DataTransfer();
 
-    selectedFiles.forEach(file => {
-        dataTransfer.items.add(file);
-    });
-
-    fileInput.files = dataTransfer.files;
-}
-
-
-// document.addEventListener('DOMContentLoaded', function () {
-
-//     document.querySelectorAll('form').forEach(form => {
-
-//         form.addEventListener('submit', function () {
-
-//             const submitButtons = form.querySelectorAll(
-//                 'button[type="submit"], input[type="submit"]'
-//             );
-
-//             submitButtons.forEach(button => {
-
-//                 button.disabled = true;
-
-//                 if (button.tagName === 'BUTTON') {
-
-//                     button.dataset.originalText = button.innerHTML;
-
-//                     button.innerHTML = `
-//                         <span class="spinner"></span>
-//                         Loading...
-//                     `;
-//                 } else {
-
-//                     button.dataset.originalText = button.value;
-//                     button.value = 'Loading...';
-//                 }
-
-//             });
-
-//         });
-
+//     selectedFiles.forEach(file => {
+//         dataTransfer.items.add(file);
 //     });
 
-// });
+//     fileInput.files = dataTransfer.files;
+// }
+
+class FileUploader {
+    constructor(container) {
+        this.container = container;
+        this.fileInput = container.querySelector('.file-input');
+        this.fileListUI = container.querySelector('.file-list');
+        this.selectedFiles = [];
+
+        if (this.fileInput) {
+            this.initEvents();
+        }
+    }
+
+    initEvents() {
+        this.fileInput.addEventListener('change', (e) => {
+            // Thay vì ghi đè, bạn có thể gộp file mới chọn vào file cũ (tuỳ nhu cầu)
+            this.selectedFiles = Array.from(e.target.files);
+            this.renderFileList();
+        });
+    }
+
+    renderFileList() {
+        this.fileListUI.innerHTML = '';
+
+        this.selectedFiles.forEach((file, index) => {
+            const li = document.createElement('li');
+            li.textContent = file.name;
+
+            const removeBtn = document.createElement('button');
+            removeBtn.innerHTML = '<i class="ti-close"></i>';
+            removeBtn.onclick = () => this.removeFile(index);
+
+            li.appendChild(removeBtn);
+            this.fileListUI.appendChild(li);
+        });
+    }
+
+    removeFile(index) {
+        this.selectedFiles.splice(index, 1);
+        this.updateInputFiles();
+        this.renderFileList();
+    }
+
+    updateInputFiles() {
+        const dataTransfer = new DataTransfer();
+        this.selectedFiles.forEach(file => {
+            dataTransfer.items.add(file);
+        });
+        this.fileInput.files = dataTransfer.files;
+    }
+}
+
+// Tự động tìm tất cả các cụm upload trên trang và kích hoạt chúng
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.upload-group').forEach(container => {
+        new FileUploader(container);
+    });
+});
+
+
 
 window.startButtonLoading = function(form) {
 

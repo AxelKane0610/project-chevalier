@@ -37,7 +37,8 @@ return [
 
     'api_service' => [
         'sw_ticket_url' => env('API_POWER_AUTOMATE_EEG_TICKET'),
-        'sw_ticket_complete_url' => env('API_POWER_AUTOMATE_EEG_COMPLETE')
+        'sw_ticket_complete_url' => env('API_POWER_AUTOMATE_EEG_COMPLETE'),
+        'laser_engraving_complete_url' => env('API_POWER_AUTOMATE_LASER_ENGRAVING_COMPLETE')
     ],
 
 ];

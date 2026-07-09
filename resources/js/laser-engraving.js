@@ -1,5 +1,4 @@
 console.log("JS LOADEDD");
-
 document.addEventListener('submit', function (e) {
     const formData = new FormData(e.target);
     const url = e.target.getAttribute('action');

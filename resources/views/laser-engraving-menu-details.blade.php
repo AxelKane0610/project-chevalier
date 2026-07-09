@@ -4,6 +4,7 @@
         <title>Project Chevalier</title>
         <meta charset="utf-8">
         @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/laser-engraving.js', 'resources/css/icons/themify-icons.css'])
+
         
     </head>
 
@@ -179,8 +180,17 @@
                     <p class="text-muted">Không có file nào được đính kèm</p>
                 @endif
                 <label class="ticket-form-body-input">Đính kèm thêm files:</label>
-                <input class="ticket-form-body-input" type="file" name="attachments[]" multiple id="fileInput">
+                {{-- <input class="ticket-form-body-input" type="file" name="attachments[]" multiple id="fileInput">
                 <ul id="fileList"></ul>
+                <x-slot:footer>
+                    <button class="ticket-form-body-input" type="submit">Save</button> 
+                </x-slot:footer> --}}
+
+                <div class="upload-group">
+                    <input class="ticket-form-body-input file-input" type="file" name="attachments[]" multiple>
+                    <ul class="file-list"></ul>
+                </div>
+
                 <x-slot:footer>
                     <button class="ticket-form-body-input" type="submit">Save</button> 
                 </x-slot:footer>
@@ -220,9 +230,12 @@
                     
                     <label>Write a comment</label>
                     <textarea name="comment" style="height: 100px; font-family: inherit ;" placeholder="Nhập comment tại đây"></textarea>
+
                     <label class="ticket-form-body-input">Attach File:</label>
-                    <input class="ticket-form-body-input" type="file" name="attachments[]" multiple id="fileInput">
-                    <ul id="fileList"></ul>
+                    <div class="upload-group ">
+                        <input class="ticket-form-body-input file-input" type="file" name="attachments[]" multiple>
+                        <ul class="file-list"></ul>
+                    </div>
                     <button type="submit"><i class="ti-comment"></i>Comment</button>
 
                 </x-slot:footer>
@@ -238,6 +251,13 @@
 
                 <label>Comment</label>
                 <textarea name="ticket_comment" class="ticket-form-body-input" placeholder="Comment cho người tạo ticket nếu có"></textarea>
+
+                <label class="ticket-form-body-input">Attach File:</label>
+                <div class="upload-group ">
+                    <input class="ticket-form-body-input file-input" type="file" name="attachments[]" multiple required>
+                    <ul class="file-list"></ul>
+                </div>
+                
 
                 <x-slot:footer>
                     <button type="submit">Close ticket</button>
