@@ -217,7 +217,7 @@ class EEGTicketsController extends Controller
                     // Xử lý lỗi nếu có
                     return response()->json([
                         'success' => false,
-                        'message' => 'Failed to send approval request: ' . $e->getMessage(),
+                        'message' => 'Failed to send approve due to ' . $e->getMessage(),
                     ], 500);
                 }
             } else {
@@ -294,13 +294,13 @@ class EEGTicketsController extends Controller
                     
                     return response()->json([
                         'success' => true,
-                        'message' => 'Approval request sent successfully',
+                        'message' => 'Ticket closed and notification sent successfully',
                     ]);
                 } else {
                     // Xử lý lỗi nếu phản hồi không thành công
                     return response()->json([
                         'success' => false,
-                        'message' => 'Failed to send approval request. API responded with status: ' . $send_ticket_complete_notification->body(),
+                        'message' => 'Ticket closed but cant send notification due to: ' . $send_ticket_complete_notification->body(),
                     ], 500);
                 } 
             } else {

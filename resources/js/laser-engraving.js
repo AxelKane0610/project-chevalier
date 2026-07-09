@@ -34,7 +34,8 @@ document.addEventListener('submit', function (e) {
                         title: 'Success!',
                         text: new_ticket.message,
                         icon: 'success',
-                        confirmButtonText: 'OK'
+                        confirmButtonText: 'OK',
+                        heightAuto: false
                     });
                     const newRow = 
                     `
@@ -80,7 +81,8 @@ document.addEventListener('submit', function (e) {
             title: 'Chuyển ticket sang In Progress ?',
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: 'Yes'
+            confirmButtonText: 'Yes',
+            heightAuto: false
         }).then((result) => {
             if (result.isConfirmed) {
                 fetch(url, {
@@ -98,7 +100,8 @@ document.addEventListener('submit', function (e) {
                         text: 'Ticket status updated successfully.',
                         timer: 3000, // 3 giây
                         timerProgressBar: true,
-                        showConfirmButton: false
+                        showConfirmButton: false,
+                        heightAuto: false
                     })
                     .then(() => {
                         location.reload();
@@ -110,7 +113,8 @@ document.addEventListener('submit', function (e) {
                         title: 'Error!',
                         text: error,
                         icon: 'error',
-                        confirmButtonText: 'OK'
+                        confirmButtonText: 'OK',
+                        heightAuto: false
                     })
                     console.error(error)
                 });
@@ -124,7 +128,8 @@ document.addEventListener('submit', function (e) {
         Swal.fire({
             title: 'Bạn có chắc muốn close ticket này ?',
             icon: 'warning',
-            showCancelButton: true
+            showCancelButton: true,
+            heightAuto: false
         })
         .then((result) => {
             // Cancel
@@ -152,7 +157,8 @@ document.addEventListener('submit', function (e) {
                     Swal.fire({
                         title:'Success',
                         text:data.message,
-                        icon:'success'
+                        icon:'success',
+                        heightAuto: false
                     }).then(()=>{
                     location.reload();
                 });
@@ -161,7 +167,8 @@ document.addEventListener('submit', function (e) {
                     Swal.fire({
                         title:'Error',
                         text:data.message,
-                        icon:'error'
+                        icon:'error',
+                        heightAuto: false
                     });
                     stopButtonLoading(form);
                 }
@@ -177,7 +184,8 @@ document.addEventListener('submit', function (e) {
             title: 'Bạn có chắc muốn mở lại ticket ?',
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: 'Yes'
+            confirmButtonText: 'Yes',
+            heightAuto: false
         }).then((result) => {
             if (result.isConfirmed) {
                 fetch(url, {
@@ -194,7 +202,8 @@ document.addEventListener('submit', function (e) {
                             title: 'Success!',
                             text: data.message,
                             icon: 'success',
-                            confirmButtonText: 'OK'
+                            confirmButtonText: 'OK',
+                            heightAuto: false
                         }).then((result) => {
                             document.querySelector('.ticket-form-overlay').classList.remove('active');
                             e.target.reset();
@@ -205,7 +214,8 @@ document.addEventListener('submit', function (e) {
                             title: 'Error!',
                             text: data.message,
                             icon: 'error',
-                            confirmButtonText: 'OK'
+                            confirmButtonText: 'OK',
+                            heightAuto: false
                         }).then(()=>{
                             location.reload();
                         });
@@ -223,7 +233,8 @@ document.addEventListener('submit', function (e) {
         Swal.fire({
             title: 'Bạn có chắc muốn edit ticket này ?',
             icon: 'warning',
-            showCancelButton: true
+            showCancelButton: true,
+            heightAuto: false
         })
         .then((result) => {
 
@@ -252,7 +263,8 @@ document.addEventListener('submit', function (e) {
                     Swal.fire({
                         title:'Success',
                         text:data.message,
-                        icon:'success'
+                        icon:'success',
+                        heightAuto: false
                     }).then(()=>{
                     location.reload();
                 });
@@ -261,7 +273,8 @@ document.addEventListener('submit', function (e) {
                     Swal.fire({
                         title:'Error',
                         text:data.message,
-                        icon:'error'
+                        icon:'error',
+                        heightAuto: false
                     }).then(()=>{
                     location.reload();
                 });
@@ -273,7 +286,8 @@ document.addEventListener('submit', function (e) {
                 Swal.fire({
                     title:'Error',
                     text:error,
-                    icon:'error'
+                    icon:'error',
+                    heightAuto: false
                 });
 
             })

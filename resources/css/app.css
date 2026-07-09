@@ -40,6 +40,8 @@
     background-color: #d33 !important;
 }
 
+
+
 :root {
     --button-background-color: rgb(40,104,245);
     --button-text-color: white;
@@ -977,6 +979,10 @@ h1, h2, h3 {
     background: rgb(27, 132, 255);
 }
 
+.file-list {
+    max-height: 300px;
+    overflow-y: scroll;
+}
 
 
 

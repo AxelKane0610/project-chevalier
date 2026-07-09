@@ -12,7 +12,8 @@ document.addEventListener('submit', function (e) {
         Swal.fire({
             title: 'Bạn có chắc muốn tạo ticket này ?',
             icon: 'warning',
-            showCancelButton: true
+            showCancelButton: true,
+            heightAuto: false
         })
         .then((result) => {
             if (!result.isConfirmed) {
@@ -33,7 +34,8 @@ document.addEventListener('submit', function (e) {
                         title: 'Success!',
                         text: 'Ticket created successfully.',
                         icon: 'success',
-                        confirmButtonText: 'OK'
+                        confirmButtonText: 'OK',
+                        heightAuto: false
                     });
                 const newRow = 
                 `
@@ -60,7 +62,8 @@ document.addEventListener('submit', function (e) {
                 Swal.fire({
                     title:'Error',
                     text:new_ticket.message,
-                    icon:'error'
+                    icon:'error',
+                    heightAuto: false
                 });
                 stopButtonLoading(form);
             }
@@ -79,7 +82,8 @@ document.addEventListener('submit', function (e) {
         Swal.fire({
             title: 'Bạn có chắc muốn edit ticket này ?',
             icon: 'warning',
-            showCancelButton: true
+            showCancelButton: true,
+            heightAuto: false
         })
         .then((result) => {
 
@@ -108,7 +112,8 @@ document.addEventListener('submit', function (e) {
                     Swal.fire({
                         title:'Success',
                         text:data.message,
-                        icon:'success'
+                        icon:'success',
+                        heightAuto: false
                     }).then(()=>{
                     location.reload();
                 });
@@ -117,7 +122,8 @@ document.addEventListener('submit', function (e) {
                     Swal.fire({
                         title:'Error',
                         text:data.message,
-                        icon:'error'
+                        icon:'error',
+                        heightAuto: false
                     });
                     stopButtonLoading(form);
                 }
@@ -135,7 +141,8 @@ document.addEventListener('submit', function (e) {
         Swal.fire({
             title: 'Bạn có chắc muốn edit part này ?',
             icon: 'warning',
-            showCancelButton: true
+            showCancelButton: true,
+            heightAuto: false
         })
         .then((result) => {
 
@@ -163,7 +170,8 @@ document.addEventListener('submit', function (e) {
                     Swal.fire({
                         title:'Success',
                         text:data.message,
-                        icon:'success'
+                        icon:'success',
+                        heightAuto: false
                     }).then(()=>{
                     location.reload();
                 });
@@ -172,7 +180,8 @@ document.addEventListener('submit', function (e) {
                     Swal.fire({
                         title:'Error',
                         text:data.message,
-                        icon:'error'
+                        icon:'error',
+                        heightAuto: false
                     });
                     stopButtonLoading(form);
                 }
@@ -191,7 +200,8 @@ document.addEventListener('submit', function (e) {
         Swal.fire({
             title: 'Bạn có chắc muốn issue unit/part này ?',
             icon: 'warning',
-            showCancelButton: true
+            showCancelButton: true,
+            heightAuto: false
         })
         .then((result) => {
 
@@ -219,7 +229,8 @@ document.addEventListener('submit', function (e) {
                     Swal.fire({
                         title:'Success',
                         text:data.message,
-                        icon:'success'
+                        icon:'success',
+                        heightAuto: false
                     }).then(()=>{
                     location.reload();
                 });
@@ -228,7 +239,8 @@ document.addEventListener('submit', function (e) {
                     Swal.fire({
                         title:'Error',
                         text:data.message,
-                        icon:'error'
+                        icon:'error',
+                        heightAuto: false
                     });
                     stopButtonLoading(form);
                 }
@@ -247,7 +259,8 @@ document.addEventListener('submit', function (e) {
         Swal.fire({
             title: 'Bạn có chắc muốn thêm unit/part này ?',
             icon: 'warning',
-            showCancelButton: true
+            showCancelButton: true,
+            heightAuto: false
         })
         .then((result) => {
 
@@ -275,7 +288,8 @@ document.addEventListener('submit', function (e) {
                     Swal.fire({
                         title:'Success',
                         text:data.message,
-                        icon:'success'
+                        icon:'success',
+                        heightAuto: false
                     }).then(()=>{
                     location.reload();
                 });
@@ -284,7 +298,8 @@ document.addEventListener('submit', function (e) {
                     Swal.fire({
                         title:'Error',
                         text:data.message,
-                        icon:'error'
+                        icon:'error',
+                        heightAuto: false
                     });
                     stopButtonLoading(form);
                 }
@@ -303,7 +318,8 @@ document.addEventListener('submit', function (e) {
         Swal.fire({
             title: 'Xác nhận đã hoàn trả unit/part này ?',
             icon: 'warning',
-            showCancelButton: true
+            showCancelButton: true,
+            heightAuto: false
         })
         .then((result) => {
 
@@ -331,7 +347,8 @@ document.addEventListener('submit', function (e) {
                     Swal.fire({
                         title:'Success',
                         text:data.message,
-                        icon:'success'
+                        icon:'success',
+                        heightAuto: false
                     }).then(()=>{
                     location.reload();
                 });
@@ -340,7 +357,8 @@ document.addEventListener('submit', function (e) {
                     Swal.fire({
                         title:'Error',
                         text:data.message,
-                        icon:'error'
+                        icon:'error',
+                        heightAuto: false
                     });
                     stopButtonLoading(form);
                 }
@@ -357,9 +375,10 @@ document.addEventListener('submit', function (e) {
         const form = e.target;
         
         Swal.fire({
-            title: 'Close ticket ?',
+            title: 'Bạn có chắc muốn đóng ticket mượn máy/part này ?',
             icon: 'warning',
-            showCancelButton: true
+            showCancelButton: true,
+            heightAuto: false
         })
         .then((result) => {
 
@@ -387,7 +406,8 @@ document.addEventListener('submit', function (e) {
                     Swal.fire({
                         title:'Success',
                         text:data.message,
-                        icon:'success'
+                        icon:'success',
+                        heightAuto: false
                     }).then(()=>{
                     location.reload();
                 });
@@ -396,7 +416,8 @@ document.addEventListener('submit', function (e) {
                     Swal.fire({
                         title:'Error',
                         text:data.message,
-                        icon:'error'
+                        icon:'error',
+                        heightAuto: false
                     });
                     stopButtonLoading(form);
                 }

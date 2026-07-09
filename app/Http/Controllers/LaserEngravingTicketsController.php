@@ -416,17 +416,7 @@ class LaserEngravingTicketsController extends Controller
             })->toArray(); // Chuyển về mảng thuần để chuẩn bị gửi API
 
             $leader_email = User::where('id', $ticket->user_owner->leader_id)->value('email');
-            // dd([
-            //     'ticket_id' => $ticket->id,
-            //     'ticket_owner' => $ticket->user_owner->fullname,
-            //     'ticket_owner_email' => $ticket->user_owner->email,
-            //     'receipt' => $ticket->ticket_receipt,
-            //     'info_base' => $ticket->info_base,
-            //     'attachments' => $attachmentsData, // Gửi mảng dữ liệu đã xử lý an toàn
-            //     'leader_email' => $leader_email,
-            //     'status' => $status,
-            //     'comment' => $validatedData['ticket_comment'],
-            // ]);
+            
             try {
                 // Gửi dữ liệu qua Http Post
                 $send_approval = Http::post(config('services.api_service.laser_engraving_complete_url'), [

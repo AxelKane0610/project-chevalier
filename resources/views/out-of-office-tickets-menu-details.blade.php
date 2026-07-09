@@ -183,8 +183,10 @@
                     <label>Write a comment</label>
                     <textarea name="comment" style="height: 100px; font-family: inherit ;" placeholder="Nhập comment tại đây"></textarea>
                     <label class="ticket-form-body-input">Attach File:</label>
-                    <input class="ticket-form-body-input" type="file" name="attachments[]" multiple id="fileInput">
-                    <ul id="fileList"></ul>
+                    <div class="upload-group ">
+                        <input class="ticket-form-body-input file-input" type="file" name="attachments[]" multiple required>
+                        <ul class="file-list"></ul>
+                    </div>
                     <button type="submit"><i class="ti-comment"></i>Comment</button>
 
                 </x-slot:footer>
@@ -292,8 +294,10 @@
                 @endif
                 
                 <label class="ticket-form-body-input">Đính kèm thêm files:</label>
-                <input class="ticket-form-body-input" type="file" name="attachments[]" multiple id="fileInput">
-                <ul id="fileList"></ul>
+                <div class="upload-group ">
+                    <input class="ticket-form-body-input file-input" type="file" name="attachments[]" multiple required>
+                    <ul class="file-list"></ul>
+                </div>
                 <x-slot:footer>
                     <button class="ticket-form-body-input" type="submit" >Save</button> 
                 </x-slot:footer>

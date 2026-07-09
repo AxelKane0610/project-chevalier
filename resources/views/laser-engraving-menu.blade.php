@@ -96,8 +96,10 @@
                         <textarea name="description" class="ticket-form-body-input multiple-row" placeholder="Nhập mô tả vấn đề bạn cần hỗ trợ" required></textarea>
                         
                         <label class="ticket-form-body-input">Attach File:</label>
-                        <input class="ticket-form-body-input" type="file" name="attachments[]" multiple id="fileInput">
-                        <ul id="fileList"></ul>
+                        <div class="upload-group ">
+                            <input class="ticket-form-body-input file-input" type="file" name="attachments[]" multiple required>
+                            <ul class="file-list"></ul>
+                        </div>
                         
                         <x-slot:footer>
                             <button class="ticket-form-body-input" type="submit" id="laser-engraving-ticket-submit-btn">Submit</button> 
