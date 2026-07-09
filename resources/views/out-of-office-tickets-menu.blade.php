@@ -124,7 +124,7 @@
 
             <label class="ticket-form-body-input">Attach File:</label>
             <div class="upload-group ">
-                <input class="ticket-form-body-input file-input" type="file" name="attachments[]" multiple required>
+                <input class="ticket-form-body-input file-input" type="file" name="attachments[]" multiple>
                 <ul class="file-list"></ul>
             </div>
             
