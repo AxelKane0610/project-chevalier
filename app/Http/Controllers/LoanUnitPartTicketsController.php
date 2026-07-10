@@ -9,6 +9,10 @@ use App\Models\Loan_Unit_Ticket_Parts_Details_Model;
 use App\Models\Attachments_Model;
 use App\Models\Comments_Model;
 use App\Services\tracking_info_service;
+use App\Models\User;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Http;
+
 
 class LoanUnitPartTicketsController extends Controller
 {
@@ -427,10 +431,40 @@ class LoanUnitPartTicketsController extends Controller
                     'closed ticket at'
                 );
 
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Ticket closed successfully',
-                ]);
+                $leader_email = User::where('id', $ticket->user_owner->leader_id)->value('email');
+                $parts_units_loaned_info = Loan_Unit_Ticket_Parts_Details_Model::where([
+                    ['ticket_id', $id],
+                    ['status', '3'],
+                ])->get();
+
+                try {
+                    // Gửi dữ liệu qua Http Post
+                    $send_approval = Http::post(config('services.api_service.loan_unit_complete_url'), [
+                        'ticket_id' => $ticket->id,
+                        'ticket_owner' => $ticket->user_owner->fullname,
+                        'ticket_owner_email' => $ticket->user_owner->email,
+                        'receipt' => $ticket->ticket_receipt,
+                        'leader_email' => $leader_email,
+                        '$parts_units_loaned_info' => $parts_units_loaned_info,
+                    ]);
+
+                    if ($send_approval->successful()) {
+                        return response()->json([
+                            'success' => true,
+                            'message' => 'Ticket completed & Notification sent successfully',
+                        ]);
+                    } else {
+                        return response()->json([
+                            'success' => false,
+                            'message' => 'Ticket completed but notification send failed due to: ' . $send_approval->body(),
+                        ], 500);
+                    } 
+                } catch (\Exception $e) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Failed to send notification due to: ' . $e->getMessage(),
+                    ], 500);
+                }
 
 
             }

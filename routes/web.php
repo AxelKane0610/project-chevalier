@@ -16,6 +16,7 @@ use App\Http\Controllers\ThermalEventExceptionalTicketsController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SpectreCrownWarehouseController;
 use App\Http\Controllers\LoanUnitPartTicketsController;
+use App\Http\Controllers\TTEXTicketsController;
 
 Route::get('/', function () {
     // Auth::logout();
@@ -60,6 +61,15 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/approve-ticket/{id}', [EEGTicketsController::class, 'Approve_Ticket'])->name('approve-ticket');
         Route::post('/reject-ticket/{id}', [EEGTicketsController::class, 'Reject_Ticket'])->name('reject-ticket');
     });
+
+    //2. TTEX Ticket
+    Route::middleware(['role:ROLE_SUPER_ADMIN,ROLE_TTEX_TICKET_ADMIN,ROLE_TTEX_TICKET_USER'])->group(function () {
+    
+        Route::get('/ttex-tickets-menu', [TTEXTicketsController::class, 'Show_Pending_Tickets']);
+
+    });
+
+
 
     //3. Khắc base
     Route::middleware(['role:ROLE_LASER_ENGRAVING_USER,ROLE_LASER_ENGRAVING_ADMIN,ROLE_SUPER_ADMIN'])->group(function () {

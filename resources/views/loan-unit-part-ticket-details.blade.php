@@ -357,20 +357,20 @@
                 <input type="text" class="ticket-form-body-input" name="loan_unit_asset_tag" placeholder="Khi issue phải điền 1 trong 2 trường Asset Tag hoặc Serial Number" value="" >
 
                 <label>Loan Unit Serial Number</label>
-                <input type="text" class="ticket-form-body-input" name="loan_unit_serial_number" placeholder="Khi issue phải điền 1 trong 2 trường Asset Tag hoặc Serial Number" value="" >
+                <input type="text" class="ticket-form-body-input" name="loan_unit_serial_number" placeholder="Khi issue phải điền 1 trong 2 trường Asset Tag hoặc Serial Number" value="" required>
 
                 <label>CT Loaned</label>
-                <input type="text" class="ticket-form-body-input" name="ct_loaned" placeholder="CT của linh kiện cho mượn, nếu không có thì có thể để trống" >
+                <input type="text" class="ticket-form-body-input" name="ct_loaned" placeholder="CT của linh kiện cho mượn, không có điền N/A" required>
 
                 <label>Original</label>
-                <select name="original" class="ticket-form-body-input" id="edit-original">
+                <select name="original" class="ticket-form-body-input" id="edit-original" required>
                     <option value="1" @selected($parts->original == '1')>Crown</option>
                     <option value="2" @selected($parts->original == '2')>Spectre</option>
                     <option value="3" @selected($parts->original == '3')>T1 (FPT, DGW, Elite)</option>
                 </select>
 
                 <label>Start Date</label>
-                <input type="date" class="ticket-form-body-input" name="start_date" value="" id="edit-start-date" >
+                <input type="date" class="ticket-form-body-input" name="start_date" value="{{ today()->format('Y-m-d') }}" id="edit-start-date" >
 
                 <x-slot:footer>
                     <button class="ticket-form-body-input" type="submit">Issue unit/part</button> 
@@ -392,10 +392,10 @@
                 @method('PATCH')
 
                 <label>New CT Return</label>
-                <input type="text" class="ticket-form-body-input" name="new_ct_return" value="" placeholder="Điền CT của linh kiện trả về, có thể để trống hoặc N/A">
+                <input type="text" class="ticket-form-body-input" name="new_ct_return" value="" placeholder="Điền CT của linh kiện trả về, không có để N/A" required>
 
                 <label>End Date</label>
-                <input type="date" class="ticket-form-body-input" name="end_date" value="" required>
+                <input type="date" class="ticket-form-body-input" name="end_date" value="{{ today()->format('Y-m-d') }}"  required>
 
                 <x-slot:footer>
                     <button class="ticket-form-body-input" type="submit">Return unit/part</button> 

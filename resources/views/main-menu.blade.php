@@ -55,19 +55,21 @@
                 </div>
             </a>
             
-           
-            <div class="ttex-tickets-btn">
-                <div class="ticket-img-description">
-                    <img src="{{ asset('imgs/transport_image.png') }}" alt="">
+           <a href="{{ url('/ttex-tickets-menu') }}">
+                <div class="ttex-tickets-btn">
+                    <div class="ticket-img-description">
+                        <img src="{{ asset('imgs/transport_image.png') }}" alt="">
+                    </div>
+                    
+                    <h2>Điều tin TTEX</h2>
+                    <p>Luân chuyển hàng hóa từ TTBH hoặc ngược lại</p>
+                    <div class="card-footer">
+                        <div class="card-footer-text">Learn more</div>
+                        <div class="card-footer-icon"><i class="ti-angle-right"></i></div>
+                    </div>
                 </div>
-                
-                <h2>Điều tin TTEX</h2>
-                <p>Luân chuyển hàng hóa từ TTBH hoặc ngược lại</p>
-                <div class="card-footer">
-                    <div class="card-footer-text">Learn more</div>
-                    <div class="card-footer-icon"><i class="ti-angle-right"></i></div>
-                </div>
-            </div>
+           </a>
+            
             
             <a href="{{ url('/laser-engraving-menu') }}">
                 <div class="laser-engraving-btn">
