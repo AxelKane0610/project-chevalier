@@ -806,6 +806,7 @@ h1, h2, h3 {
     resize: vertical; /* Chỉ cho kéo giãn chiều dọc, không lỗi chiều ngang */
 }
 
+.ttex-ticket-content,
 .out-of-office-tickets-content,
 .loan-unit-part-ticket-content,
 .invoice-exceptional-ticket-content,

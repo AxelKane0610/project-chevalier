@@ -20,6 +20,7 @@ export default defineConfig({
                 'resources/js/subk-management.js',
                 'resources/js/spectre-crown-warehouse.js',
                 'resources/js/loan-unit-part.js',
+                'resources/js/ttex.js'
             ],
             refresh: true,
         }),

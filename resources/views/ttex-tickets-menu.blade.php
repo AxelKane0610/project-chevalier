@@ -3,7 +3,7 @@
     <head>
         <title>Project Chevalier</title>
         <meta charset="utf-8">
-        @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/thermal-event.js', 'resources/css/icons/themify-icons.css'])
+        @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/ttex.js', 'resources/css/icons/themify-icons.css'])
         
     </head>
 
@@ -38,9 +38,9 @@
                         <tr>
                             <th width="5%"></th>
                             <th width="10%">Shipment Type</th>
-                            <th width="15%">Người gửi</th>
-                            <th width="15%">Người nhận</th>
-                            <th width="30%">Mô tả hàng hóa</th>
+                            <th width="20%">Người gửi</th>
+                            <th width="20%">Người nhận</th>
+                            <th width="20%">Mô tả hàng hóa</th>
                             <th width="15%">Note</th>
                             <th width="10%">Status</th>
 
@@ -80,9 +80,9 @@
                         <tr>
                             <th width="5%"></th>
                             <th width="10%">Shipment Type</th>
-                            <th width="15%">Người gửi</th>
-                            <th width="15%">Người nhận</th>
-                            <th width="30%">Mô tả hàng hóa</th>
+                            <th width="20%">Người gửi</th>
+                            <th width="20%">Người nhận</th>
+                            <th width="20%">Mô tả hàng hóa</th>
                             <th width="15%">Note</th>
                             <th width="10%">Hạn trả def cho kho</th>
                             <th width="10%">Status</th>
@@ -125,9 +125,9 @@
                             <th width="5%"></th>
                             <th width="10%">TTEX Bill</th>
                             <th width="10%">User Owner</th>
-                            <th width="15%">Người gửi</th>
-                            <th width="15%">Người nhận</th>
-                            <th width="30%">Mô tả hàng hóa</th>
+                            <th width="20%">Người gửi</th>
+                            <th width="20%">Người nhận</th>
+                            <th width="20%">Mô tả hàng hóa</th>
                             <th width="10%">Status</th>
 
                         </tr>
@@ -198,13 +198,13 @@
                 <input type="text" class="ticket-form-body-input" placeholder="Nhập thông tin người nhận" name="receiver_info" required>
 
                 <label>Mô tả hàng hóa</label>
-                <input type="text" class="ticket-form-body-input" placeholder="Nhập mô tả hàng hóa. VD: SCHCM25-00001 (FAN)" name="shipment_description" required>
+                <input type="text" class="ticket-form-body-input multiple-row" placeholder="Nhập mô tả hàng hóa. VD: SCHCM25-00001 (FAN)" name="shipment_description" required>
 
                 <label>Note</label>
-                <input type="text" class="ticket-form-body-input" placeholder="Nhập ghi chú" name="note" required>
+                <input type="text" class="ticket-form-body-input" placeholder="Nhập ghi chú" name="note">
 
                 <label style="color: red">Bạn có muốn những bill này được thu hồi (Chỉ dành cho onsite tỉnh) ?</label>
-                <select name="part_returned_check" class="ticket-form-body-input" id="part_returned_check">
+                <select name="part_returned_check" class="ticket-form-body-input" id="part_returned_check" required>
                     <option value="1">Có (Hệ thống sẽ tự tạo ticket điều tin def về)</option>
                     <option value="2">Không</option>
                 </select>
@@ -212,7 +212,7 @@
                 
                 <label>Attach File:</label>
                 <div class="upload-group ">
-                    <input class="ticket-form-body-input file-input" type="file" name="attachments[]" multiple required>
+                    <input class="ticket-form-body-input file-input" type="file" name="attachments[]" multiple>
                     <ul class="file-list"></ul>
                 </div>
 

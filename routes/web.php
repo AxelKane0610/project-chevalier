@@ -66,6 +66,13 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:ROLE_SUPER_ADMIN,ROLE_TTEX_TICKET_ADMIN,ROLE_TTEX_TICKET_USER'])->group(function () {
     
         Route::get('/ttex-tickets-menu', [TTEXTicketsController::class, 'Show_Pending_Tickets']);
+        Route::post('/create-ttex-ticket', [TTEXTicketsController::class, 'Create_TTEX_Ticket']);
+        Route::get('/ttex-tickets-menu-details/{id}', [TTEXTicketsController::class, 'Show_TTEX_Ticket_Details']);
+        Route::patch('/edit-ttex-ticket/{id}',[TTEXTicketsController::class, 'Edit_TTEX_Ticket'])->name('edit-ttex-ticket');
+        Route::post('/add-comment-ttex-ticket/{id}', [TTEXTicketsController::class, 'Add_Comment_TTEX_Ticket']) ->name('add-comment-ttex-ticket');
+        Route::patch('/close-ttex-ticket/{id}', [TTEXTicketsController::class, 'Close_TTEX_Ticket']) ->name('close-ttex-ticket');
+        
+
 
     });
 

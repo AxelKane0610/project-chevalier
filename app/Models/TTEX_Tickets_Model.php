@@ -49,4 +49,127 @@ class TTEX_Tickets_Model extends Model
         return $this->hasMany(tracking_info_model::class, 'ticket_id', 'id') // Liên kết với model tracking_info_model, dựa vào "ticket_id" để lấy những tracking có ticket_id trùng với id của ticket này
             ->where('type_of_ticket', 2);
     }
+
+    public function getStatusDataAttribute()
+    {
+        return match ($this->status){
+             "1" => [
+                'text' => 'Open - Chưa điều tin',
+                'class' => 'open'
+            ],
+
+            "2" => [
+                'text' => 'Completed - Đã điều tin',
+                'class' => 'waiting-for-verifier'
+            ],
+
+            "3" => [
+                'text' => 'Rejected',
+                'class' => 'waiting-for-approver'
+            ],
+
+
+
+            default => [
+                'text' => 'Unknown',
+                'class' => 'unknown'
+            ]
+        };
+    }
+
+    public function getPartStatusDataAttribute()
+    {
+        return match ($this->part_status){
+             "1" => [
+                'text' => 'Good part',
+                'class' => 'open'
+            ],
+
+            "2" => [
+                'text' => 'Def part',
+                'class' => 'waiting-for-verifier'
+            ],
+
+            "3" => [
+                'text' => 'Good part - Unused',
+                'class' => 'waiting-for-approver'
+            ],
+
+
+
+            default => [
+                'text' => 'Unknown',
+                'class' => 'unknown'
+            ]
+        };
+    }
+
+    public function getCategoryDataAttribute()
+    {
+        return match ($this->category){
+             "1" => [
+                'text' => 'ASRC',
+                'class' => 'open'
+            ],
+
+            "2" => [
+                'text' => 'HPS',
+                'class' => 'waiting-for-verifier'
+            ],
+
+            "3" => [
+                'text' => 'Onsite Geox',
+                'class' => 'waiting-for-approver'
+            ],
+
+            "4" => [
+                'text' => 'Part NBD',
+                'class' => 'completed'
+            ],
+
+            "5" => [
+                'text' => 'Others',
+                'class' => 'rejected'
+            ],
+
+            "6" => [
+                'text' => 'Văn phòng phẩm/Tài liệu',
+                'class' => 'rejected'
+            ],
+
+
+
+            default => [
+                'text' => 'Unknown',
+                'class' => 'unknown'
+            ]
+        };
+    }
+
+    public function getShipmentTypeDataAttribute()
+    {
+        return match ($this->shipment_type){
+             "1" => [
+                'text' => 'Tài liệu',
+                'class' => 'open'
+            ],
+
+            "2" => [
+                'text' => 'Thiết bị điện/điện tử',
+                'class' => 'waiting-for-verifier'
+            ],
+
+            "3" => [
+                'text' => 'Văn phòng phẩm',
+                'class' => 'waiting-for-approver'
+            ],
+
+
+
+            default => [
+                'text' => 'Unknown',
+                'class' => 'unknown'
+            ]
+        };
+    }
 }

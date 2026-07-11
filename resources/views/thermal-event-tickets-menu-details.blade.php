@@ -186,11 +186,11 @@
                 <li>
                     <lable>Customer Type</lable>
                     <!-- <h2>{{ $ticket->customer_type }}</h2> -->
-                     <h2>
-                        <span class="ticket-customer-type {{ $ticket->customer_type_data['class'] }}">
-                            {{ $ticket->customer_type_data['text'] }}
-                        </span>
-                     </h2>
+                    <h2>
+                    <span class="ticket-customer-type {{ $ticket->customer_type_data['class'] }}">
+                        {{ $ticket->customer_type_data['text'] }}
+                    </span>
+                    </h2>
                     
                     
                 </li>
