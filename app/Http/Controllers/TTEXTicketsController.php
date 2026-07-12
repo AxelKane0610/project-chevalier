@@ -379,7 +379,7 @@ class TTEXTicketsController extends Controller
 
         $tickets_good_part_pending = TTEX_Tickets_Model::where([
             ['part_status', '1'],
-            ['booking_date', now()]
+            ['booking_date', today()]
         ])->get();
 
         if (count($tickets_good_part_pending) > 0){
