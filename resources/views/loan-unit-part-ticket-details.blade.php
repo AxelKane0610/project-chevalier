@@ -26,7 +26,7 @@
                     <button type="submit"><i class="ti-layout-grid2"></i>Quick Navigation</button>
                 </form>
             </li>
-            @if(auth()->user()->hasRole('ROLE_LOAN_UNIT_USER') && ($ticket->status == '1' || $ticket->status == '2') && $ticket->user_id == auth()->user()->id)
+            @if( ($ticket->status == '1' || $ticket->status == '2') && $ticket->user_id == auth()->user()->id)
                 <li>
                     <form class="js-input-required-btn" data-target="add-loan-unit-part">
                         <button type="button"><i class="ti-plus"></i> Add part</button>
@@ -96,6 +96,12 @@
                         @if((auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_LOAN_UNIT_ADMIN')) && $parts->status == '2' && ($ticket->status == '1' || $ticket->status == '2'))
                             <form class="js-input-required-btn" data-target="return-loan-unit-part" action="" method="PATCH">
                                 <button type="button" class="return-loan-unit-part-btn" data-id="{{ $parts->id }}"><i class="ti-check"></i></button>
+                            </form>
+                        @endif
+
+                        @if((auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_LOAN_UNIT_ADMIN')) && ($parts->status == '1' || $parts->status == '2'))
+                            <form class="js-input-required-btn" data-target="cancel-loan-unit-part" action="" method="PATCH">
+                                <button type="button" class="cancel-loan-unit-part-btn" data-id="{{ $parts->id }}"><i class="ti-close"></i></button>
                             </form>
                         @endif
 
@@ -354,10 +360,10 @@
                 @method('PATCH')
 
                 <label>Loan Unit Asset Tag</label>
-                <input type="text" class="ticket-form-body-input" name="loan_unit_asset_tag" placeholder="Khi issue phải điền 1 trong 2 trường Asset Tag hoặc Serial Number" value="" >
+                <input type="text" class="ticket-form-body-input" name="loan_unit_asset_tag" placeholder="Điền vào nếu máy/part cho mượn là từ kho Spectre/Crown" value="" >
 
                 <label>Loan Unit Serial Number</label>
-                <input type="text" class="ticket-form-body-input" name="loan_unit_serial_number" placeholder="Khi issue phải điền 1 trong 2 trường Asset Tag hoặc Serial Number" value="" required>
+                <input type="text" class="ticket-form-body-input" name="loan_unit_serial_number" placeholder="Serial Number của máy cho mượn, không có để N/A" value="" required>
 
                 <label>CT Loaned</label>
                 <input type="text" class="ticket-form-body-input" name="ct_loaned" placeholder="CT của linh kiện cho mượn, không có điền N/A" required>
@@ -406,8 +412,8 @@
                 @method('PATCH')
                 <label>Status</label>
                 <select name="status" class="ticket-form-body-input" required>
-                    <option value="3" @selected($ticket->status == '3')>Completed</option>
-                    <option value="4" @selected($ticket->status == '4')>Canceled</option>
+                    <option value="3">Completed</option>
+                    <option value="4">Canceled</option>
                 </select>
 
                 <x-slot:footer>

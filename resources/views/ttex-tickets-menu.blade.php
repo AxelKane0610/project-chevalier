@@ -120,6 +120,17 @@
 
                 <div class="common-table-container">
                     <h2>All Tickets</h2>
+                    <div class="common-table-filter">
+                        <div class="search-box">
+                            <i class="ti-search"></i>
+                            <input type="text" placeholder="Search Receipt, TTEX Bill" id="search-spectre-crown-warehouse-input">
+                        </div>
+
+                        
+
+
+                    </div>
+
                     <table id="pending-ttex-tickets-table" class="common-table" width="100%" >
                         <tr>
                             <th width="5%"></th>

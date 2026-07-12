@@ -370,11 +370,12 @@ class LoanUnitPartTicketsController extends Controller
                 ], 400);
             } else {
                 $validate_data = $request->validate([
-                    'new_ct_return' => 'nullable',
+                    'new_ct_return' => 'required',
                     'end_date' => 'required'
                 ]);
 
                 $part->status = '3';
+                $part->new_ct_return = strip_tags($validate_data['new_ct_return']);
                 $part->end_date = strip_tags($validate_data['end_date']);
 
                 $part->save();
@@ -404,7 +405,7 @@ class LoanUnitPartTicketsController extends Controller
     public function Close_Loan_Unit_Part_Ticket (Request $request, $id){
         try {
             $ticket = Loan_Unit_Part_Tickets_Model::with('user_owner')->findOrFail($id);
-            $parts_not_returned = Loan_Unit_Ticket_Parts_Details_Model::where('ticket_id', $id)->whereNotIn('status', ['1', '3', '4'])->exists();
+            $parts_not_returned = Loan_Unit_Ticket_Parts_Details_Model::where('ticket_id', $id)->whereNotIn('status', ['3', '4'])->exists(); //
             if (in_array($ticket->status, ['3', '4'])) {
                 return response()->json([
                     'success' => false,
@@ -413,57 +414,89 @@ class LoanUnitPartTicketsController extends Controller
             } else if ($parts_not_returned) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Không thể đóng ticket do vẫn còn part chưa được trả !',
+                    'message' => 'Không thể đóng ticket do vẫn còn part chưa được trả hoặc canceled !',
                 ], 400);
 
             } else {
-                $validate_data = $request->validate([
-                    'status' => 'required',
-                ]);
                 
-                $ticket->status = $validate_data['status'];
-                $ticket->save();
-
-                tracking_info_service::add(
-                    $ticket->id,
-                    auth()->id(),
-                    4,
-                    'closed ticket at'
-                );
-
-                $leader_email = User::where('id', $ticket->user_owner->leader_id)->value('email');
-                $parts_units_loaned_info = Loan_Unit_Ticket_Parts_Details_Model::where([
-                    ['ticket_id', $id],
-                    ['status', '3'],
-                ])->get();
-
-                try {
-                    // Gửi dữ liệu qua Http Post
-                    $send_approval = Http::post(config('services.api_service.loan_unit_complete_url'), [
-                        'ticket_id' => $ticket->id,
-                        'ticket_owner' => $ticket->user_owner->fullname,
-                        'ticket_owner_email' => $ticket->user_owner->email,
-                        'receipt' => $ticket->ticket_receipt,
-                        'leader_email' => $leader_email,
-                        '$parts_units_loaned_info' => $parts_units_loaned_info,
+                    $validate_data = $request->validate([
+                        'status' => 'required',
                     ]);
 
-                    if ($send_approval->successful()) {
-                        return response()->json([
-                            'success' => true,
-                            'message' => 'Ticket completed & Notification sent successfully',
+                if ($validate_data['status'] == '3') {
+                    $ticket->status = $validate_data['status'];
+                    $ticket->save();
+
+                    tracking_info_service::add(
+                        $ticket->id,
+                        auth()->id(),
+                        4,
+                        'closed ticket at'
+                    );
+
+                    $leader_email = User::where('id', $ticket->user_owner->leader_id)->value('email');
+                    $originalMap = [
+                        '1' => 'Crown',
+                        '2' => 'Spectre',
+                        '3' => 'T1 (FPT, DGW, Elite)',
+                    ];
+                    $parts_units_loaned_info = Loan_Unit_Ticket_Parts_Details_Model::where([
+                        ['ticket_id', $id],
+                        ['status', '3'],
+                    ])->get()->map(function ($item) use ($originalMap) {
+
+                        $item->original = $originalMap[$item->original] ?? 'Không xác định';
+
+                        return $item;
+                    });
+                    ;
+
+                    try {
+                        // Gửi dữ liệu qua Http Post
+                        $send_approval = Http::post(config('services.api_service.loan_unit_complete_url'), [
+                            'ticket_id' => $ticket->id,
+                            'ticket_owner' => $ticket->user_owner->fullname,
+                            'ticket_owner_email' => $ticket->user_owner->email,
+                            'receipt' => $ticket->ticket_receipt,
+                            'leader_email' => $leader_email,
+                            'parts_units_loaned_info' => $parts_units_loaned_info,
                         ]);
-                    } else {
+
+                        
+
+                        if ($send_approval->successful()) {
+                            return response()->json([
+                                'success' => true,
+                                'message' => 'Ticket completed & Notification sent successfully',
+                            ]);
+                        } else {
+                            return response()->json([
+                                'success' => false,
+                                'message' => 'Ticket completed but notification send failed due to: ' . $send_approval->body(),
+                            ], 500);
+                        } 
+                    } catch (\Exception $e) {
                         return response()->json([
                             'success' => false,
-                            'message' => 'Ticket completed but notification send failed due to: ' . $send_approval->body(),
+                            'message' => 'Failed to send notification due to: ' . $e->getMessage(),
                         ], 500);
-                    } 
-                } catch (\Exception $e) {
+                    }
+                } else {
+                    $ticket->status = $validate_data['status'];
+                    $ticket->save();
+
+                    tracking_info_service::add(
+                        $ticket->id,
+                        auth()->id(),
+                        4,
+                        'canceled ticket at'
+                    );
+
                     return response()->json([
-                        'success' => false,
-                        'message' => 'Failed to send notification due to: ' . $e->getMessage(),
-                    ], 500);
+                        'success' => true,
+                        'message' => 'Ticket canceled successfully !',
+                    ]);
+
                 }
 
 

@@ -903,6 +903,7 @@ h1, h2, h3 {
     background: rgb(39,116,186);
 }
 
+.ticket-status.canceled,
 .ticket-status.cancel,
 .ticket-status.rejected {
     background: rgb(239,81,34);
