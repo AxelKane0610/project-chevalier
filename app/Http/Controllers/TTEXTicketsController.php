@@ -382,11 +382,10 @@ class TTEXTicketsController extends Controller
                 'message' => 'Unauthorized access. Invalid API key.',
             ], 401);
         } else {
-                $tickets_good_part_pending = TTEX_Tickets_Model::where([
-                ['part_status', '1'],
-                ['booking_date', today()]
-            ])->get();
-
+                $tickets_good_part_pending = TTEX_Tickets_Model::withwhere([
+                    ['part_status', '1'],
+                    ['booking_date', today()]
+                ])->get();
             if (count($tickets_good_part_pending) > 0){
                 return response()->json([
                     'success' => true,
