@@ -375,5 +375,20 @@ class TTEXTicketsController extends Controller
         
     }
 
+    public function Power_Automate_Good_Part_Booking (Request $request) {
+
+        $tickets_good_part_pending = TTEX_Tickets_Model::where([
+            ['part_status', '1'],
+            ['booking_date', now()]
+        ])->get();
+
+        if (count($tickets_good_part_pending) > 0){
+            return response()->json([
+                'success' => true,
+                'tickets_good_part_pending' => $tickets_good_part_pending,
+            ]);
+        }
+    }
+
     
 }
