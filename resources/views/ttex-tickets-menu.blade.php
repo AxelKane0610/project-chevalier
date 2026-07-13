@@ -203,7 +203,7 @@
 
                 <label>Thông tin người gửi</label>
                 <input type="text" class="ticket-form-body-input" placeholder="Nhập thông tin người gửi" name="sender_info" required>
-                @livewire('ttex-address-dropdown')
+                @livewire('quick-search-dropdown')
 
                 <label>Thông tin người nhận</label>
                 <input type="text" class="ticket-form-body-input" placeholder="Nhập thông tin người nhận" name="receiver_info" required>
