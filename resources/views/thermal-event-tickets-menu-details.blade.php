@@ -31,8 +31,9 @@
                 @case(1)
                     @if( (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_THERMAL_EVENT_USER')) && $ticket->user_id == auth()->user()->id)
                         <li>
-                            <form data-target="send-approval-form" class="js-input-required-btn">
-                                <button type="button"><i class="ti-angle-double-right"></i>Send Approval </button>
+                            <form class="js-input-required-btn" data-target="send-approve-thermal-event" id="send-approve-thermal-event" action = "{{ route('send-approve-thermal-event', $ticket->id)}}" method="POST">
+                                @method('POST')
+                                <button type="submit"><i class="ti-angle-double-right"></i>Send Approval </button>
                             </form>
                         </li>
                         <li>

@@ -8,7 +8,7 @@ document.addEventListener('submit', function (e) {
         e.preventDefault();
         
         const form = e.target;
-
+        
         Swal.fire({
             title: 'Bạn có chắc muốn tạo ticket này ?',
             icon: 'warning',

@@ -103,7 +103,7 @@
                 <label>Quan sát thực tế</label>
                 <input type="text" class="ticket-form-body-input" placeholder="Nhập quan sát thực tế (không nước, không côn trùng, ...)" name="user_observations" required>
 
-                <label>Nhiều part bị ảnh hưởng ?</label>
+                <label style="color: red; font-weight: bold">Nhiều part bị ảnh hưởng ?</label>
                 <select name="multipart_affected_check" class="ticket-form-body-input" id="multipart_affected_check">
                     <option value="1">Chỉ có 1 part bị ảnh hưởng</option>
                     <option value="2">Có nhiều hơn 1 part bị ảnh hưởng</option>

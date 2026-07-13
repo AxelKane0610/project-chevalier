@@ -96,6 +96,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/thermal-event-tickets-menu-details/{id}', [ThermalEventExceptionalTicketsController::class, 'Show_Thermal_Event_Ticket_Details']);
         Route::post('/create-thermal-event-ticket', [ThermalEventExceptionalTicketsController::class, 'Create_Thermal_Event_Ticket']);
         Route::patch('/edit-thermal-event-ticket/{id}', [ThermalEventExceptionalTicketsController::class, 'Edit_Thermal_Event_Ticket'])->name('edit-thermal-event-ticket');
+        Route::post('/send-approve-thermal-event/{id}', [ThermalEventExceptionalTicketsController::class, 'Send_Approve_Thermal_Event'])->name('send-approve-thermal-event');
         
         Route::post('/add-comment-thermal-event-ticket/{id}', [ThermalEventExceptionalTicketsController::class, 'Add_Comment_Thermal_Event_Ticket']) ->name('add-comment-thermal-event-ticket');
         Route::patch('/close-thermal-event-ticket/{id}', [ThermalEventExceptionalTicketsController::class, 'Close_Thermal_Event_Ticket'])->name('close-thermal-event-ticket');

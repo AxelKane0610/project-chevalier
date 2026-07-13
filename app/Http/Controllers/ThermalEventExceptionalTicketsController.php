@@ -10,6 +10,10 @@ use App\Models\Comments_Model;
 use App\Models\Thermal_Event_Parts_Details_Model;
 use App\Models\User;
 use App\Services\tracking_info_service;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Http;
+
+
 
 class ThermalEventExceptionalTicketsController extends Controller
 {
@@ -69,6 +73,8 @@ class ThermalEventExceptionalTicketsController extends Controller
             $validate_data['customer_type'] = strip_tags($validate_data['customer_type']);
             $validate_data['company_customer_name'] = strip_tags($validate_data['company_customer_name']);
             $validate_data['user_observations'] = strip_tags($validate_data['user_observations']);
+
+            
             
             
             if ($request->input('multipart_affected_check') == '1') {
@@ -99,25 +105,83 @@ class ThermalEventExceptionalTicketsController extends Controller
                     }
                     
                 }
+                
                 tracking_info_service::add(
                     $ticket->id, 
                     auth()->id(), 
                     10,
                     'created ticket at'
                 );
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Ticket created successfully',
-                    'ticket_id' => $ticket->id,
-                    'ticket_receipt' => $ticket->ticket_receipt,
-                    'status' => match ($ticket->status) {
-                        '1' => 'Open',
-                        '2' => 'Waiting for verifier',
-                        // default => 'Unknown',
-                    },
-                    'user_owner' => $ticket->user_owner->fullname,
-                    'description' => $ticket->description,
-                ]);
+
+                $send_approve_ticket = Thermal_Event_Exceptional_Tickets_Model::with('user_owner', 'active_attachments')->findOrFail($ticket->id);
+                
+                $attachments = $ticket->active_attachments->map(function ($file) {
+                    return [
+                        'fileName' => basename($file->file_path),
+                        'fileContent' => base64_encode(
+                            Storage::disk('attachments')->get(
+                                $file->file_path
+                            )
+                        ),
+                    ];
+                });
+
+                $parts_thermal_details = Thermal_Event_Parts_Details_Model::where([
+                    ['ticket_id', $ticket->id],
+                    ['status', '1']
+                ])->get();
+
+                try {
+                    $send_approval = Http::post(config('services.api_service.thermal_event_request_url'), [
+                        'ticket_id' => $ticket->id,
+                        'ticket_owner' => $send_approve_ticket->user_owner->fullname,
+                        'ticket_owner_email' => $send_approve_ticket->user_owner->email,
+                        'receipt' => $send_approve_ticket->ticket_receipt,
+                        'cdax_id' => $send_approve_ticket->cdax_id,
+                        'serial_number' => $send_approve_ticket->serial_number,
+                        'product_number' => $send_approve_ticket->product_number,
+                        'product_model' => $send_approve_ticket->product_model,
+                        'issue_description' => $send_approve_ticket->description,
+                        'customer_type' => match($send_approve_ticket->customer_type)
+                        {
+                            '1' => 'Khách hàng lẻ',
+                            '2' => 'Khách hàng công ty/doanh nghiệp',
+                            '3' => 'T1/Đại lý bán lẻ',
+                            default => 'Unknown',
+                        },
+                        'company_customer_name' => $send_approve_ticket->company_customer_name,
+                        'user_observations' => $send_approve_ticket->user_observations,
+                        'leader_email' => User::where('id', $send_approve_ticket->user_owner->leader_id)->value('email'),
+                        'parts_details' => $parts_thermal_details,
+                        'attachments' => $attachments,
+                    ]);
+
+
+                    if ($send_approval->successful()) {
+                        tracking_info_service::add(
+                            $ticket->id, 
+                            auth()->id(), 
+                            10,
+                            'send approval request at'
+                        );
+                        return response()->json([
+                            'success' => true,
+                            'message' => 'Ticket created successfully & Approval request sent !',
+                        ]);
+                    } else {
+                        // Xử lý lỗi nếu phản hồi không thành công
+                        return response()->json([
+                            'success' => false,
+                            'message' => 'Ticket tạo thành công, nhưng API trả lỗi: ' . $send_approval->body(),
+                        ], 500);
+                    } 
+                } catch (\Exception $e) {
+                    // Xử lý lỗi nếu có
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Failed to send approve due to ' . $e->getMessage(),
+                    ], 500);
+                }
             } else {
                 $validate_data['status'] = '1';
                 $ticket = Thermal_Event_Exceptional_Tickets_Model::create($validate_data);
@@ -507,6 +571,80 @@ class ThermalEventExceptionalTicketsController extends Controller
         ], 400);
 
     
+    }
+
+    public function Send_Approve_Thermal_Event ($id){
+        $ticket = Thermal_Event_Exceptional_Tickets_Model::with('user_owner', 'active_attachments')->findOrFail($id);
+        $parts_thermal_details = Thermal_Event_Parts_Details_Model::where([
+            ['ticket_id', $ticket->id],
+            ['status', '1']
+        ])->get();
+
+        $attachments = $ticket->active_attachments->map(function ($file) {
+            return [
+                'fileName' => basename($file->file_path),
+                'fileContent' => base64_encode(
+                    Storage::disk('attachments')->get(
+                        $file->file_path
+                    )
+                ),
+            ];
+        });
+
+        try {
+            $send_approval = Http::post(config('services.api_service.thermal_event_request_url'), [
+                'ticket_id' => $ticket->id,
+                'ticket_owner' => $ticket->user_owner->fullname,
+                'ticket_owner_email' => $ticket->user_owner->email,
+                'receipt' => $ticket->ticket_receipt,
+                'cdax_id' => $ticket->cdax_id,
+                'serial_number' => $ticket->serial_number,
+                'product_number' => $ticket->product_number,
+                'product_model' => $ticket->product_model,
+                'issue_description' => $ticket->description,
+                'customer_type' => match($ticket->customer_type)
+                {
+                    '1' => 'Khách hàng lẻ',
+                    '2' => 'Khách hàng công ty/doanh nghiệp',
+                    '3' => 'T1/Đại lý bán lẻ',
+                    default => 'Unknown',
+                },
+                'company_customer_name' => $ticket->company_customer_name,
+                'user_observations' => $ticket->user_observations,
+                'leader_email' => User::where('id', $ticket->user_owner->leader_id)->value('email'),
+                'parts_details' => $parts_thermal_details,
+                'attachments' => $attachments,
+            ]);
+
+
+            if ($send_approval->successful()) {
+                tracking_info_service::add(
+                    $ticket->id, 
+                    auth()->id(), 
+                    10,
+                    'sent approval request at'
+                );
+                $ticket->status = '2';
+                $ticket->save();
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Approval request sent !',
+                ]);
+            } else {
+                // Xử lý lỗi nếu phản hồi không thành công
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Fail to send approve due to: ' . $send_approval->body(),
+                ], 500);
+            } 
+        } catch (\Exception $e) {
+            // Xử lý lỗi nếu có
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to send approve due to ' . $e->getMessage(),
+            ], 500);
+        }
+
     }
     
 }

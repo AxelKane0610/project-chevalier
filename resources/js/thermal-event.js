@@ -16,7 +16,8 @@ document.addEventListener('submit', function (e) {
         Swal.fire({
             title: 'Bạn có chắc muốn tạo ticket này ?',
             icon: 'warning',
-            showCancelButton: true
+            showCancelButton: true,
+            heightAuto: false
         })
         .then((result) => {
             if (!result.isConfirmed) {
@@ -38,7 +39,8 @@ document.addEventListener('submit', function (e) {
                         title: 'Success!',
                         text: 'Ticket created successfully.',
                         icon: 'success',
-                        confirmButtonText: 'OK'
+                        confirmButtonText: 'OK',
+                        heightAuto: false
                     });
                     if (checkMultipartAffected.value === '1') {
                         const newRow = 
@@ -67,10 +69,11 @@ document.addEventListener('submit', function (e) {
                     }
                 } else {
                 Swal.fire({
-                        title:'Error',
-                        text:new_ticket.message,
-                        icon:'error'
-                    });
+                    title:'Error',
+                    text:new_ticket.message,
+                    icon:'error',
+                    heightAuto: false
+                });
                 stopButtonLoading(form);
             }
         })
@@ -87,7 +90,8 @@ document.addEventListener('submit', function (e) {
         Swal.fire({
             title: 'Bạn có chắc muốn edit ticket này ?',
             icon: 'warning',
-            showCancelButton: true
+            showCancelButton: true,
+            heightAuto: false
         })
         .then((result) => {
 
@@ -116,7 +120,8 @@ document.addEventListener('submit', function (e) {
                     Swal.fire({
                         title:'Success',
                         text:data.message,
-                        icon:'success'
+                        icon:'success',
+                        heightAuto: false
                     }).then(()=>{
                     location.reload();
                 });
@@ -125,7 +130,8 @@ document.addEventListener('submit', function (e) {
                     Swal.fire({
                         title:'Error',
                         text:data.message,
-                        icon:'error'
+                        icon:'error',
+                        heightAuto: false
                     });
                     stopButtonLoading(form);
                 }
@@ -148,7 +154,8 @@ document.addEventListener('submit', function (e) {
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, approve it!'
+            confirmButtonText: 'Yes, approve it!',
+            heightAuto: false
         }).then((result) => {
             if (result.isConfirmed) {
                 // Proceed with the approval logic
@@ -167,7 +174,8 @@ document.addEventListener('submit', function (e) {
                             title: 'Success!',
                             text: ticket_approval_response.message,
                             icon: 'success',
-                            confirmButtonText: 'OK'
+                            confirmButtonText: 'OK',
+                            heightAuto: false
                         }).then((result) => {
                             document.querySelector('.ticket-form-overlay').classList.remove('active');
                             e.target.reset();
@@ -178,7 +186,8 @@ document.addEventListener('submit', function (e) {
                             title: 'Error!',
                             text: ticket_approval_response.message,
                             icon: 'error',
-                            confirmButtonText: 'OK'
+                            confirmButtonText: 'OK',
+                            heightAuto: false
                         }).then(()=>{
                             location.reload();
                         });
@@ -191,7 +200,8 @@ document.addEventListener('submit', function (e) {
                         title: 'Error!',
                         text: error,
                         icon: 'error',
-                        confirmButtonText: 'OK'
+                        confirmButtonText: 'OK',
+                        heightAuto: false
                     })
                     console.error(error)
                 });
@@ -211,7 +221,8 @@ document.addEventListener('submit', function (e) {
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, reject it!'
+                confirmButtonText: 'Yes, reject it!',
+                heightAuto: false
             }).then((result) => 
                 {
                     if (result.isConfirmed) {
@@ -230,7 +241,8 @@ document.addEventListener('submit', function (e) {
                                     title: 'Success!',
                                     text: ticket_approval_response.message,
                                     icon: 'success',
-                                    confirmButtonText: 'OK'
+                                    confirmButtonText: 'OK',
+                                    heightAuto: false
                                 }).then((result) => {
                                     document.querySelector('.ticket-form-overlay').classList.remove('active');
                                     e.target.reset();
@@ -241,7 +253,8 @@ document.addEventListener('submit', function (e) {
                                     title: 'Error!',
                                     text: ticket_approval_response.message,
                                     icon: 'error',
-                                    confirmButtonText: 'OK'
+                                    confirmButtonText: 'OK',
+                                    heightAuto: false
                                 }).then(()=>{
                                     location.reload();
                                 });
@@ -253,7 +266,8 @@ document.addEventListener('submit', function (e) {
                                 title: 'Error!',
                                 text: error,
                                 icon: 'error',
-                                confirmButtonText: 'OK'
+                                confirmButtonText: 'OK',
+                                heightAuto: false
                             })
                             console.error(error)
                         });
@@ -272,7 +286,8 @@ document.addEventListener('submit', function (e) {
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, re-open it!'
+                confirmButtonText: 'Yes, re-open it!',
+                heightAuto: false
             }).then((result) => 
                 {
                     if (result.isConfirmed) {
@@ -291,7 +306,8 @@ document.addEventListener('submit', function (e) {
                                     title: 'Success!',
                                     text: ticket_re_open_response.message,
                                     icon: 'success',
-                                    confirmButtonText: 'OK'
+                                    confirmButtonText: 'OK',
+                                    heightAuto: false
                                 }).then((result) => {
                                     document.querySelector('.ticket-form-overlay').classList.remove('active');
                                     e.target.reset();
@@ -302,7 +318,8 @@ document.addEventListener('submit', function (e) {
                                     title: 'Error!',
                                     text: ticket_re_open_response.message,
                                     icon: 'error',
-                                    confirmButtonText: 'OK'
+                                    confirmButtonText: 'OK',
+                                    heightAuto: false
                                 }).then(()=>{
                                     location.reload();
                                 });
@@ -314,7 +331,8 @@ document.addEventListener('submit', function (e) {
                                 title: 'Error!',
                                 text: error,
                                 icon: 'error',
-                                confirmButtonText: 'OK'
+                                confirmButtonText: 'OK',
+                                heightAuto: false
                             })
                             console.error(error)
                         });
@@ -330,7 +348,8 @@ document.addEventListener('submit', function (e) {
         Swal.fire({
             title: 'Bạn có chắc muốn add thêm part này ?',
             icon: 'warning',
-            showCancelButton: true
+            showCancelButton: true,
+            heightAuto: false
         })
         .then((result) => {
 
@@ -359,7 +378,8 @@ document.addEventListener('submit', function (e) {
                     Swal.fire({
                         title:'Success',
                         text:data.message,
-                        icon:'success'
+                        icon:'success',
+                        heightAuto: false
                     }).then(()=>{
                     location.reload();
                 });
@@ -368,7 +388,8 @@ document.addEventListener('submit', function (e) {
                     Swal.fire({
                         title:'Error',
                         text:data.message,
-                        icon:'error'
+                        icon:'error',
+                        heightAuto: false
                     }).then(()=>{
                     location.reload();
                 });
@@ -380,7 +401,8 @@ document.addEventListener('submit', function (e) {
                 Swal.fire({
                     title:'Error',
                     text:error,
-                    icon:'error'
+                    icon:'error',
+                    heightAuto: false
                 });
 
             })
@@ -401,7 +423,8 @@ document.addEventListener('submit', function (e) {
         Swal.fire({
             title: 'Bạn có chắc muốn edit part này ?',
             icon: 'warning',
-            showCancelButton: true
+            showCancelButton: true,
+            heightAuto: false
         })
         .then((result) => {
 
@@ -429,7 +452,8 @@ document.addEventListener('submit', function (e) {
                     Swal.fire({
                         title:'Success',
                         text:data.message,
-                        icon:'success'
+                        icon:'success',
+                        heightAuto: false
                     }).then(()=>{
                     location.reload();
                 });
@@ -438,7 +462,8 @@ document.addEventListener('submit', function (e) {
                     Swal.fire({
                         title:'Error',
                         text:data.message,
-                        icon:'error'
+                        icon:'error',
+                        heightAuto: false
                     });
                     stopButtonLoading(form);
                 }
@@ -457,7 +482,8 @@ document.addEventListener('submit', function (e) {
                 text: "You are about to delete this part.",
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Yes, delete it!'
+                confirmButtonText: 'Yes, delete it!',
+                heightAuto: false
             }).then((result) => 
                 {
                     if (result.isConfirmed) {
@@ -476,7 +502,8 @@ document.addEventListener('submit', function (e) {
                                     title: 'Success!',
                                     text: ticket_approval_response.message,
                                     icon: 'success',
-                                    confirmButtonText: 'OK'
+                                    confirmButtonText: 'OK',
+                                    heightAuto: false
                                 }).then((result) => {
                                     document.querySelector('.ticket-form-overlay').classList.remove('active');
                                     e.target.reset();
@@ -487,7 +514,8 @@ document.addEventListener('submit', function (e) {
                                     title: 'Error!',
                                     text: ticket_approval_response.message,
                                     icon: 'error',
-                                    confirmButtonText: 'OK'
+                                    confirmButtonText: 'OK',
+                                    heightAuto: false
                                 }).then(()=>{
                                     location.reload();
                                 });
@@ -499,7 +527,72 @@ document.addEventListener('submit', function (e) {
                                 title: 'Error!',
                                 text: error,
                                 icon: 'error',
-                                confirmButtonText: 'OK'
+                                confirmButtonText: 'OK',
+                                heightAuto: false
+                            })
+                            console.error(error)
+                        });
+
+                    }
+                });
+    }
+
+    if (e.target && e.target.id === 'send-approve-thermal-event') {
+        e.preventDefault();
+        const form = e.target;
+        
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Bạn có muốn send approve cho ticket này ?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                heightAuto: false
+            }).then((result) => 
+                {
+                    if (result.isConfirmed) {
+                        startButtonLoading(form);
+                        fetch(url, {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(ticket_approval_response => {
+                            if (ticket_approval_response.success == true) {
+                                Swal.fire({
+                                    title: 'Success!',
+                                    text: ticket_approval_response.message,
+                                    icon: 'success',
+                                    confirmButtonText: 'OK',
+                                    heightAuto: false
+                                }).then((result) => {
+                                    document.querySelector('.ticket-form-overlay').classList.remove('active');
+                                    e.target.reset();
+                                    location.reload();
+                                });
+                            } else {
+                                Swal.fire({
+                                    title: 'Error!',
+                                    text: ticket_approval_response.message,
+                                    icon: 'error',
+                                    confirmButtonText: 'OK',
+                                    heightAuto: false
+                                }).then(()=>{
+                                    location.reload();
+                                });
+                            }
+                            
+                        })
+                        .catch(error => {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: error,
+                                icon: 'error',
+                                confirmButtonText: 'OK',
+                                heightAuto: false
                             })
                             console.error(error)
                         });
