@@ -170,4 +170,59 @@ document.addEventListener('submit', function (e) {
         
 
     }
+
+    if (e.target && e.target.id === 'booking-def-part') {
+        e.preventDefault();
+
+        const form = e.target;
+
+        Swal.fire({
+            title: 'Bạn có chắc muốn booking những ticket def này ?',
+            icon: 'warning',
+            showCancelButton: true,
+            heightAuto: false
+        })
+        .then((result) => {
+            if (!result.isConfirmed) {
+                return;
+            }
+
+            // Confirm mới loading
+            startButtonLoading(form);
+            fetch(url, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                }
+            })
+            .then(response => response.json())
+            .then(ticket => {
+
+                if (ticket.success === true) {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: ticket.message,
+                        icon: 'success',
+                        confirmButtonText: 'OK',
+                        heightAuto: false
+                    });
+                    location.reload();
+
+                } else {
+                    Swal.fire({
+                        title:'Error',
+                        text: ticket.message,
+                        icon:'error',
+                        heightAuto: false
+                    });
+                    stopButtonLoading(form);
+                }
+                
+            })
+            .catch(error => console.error(error));
+        });
+        
+
+    }
 });

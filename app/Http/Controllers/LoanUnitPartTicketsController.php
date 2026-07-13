@@ -509,5 +509,49 @@ class LoanUnitPartTicketsController extends Controller
         }
     }
 
+    public function Cancel_Loan_Unit_Part ($id){
+        try {
+            // ĐỔI THÀNH ->first() ĐỂ LẤY CHÍNH XÁC 1 ĐỐI TƯỢNG MODEL
+            $part_details = Loan_Unit_Ticket_Parts_Details_Model::where('id', $id)->first();
+
+            // Kiểm tra xem ID này có tồn tại trong DB không để tránh lỗi Call to a member function on null
+            if (!$part_details) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Không tìm thấy thông tin part này!',
+                ], 404);
+            }
+
+            // Bây giờ bạn có thể gọi ->status thoải mái
+            if ($part_details->status != '1'){
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Chỉ có part đang ở trạng thái "Open" mới có thể cancel !',
+                ], 400);
+            } else {
+                $part_details->status = '4';
+                $part_details->save(); // Hàm này sẽ chạy thành công
+
+                tracking_info_service::add(
+                    $part_details->ticket_id, // Lấy được ticket_id chuẩn xác
+                    auth()->id(),
+                    4,
+                    'canceled part at'
+                );
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Part canceled !',
+                ]);
+            }
+            
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to cancel part due to ' .$e->getMessage(),
+            ], 500);
+        }
+    }
+
 
 }

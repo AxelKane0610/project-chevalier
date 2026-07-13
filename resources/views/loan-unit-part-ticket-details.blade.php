@@ -99,9 +99,9 @@
                             </form>
                         @endif
 
-                        @if((auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_LOAN_UNIT_ADMIN')) && ($parts->status == '1' || $parts->status == '2'))
-                            <form class="js-input-required-btn" data-target="cancel-loan-unit-part" action="" method="PATCH">
-                                <button type="button" class="cancel-loan-unit-part-btn" data-id="{{ $parts->id }}"><i class="ti-close"></i></button>
+                        @if((auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_LOAN_UNIT_ADMIN')) && ($parts->status == '1'))
+                            <form class="js-input-required-btn" data-target="cancel-loan-unit-part" id="cancel-loan-unit-part" method="PATCH" action="{{ route('cancel-loan-unit-part', $parts->id ) }}">
+                                <button type="submit" class="cancel-loan-unit-part-btn" "><i class="ti-close"></i></button>
                             </form>
                         @endif
 

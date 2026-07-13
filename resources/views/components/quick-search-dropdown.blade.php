@@ -27,7 +27,7 @@ new class extends Component
                 $tableName = current((array)$table);
 
                 // Bỏ qua các bảng hệ thống
-                if (in_array($tableName, ['migrations', 'failed_jobs', 'password_reset_tokens', 'personal_access_tokens', 'sessions'])) {
+                if (in_array($tableName, ['migrations', 'failed_jobs', 'password_reset_tokens', 'personal_access_tokens', 'sessions','attachments_table'])) {
                     continue;
                 }
 
@@ -56,7 +56,7 @@ new class extends Component
                             $urlPrefix = '/invoice-exceptional-menu-details/';
                             $ticketTypeName = 'Invoice Exceptional';
                             break;
-                        case 'thermal_event_exceptional_ticket':
+                        case 'thermal_event_exceptional_tickets':
                             $urlPrefix = '/thermal-event-tickets-menu-details/';
                             $ticketTypeName = 'Thermal Event';
                             break;
@@ -133,7 +133,21 @@ new class extends Component
     <input type="hidden" name="selected_id" value="{{ $selectedId }}">
 
     @if($showDropdown && count($results) > 0)
-        <ul style="position: absolute; top: 100%; left: 0; width: 100%; background: white; border: 1px solid #ccc; list-style: none; margin: 0; padding: 0; max-height: 350px; overflow-y: auto; z-index: 9999; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+        <ul style="
+            position: absolute; 
+            top: 100%; 
+            left: 0; 
+            width: 100%; 
+            background: white; 
+            border: 1px solid #ccc; 
+            list-style: none; 
+            margin: 0; padding: 0; 
+            max-height: 350px; 
+            overflow-y: 
+            auto; 
+            z-index: 9999; 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+            display: flex; flex-direction: column;">
             
             @foreach($results as $item)
                 @php

@@ -55,7 +55,12 @@
                                                 <button><i class="ti-arrow-right" ></i></button>
                                             </a>
                                         </td>
-                                        <td>{{ $ticket->shipment_type }}</td>
+                                        <!-- <td>{{ $ticket->shipment_type }}</td> -->
+                                        <td>
+                                            <span class="ticket-status {{ $ticket->shipment_type_data['class'] }}">
+                                                {{ $ticket->shipment_type_data['text'] }}
+                                            </span>
+                                        </td>
                                         <td>{{ $ticket->sender_info  }}</td>
                                         <td>{{ $ticket->receiver_info }}</td>
                                         <td>{{ $ticket->shipment_description }}</td>
@@ -76,6 +81,10 @@
 
                 <div class="common-table-container">
                     <h2>Pending Def Part Tickets</h2>
+                    <form class="js-input-required-btn" data-target="booking-def-part" id="booking-def-part" action="{{ route('booking-def-part') }}" method="POST">
+                        @csrf
+                        <button type="submit"><i class="ti-check"></i></button>
+                    </form>
                     <table id="pending-ttex-tickets-table" class="common-table" width="100%" >
                         <tr>
                             <th width="5%"></th>
@@ -97,8 +106,15 @@
                                             <a href="/ttex-tickets-menu-details/{{ $ticket->id }}">
                                                 <button><i class="ti-arrow-right" ></i></button>
                                             </a>
+                                            <input type="checkbox" name="booking_def[]" value="{{ $ticket->id }}" form="booking-def-part">
+
                                         </td>
-                                        <td>{{ $ticket->shipment_type }}</td>
+                                        <!-- <td>{{ $ticket->shipment_type }}</td> -->
+                                        <td>
+                                            <span class="ticket-status {{ $ticket->shipment_type_data['class'] }}">
+                                                {{ $ticket->shipment_type_data['text'] }}
+                                            </span>
+                                        </td>
                                         <td>{{ $ticket->sender_info  }}</td>
                                         <td>{{ $ticket->receiver_info }}</td>
                                         <td>{{ $ticket->shipment_description }}</td>

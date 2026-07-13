@@ -396,5 +396,41 @@ class TTEXTicketsController extends Controller
         
     }
 
+    public function Booking_Def_Part(Request $request) {
+        try {
+            
+            if ($request->has('booking_def') && is_array($request->input('booking_def'))) {
+                $def_part_tickets = TTEX_Tickets_Model::whereIn('id', $request->input('booking_def'))->get();
+                TTEX_Tickets_Model::whereIn('id', $request->input('booking_def'))->update([
+                    'booking_date' => today(),
+                    'status' => '2',
+                ]);
+                tracking_info_service::add(
+                    $def_part_tickets->first()->id,
+                    auth()->id(),
+                    2, //1 là mã cho software ticket
+                    'completed booking ticket at',
+                );
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Selected tickets booked successfully.',
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No tickets selected for booking.',
+                ], 400);
+            }
+
+            
+                
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to book tickets due to: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
     
 }

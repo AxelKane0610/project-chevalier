@@ -428,6 +428,65 @@ document.addEventListener('submit', function (e) {
         });
 
     }
+
+    if (e.target && e.target.id === 'cancel-loan-unit-part') {
+        e.preventDefault();
+        const form = e.target;
+        
+        Swal.fire({
+            title: 'Bạn có chắc muốn cancel part này ?',
+            icon: 'warning',
+            showCancelButton: true,
+            heightAuto: false
+        })
+        .then((result) => {
+
+            // Cancel
+            if (!result.isConfirmed) {
+                return;
+            }
+
+            // Confirm mới loading
+            startButtonLoading(form);
+            fetch(url,{
+                method:'PATCH',
+                body:formData,
+                headers:{
+                    'X-CSRF-TOKEN':
+                        document.querySelector(
+                            'input[name="_token"]'
+                        ).value
+                }
+            })
+            .then(response => response.json())
+            .then(data => 
+            {
+                if (data.success === true) {
+                    Swal.fire({
+                        title:'Success',
+                        text:data.message,
+                        icon:'success',
+                        heightAuto: false
+                    }).then(()=>{
+                    location.reload();
+                });
+                }
+                else {
+                    Swal.fire({
+                        title:'Error',
+                        text:data.message,
+                        icon:'error',
+                        heightAuto: false
+                    });
+                    stopButtonLoading(form);
+                }
+
+            })
+            .catch(error => console.error(error));
+
+        });
+
+    }
 });
 
 

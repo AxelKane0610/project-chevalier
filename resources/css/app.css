@@ -1048,21 +1048,26 @@ h1, h2, h3 {
 
 .search-dropdown-box {
     position: absolute;
-    top: 110%; /* Nằm ngay dưới nút bấm (cách một khoảng nhỏ) */
-    left: 0;   /* Canh lề phải bằng với cạnh phải của nút search */
-    width: 350px; /* Độ rộng của khung search */
+    top: 110%;
+    left: 0;   
+    width: 350px; 
     background-color: white;
     border-radius: 8px;
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); /* Tạo bóng đổ cho đẹp */
-    padding: 15px;
-    z-index: 999; /* Đảm bảo nổi lên trên tất cả nội dung khác của web */
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); 
+    /* padding: 15px; */
+    z-index: 999;
+
+    /* THÊM CÁC THUỘC TÍNH DƯỚI ĐÂY */
+    display: flex;
+    flex-direction: column; /* Ép các phần tử con xếp theo hàng dọc */
+    gap: 12px;              /* Tạo khoảng cách đều giữa các hàng kết quả */
 }
 
 /* Ô nhập liệu và nút Tìm bên trong dropdown */
 .search-input-group {
     color: black;
     display: flex;
-    gap: 8px;
+    flex-direction: column;
 }
 .search-input-group input {
     flex: 1;
@@ -1081,6 +1086,8 @@ h1, h2, h3 {
 
 /* Khu vực kết quả bên dưới ô nhập */
 #search-results-area {
+    display: flex;
+    flex-direction: column;
     color: black;
     margin-top: 10px;
     max-height: 250px; /* Giới hạn chiều cao nếu quá nhiều kết quả */

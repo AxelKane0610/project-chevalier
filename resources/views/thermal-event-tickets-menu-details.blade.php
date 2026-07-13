@@ -111,19 +111,21 @@
                 @foreach($ticket->parts_details as $parts)
                 <tr>
                     <td>
-                        <form class="js-input-required-btn" data-target="edit-thermal-event-part-details" action="" method="PATCH">
-                            <button type="button" 
-                            class="btn-edit-part"
-                            data-id="{{ $parts->id }}"
-                            data-mo="{{ $parts->part_mo_number }}"
-                            data-number="{{ $parts->part_number }}"
-                            data-description="{{ $parts->part_description }}"
-                            data-ct="{{ $parts->part_ct_number }}"><i class="ti-pencil"></i></button>
-                        </form>
+                        @if($ticket->status == '1' && $ticket->user_id == auth()->user()->id)
+                            <form class="js-input-required-btn" data-target="edit-thermal-event-part-details" action="" method="PATCH">
+                                <button type="button" 
+                                class="btn-edit-part"
+                                data-id="{{ $parts->id }}"
+                                data-mo="{{ $parts->part_mo_number }}"
+                                data-number="{{ $parts->part_number }}"
+                                data-description="{{ $parts->part_description }}"
+                                data-ct="{{ $parts->part_ct_number }}"><i class="ti-pencil"></i></button>
+                            </form>
 
-                        <form class="js-input-required-btn" data-target="delete-thermal-event-part-details" id="delete-thermal-event-part-details" action="{{ route('delete-thermal-event-part-details', $parts->id) }}" method="PATCH">
-                            <button type="submit"><i class="ti-na"></i></button>
-                        </form>
+                            <form class="js-input-required-btn" data-target="delete-thermal-event-part-details" id="delete-thermal-event-part-details" action="{{ route('delete-thermal-event-part-details', $parts->id) }}" method="PATCH">
+                                <button type="submit"><i class="ti-na"></i></button>
+                            </form>
+                        @endif
                     </td>
                     
                     <td>{{$parts->part_mo_number}}</td>

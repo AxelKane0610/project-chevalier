@@ -71,7 +71,8 @@ Route::middleware(['auth'])->group(function () {
         Route::patch('/edit-ttex-ticket/{id}',[TTEXTicketsController::class, 'Edit_TTEX_Ticket'])->name('edit-ttex-ticket');
         Route::post('/add-comment-ttex-ticket/{id}', [TTEXTicketsController::class, 'Add_Comment_TTEX_Ticket']) ->name('add-comment-ttex-ticket');
         Route::patch('/close-ttex-ticket/{id}', [TTEXTicketsController::class, 'Close_TTEX_Ticket']) ->name('close-ttex-ticket');
-        
+        Route::post('/booking-def-part', [TTEXTicketsController::class, 'Booking_Def_Part']) ->name('booking-def-part');
+
 
 
     });
@@ -168,7 +169,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/add-loan-unit-part/{id}', [LoanUnitPartTicketsController::class, 'Add_Loan_Unit_Part'])->name('add-loan-unit-part');
         Route::patch('/return-loan-unit-part/{id}', [LoanUnitPartTicketsController::class, 'Return_Loan_Unit_Part'])->name('return-loan-unit-part');
         Route::patch('/close-loan-unit-part-ticket/{id}', [LoanUnitPartTicketsController::class, 'Close_Loan_Unit_Part_Ticket'])->name('close-loan-unit-part-ticket');
-        
+        Route::patch('/cancel-loan-unit-part/{id}', [LoanUnitPartTicketsController::class, 'Cancel_Loan_Unit_Part'])->name('cancel-loan-unit-part');
 
 
     });

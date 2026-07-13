@@ -37,11 +37,6 @@
                 
             </li>
 
-            <li>
-                <form action="/main-menu">
-                    <button type="submit"><i class="ti-home"></i>Home</button>
-                </form>
-            </li>
 
             
             
