@@ -377,16 +377,45 @@ class TTEXTicketsController extends Controller
 
     public function Power_Automate_Good_Part_Booking (Request $request) {
         
-        if ($request->header('api_key') !== config('services.api_service.power_automate_api_key')) {
+        if ($request->header('api-key') !== config('services.api_service.power_automate_api_key')) {
             return response()->json([
                 'success' => false,
                 'message' => 'Unauthorized access. Invalid API key.',
             ], 401);
         } else {
-                $tickets_good_part_pending = TTEX_Tickets_Model::with('user_owner')->where([
-                    ['part_status', '1'],
-                    ['booking_date', today()]
-                ])->get();
+                $tickets_good_part_pending = TTEX_Tickets_Model::with('user_owner')
+                    ->where([
+                        ['part_status', 1],
+                        ['booking_date', today()]
+                    ])
+                    ->get();
+
+                foreach ($tickets_good_part_pending as $ticket) {
+                    $ticket->category = match ($ticket->category) {
+                        '1' => 'ASRC',
+                        '2' => 'HPS',
+                        '3' => 'Onsite Geox',
+                        '4' => 'Part NBD',
+                        '5' => 'Others',
+                        '6' => 'Văn phòng phẩm/tài liệu',
+                        default => 'Unknown',
+                    };
+                    $ticket->shipment_type = match ($ticket->shipment_type) {
+                        '1' => 'Tài liệu',
+                        '2' => 'Thiết bị điện/điện tử',
+                        '3' => 'Văn phòng phẩm',
+                        default => 'Unknown',
+
+                    };
+
+                    $ticket->part_status = match ($ticket->part_status) {
+                        '1' => 'Good part',
+                        '2' => 'Def part',
+                        '3' => 'Good part - Unused',
+                        default => 'Unknown',
+
+                    };
+                };
                 $email_list = $tickets_good_part_pending->pluck('user_owner.email')->toArray();//
                 $email_list = array_unique($email_list);
                 $email_list = implode(';', $email_list);
