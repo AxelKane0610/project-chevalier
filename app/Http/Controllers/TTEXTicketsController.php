@@ -376,27 +376,32 @@ class TTEXTicketsController extends Controller
     }
 
     public function Power_Automate_Good_Part_Booking (Request $request) {
-        if ($request->header('api_key') !== config('services.api_service.power_automate_api_key')) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Unauthorized access. Invalid API key.',
-            ], 401);
-        } else {
-                $tickets_good_part_pending = TTEX_Tickets_Model::with('user_owner')->where([
-                    ['part_status', '1'],
-                    ['booking_date', today()]
-                ])->get();
-                $email_list = $tickets_good_part_pending->pluck('user_owner.email')->toArray();//
-                $email_list = array_unique($email_list);
-                $email_list = implode(';', $email_list);
-            if (count($tickets_good_part_pending) > 0){
-                return response()->json([
-                    'success' => true,
-                    'tickets_good_part_pending' => $tickets_good_part_pending,
-                    'email_list' => $email_list,
-                ]);
-            }
-        }
+        return response()->json([
+            'header' => $request->header('api_key'),
+            'config' => config('services.api_service.power_automate_api_key'),
+            'equal' => $request->header('api_key') === config('services.api_service.power_automate_api_key'),
+        ]);
+        // if ($request->header('api_key') !== config('services.api_service.power_automate_api_key')) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'Unauthorized access. Invalid API key.',
+        //     ], 401);
+        // } else {
+        //         $tickets_good_part_pending = TTEX_Tickets_Model::with('user_owner')->where([
+        //             ['part_status', '1'],
+        //             ['booking_date', today()]
+        //         ])->get();
+        //         $email_list = $tickets_good_part_pending->pluck('user_owner.email')->toArray();//
+        //         $email_list = array_unique($email_list);
+        //         $email_list = implode(';', $email_list);
+        //     if (count($tickets_good_part_pending) > 0){
+        //         return response()->json([
+        //             'success' => true,
+        //             'tickets_good_part_pending' => $tickets_good_part_pending,
+        //             'email_list' => $email_list,
+        //         ]);
+        //     }
+        // }
         
     }
 
