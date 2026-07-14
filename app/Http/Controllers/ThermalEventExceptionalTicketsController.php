@@ -162,7 +162,7 @@ class ThermalEventExceptionalTicketsController extends Controller
                             $ticket->id, 
                             auth()->id(), 
                             10,
-                            'send approval request at'
+                            'sent approval request at'
                         );
                         return response()->json([
                             'success' => true,

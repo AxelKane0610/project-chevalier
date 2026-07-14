@@ -71,7 +71,7 @@
                     
                 @break
 
-                @case(4)
+                
                 @case(5)
                     @if($ticket->user_id == auth()->user()->id || auth()->user()->hasRole('ROLE_SUPER_ADMIN'))
                         <li>

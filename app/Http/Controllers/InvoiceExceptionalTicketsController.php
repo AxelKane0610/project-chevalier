@@ -7,7 +7,10 @@ use Illuminate\Http\Request;
 use App\Models\Invoice_Exceptional_Tickets_Model;
 use App\Models\Attachments_Model;
 use App\Models\Comments_Model;
+use App\Models\User;
 use App\Services\tracking_info_service;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Http;
 
 class InvoiceExceptionalTicketsController extends Controller
 {
@@ -94,12 +97,73 @@ class InvoiceExceptionalTicketsController extends Controller
                 'created ticket at'
             );
 
-            
-            $ticket->save();
-            return response()->json([
-                'success' => true,
-                'message' => 'Ticket created successfully',
-            ]);
+            $send_approve_ticket = Invoice_Exceptional_Tickets_Model::with('user_owner', 'active_attachments')->findOrFail($ticket->id);
+            $attachments = $ticket->active_attachments->map(function ($file) {
+                return [
+                    'fileName' => basename($file->file_path),
+                    'fileContent' => base64_encode(
+                        Storage::disk('attachments')->get(
+                            $file->file_path
+                        )
+                    ),
+                ];
+            });
+
+            try {
+                $send_approval = Http::post(config('services.api_service.invoice_exceptional_create_ticket_request_url'), [
+                    'ticket_id' => $ticket->id,
+                    'ticket_owner' => $send_approve_ticket->user_owner->fullname,
+                    'ticket_owner_email' => $send_approve_ticket->user_owner->email,
+                    'leader_email' => User::where('id', $send_approve_ticket->user_owner->leader_id)->value('email'),
+                    'receipt' => $send_approve_ticket->ticket_receipt,
+                    'invoice_number' => $send_approve_ticket->invoice_number,
+                    'serial_number' => $send_approve_ticket->serial_number,
+                    'product_number' => $send_approve_ticket->product_number,
+                    'product_model' => $send_approve_ticket->product_model,
+                    'invoice_date' => $send_approve_ticket->invoice_date,
+                    'expired_date' => $send_approve_ticket->expired_date,
+                    'retail_name' => $send_approve_ticket->retail_name,
+                    'company_customer_name' => $send_approve_ticket->company_customer_name,
+
+                    'support_type' => match($send_approve_ticket->support_type)
+                    {
+                        '1' => 'Hóa đơn xuất sau (1 máy)',
+                        '2' => 'Hóa đơn xuất sau (Nhiều máy)',
+                        '3' => 'Kích hoạt bảo hành (1 máy)',
+                        '4' => 'Kích hoạt bảo hành (Nhiều máy)',
+                        default => 'Unknown',
+                    },
+                    'support_type_id' => $send_approve_ticket->support_type,
+                    'description' => $send_approve_ticket->description,
+                    'attachments' => $attachments,
+                ]);
+
+                if ($send_approval->successful()) {
+                    tracking_info_service::add(
+                        $ticket->id, 
+                        auth()->id(), 
+                        7,
+                        'sent approval request at'
+                    );
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'Ticket created successfully & Approval request sent !',
+                    ]);
+                } else {
+                    // Xử lý lỗi nếu phản hồi không thành công
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Ticket tạo thành công, nhưng API trả lỗi: ' . $send_approval->body(),
+                    ], 500);
+                } 
+                } catch (\Exception $e) {
+                    // Xử lý lỗi nếu có
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Failed to send approve due to ' . $e->getMessage(),
+                    ], 500);
+                }
+
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,

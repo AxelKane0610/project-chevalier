@@ -179,11 +179,10 @@ class EEGTicketsController extends Controller
                 });
                 
                 $leader_email = User::where('id', $ticket->user_owner->leader_id)->value('email'); //Lấy email của leader của user owner của ticket này để gửi vào API, nếu không có leader thì trả về null
-                // dd($leader_email);
+                
                 try 
                 {
                     $send_approval = Http::post(config('services.api_service.sw_ticket_url'), [
-                        'type_of_ticket' => 1,
                         'ticket_id' => $ticket->id,
                         'ticket_owner'   => $ticket->user_owner->fullname,
                         'receipt' => $ticket->ticket_receipt,

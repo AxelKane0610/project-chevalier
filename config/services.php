@@ -42,6 +42,7 @@ return [
         'loan_unit_complete_url' => env('API_POWER_AUTOMATE_LOAN_UNIT_COMPLETE'),
         'out_of_office_request_url' => env('API_POWER_AUTOMATE_OUT_OF_OFFICE_REQUEST'),
         'thermal_event_request_url' => env('API_POWER_AUTOMATE_THERMAL_EVENT_REQUEST'),
+        'invoice_exceptional_create_ticket_request_url' => env('API_POWER_AUTOMATE_CREATE_INVOICE_EXCEPTIONAL_REQUEST'),
     ],
 
 ];
