@@ -54,7 +54,7 @@ class ApprovalController extends Controller
                 return response()->json([
                     'status' => 'error',
                     'message' => 'Ticket không ở trạng thái chờ phê duyệt'
-                ], 400);
+                ], 200);
             }
         }
 
@@ -86,7 +86,7 @@ class ApprovalController extends Controller
                 return response()->json([
                     'status' => 'error',
                     'message' => 'Ticket không ở trạng thái chờ phê duyệt'
-                ], 400);
+                ], 200);
             }
         } 
 

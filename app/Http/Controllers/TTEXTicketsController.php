@@ -60,7 +60,7 @@ class TTEXTicketsController extends Controller
                 'sender_info' => 'required',
                 'receiver_info' => 'required',
                 'shipment_description' => 'required',
-                'note' => 'required',
+                'note' => 'nullable',
                 'part_returned_check' => 'required',
                 'attachments.*' => 'file|max:5120|mimes:jpg,png,pdf,jpeg,xlsx'
             ]);
@@ -382,14 +382,18 @@ class TTEXTicketsController extends Controller
                 'message' => 'Unauthorized access. Invalid API key.',
             ], 401);
         } else {
-                $tickets_good_part_pending = TTEX_Tickets_Model::withwhere([
+                $tickets_good_part_pending = TTEX_Tickets_Model::with('user_owner')->where([
                     ['part_status', '1'],
                     ['booking_date', today()]
                 ])->get();
+                $email_list = $tickets_good_part_pending->pluck('user_owner.email')->toArray();//
+                $email_list = array_unique($email_list);
+                $email_list = implode(';', $email_list);
             if (count($tickets_good_part_pending) > 0){
                 return response()->json([
                     'success' => true,
                     'tickets_good_part_pending' => $tickets_good_part_pending,
+                    'email_list' => $email_list,
                 ]);
             }
         }
