@@ -36,6 +36,7 @@ return [
     ],
 
     'api_service' => [
+        'power_automate_api_key' => env('POWER_AUTOMATE_API_KEY'),
         'sw_ticket_url' => env('API_POWER_AUTOMATE_EEG_TICKET'),
         'sw_ticket_complete_url' => env('API_POWER_AUTOMATE_EEG_COMPLETE'),
         'laser_engraving_complete_url' => env('API_POWER_AUTOMATE_LASER_ENGRAVING_COMPLETE'),

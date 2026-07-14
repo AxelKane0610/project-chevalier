@@ -376,7 +376,7 @@ class TTEXTicketsController extends Controller
     }
 
     public function Power_Automate_Good_Part_Booking (Request $request) {
-        if ($request->header('api_key') !== env('POWER_AUTOMATE_API_KEY')) {
+        if ($request->header('api_key') !== config('services.api_service.power_automate_api_key')) {
             return response()->json([
                 'success' => false,
                 'message' => 'Unauthorized access. Invalid API key.',
