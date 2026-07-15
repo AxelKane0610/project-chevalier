@@ -5,6 +5,8 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\EEG_Software_Ticket;
+use App\Models\Out_Of_Office_Tickets_Model;
+
 use App\Models\Comments_Model;
 use App\Services\tracking_info_service;
 
@@ -92,7 +94,7 @@ class ApprovalController extends Controller
 
         if ($approval_response['outcome'] === 'Approve' && $approval_response['type_of_ticket'] === '9') 
         {
-            $ticket = EEG_Software_Ticket::find($approval_response['ticket_id']);
+            $ticket = Out_Of_Office_Tickets_Model::find($approval_response['ticket_id']);
             if ($ticket->status == '2') {
                 tracking_info_service::add(
                     $ticket->id,
@@ -123,7 +125,7 @@ class ApprovalController extends Controller
 
         if ($approval_response['outcome'] === 'Reject' && $approval_response['type_of_ticket'] === '9') 
         {
-            $ticket = EEG_Software_Ticket::find($approval_response['ticket_id']);
+            $ticket = Out_Of_Office_Tickets_Model::find($approval_response['ticket_id']);
             if ($ticket->status == '2') {
                 tracking_info_service::add(
                     $ticket->id,

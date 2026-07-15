@@ -94,7 +94,7 @@
             </div>
         </div>
 
-        <x-common-ticket-form title="Out of Office Ticket Form" action1="/create-out-of-office-ticket" id="create-out-of-office-ticket-form">
+        <x-common-ticket-form title="Out of Office Ticket Form" action1="route {{'create-out-of-office-ticket'}} " id="create-out-of-office-ticket-form">
             <label class="ticket-form-body-input">Type of leave</label>
             <select name="type_of_leave" class="ticket-form-body-input">
                 <option value="1">Xin nghỉ phép</option>
