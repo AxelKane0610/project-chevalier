@@ -34,7 +34,7 @@ document.addEventListener('submit', function (e) {
                 if (new_ticket.success === true) {
                     Swal.fire({
                         title: 'Success!',
-                        text: 'Ticket created successfully.',
+                        text: new_ticket.message,
                         icon: 'success',
                         confirmButtonText: 'OK',
                         heightAuto: false
