@@ -25,9 +25,9 @@ class ApprovalController extends Controller
 
         
 
-        // 3. Tìm ticket và comment vào
         
-        if ($approval_response['outcome'] === 'Approve' and $approval_response['type_of_ticket'] === '1') 
+        
+        if ($approval_response['outcome'] === 'Approve' && $approval_response['type_of_ticket'] === '1') 
         {
             $ticket = EEG_Software_Ticket::find($approval_response['ticket_id']);
             if ($ticket->status == '3') {
@@ -58,7 +58,7 @@ class ApprovalController extends Controller
             }
         }
 
-        if ($approval_response['outcome'] === 'Reject' and $approval_response['type_of_ticket'] === '1') 
+        if ($approval_response['outcome'] === 'Reject' && $approval_response['type_of_ticket'] === '1') 
         {
             $ticket = EEG_Software_Ticket::find($approval_response['ticket_id']);
             if ($ticket->status == '3') {
@@ -89,6 +89,68 @@ class ApprovalController extends Controller
                 ], 200);
             }
         } 
+
+        if ($approval_response['outcome'] === 'Approve' && $approval_response['type_of_ticket'] === '9') 
+        {
+            $ticket = EEG_Software_Ticket::find($approval_response['ticket_id']);
+            if ($ticket->status == '2') {
+                tracking_info_service::add(
+                    $ticket->id,
+                    10,
+                    9,
+                    'received approved response from Power Automate',
+                );
+                Comments_Model::create([
+                    'ticket_id' => $approval_response['ticket_id'],
+                    'type_of_ticket' => $approval_response['type_of_ticket'],
+                    'user_id' => 10,
+                    'comment'=> $approval_response['approver_comment']
+
+                ]);
+                $ticket->status = '3'; 
+                $ticket->save();
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Trạng thái ticket đã được cập nhật'
+                ], 200);
+            } else {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Ticket không ở trạng thái chờ phê duyệt'
+                ], 200);
+            }
+        }
+
+        if ($approval_response['outcome'] === 'Reject' && $approval_response['type_of_ticket'] === '9') 
+        {
+            $ticket = EEG_Software_Ticket::find($approval_response['ticket_id']);
+            if ($ticket->status == '2') {
+                tracking_info_service::add(
+                    $ticket->id,
+                    10,
+                    9,
+                    'received rejected response from Power Automate',
+                );
+                Comments_Model::create([
+                    'ticket_id' => $approval_response['ticket_id'],
+                    'type_of_ticket' => $approval_response['type_of_ticket'],
+                    'user_id' => 10,
+                    'comment'=> $approval_response['approver_comment']
+
+                ]);
+                $ticket->status = '4'; 
+                $ticket->save();
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Trạng thái ticket đã được cập nhật'
+                ], 200);
+            } else {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Ticket không ở trạng thái chờ phê duyệt'
+                ], 200);
+            }
+        }
 
 
         

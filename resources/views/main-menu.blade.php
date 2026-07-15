@@ -69,7 +69,7 @@
                 </div>
            </a>
             
-            
+            @if(auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_LASER_ENGRAVING_USER') || auth()->user()->hasRole('ROLE_LASER_ENGRAVING_ADMIN'))
             <a href="{{ url('/laser-engraving-menu') }}">
                 <div class="laser-engraving-btn">
                     
@@ -86,7 +86,10 @@
                     
                 </div>
             </a>
+            @endif
 
+            @if(auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_LOAN_UNIT_USER') || auth()->user()->hasRole('ROLE_LOAN_UNIT_ADMIN'))
+            
             <a href="{{ url('/loan-unit-part-menu') }}">
                 <div class="loanunit-tickets-btn">
                     <div class="ticket-img-description">
@@ -101,7 +104,11 @@
                     </div>
                 </div>
             </a>
+            @endif
 
+
+            @if(auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_SUBMIT_TRAINING_USER') || auth()->user()->hasRole('ROLE_TRAINING_ADMIN'))
+            
             <div class="training-submit-btn">
                 <div class="ticket-img-description">
                     <img src="{{ asset('imgs/training_image.png') }}" alt="">
@@ -114,7 +121,9 @@
                     <div class="card-footer-icon"><i class="ti-angle-right"></i></div>
                 </div>
             </div>
+            @endif
 
+            @if(auth()->user()->hasRole('ROLE_SUPER_ADMIN'))
             <a href="{{ url('/subk-management') }}">
 
                 <div class="subk-management-btn">
@@ -131,7 +140,10 @@
                 </div>
 
             </a>
+            @endif
 
+            @if(auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_INVOICE_EXCEPTIONAL_USER') || auth()->user()->hasRole('ROLE_INVOICE_EXCEPTIONAL_L1_APPROVER') || auth()->user()->hasRole('ROLE_INVOICE_EXCEPTIONAL_L2_APPROVER'))
+            
             <a href="{{ url('/invoice-exceptional-menu') }}">
 
                 <div class="invoice-exceptional-btn">
@@ -149,6 +161,9 @@
                 
             </a>
 
+            @endif
+
+            @if(auth()->user()->hasRole('ROLE_SUPER_ADMIN'))
             <a href="#">
 
                 <div class="onboard-offboard-btn">
@@ -165,7 +180,9 @@
                 </div>
                 
             </a>
+            @endif
 
+            @if(auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_OUT_OF_OFFICE_USER') || auth()->user()->hasRole('ROLE_OUT_OF_OFFICE_ADMIN') )
             <a href="{{ url('/out-of-office-tickets-menu') }}">
 
                 <div class="offline-request-btn">
@@ -182,7 +199,9 @@
                 </div>
                 
             </a>
+            @endif
 
+            @if(auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_THERMAL_EVENT_USER') || auth()->user()->hasRole('ROLE_THERMAL_EVENT_LV1_APPROVER') || auth()->user()->hasRole('ROLE_THERMAL_EVENT_LV2_APPROVER'))
             <a href="{{ url('/thermal-event-tickets-menu') }}">
 
                 <div class="overheat-request-btn">
@@ -199,7 +218,9 @@
                 </div>
                 
             </a>
+            @endif
 
+            @if(auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_SPECTRE_CROWN_WAREHOUSE_ADMIN'))
             <a href="{{ url('/spectre-crown-warehouse-menu') }}">
 
                 <div class="spectre-crown-warehouse-btn">
@@ -216,6 +237,7 @@
                 </div>
                 
             </a>
+            @endif
 
         </div>
         

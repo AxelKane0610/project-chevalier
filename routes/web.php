@@ -44,7 +44,7 @@ Route::middleware(['auth'])->group(function () {
 
     
     //1. EEG Ticket
-    Route::middleware(['role:ROLE_SUPER_ADMIN,ROLE_SW_TICKET_USER,ROLE_TICKET_SW_ADMIN'])->group(function () {
+    Route::middleware(['role:ROLE_SUPER_ADMIN,ROLE_SW_TICKET_USER,ROLE_SW_TICKET_ADMIN'])->group(function () {
     
         Route::get('/software-tickets-menu', [EEGTicketsController::class, 'Show_Pending_Tickets']);
         
