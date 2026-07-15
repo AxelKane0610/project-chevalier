@@ -385,7 +385,7 @@ class OutOfOfficeTicketsController extends Controller
 
     public function Approve_Out_Of_Office_Ticket($id) {
         try {
-            $ticket = Out_Of_Office_Tickets_Model::with('user_owner')->findOrFail($id);
+            $ticket = Out_Of_Office_Tickets_Model::with('user_owner', 'active_attachments')->findOrFail($id);
 
             if($ticket->status != '2'){
                 return response()->json([
@@ -396,29 +396,121 @@ class OutOfOfficeTicketsController extends Controller
                 $ticket->status = '3';
                 $ticket->save();
 
-                tracking_info_service::add(
-                    $ticket->id, 
-                    auth()->id(), 
-                    9,
-                    'approved ticket at'
-                );
 
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Ticket approved successfully',
-                ]);
+                $attachments = $ticket->active_attachments->map(function ($file) {
+                    return [
+                        'fileName' => basename($file->file_path),
+                        'fileContent' => base64_encode(
+                            Storage::disk('attachments')->get(
+                                $file->file_path
+                            )
+                        ),
+                    ];
+                });
+
+                try {
+                    $send_approval = Http::post(config('services.api_service.out_of_office_approve_reject_from_web'), [
+                        'status' => match ($ticket->status)
+                        {
+                            '1' => 'Open',
+                            '2' => 'Waiting for approval',
+                            '3' => 'Completed',
+                            '4' => 'Rejected',
+                            default => 'Unknown',
+                        },
+                        'leader_name' => User::where('id', $ticket->user_owner->leader_id)->value('fullname'),
+                        'ticket_id' => $ticket->id,
+                        'ticket_owner' => $ticket->user_owner->fullname,
+                        'ticket_owner_email' => $ticket->user_owner->email,
+                        'type_of_leave' => match ($ticket->type_of_leave) 
+                        {
+                            '1' => 'Xin nghỉ phép',
+                            '2' => 'Xin đi trễ',
+                            '3' => 'Xin về sớm',
+                            '4' => 'Xin không chấm công vào',
+                            '5' => 'Xin không chấm công ra',
+                            '6' => 'Quên chấm công vào/ra',
+                            default => 'Unknown',
+                        },
+                        'reasons_for_leave' => $ticket->reasons_for_leave,
+                        'days_of_leave' => $ticket->days_of_leave,
+                        'start_date' => $ticket->start_date->format('Y-m-d H:i:s'),
+                        'end_date' => $ticket->end_date->format('Y-m-d H:i:s'),
+                        'attachments' => $attachments,
+                        'leader_email' => User::where('id', $ticket->user_owner->leader_id)->value('email'),
+                    ]);
+
+                    if ($send_approval->successful()) {
+                        tracking_info_service::add(
+                            $ticket->id, 
+                            auth()->id(), 
+                            9,
+                            'approved ticket at'
+                        );
+                        return response()->json([
+                            'success' => true,
+                            'message' => 'Ticket approved and notification sent !',
+                            
+                        ]);
+                    } else {
+                        // Xử lý lỗi nếu phản hồi không thành công
+                        return response()->json([
+                            'success' => false,
+                            'message' => 'Failed to approve due to: ' . $send_approval->body(),
+                        ], 500);
+                    }
+                } catch (\Exception $e) {
+                    // Xử lý lỗi nếu có
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Failed to approve due to: ' . $e->getMessage(),
+                    ], 500);
+                }
             } 
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to approve ticket due to ' .$e->getMessage(),
+                'message' => 'Failed approve ticket due to ' .$e->getMessage(),
             ], 500);
         }
     }
 
+    // public function Reject_Out_Of_Office_Ticket($id) {
+    //     try {
+    //         $ticket = Out_Of_Office_Tickets_Model::with('user_owner')->findOrFail($id);
+
+    //         if($ticket->status != '2'){
+    //             return response()->json([
+    //                 'success' => false,
+    //                 'message' => 'Không thể reject do ticket không ở trạng thái "Waiting approval"',
+    //             ], 400);
+    //         } else {
+    //             $ticket->status = '4';
+    //             $ticket->save();
+
+    //             tracking_info_service::add(
+    //                 $ticket->id, 
+    //                 auth()->id(), 
+    //                 9,
+    //                 'rejected ticket at'
+    //             );
+
+    //             return response()->json([
+    //                 'success' => true,
+    //                 'message' => 'Ticket rejected successfully',
+    //             ]);
+    //         } 
+    //     } catch (\Exception $e) {
+    //         return response()->json([
+    //             'success' => false,
+    //             'message' => 'Failed to reject ticket due to ' .$e->getMessage(),
+    //         ], 500);
+    //     }
+    // }
+
     public function Reject_Out_Of_Office_Ticket($id) {
         try {
-            $ticket = Out_Of_Office_Tickets_Model::with('user_owner')->findOrFail($id);
+            $ticket = Out_Of_Office_Tickets_Model::with('user_owner', 'active_attachments')->findOrFail($id);
 
             if($ticket->status != '2'){
                 return response()->json([
@@ -429,22 +521,81 @@ class OutOfOfficeTicketsController extends Controller
                 $ticket->status = '4';
                 $ticket->save();
 
-                tracking_info_service::add(
-                    $ticket->id, 
-                    auth()->id(), 
-                    9,
-                    'rejected ticket at'
-                );
 
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Ticket rejected successfully',
-                ]);
+                $attachments = $ticket->active_attachments->map(function ($file) {
+                    return [
+                        'fileName' => basename($file->file_path),
+                        'fileContent' => base64_encode(
+                            Storage::disk('attachments')->get(
+                                $file->file_path
+                            )
+                        ),
+                    ];
+                });
+
+                try {
+                    $send_approval = Http::post(config('services.api_service.out_of_office_approve_reject_from_web'), [
+                        'status' => match ($ticket->status)
+                        {
+                            '1' => 'Open',
+                            '2' => 'Waiting for approval',
+                            '3' => 'Completed',
+                            '4' => 'Rejected',
+                            default => 'Unknown',
+                        },
+                        'leader_name' => User::where('id', $ticket->user_owner->leader_id)->value('fullname'),
+                        'ticket_id' => $ticket->id,
+                        'ticket_owner' => $ticket->user_owner->fullname,
+                        'ticket_owner_email' => $ticket->user_owner->email,
+                        'type_of_leave' => match ($ticket->type_of_leave) 
+                        {
+                            '1' => 'Xin nghỉ phép',
+                            '2' => 'Xin đi trễ',
+                            '3' => 'Xin về sớm',
+                            '4' => 'Xin không chấm công vào',
+                            '5' => 'Xin không chấm công ra',
+                            '6' => 'Quên chấm công vào/ra',
+                            default => 'Unknown',
+                        },
+                        'reasons_for_leave' => $ticket->reasons_for_leave,
+                        'days_of_leave' => $ticket->days_of_leave,
+                        'start_date' => $ticket->start_date->format('Y-m-d H:i:s'),
+                        'end_date' => $ticket->end_date->format('Y-m-d H:i:s'),
+                        'attachments' => $attachments,
+                        'leader_email' => User::where('id', $ticket->user_owner->leader_id)->value('email'),
+                    ]);
+
+                    if ($send_approval->successful()) {
+                        tracking_info_service::add(
+                            $ticket->id, 
+                            auth()->id(), 
+                            9,
+                            'rejected ticket at'
+                        );
+                        return response()->json([
+                            'success' => true,
+                            'message' => 'Ticket rejected and notification sent !',
+                            
+                        ]);
+                    } else {
+                        // Xử lý lỗi nếu phản hồi không thành công
+                        return response()->json([
+                            'success' => false,
+                            'message' => 'Failed to reject due to: ' . $send_approval->body(),
+                        ], 500);
+                    }
+                } catch (\Exception $e) {
+                    // Xử lý lỗi nếu có
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Failed to reject due to: ' . $e->getMessage(),
+                    ], 500);
+                }
             } 
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to reject ticket due to ' .$e->getMessage(),
+                'message' => 'Failed reject ticket due to ' .$e->getMessage(),
             ], 500);
         }
     }

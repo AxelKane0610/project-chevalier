@@ -192,7 +192,7 @@ class LaserEngravingTicketsController extends Controller
         $validatedData = $request->validate([
             'comment' => 'required_without_all:attachments|string|nullable',
             'attachments' => 'required_without_all:comment|array|nullable',
-            'attachments.*' => 'file|max:20480|mimes:jpg,jpeg,png,pdf,xlsx,docx',
+            'attachments.*' => 'file|max:20480|mimes:jpg,png,pdf,jpeg,xlsx,gif,cdr',
         ]);
 
         $validatedData['comment'] = strip_tags($validatedData['comment']);

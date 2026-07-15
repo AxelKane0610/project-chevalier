@@ -17,9 +17,21 @@
                     </form>
                 </li>
                 <li>
-                    <form action="#">
-                        <button type="submit"><i class="ti-search"></i>Search</button>
-                    </form>
+                    <div class="search-container">
+                        <form action="">
+                            <button type="button" id="btn-toggle-search" class="nav-btn search-btn">
+                                <i class="ti-search"></i> Search
+                            </button>
+
+                            <div id="search-dropdown" class="search-dropdown-box hidden">
+                                <div class="search-input-group">
+                                    
+                                    @livewire('quick-search-dropdown')
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    
                 </li>
                 @if ($ticket->status == '1' && $ticket->user_id == auth()->user()->id)
                     <li>

@@ -62,7 +62,7 @@ class TTEXTicketsController extends Controller
                 'shipment_description' => 'required',
                 'note' => 'nullable',
                 'part_returned_check' => 'required',
-                'attachments.*' => 'file|max:5120|mimes:jpg,png,pdf,jpeg,xlsx'
+                'attachments.*' => 'file|max:20480|mimes:jpg,png,pdf,jpeg,xlsx'
             ]);
             
             $ticket_info_input['user_id'] = auth()->id();

@@ -26,7 +26,7 @@ class EEGTicketsController extends Controller
                 'support_type' => 'required',
                 'priority' => 'required',
                 'description' => 'required',
-                'attachments.*' => 'file|max:5120|mimes:jpg,png,pdf,jpeg,xlsx'
+                'attachments.*' => 'file|max:20480|mimes:jpg,png,pdf,jpeg,xlsx'
             ]);
 
             $ticket_info_input['ticket_receipt'] = strip_tags($ticket_info_input['ticket_receipt']);//remove code xấu do người dùng input

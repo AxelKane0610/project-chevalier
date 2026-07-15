@@ -125,7 +125,7 @@ new class extends Component
         type="text" 
         wire:model.live="search"
         wire:click="openDropdown"
-        placeholder="Nhập mã ticket_receipt để tìm kiếm..."
+        placeholder="Nhập số phiếu để tìm kiếm nhanh..."
         style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 15px;"
         autocomplete="off"
     />

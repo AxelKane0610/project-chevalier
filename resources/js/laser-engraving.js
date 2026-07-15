@@ -12,7 +12,8 @@ document.addEventListener('submit', function (e) {
         Swal.fire({
             title: 'Bạn có chắc muốn tạo ticket này ?',
             icon: 'warning',
-            showCancelButton: true
+            showCancelButton: true,
+            heightAuto: false
         })
         .then((result) => {
             if (!result.isConfirmed) {
@@ -64,7 +65,8 @@ document.addEventListener('submit', function (e) {
                     Swal.fire({
                         title:'Error',
                         text:new_ticket.message,
-                        icon:'error'
+                        icon:'error',
+                        heightAuto: false
                     });
                     stopButtonLoading(form);
                 }

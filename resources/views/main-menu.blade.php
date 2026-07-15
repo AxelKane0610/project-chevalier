@@ -13,24 +13,21 @@
 
         <x-common-header title="Xin chào, hôm nay bạn cần hỗ trợ gì ?">
             <li>
-                <li>
-                    <div class="search-container">
-                        <form action="">
-                            @csrf
-                            <button type="button" id="btn-toggle-search" class="nav-btn search-btn">
-                                <i class="ti-search"></i> Search
-                            </button>
+                <div class="search-container">
+                    <form action="">
+                        <button type="button" id="btn-toggle-search" class="nav-btn search-btn">
+                            <i class="ti-search"></i> Search
+                        </button>
 
-                            <div id="search-dropdown" class="search-dropdown-box hidden">
-                                <div class="search-input-group">
-                                    
-                                    @livewire('quick-search-dropdown')
-                                </div>
+                        <div id="search-dropdown" class="search-dropdown-box hidden">
+                            <div class="search-input-group">
+                                
+                                @livewire('quick-search-dropdown')
                             </div>
-                        </form>
-                    </div>
-                    
-                </li>
+                        </div>
+                    </form>
+                </div>
+                
             </li>
 
         </x-common-header>

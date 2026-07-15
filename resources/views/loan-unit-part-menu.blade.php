@@ -17,9 +17,21 @@
                     </form>
                 </li>
                 <li>
-                    <form action="#">
-                        <button type="submit"><i class="ti-search"></i>Search</button>
-                    </form>
+                    <div class="search-container">
+                        <form action="">
+                            <button type="button" id="btn-toggle-search" class="nav-btn search-btn">
+                                <i class="ti-search"></i> Search
+                            </button>
+
+                            <div id="search-dropdown" class="search-dropdown-box hidden">
+                                <div class="search-input-group">
+                                    
+                                    @livewire('quick-search-dropdown')
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    
                 </li>
             </x-common-header>
 
@@ -79,7 +91,7 @@
             <input type="text" class="ticket-form-body-input" placeholder="Nhập thông tin part cần mượn (Mã part & Tên part)" name="part_request" required>
 
             
-            <label>Attach File:</label>
+            <label>Attach File:</label> 
             <div class="upload-group ">
                 <input class="ticket-form-body-input file-input" type="file" name="attachments[]" multiple>
                 <ul class="file-list"></ul>

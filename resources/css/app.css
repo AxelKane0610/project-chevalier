@@ -1054,6 +1054,49 @@ h1, h2, h3 {
 
 
 
+.detail-section{
+    background:#fff;
+    border:1px solid #e5e7eb;
+    border-radius:10px;
+    padding:24px;
+}
+
+.info-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:24px;
+}
+
+.info-item{
+    display:flex;
+    flex-direction:column;
+}
+
+.info-item label{
+    font-size:13px;
+    color:#6b7280;
+    margin-bottom:6px;
+    font-weight:600;
+}
+
+.info-value{
+    min-height:42px;
+    padding:10px 14px;
+
+    border:1px solid #dcdfe6;
+    border-radius:8px;
+
+    background:#f9fafb;
+
+    display:flex;
+    align-items:center;
+
+    color:#111827;
+}
+
+
+
+
 
 
 

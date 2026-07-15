@@ -12,7 +12,8 @@ document.addEventListener('submit', function (e) {
         Swal.fire({
             title: 'Bạn có chắc muốn tạo ticket này ?',
             icon: 'warning',
-            showCancelButton: true
+            showCancelButton: true,
+            heightAuto: false
         })
         .then((result) => {
             if (!result.isConfirmed) {
@@ -33,7 +34,8 @@ document.addEventListener('submit', function (e) {
                         title: 'Success!',
                         text: 'Ticket created successfully.',
                         icon: 'success',
-                        confirmButtonText: 'OK'
+                        confirmButtonText: 'OK',
+                        heightAuto: false
                     });
                 const newRow = 
                 `
@@ -80,7 +82,8 @@ document.addEventListener('submit', function (e) {
         Swal.fire({
             title: 'Bạn có chắc muốn edit ticket này ?',
             icon: 'warning',
-            showCancelButton: true
+            showCancelButton: true,
+            heightAuto: false
         })
         .then((result) => {
 
@@ -109,7 +112,8 @@ document.addEventListener('submit', function (e) {
                     Swal.fire({
                         title:'Success',
                         text:data.message,
-                        icon:'success'
+                        icon:'success',
+                        heightAuto: false
                     }).then(()=>{
                     location.reload();
                 });
@@ -118,7 +122,8 @@ document.addEventListener('submit', function (e) {
                     Swal.fire({
                         title:'Error',
                         text:data.message,
-                        icon:'error'
+                        icon:'error',
+                        heightAuto: false
                     });
                     stopButtonLoading(form);
                 }
@@ -137,7 +142,8 @@ document.addEventListener('submit', function (e) {
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, send it !'
+            confirmButtonText: 'Yes, send it !',
+            heightAuto: false
         }).then((result) => {
             if (result.isConfirmed) {
                 // Proceed with the approval logic
@@ -155,7 +161,8 @@ document.addEventListener('submit', function (e) {
                             title: 'Success!',
                             text: ticket_approval_response.message,
                             icon: 'success',
-                            confirmButtonText: 'OK'
+                            confirmButtonText: 'OK',
+                            heightAuto: false
                         }).then((result) => {
                             document.querySelector('.ticket-form-overlay').classList.remove('active');
                             e.target.reset();
@@ -166,7 +173,8 @@ document.addEventListener('submit', function (e) {
                             title: 'Error!',
                             text: ticket_approval_response.message,
                             icon: 'error',
-                            confirmButtonText: 'OK'
+                            confirmButtonText: 'OK',
+                            heightAuto: false
                         }).then(()=>{
                             location.reload();
                         });
@@ -178,7 +186,8 @@ document.addEventListener('submit', function (e) {
                         title: 'Error!',
                         text: error,
                         icon: 'error',
-                        confirmButtonText: 'OK'
+                        confirmButtonText: 'OK',
+                        heightAuto: false
                     })
                     console.error(error)
                 });
@@ -195,7 +204,8 @@ document.addEventListener('submit', function (e) {
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, send it !'
+            confirmButtonText: 'Yes, send it !',
+            heightAuto: false
         }).then((result) => {
             if (result.isConfirmed) {
                 // Proceed with the approval logic
@@ -213,7 +223,8 @@ document.addEventListener('submit', function (e) {
                             title: 'Success!',
                             text: ticket_approval_response.message,
                             icon: 'success',
-                            confirmButtonText: 'OK'
+                            confirmButtonText: 'OK',
+                            heightAuto: false
                         }).then((result) => {
                             document.querySelector('.ticket-form-overlay').classList.remove('active');
                             e.target.reset();
@@ -224,7 +235,8 @@ document.addEventListener('submit', function (e) {
                             title: 'Error!',
                             text: ticket_approval_response.message,
                             icon: 'error',
-                            confirmButtonText: 'OK'
+                            confirmButtonText: 'OK',
+                            heightAuto: false
                         }).then(()=>{
                             location.reload();
                         });
@@ -246,7 +258,8 @@ document.addEventListener('submit', function (e) {
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, send it !'
+            confirmButtonText: 'Yes, send it !',
+            heightAuto: false
         }).then((result) => {
             if (result.isConfirmed) {
                 // Proceed with the approval logic
@@ -264,7 +277,8 @@ document.addEventListener('submit', function (e) {
                             title: 'Success!',
                             text: ticket_approval_response.message,
                             icon: 'success',
-                            confirmButtonText: 'OK'
+                            confirmButtonText: 'OK',
+                            heightAuto: false
                         }).then((result) => {
                             document.querySelector('.ticket-form-overlay').classList.remove('active');
                             e.target.reset();
@@ -275,7 +289,8 @@ document.addEventListener('submit', function (e) {
                             title: 'Error!',
                             text: ticket_approval_response.message,
                             icon: 'error',
-                            confirmButtonText: 'OK'
+                            confirmButtonText: 'OK',
+                            heightAuto: false
                         }).then(()=>{
                             location.reload();
                         });
@@ -298,7 +313,8 @@ document.addEventListener('submit', function (e) {
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, reject it!'
+                    confirmButtonText: 'Yes, reject it!',
+                    heightAuto: false
                 }).then((result) => 
                     {
                         if (result.isConfirmed) {
@@ -317,7 +333,8 @@ document.addEventListener('submit', function (e) {
                                         title: 'Success!',
                                         text: ticket_approval_response.message,
                                         icon: 'success',
-                                        confirmButtonText: 'OK'
+                                        confirmButtonText: 'OK',
+                                        heightAuto: false
                                     }).then((result) => {
                                         document.querySelector('.ticket-form-overlay').classList.remove('active');
                                         e.target.reset();
@@ -328,7 +345,8 @@ document.addEventListener('submit', function (e) {
                                         title: 'Error!',
                                         text: ticket_approval_response.message,
                                         icon: 'error',
-                                        confirmButtonText: 'OK'
+                                        confirmButtonText: 'OK',
+                                        heightAuto: false
                                     }).then(()=>{
                                         location.reload();
                                     });
@@ -340,7 +358,8 @@ document.addEventListener('submit', function (e) {
                                     title: 'Error!',
                                     text: error,
                                     icon: 'error',
-                                    confirmButtonText: 'OK'
+                                    confirmButtonText: 'OK',
+                                    heightAuto: false
                                 })
                                 console.error(error)
                             });
@@ -359,7 +378,8 @@ document.addEventListener('submit', function (e) {
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, re-open it!'
+                confirmButtonText: 'Yes, re-open it!',
+                heightAuto: false
             }).then((result) => 
                 {
                     if (result.isConfirmed) {
@@ -378,7 +398,8 @@ document.addEventListener('submit', function (e) {
                                     title: 'Success!',
                                     text: ticket_re_open_response.message,
                                     icon: 'success',
-                                    confirmButtonText: 'OK'
+                                    confirmButtonText: 'OK',
+                                    heightAuto: false
                                 }).then((result) => {
                                     document.querySelector('.ticket-form-overlay').classList.remove('active');
                                     e.target.reset();
@@ -389,7 +410,8 @@ document.addEventListener('submit', function (e) {
                                     title: 'Error!',
                                     text: ticket_re_open_response.message,
                                     icon: 'error',
-                                    confirmButtonText: 'OK'
+                                    confirmButtonText: 'OK',
+                                    heightAuto: false
                                 }).then(()=>{
                                     location.reload();
                                 });
@@ -401,7 +423,8 @@ document.addEventListener('submit', function (e) {
                                 title: 'Error!',
                                 text: error,
                                 icon: 'error',
-                                confirmButtonText: 'OK'
+                                confirmButtonText: 'OK',
+                                heightAuto: false
                             })
                             console.error(error)
                         });

@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rules\Password;
+use Illuminate\Support\Facades\Hash;
 
 use function Laravel\Prompts\alert;
 
@@ -36,6 +38,8 @@ class UserController extends Controller
     //     ]);
             
     // }
+
+    
 
     public function authenticate(Request $request)
     {
@@ -156,8 +160,11 @@ class UserController extends Controller
         }
     }
 
-    public function User_Profile(){
-        return view('/user-profile');
+    public function User_Profile()
+    {
+        $user = User::with('leader')->findOrFail(auth()->id());
+        
+        return view('user-profile', compact('user'));
     }
 
     public function Reset_Password ($id){
@@ -174,6 +181,37 @@ class UserController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to reset password due to: ' . $e->getMessage() // Có thể bỏ ở môi trường production
+            ], 500);
+        }
+    }
+
+    public function Change_Password (Request $request) {
+        try {
+            $request->validate([
+                'new_password' => [
+                    'required',
+                    'min:8',
+                ],
+                'confirm_new_password' => [
+                    'required',
+                    'same:new_password',
+                ],
+            ]);
+
+            $user = auth()->user();
+
+            $user->password = Hash::make($request->new_password);
+
+            $user->save();
+
+            return response()->json([
+                'message' => 'Password changed successfully.',
+                'success' => true,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to change password due to: ' . $e->getMessage() // Có thể bỏ ở môi trường production
             ], 500);
         }
     }

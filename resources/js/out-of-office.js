@@ -35,7 +35,8 @@ document.addEventListener('submit', function (e) {
                         title: 'Success!',
                         text: 'Ticket created successfully.',
                         icon: 'success',
-                        confirmButtonText: 'OK'
+                        confirmButtonText: 'OK',
+                        heightAuto: false
                     });
                     const newRow = 
                     `
@@ -83,7 +84,8 @@ document.addEventListener('submit', function (e) {
         Swal.fire({
             title: 'Bạn có chắc muốn edit ticket này ?',
             icon: 'warning',
-            showCancelButton: true
+            showCancelButton: true,
+            heightAuto: false
         })
         .then((result) => {
 
@@ -112,7 +114,8 @@ document.addEventListener('submit', function (e) {
                     Swal.fire({
                         title:'Success',
                         text:data.message,
-                        icon:'success'
+                        icon:'success',
+                        heightAuto: false
                     }).then(()=>{
                     location.reload();
                 });
@@ -121,7 +124,8 @@ document.addEventListener('submit', function (e) {
                     Swal.fire({
                         title:'Error',
                         text:data.message,
-                        icon:'error'
+                        icon:'error',
+                        heightAuto: false
                     });
                     stopButtonLoading(form);
                 }
@@ -139,6 +143,67 @@ document.addEventListener('submit', function (e) {
         
         Swal.fire({
             title: 'Bạn có chắc muốn request approve nghỉ phép ?',
+            icon: 'warning',
+            showCancelButton: true,
+            heightAuto: false
+            
+        })
+        .then((result) => {
+
+            // Cancel
+            if (!result.isConfirmed) {
+                return;
+            }
+
+            // Confirm mới loading
+            startButtonLoading(form);
+
+            fetch(url,{
+                method:'POST',
+                body:formData,
+                headers:{
+                    'X-CSRF-TOKEN':
+                        document.querySelector(
+                            'input[name="_token"]'
+                        ).value
+                }
+            })
+            .then(response => response.json())
+            .then(data => 
+            {
+                if (data.success === true) {
+                    Swal.fire({
+                        title:'Success',
+                        text:data.message,
+                        icon:'success',
+                        heightAuto: false
+                    }).then(()=>{
+                    location.reload();
+                });
+                }
+                else {
+                    Swal.fire({
+                        title:'Error',
+                        text:data.message,
+                        icon:'error',
+                        heightAuto: false
+                    });
+                    stopButtonLoading(form);
+                }
+
+            })
+            .catch(error => console.error(error));
+
+        });
+    }
+
+    if (e.target && e.target.id === 'approve-out-of-office-ticket') {
+        e.preventDefault();
+
+        const form = e.target;
+        
+        Swal.fire({
+            title: 'Bạn có chắc muốn approve cho ticket này ?',
             icon: 'warning',
             showCancelButton: true,
             heightAuto: false
@@ -170,7 +235,8 @@ document.addEventListener('submit', function (e) {
                     Swal.fire({
                         title:'Success',
                         text:data.message,
-                        icon:'success'
+                        icon:'success',
+                        heightAuto: false
                     }).then(()=>{
                     location.reload();
                 });
@@ -179,64 +245,8 @@ document.addEventListener('submit', function (e) {
                     Swal.fire({
                         title:'Error',
                         text:data.message,
-                        icon:'error'
-                    });
-                    stopButtonLoading(form);
-                }
-
-            })
-            .catch(error => console.error(error));
-
-        });
-    }
-
-    if (e.target && e.target.id === 'approve-out-of-office-ticket') {
-        e.preventDefault();
-
-        const form = e.target;
-        
-        Swal.fire({
-            title: 'Bạn có chắc muốn approve cho ticket này ?',
-            icon: 'warning',
-            showCancelButton: true
-        })
-        .then((result) => {
-
-            // Cancel
-            if (!result.isConfirmed) {
-                return;
-            }
-
-            // Confirm mới loading
-            startButtonLoading(form);
-
-            fetch(url,{
-                method:'POST',
-                body:formData,
-                headers:{
-                    'X-CSRF-TOKEN':
-                        document.querySelector(
-                            'input[name="_token"]'
-                        ).value
-                }
-            })
-            .then(response => response.json())
-            .then(data => 
-            {
-                if (data.success === true) {
-                    Swal.fire({
-                        title:'Success',
-                        text:data.message,
-                        icon:'success'
-                    }).then(()=>{
-                    location.reload();
-                });
-                }
-                else {
-                    Swal.fire({
-                        title:'Error',
-                        text:data.message,
-                        icon:'error'
+                        icon:'error',
+                        heightAuto: false
                     });
                     stopButtonLoading(form);
                 }
@@ -255,7 +265,8 @@ document.addEventListener('submit', function (e) {
         Swal.fire({
             title: 'Bạn có chắc muốn reject ticket này ?',
             icon: 'warning',
-            showCancelButton: true
+            showCancelButton: true,
+            heightAuto: false
         })
         .then((result) => {
 
@@ -284,7 +295,8 @@ document.addEventListener('submit', function (e) {
                     Swal.fire({
                         title:'Success',
                         text:data.message,
-                        icon:'success'
+                        icon:'success',
+                        heightAuto: false
                     }).then(()=>{
                     location.reload();
                 });
@@ -293,7 +305,8 @@ document.addEventListener('submit', function (e) {
                     Swal.fire({
                         title:'Error',
                         text:data.message,
-                        icon:'error'
+                        icon:'error',
+                        heightAuto: false
                     });
                     stopButtonLoading(form);
                 }
@@ -312,7 +325,8 @@ document.addEventListener('submit', function (e) {
         Swal.fire({
             title: 'Bạn có chắc muốn mở lại ticket này ?',
             icon: 'warning',
-            showCancelButton: true
+            showCancelButton: true,
+            heightAuto: false
         })
         .then((result) => {
 
@@ -341,7 +355,8 @@ document.addEventListener('submit', function (e) {
                     Swal.fire({
                         title:'Success',
                         text:data.message,
-                        icon:'success'
+                        icon:'success',
+                        heightAuto: false
                     }).then(()=>{
                     location.reload();
                 });
@@ -350,7 +365,8 @@ document.addEventListener('submit', function (e) {
                     Swal.fire({
                         title:'Error',
                         text:data.message,
-                        icon:'error'
+                        icon:'error',
+                        heightAuto: false
                     });
                     stopButtonLoading(form);
                 }

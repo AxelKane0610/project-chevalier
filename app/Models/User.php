@@ -109,5 +109,48 @@ class User extends Authenticatable
         };
     }
 
+    public function getTeamDataAttribute()
+    {
+        // dd($this->team);
+        return match ((int) $this->team){
+            1 => [
+                'text' => 'ASRC',
+                'class' => 'open'
+            ],
+
+            2 => [
+                'text' => 'Call Center',
+                'class' => 'waiting-for-verifier'
+            ],
+
+            3 => [
+                'text' => 'Customer Engineer',
+                'class' => 'waiting-for-approver'
+            ],
+
+            4 => [
+                'text' => 'Front Counter',
+                'class' => 'completed'
+            ],
+
+            5 => [
+                'text' => 'Call Admin',
+                'class' => 'rejected'
+            ],
+
+            6 => [
+                'text' => 'Operation',
+                'class' => 'rejected'
+            ],
+
+
+
+            default => [
+                'text' => 'Unknown',
+                'class' => 'unknown'
+            ]
+        };
+    }
+
     
 }

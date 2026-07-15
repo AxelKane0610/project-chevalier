@@ -16,11 +16,23 @@
             </li>
 
             <li>
-                <form>
-                    <button type="submit"><i class="ti-search test-js"></i>Search</button>
-                </form>
+                <div class="search-container">
+                    <form action="">
+                        <button type="button" id="btn-toggle-search" class="nav-btn search-btn">
+                            <i class="ti-search"></i> Search
+                        </button>
 
+                        <div id="search-dropdown" class="search-dropdown-box hidden">
+                            <div class="search-input-group">
+                                
+                                @livewire('quick-search-dropdown')
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                
             </li>
+            
             <li>
                 <form action="/main-menu">
                     <button type="submit"><i class="ti-layout-grid2"></i>Quick Navigation</button>

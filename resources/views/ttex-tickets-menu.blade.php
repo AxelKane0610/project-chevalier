@@ -18,9 +18,20 @@
                     </form>
                 </li>
                 <li>
-                    <form action="" class="js-input-required-btn" >
-                        <button type="button"><i class="ti-search"></i>Search</button>
-                    </form>
+                    <div class="search-container">
+                        <form action="">
+                            <button type="button" id="btn-toggle-search" class="nav-btn search-btn">
+                                <i class="ti-search"></i> Search
+                            </button>
+
+                            <div id="search-dropdown" class="search-dropdown-box hidden">
+                                <div class="search-input-group">
+                                    
+                                    @livewire('quick-search-dropdown')
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                     
                 </li>
                 
@@ -81,10 +92,13 @@
 
                 <div class="common-table-container">
                     <h2>Pending Def Part Tickets</h2>
-                    <form class="js-input-required-btn" data-target="booking-def-part" id="booking-def-part" action="{{ route('booking-def-part') }}" method="POST">
-                        @csrf
-                        <button type="submit"><i class="ti-check"></i></button>
-                    </form>
+                    @if( (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_TTEX_TICKET_ADMIN')))
+
+                        <form class="js-input-required-btn" data-target="booking-def-part" id="booking-def-part" action="{{ route('booking-def-part') }}" method="POST">
+                            @csrf
+                            <button type="submit"><i class="ti-check"></i></button>
+                        </form>
+                    @endif
                     <table id="pending-ttex-tickets-table" class="common-table" width="100%" >
                         <tr>
                             <th width="5%"></th>
@@ -106,8 +120,10 @@
                                             <a href="/ttex-tickets-menu-details/{{ $ticket->id }}">
                                                 <button><i class="ti-arrow-right" ></i></button>
                                             </a>
-                                            <input type="checkbox" name="booking_def[]" value="{{ $ticket->id }}" form="booking-def-part">
+                                            @if( (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_TTEX_TICKET_ADMIN')))
 
+                                                <input type="checkbox" name="booking_def[]" value="{{ $ticket->id }}" form="booking-def-part">
+                                            @endif
                                         </td>
                                         <!-- <td>{{ $ticket->shipment_type }}</td> -->
                                         <td>
@@ -219,7 +235,7 @@
 
                 <label>Thông tin người gửi</label>
                 <input type="text" class="ticket-form-body-input" placeholder="Nhập thông tin người gửi" name="sender_info" required>
-                @livewire('quick-search-dropdown')
+                
 
                 <label>Thông tin người nhận</label>
                 <input type="text" class="ticket-form-body-input" placeholder="Nhập thông tin người nhận" name="receiver_info" required>
@@ -230,7 +246,7 @@
                 <label>Note</label>
                 <input type="text" class="ticket-form-body-input" placeholder="Nhập ghi chú" name="note">
 
-                <label style="color: red">Bạn có muốn những bill này được thu hồi (Chỉ dành cho onsite tỉnh) ?</label>
+                <label style="color: red; font-weight: 700;">Bạn có muốn những bill này được thu hồi (Chỉ dành cho onsite tỉnh) ?</label>
                 <select name="part_returned_check" class="ticket-form-body-input" id="part_returned_check" required>
                     <option value="1">Có (Hệ thống sẽ tự tạo ticket điều tin def về)</option>
                     <option value="2">Không</option>

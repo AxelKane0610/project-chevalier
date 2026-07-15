@@ -18,11 +18,23 @@
             </li>
 
             <li>
-                <form>
-                    <button type="submit"><i class="ti-search test-js"></i>Search</button>
-                </form>
+                <div class="search-container">
+                    <form action="">
+                        <button type="button" id="btn-toggle-search" class="nav-btn search-btn">
+                            <i class="ti-search"></i> Search
+                        </button>
 
+                        <div id="search-dropdown" class="search-dropdown-box hidden">
+                            <div class="search-input-group">
+                                
+                                @livewire('quick-search-dropdown')
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                
             </li>
+
             <li>
                 <form action="/main-menu">
                     <button type="submit"><i class="ti-layout-grid2"></i>Quick Navigation</button>
@@ -57,7 +69,7 @@
                         @break
 
                         @case(3)
-                            @if(auth()->user()->hasRole('ROLE_APPROVE_ROLLBACK') ) <!-- Chỉ hiển thị nút action nếu người dùng là leader của ticket -->
+                            @if(auth()->user()->hasRole('ROLE_APPROVE_ROLLBACK') || auth()->user()->hasRole('ROLE_APPROVE_EXPORT_DATA')) <!-- Chỉ hiển thị nút action nếu người dùng là leader của ticket -->
                                 @can('is-leader-of-ticket', $ticket)
                                 <li>
                                     <form id="approve-ticket-form" class="js-input-required-btn" data-target="approve-ticket-form" action="{{ route('approve-ticket', $ticket->id) }}" method="POST">
@@ -77,10 +89,10 @@
                             
                         @break
 
-                        @case(4)
+                        
                         @case(5)
                         @case(6)
-                            @if($ticket->user_id == auth()->user()->id || auth()->user()->hasRole('ROLE_SUPER_ADMIN'))
+                            @if($ticket->user_id == auth()->user()->id || auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_SW_TICKET_ADMIN'))
                             <li>
                                 <form id="re-open-ticket-form" class="js-input-required-btn" data-target="re-open-ticket-form" action="{{ route('re-open-ticket', $ticket->id) }}" method="PATCH">
                                     @csrf
@@ -178,7 +190,7 @@
                     </x-common-attachments-table>
                 </li>
                     
-                @if(($ticket->status == 1 || $ticket->status == 4 || $ticket->status == 5) && $ticket->user_id == auth()->user()->id)
+                @if(($ticket->status == '1') && $ticket->user_id == auth()->user()->id)
                 <x-slot:footer>
                     <button type="button" class="js-input-required-btn" data-target="edit-ticket-details"><i class="ti-pencil"></i> Edit</button>
                 </x-slot:footer>

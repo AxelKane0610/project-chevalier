@@ -18,9 +18,20 @@
                 </form>
             </li>
             <li>
-                <form action="" class="js-input-required-btn" >
-                    <button type="button"><i class="ti-search"></i>Search</button>
-                </form>
+                <div class="search-container">
+                    <form action="">
+                        <button type="button" id="btn-toggle-search" class="nav-btn search-btn">
+                            <i class="ti-search"></i> Search
+                        </button>
+
+                        <div id="search-dropdown" class="search-dropdown-box hidden">
+                            <div class="search-input-group">
+                                
+                                @livewire('quick-search-dropdown')
+                            </div>
+                        </div>
+                    </form>
+                </div>
                 
             </li>
             <li>
@@ -165,7 +176,7 @@
                     
                 </li>
 
-                @if(($ticket->status == 1) && $ticket->user_id == auth()->user()->id)
+                @if(($ticket->status == '1') && $ticket->user_id == auth()->user()->id)
                 <x-slot:footer>
                     <button type="button" class="js-input-required-btn" data-target="edit-ticket-details"><i class="ti-pencil"></i> Edit</button>
                 </x-slot:footer>

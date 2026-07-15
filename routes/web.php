@@ -38,7 +38,14 @@ Route::middleware(['auth'])->group(function () {
         return view('main-menu');
     });
 
-    Route::get('/user-profile', [UserController::class,'User_Profile'])->name('user-profile');
+    // Route::get('/user-profile', [UserController::class,'User_Profile'])->name('user-profile');
+    Route::get('/user-profile', [UserController::class, 'User_Profile'])
+    ->middleware('auth')
+    ->name('user-profile');
+
+    Route::post('/user/change-password', [UserController::class, 'Change_Password'])
+    ->middleware('auth')
+    ->name('user.change-password');
 
     Route::get('/attachments/{folder}/{id}/{filename}', [AttachmentController::class, 'show']);
 
