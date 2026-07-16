@@ -58,7 +58,6 @@
                     @endif
                 @break
                 
-                @case(3)
                 @case(4)
                     @if($ticket->user_id == auth()->user()->id || auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_LASER_ENGRAVING_ADMIN'))
                         <li>

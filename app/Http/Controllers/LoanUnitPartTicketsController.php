@@ -83,7 +83,14 @@ class LoanUnitPartTicketsController extends Controller
                 'message' => 'Ticket created successfully',
                 'ticket_id' => $ticket->id,
                 'ticket_receipt' => $ticket->ticket_receipt,
-                'status' => $ticket->status,
+                'ticket_owner' => $ticket->user_owner->fullname,
+                'status' => match($ticket->status) {
+                    '1' => 'Open',
+                    '2' => 'In Progress',
+                    '3' => 'Completed',
+                    '4' => 'Canceled',
+                    default => 'Unknown'
+                },
                 'customer_unit_info' => $ticket->customer_unit_info,
             ]);
         } catch (\Exception $e) {

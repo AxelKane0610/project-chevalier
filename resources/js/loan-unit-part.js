@@ -65,6 +65,7 @@ document.addEventListener('submit', function (e) {
                             </a>
                         </td>
                         <td>${new_ticket.ticket_receipt}</td>
+                        <td>${new_ticket.ticket_owner}</td>
                         <td>${new_ticket.status}</td>
                         <td>${new_ticket.customer_unit_info}</td>
                     </tr>

@@ -16,7 +16,7 @@ class InvoiceExceptionalTicketsController extends Controller
 {
     //
     public function Show_Pending_Tickets(){ 
-        if (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_INVOICE_EXCEPTIONAL_L1_APPROVER')) {
+        if (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_INVOICE_EXCEPTIONAL_L1_APPROVER') || auth()->user()->hasRole('ROLE_INVOICE_EXCEPTIONAL_L2_APPROVER')) {
             $tickets = Invoice_Exceptional_Tickets_Model::whereIn('status', ['1', '2', '3'])->get();
             $tickets_waiting_approval = Invoice_Exceptional_Tickets_Model::where('status', '3')->get();
             $all_tickets = Invoice_Exceptional_Tickets_Model::all();
@@ -24,7 +24,7 @@ class InvoiceExceptionalTicketsController extends Controller
         } 
         else {
             $tickets = Invoice_Exceptional_Tickets_Model::where('user_id', auth()->id()) //lọc ra ticket của user đó
-                ->whereIn('status', ['1']) // lọc ra ticket đang pending
+                ->whereIn('status', ['1', '2', '3']) // lọc ra ticket đang pending
                 ->get();
 
             
@@ -148,6 +148,25 @@ class InvoiceExceptionalTicketsController extends Controller
                     return response()->json([
                         'success' => true,
                         'message' => 'Ticket created successfully & Approval request sent !',
+                        'ticket_receipt' => $ticket->id,
+                        'support_type' => match($ticket->support_type)
+                        {
+                            '1' => 'Hóa đơn xuất sau (1 máy)',
+                            '2' => 'Hóa đơn xuất sau (Nhiều máy)',
+                            '3' => 'Kích hoạt bảo hành (1 máy)',
+                            '4' => 'Kích hoạt bảo hành (Nhiều máy)',
+                            default => 'Unknown',
+                        },
+                        'description' => $ticket->description,
+                        'product_model' => $ticket->product_model,
+                        'status' => match($ticket->status) {
+                            '1' => 'Open',
+                            '2' => 'Waiting approve invoice',
+                            '3' => 'Waiting re-activate warranty',
+                            '4' => 'Completed',
+                            '5' => 'Rejected',
+                            default => 'Unknown'
+                        },
                     ]);
                 } else {
                     // Xử lý lỗi nếu phản hồi không thành công
