@@ -337,35 +337,7 @@ class TTEXTicketsController extends Controller
                 ], 500);
             }
 
-            //     $send_ticket_complete_notification = Http::post(config('services.api_service.sw_ticket_complete_url'), [
-            //         'ticket_id' => $ticket->id,
-            //         'ticket_owner_name'   => $ticket->user_owner->fullname,
-            //         'ticket_owner_email' => $ticket->user_owner->email,
-            //         'receipt' => $ticket->ticket_receipt,
-            //         'description' => $ticket->description,
-            //         'completed by' => $ticket->completed_by->fullname,
-            //         'ticket_comment' => $ticket_info_input['ticket_comment'],
-            //         'status' => $status,
-            //     ]);
-            //     if ($send_ticket_complete_notification->successful()) {
-                    
-            //         return response()->json([
-            //             'success' => true,
-            //             'message' => 'Ticket closed and notification sent successfully',
-            //         ]);
-            //     } else {
-            //         // Xử lý lỗi nếu phản hồi không thành công
-            //         return response()->json([
-            //             'success' => false,
-            //             'message' => 'Ticket closed but cant send notification due to: ' . $send_ticket_complete_notification->body(),
-            //         ], 500);
-            //     } 
-            // } else {
-            //     return response()->json([
-            //         'success' => false,
-            //         'message' => 'Chỉ có ticket ở trạng thái "Open" hoặc "In Progress" mới có thể đóng !',
-            //     ], 400);
-            // }
+           
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,

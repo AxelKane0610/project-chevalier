@@ -1,21 +1,22 @@
 console.log("JS LOADEDD");
 
-document.getElementById('search-invoice-exceptional-receipt-input').addEventListener('keyup', function () {
 
-    let keyword = this.value.toLowerCase();
-    let rows = document.querySelectorAll('#all-invoice-exceptional-tickets-table tbody tr');
+const searchInput = document.getElementById('search-invoice-exceptional-receipt-input');
 
-    rows.forEach(row => {
-        let text = row.textContent.toLowerCase();
+if (searchInput) {
+    searchInput.addEventListener('keyup', function () {
 
-        if (text.includes(keyword)) {
-            row.style.display = '';
-        } else {
-            row.style.display = 'none';
-        }
+        let keyword = this.value.toLowerCase();
+        let rows = document.querySelectorAll('#all-invoice-exceptional-tickets-table tbody tr');
+
+        rows.forEach(row => {
+            let text = row.textContent.toLowerCase();
+
+            row.style.display = text.includes(keyword) ? '' : 'none';
+        });
+
     });
-
-});
+}
 
 
 document.addEventListener('submit', function (e) {

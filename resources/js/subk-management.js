@@ -1,21 +1,22 @@
 console.log('js loaded');
 
-document.getElementById('search-user-input').addEventListener('keyup', function () {
 
-    let keyword = this.value.toLowerCase();
-    let rows = document.querySelectorAll('#subk-management-users-table tbody tr');
+const searchInput = document.getElementById('search-user-input');
 
-    rows.forEach(row => {
-        let text = row.textContent.toLowerCase();
+if (searchInput) {
+    searchInput.addEventListener('keyup', function () {
 
-        if (text.includes(keyword)) {
-            row.style.display = '';
-        } else {
-            row.style.display = 'none';
-        }
+        let keyword = this.value.toLowerCase();
+        let rows = document.querySelectorAll('#subk-management-users-table tbody tr');
+
+        rows.forEach(row => {
+            let text = row.textContent.toLowerCase();
+
+            row.style.display = text.includes(keyword) ? '' : 'none';
+        });
+
     });
-
-});
+}
 
 $(document).ready(function() {
     $('#role-select').select2({

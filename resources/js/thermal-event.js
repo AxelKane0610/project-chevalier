@@ -2,22 +2,22 @@ import Swal from "sweetalert2";
 
 console.log("JS LOADEDD");
 
-document.getElementById('search-thermal-event-receipt-input').addEventListener('keyup', function () {
+const searchInput = document.getElementById('search-thermal-event-receipt-input');
 
-    let keyword = this.value.toLowerCase();
-    let rows = document.querySelectorAll('#all-thermal-event-tickets-table tbody tr');
+if (searchInput) {
+    searchInput.addEventListener('keyup', function () {
 
-    rows.forEach(row => {
-        let text = row.textContent.toLowerCase();
+        let keyword = this.value.toLowerCase();
+        let rows = document.querySelectorAll('#all-thermal-event-tickets-table tbody tr');
 
-        if (text.includes(keyword)) {
-            row.style.display = '';
-        } else {
-            row.style.display = 'none';
-        }
+        rows.forEach(row => {
+            let text = row.textContent.toLowerCase();
+
+            row.style.display = text.includes(keyword) ? '' : 'none';
+        });
+
     });
-
-});
+}
 
 document.addEventListener('submit', function (e) {
     // Kiểm tra xem form nào đang được submit dựa vào ID
