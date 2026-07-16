@@ -77,6 +77,54 @@
                         </tbody>
                     </table>
                 </div>
+
+                <div class="common-table-container">
+                    <h2>All Tickets</h2>
+                    <div class="common-table-filter">
+                        <div class="search-box">
+                            <i class="ti-search"></i>
+                            <input type="text" placeholder="Search Receipt" id="search-loan-unit-part-receipt-input">
+                        </div>
+
+                        
+
+
+                    </div>
+                    <table id="all-loan-unit-part-tickets-table" class="common-table" width="100%" >
+                        <thead>
+                            <th width="5%"></th>
+                            <th width="15%">Receipt</th>
+                            <th width="15%">User Owner</th>
+                            <th width="15%">Status</th>
+                            <th width="15%">Customer Unit Info</th>
+                            
+
+                        </thead>
+                    
+                        <tbody>
+                            @foreach ($all_tickets as $ticket)
+                                <tr>
+                                    <td>
+                                        <a href="/loan-unit-part-ticket-details/{{ $ticket->id }}">
+                                            <button><i class="ti-arrow-right" ></i></button>
+                                        </a>
+                                        
+                                    </td>
+                                    <td>{{ $ticket->ticket_receipt }}</td>
+                                    <td>{{ $ticket->user_owner->fullname }}</td>
+                                    <td>
+                                        <span class="ticket-status {{ $ticket->status_data['class'] }}">
+                                            {{ $ticket->status_data['text'] }}
+                                        </span>
+                                    </td>
+                                    <td>{{ $ticket->customer_unit_info }}</td>
+
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+
             </div>
         </div>
 

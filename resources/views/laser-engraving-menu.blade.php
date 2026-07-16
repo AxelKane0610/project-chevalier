@@ -85,6 +85,56 @@
 
                 </div>
 
+                <div class="common-table-container">
+                    <h2>All Tickets</h2>
+                    <div class="common-table-filter">
+                        <div class="search-box">
+                            <i class="ti-search"></i>
+                            <input type="text" placeholder="Search Receipt, info base" id="search-laser-engraving-input">
+                        </div>
+
+
+                    </div>
+                    <table id="all-laser-engraving-tickets-table" class="common-table" width="100%" >
+                        <thead>
+                            <th width="5%"></th>
+                            <th width="14%">Receipt</th>
+                            <th width="20%">Info Base</th>
+                            <th width="39%">Description</th>
+                            <th width="11%">Priority</th>
+                            <th width="11%">Status</th>
+                        </thead>
+                    
+                        <tbody>
+                            @foreach ($all_tickets as $ticket)
+                                
+                                    <tr>
+                                        <td>
+                                            <a href="/laser-engraving-menu-details/{{ $ticket->id }}">
+                                                <button><i class="ti-arrow-right" ></i></button>
+                                            </a>
+                                        </td>
+                                        <td>{{ $ticket->ticket_receipt }}</td>
+                                        <td>{{ $ticket->info_base }}</td>
+                                        <td>{{ $ticket->description }}</td>
+                                        <td>
+                                            <span class="ticket-priority {{ $ticket->priority_data['class'] }}">
+                                                {{ $ticket->priority_data['text'] }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="ticket-status {{ $ticket->status_data['class'] }}">
+                                                {{ $ticket->status_data['text'] }}
+                                            </span></td>
+                                    </tr>
+                                
+                            @endforeach
+                        </tbody>
+
+                    </table>
+
+                </div>
+
                     <x-common-ticket-form title="Laser Engraving Support" action1="/create-laser-engraving-ticket" id="create-laser-engraving-ticket-form"> <!-- action="/create-laser-engraving-ticket" method="POST"> -->
 
                         <label class="ticket-form-body-input">Receipt</label>

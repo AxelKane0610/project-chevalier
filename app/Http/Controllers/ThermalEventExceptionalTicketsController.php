@@ -19,10 +19,11 @@ class ThermalEventExceptionalTicketsController extends Controller
 {
     //
     public function Show_Pending_Tickets(){ 
-        if (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_THERMAL_EVENT_ADMIN')) {
+        if (auth()->user()->hasRole('ROLE_SUPER_ADMIN')) {
             $tickets = Thermal_Event_Exceptional_Tickets_Model::whereIn('status', ['1', '2', '3'])->get();
-            $tickets_waiting_approval = Thermal_Event_Exceptional_Tickets_Model::where('status', 3)->get();
-            return view('thermal-event-tickets-menu', compact('tickets', 'tickets_waiting_approval'));
+            $tickets_waiting_approval = Thermal_Event_Exceptional_Tickets_Model::whereIn('status', ['2', '3'])->get();
+            $all_tickets = Thermal_Event_Exceptional_Tickets_Model::all();
+            return view('thermal-event-tickets-menu', compact('tickets', 'tickets_waiting_approval', 'all_tickets'));
         } 
         else {
             $tickets = Thermal_Event_Exceptional_Tickets_Model::where('user_id', auth()->id()) //lọc ra ticket của user đó
@@ -31,13 +32,13 @@ class ThermalEventExceptionalTicketsController extends Controller
 
             
 
-            $tickets_waiting_approval = Thermal_Event_Exceptional_Tickets_Model::where('status', 3)
-                ->whereHas('user_owner', function ($query) { //Lọc ra những ticket có user_owner có leader_id là id của user đang đăng nhập, tức là lọc ra những ticket của những user mà user đang đăng nhập là leader của họ, rồi mới lấy ra những ticket đó để trả về view
-                    $query->where('leader_id', auth()->id());
-                })
+            $tickets_waiting_approval = Thermal_Event_Exceptional_Tickets_Model::whereIn('status', ['2', '3'])
+                ->where('user_id', auth()->id())
                 ->get();
+
+            $all_tickets = Thermal_Event_Exceptional_Tickets_Model::where('user_id', auth()->id())->get();
             
-            return view('thermal-event-tickets-menu', compact('tickets', 'tickets_waiting_approval'));
+            return view('thermal-event-tickets-menu', compact('tickets', 'tickets_waiting_approval', 'all_tickets'));
 
             
         }

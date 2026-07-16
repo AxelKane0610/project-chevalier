@@ -79,6 +79,87 @@
 
                     </table>
                 </div>
+
+                <div class="common-table-container">
+                    <h2>Pending Approval Tickets</h2>
+                    <table id="pending-thermal-event-tickets-table" class="common-table" width="100%" >
+                        <thead>
+                            <th width="5%"></th>
+                            <th width="14%">Receipt</th>
+                            <th width="15%">User Owner</th>
+                            <th width="39%">Issue Description</th>
+                            <th width="11%">Status</th>
+                        </thead>
+                    
+                        <tbody>
+                            @foreach ($tickets_waiting_approval as $ticket)
+                                
+                                    <tr>
+                                        <td>
+                                            <a href="/thermal-event-tickets-menu-details/{{ $ticket->id }}">
+                                                <button><i class="ti-arrow-right" ></i></button>
+                                            </a>
+                                        </td>
+                                        <td>{{ $ticket->ticket_receipt }}</td>
+                                        <td>{{ $ticket->user_owner->fullname ?? 'N/A' }}</td>
+                                        <td>{{ $ticket->description }}</td>
+                                        
+                                        <td>
+                                            <span class="ticket-status {{ $ticket->status_data['class'] }}">
+                                                {{ $ticket->status_data['text'] }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    
+                            @endforeach
+                        </tbody>    
+
+                    </table>
+                </div>
+
+                <div class="common-table-container">
+                    <h2>All Tickets</h2>
+                    <div class="common-table-filter">
+                        <div class="search-box">
+                            <i class="ti-search"></i>
+                            <input type="text" placeholder="Search Receipt" id="search-thermal-event-receipt-input">
+                        </div>
+
+                    </div>
+                    <table id="all-thermal-event-tickets-table" class="common-table" width="100%" >
+                        <thead>
+                            <th width="5%"></th>
+                            <th width="14%">Receipt</th>
+                            <th width="15%">User Owner</th>
+                            <th width="39%">Issue Description</th>
+                            <th width="11%">Status</th>
+                        </thead>
+                    
+                        <tbody>
+                            @foreach ($all_tickets as $ticket)
+                                
+                                    <tr>
+                                        <td>
+                                            <a href="/thermal-event-tickets-menu-details/{{ $ticket->id }}">
+                                                <button><i class="ti-arrow-right" ></i></button>
+                                            </a>
+                                        </td>
+                                        <td>{{ $ticket->ticket_receipt }}</td>
+                                        <td>{{ $ticket->user_owner->fullname ?? 'N/A' }}</td>
+                                        <td>{{ $ticket->description }}</td>
+                                        
+                                        <td>
+                                            <span class="ticket-status {{ $ticket->status_data['class'] }}">
+                                                {{ $ticket->status_data['text'] }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    
+                            @endforeach
+                        </tbody>
+
+                    </table>
+                </div>
                 
             </div>
 

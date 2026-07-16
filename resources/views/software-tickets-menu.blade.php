@@ -100,7 +100,7 @@
                         <div class="common-table-container">
                             <h2>Waiting Approval</h2>
 
-                            <table class="common-table" width="100%" >
+                            <table class="common-table" id="pending-approval-software-tickets-table" width="100%" >
                                 <tr>
                                     <th width="5%"></th>
                                     <th width="14%">Receipt</th>
@@ -148,6 +148,62 @@
                         </div>
                     @endif
                 @endif
+
+                <div class="common-table-container">
+                    <h2>All tickets</h2>
+                    <div class="common-table-filter">
+                        <div class="search-box">
+                            <i class="ti-search"></i>
+                            <input type="text" placeholder="Search Your Receipt or issue" id="search-software-ticket-input">
+                        </div>
+
+                    </div>
+                    <table id="all-software-tickets-table" class="common-table" width="100%" >
+                        <thead>
+                            <th width="5%"></th>
+                            <th width="14%">Receipt</th>
+                            <th width="20%">Type of request</th>
+                            <th width="39%">Issue Description</th>
+                            <th width="11%">Priority</th>
+                            <th width="11%">Status</th>
+                        </thead>
+                    
+                        <tbody>
+                            @foreach ($all_tickets as $ticket)
+                                
+                                    <tr>
+                                        <td>
+                                            <a href="/software-tickets-menu-details/{{ $ticket->id }}">
+                                                <button><i class="ti-arrow-right" ></i></button>
+                                            </a>
+                                        </td>
+                                        <td>{{ $ticket->ticket_receipt }}</td>
+                                        <td>
+                                            
+                                            <span class="ticket-support-type {{ $ticket->support_type_data['class'] }}">
+                                                {{ $ticket->support_type_data['text'] }}
+                                            </span>
+                                        </td>
+                                        <td>{{ $ticket->description }}</td>
+                                        <td>
+
+                                            <span class="ticket-priority {{ $ticket->priority_data['class'] }}">
+                                                {{ $ticket->priority_data['text'] }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="ticket-status {{ $ticket->status_data['class'] }}">
+                                                {{ $ticket->status_data['text'] }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    
+                            @endforeach
+                        </tbody>
+
+                    </table>
+
+                </div>
 
             </div>
 

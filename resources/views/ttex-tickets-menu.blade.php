@@ -155,7 +155,7 @@
                     <div class="common-table-filter">
                         <div class="search-box">
                             <i class="ti-search"></i>
-                            <input type="text" placeholder="Search Receipt, TTEX Bill" id="search-spectre-crown-warehouse-input">
+                            <input type="text" placeholder="Search Receipt, TTEX Bill" id="search-ttex-bill-input">
                         </div>
 
                         
@@ -163,8 +163,8 @@
 
                     </div>
 
-                    <table id="pending-ttex-tickets-table" class="common-table" width="100%" >
-                        <tr>
+                    <table id="all-ttex-tickets-table" class="common-table" width="100%" >
+                        <thead>
                             <th width="5%"></th>
                             <th width="10%">TTEX Bill</th>
                             <th width="10%">User Owner</th>
@@ -173,7 +173,7 @@
                             <th width="20%">Mô tả hàng hóa</th>
                             <th width="10%">Status</th>
 
-                        </tr>
+                        </thead>
                     
                         <tbody>
                             @foreach ($tickets as $ticket)

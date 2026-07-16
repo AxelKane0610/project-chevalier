@@ -98,10 +98,11 @@ class EEGTicketsController extends Controller
     }
 
     public function Show_Pending_Tickets(){ 
-        if (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_TICKET_SW_ADMIN')) {
+        if (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_SW_TICKET_ADMIN')) {
             $tickets = EEG_Software_Ticket::whereIn('status', ['1', '2', '3'])->get();
             $tickets_waiting_approval = EEG_Software_Ticket::where('status', 3)->get();
-            return view('software-tickets-menu', compact('tickets', 'tickets_waiting_approval'));
+            $all_tickets = EEG_Software_Ticket::all();
+            return view('software-tickets-menu', compact('tickets', 'tickets_waiting_approval', 'all_tickets'));
         } 
         else {
             $tickets = EEG_Software_Ticket::where('user_id', auth()->id()) //lọc ra ticket của user đó
@@ -116,7 +117,8 @@ class EEGTicketsController extends Controller
                 })
                 ->get();
             
-            return view('software-tickets-menu', compact('tickets', 'tickets_waiting_approval'));
+            $all_tickets = EEG_Software_Ticket::where('user_id', auth()->id())->get();
+            return view('software-tickets-menu', compact('tickets', 'tickets_waiting_approval', 'all_tickets'));
 
             
         }

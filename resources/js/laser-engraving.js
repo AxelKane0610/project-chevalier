@@ -1,4 +1,22 @@
 console.log("JS LOADEDD");
+
+document.getElementById('search-laser-engraving-input').addEventListener('keyup', function () {
+
+    let keyword = this.value.toLowerCase();
+    let rows = document.querySelectorAll('#all-laser-engraving-tickets-table tbody tr');
+
+    rows.forEach(row => {
+        let text = row.textContent.toLowerCase();
+
+        if (text.includes(keyword)) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+
+});
+
 document.addEventListener('submit', function (e) {
     const formData = new FormData(e.target);
     const url = e.target.getAttribute('action');

@@ -2,7 +2,22 @@ import Swal from "sweetalert2";
 
 console.log("JS LOADED");
 
+document.getElementById('search-software-ticket-input').addEventListener('keyup', function () {
 
+    let keyword = this.value.toLowerCase();
+    let rows = document.querySelectorAll('#all-software-tickets-table tbody tr');
+
+    rows.forEach(row => {
+        let text = row.textContent.toLowerCase();
+
+        if (text.includes(keyword)) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+
+});
 
 document.addEventListener('submit', function (e) {
     // Kiểm tra xem form nào đang được submit dựa vào ID

@@ -19,16 +19,17 @@ class LoanUnitPartTicketsController extends Controller
     //
     public function Show_Pending_Tickets(){ 
         if (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_LOAN_UNIT_ADMIN')) {
-            $tickets = Loan_Unit_Part_Tickets_Model::whereIn('status', ['1'])->get();
-            $tickets_waiting_return = Loan_Unit_Part_Tickets_Model::where('status', '2')->get();
-            return view('loan-unit-part-menu', compact('tickets', 'tickets_waiting_return'));
+            $tickets = Loan_Unit_Part_Tickets_Model::whereIn('status', ['1', '2'])->get();
+            $all_tickets = Loan_Unit_Part_Tickets_Model::all();
+            return view('loan-unit-part-menu', compact('tickets', 'all_tickets'));
         } 
         else {
             $tickets = Loan_Unit_Part_Tickets_Model::where('user_id', auth()->id()) //lọc ra ticket của user đó
                 ->whereIn('status', ['1', '2']) // lọc ra ticket đang pending
                 ->get();
+            $all_tickets = Loan_Unit_Part_Tickets_Model::where('user_id', auth()->id());
             
-            return view('loan-unit-part-menu', compact('tickets'));
+            return view('loan-unit-part-menu', compact('tickets', 'all_tickets'));
             
         }
         

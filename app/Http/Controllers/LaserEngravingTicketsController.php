@@ -23,13 +23,16 @@ class LaserEngravingTicketsController extends Controller
         // return view('laser-engraving-menu', compact('tickets'));
         if (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_LASER_ENGRAVING_ADMIN')) {
             $tickets = Laser_Engraving_Tickets_Model::whereIn('status', ['1', '2'])->get();
-            return view('laser-engraving-menu', compact('tickets'));
+            $all_tickets = Laser_Engraving_Tickets_Model::all();
+            return view('laser-engraving-menu', compact('tickets', 'all_tickets'));
         } 
         else {
             $tickets = Laser_Engraving_Tickets_Model::where('user_id', auth()->id()) //lọc ra ticket của user đó
                 ->whereIn('status', ['1', '2']) // lọc ra ticket đang pending
                 ->get();
-            return view('laser-engraving-menu', compact('tickets'));
+            
+            $all_tickets = Laser_Engraving_Tickets_Model::where('user_id',auth()->id());
+            return view('laser-engraving-menu', compact('tickets', 'all_tickets'));
         }
     }
 

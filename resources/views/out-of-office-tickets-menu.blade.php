@@ -90,9 +90,99 @@
                     </tbody>
                 </table>
             </div>
+
+            @if($tickets_waiting_approval->count() > 0)
+                <div class="common-table-container">
+                    <h2>Pending Approval Tickets</h2>
+
+                    <table class="common-table pending-out-of-office-tickets-table" width="100%" >
+                        <tr>
+                            <th width="5%"></th>
+                            <th width="10%">User Owner</th>
+                            <th width="10%">Type of Leave</th>
+                            <th width="10%">Start Date</th>
+                            <th width="10%">End Date</th>
+                            <th width="25%">Reasons for leave</th>
+                            <th width="10%">Status</th>
+                        </tr>
+                    
+                        <tbody>
+                            @foreach ($tickets_waiting_approval as $ticket)
+                                
+                                <tr>
+                                    <td>
+                                        <a href="/out-of-office-tickets-menu-details/{{ $ticket->id }}">
+                                            <button><i class="ti-arrow-right" ></i></button>
+                                        </a>
+                                    </td>
+                                    <td>{{ $ticket->user_owner->fullname }}</td>
+                                    <td>
+                                        <span class="ticket-status {{ $ticket->type_of_leave_data['class'] }}">
+                                            {{ $ticket->type_of_leave_data['text'] }}
+                                        </span>
+                                    </td>
+                                    <td>{{ $ticket->start_date }}</td>
+                                    <td>{{ $ticket->end_date }}</td>
+                                    <td>{{ $ticket->reasons_for_leave }}</td>
+                                    <td>
+                                        <span class="ticket-status {{ $ticket->status_data['class'] }}">
+                                            {{ $ticket->status_data['text'] }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                    
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                @endif
+
+            <div class="common-table-container">
+                <h2>All Tickets</h2>
+
+                <table class="common-table pending-out-of-office-tickets-table" width="100%" >
+                    <tr>
+                        <th width="5%"></th>
+                        <th width="10%">User Owner</th>
+                        <th width="10%">Type of Leave</th>
+                        <th width="10%">Start Date</th>
+                        <th width="10%">End Date</th>
+                        <th width="25%">Reasons for leave</th>
+                        <th width="10%">Status</th>
+                    </tr>
+                
+                    <tbody>
+                        @foreach ($all_tickets as $ticket)
+                            
+                            <tr>
+                                <td>
+                                    <a href="/out-of-office-tickets-menu-details/{{ $ticket->id }}">
+                                        <button><i class="ti-arrow-right" ></i></button>
+                                    </a>
+                                </td>
+                                <td>{{ $ticket->user_owner->fullname }}</td>
+                                <td>
+                                    <span class="ticket-status {{ $ticket->type_of_leave_data['class'] }}">
+                                        {{ $ticket->type_of_leave_data['text'] }}
+                                    </span>
+                                </td>
+                                <td>{{ $ticket->start_date }}</td>
+                                <td>{{ $ticket->end_date }}</td>
+                                <td>{{ $ticket->reasons_for_leave }}</td>
+                                <td>
+                                    <span class="ticket-status {{ $ticket->status_data['class'] }}">
+                                        {{ $ticket->status_data['text'] }}
+                                    </span>
+                                </td>
+                            </tr>
+                                
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
 
-        <x-common-ticket-form title="Out of Office Ticket Form" action1="route {{'create-out-of-office-ticket'}} " id="create-out-of-office-ticket-form">
+        <x-common-ticket-form title="Out of Office Ticket Form" action1="/create-out-of-office-ticket " id="create-out-of-office-ticket-form">
             <label class="ticket-form-body-input">Type of leave</label>
             <select name="type_of_leave" class="ticket-form-body-input">
                 <option value="1">Xin nghỉ phép</option>
