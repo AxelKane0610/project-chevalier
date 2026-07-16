@@ -344,6 +344,23 @@ class EEGTicketsController extends Controller
                 $ticket->support_type = $ticket_info_input['support_type'];
                 $ticket->priority = $ticket_info_input['priority'];
                 $ticket->description = $ticket_info_input['description'];
+
+                if ($request->hasFile('attachments')) { //Kiểm tra xem có file nào được upload lên không
+
+                    foreach ($request->file('attachments') as $file) { //Duyệt qua từng file được upload lên
+                        $originalName = $file->getClientOriginalName();
+                        $folderPath = '1/'.$ticket->id;
+                        $filePath = $file->storeAs($folderPath, $originalName, 'attachments'); // Lưu file vào thư mục '/'
+                        
+                        Attachments_Model::create([
+                            'type_of_ticket' => 1, // Giả sử 1 là mã cho software ticket
+                            'ticket_id' => $ticket->id,
+                            'file_path' => $filePath,   
+                            'name' => $originalName,// Lưu tên gốc của file vào cơ sở dữ liệu
+                        ]);
+                    }
+                    
+                }
                 
                 $ticket->save();
                 tracking_info_service::add(
