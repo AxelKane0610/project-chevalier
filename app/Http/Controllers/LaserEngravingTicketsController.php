@@ -31,7 +31,7 @@ class LaserEngravingTicketsController extends Controller
                 ->whereIn('status', ['1', '2']) // lọc ra ticket đang pending
                 ->get();
             
-            $all_tickets = Laser_Engraving_Tickets_Model::where('user_id',auth()->id());
+            $all_tickets = Laser_Engraving_Tickets_Model::where('user_id',auth()->id())->get();
             return view('laser-engraving-menu', compact('tickets', 'all_tickets'));
         }
     }

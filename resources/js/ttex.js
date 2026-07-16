@@ -116,9 +116,9 @@ document.addEventListener('submit', function (e) {
                         icon: 'success',
                         confirmButtonText: 'OK',
                         heightAuto: false
+                    }).then((result) => {
+                        location.reload();
                     });
-                    location.reload();
-
                 } else {
                     Swal.fire({
                         title:'Error',

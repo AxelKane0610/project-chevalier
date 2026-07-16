@@ -241,7 +241,7 @@
                 <input type="text" class="ticket-form-body-input" placeholder="Nhập thông tin người nhận" name="receiver_info" required>
 
                 <label>Mô tả hàng hóa</label>
-                <input type="text" class="ticket-form-body-input multiple-row" placeholder="Nhập mô tả hàng hóa. VD: SCHCM25-00001 (FAN)" name="shipment_description" required>
+                <textarea class="ticket-form-body-input multiple-row" placeholder="Nhập mô tả hàng hóa. VD: SCHCM25-00001 (FAN)" name="shipment_description"  required></textarea>
 
                 <label>Note</label>
                 <input type="text" class="ticket-form-body-input" placeholder="Nhập ghi chú" name="note">
@@ -268,5 +268,29 @@
         </div>
 
     </body>
+
+    <script>
+  const textarea = document.getElementById('shipment_description');
+  let isFocused = false;
+
+  // Khi người dùng click vào ô
+  textarea.addEventListener('focus', function() {
+    if (!isFocused) {
+      // Chỉ đưa con trỏ về đầu ở LẦN ĐẦU TIÊN focus vào ô
+      setTimeout(() => {
+        this.setSelectionRange(0, 0);
+      }, 0); // setTimeout giúp chạy ngay sau khi trình duyệt định vị click mặc định
+      isFocused = true;
+    }
+  });
+
+  // Khi người dùng click ra ngoài (mất focus)
+  textarea.addEventListener('blur', function() {
+    // Reset lại trạng thái để lần sau click vào lại nhảy lên đầu
+    isFocused = false;
+  });
+</script>
+
+    
 
 </html>

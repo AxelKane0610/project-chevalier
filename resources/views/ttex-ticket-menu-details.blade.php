@@ -285,7 +285,7 @@
                 <input type="text" class="ticket-form-body-input" name="receiver_info" value="{{ $ticket->receiver_info }}">
 
                 <label>Mô tả hàng hóa</label>
-                <input type="text" class="ticket-form-body-input multiple-row" name="shipment_description" value="{{ $ticket->shipment_description }}">
+                <textarea class="ticket-form-body-input multiple-row" name="shipment_description">{{ $ticket->shipment_description }}</textarea>
 
                 <label>Note</label>
                 <input type="text" class="ticket-form-body-input" name="note" value="{{ $ticket->note }}">
@@ -354,5 +354,27 @@
         </div>
 
     </body>
+
+    <script>
+  const textarea = document.getElementById('shipment_description');
+  let isFocused = false;
+
+  // Khi người dùng click vào ô
+  textarea.addEventListener('focus', function() {
+    if (!isFocused) {
+      // Chỉ đưa con trỏ về đầu ở LẦN ĐẦU TIÊN focus vào ô
+      setTimeout(() => {
+        this.setSelectionRange(0, 0);
+      }, 0); // setTimeout giúp chạy ngay sau khi trình duyệt định vị click mặc định
+      isFocused = true;
+    }
+  });
+
+  // Khi người dùng click ra ngoài (mất focus)
+  textarea.addEventListener('blur', function() {
+    // Reset lại trạng thái để lần sau click vào lại nhảy lên đầu
+    isFocused = false;
+  });
+</script>
 
 </html>
