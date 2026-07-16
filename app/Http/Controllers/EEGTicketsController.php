@@ -256,6 +256,7 @@ class EEGTicketsController extends Controller
                 $ticket->issue_owner = $ticket_info_input['issue_owner'];
                 $ticket->completed_date = now();
                 $ticket->ticket_completed_by = auth()->id();
+                // dd($ticket->user_owner->fullname);
                 $ticket->save();
 
                 switch ($ticket_info_input['ticket_status']) {
@@ -280,6 +281,7 @@ class EEGTicketsController extends Controller
                     1, //1 là mã cho software ticket
                     $action,
                 );
+                // dd($ticket->completed_by->fullname);
 
                 $send_ticket_complete_notification = Http::post(config('services.api_service.sw_ticket_complete_url'), [
                     'ticket_id' => $ticket->id,
@@ -287,10 +289,11 @@ class EEGTicketsController extends Controller
                     'ticket_owner_email' => $ticket->user_owner->email,
                     'receipt' => $ticket->ticket_receipt,
                     'description' => $ticket->description,
-                    'completed by' => $ticket->completed_by->fullname,
+                    'completed_by' => $ticket->completed_by->fullname,      
                     'ticket_comment' => $ticket_info_input['ticket_comment'],
                     'status' => $status,
                 ]);
+
                 if ($send_ticket_complete_notification->successful()) {
                     
                     return response()->json([
