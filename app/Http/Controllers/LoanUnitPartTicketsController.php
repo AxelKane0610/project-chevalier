@@ -27,7 +27,7 @@ class LoanUnitPartTicketsController extends Controller
             $tickets = Loan_Unit_Part_Tickets_Model::where('user_id', auth()->id()) //lọc ra ticket của user đó
                 ->whereIn('status', ['1', '2']) // lọc ra ticket đang pending
                 ->get();
-            $all_tickets = Loan_Unit_Part_Tickets_Model::where('user_id', auth()->id());
+            $all_tickets = Loan_Unit_Part_Tickets_Model::where('user_id', auth()->id())->get(); //lọc ra tất cả ticket của user đó
             
             return view('loan-unit-part-menu', compact('tickets', 'all_tickets'));
             
