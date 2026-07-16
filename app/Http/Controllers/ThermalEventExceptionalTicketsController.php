@@ -168,6 +168,18 @@ class ThermalEventExceptionalTicketsController extends Controller
                         return response()->json([
                             'success' => true,
                             'message' => 'Ticket created successfully & Approval request sent !',
+                            'ticket_id' => $ticket->id,
+                            'ticket_receipt' => $ticket->ticket_receipt,
+                            'user_owner' => $ticket->user_owner->fullname,
+                            'description' => $ticket->description,
+                            'status' => match ($ticket->status) {
+                                '1' => 'Open',
+                                '2' => 'Waiting for verifier',
+                                '3' => 'Waiting for approver',
+                                '4' => 'Completed',
+                                '5' => 'Rejected',
+                                default => 'Unknown',
+                            }
                         ]);
                     } else {
                         // Xử lý lỗi nếu phản hồi không thành công
