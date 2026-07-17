@@ -134,7 +134,7 @@ class EEGTicketsController extends Controller
     public function Re_Open_Ticket($id){
         $ticket = EEG_Software_Ticket::with('user_owner')->findOrFail($id);
         try {
-            if ($ticket->status == 4 || $ticket->status ==5 || $ticket->status == 6) {
+            if ($ticket->status == 4 || $ticket->status == 5 || $ticket->status == 6) {
                 $ticket->status = 1; //đổi status thành "Đang chờ"
                 tracking_info_service::add(
                     $ticket->id,
@@ -282,6 +282,7 @@ class EEGTicketsController extends Controller
                     $action,
                 );
                 // dd($ticket->completed_by->fullname);
+                $ticket = EEG_Software_Ticket::with('user_owner','completed_by')->findOrFail($id);
 
                 $send_ticket_complete_notification = Http::post(config('services.api_service.sw_ticket_complete_url'), [
                     'ticket_id' => $ticket->id,
