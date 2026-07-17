@@ -527,6 +527,10 @@ class InvoiceExceptionalTicketsController extends Controller
         }
     }
 
+    public function Request_Sale_Support(Request $request, $id){
+
+    }
+
 
 
     

@@ -51,7 +51,7 @@ Route::middleware(['auth'])->group(function () {
 
     
     //1. EEG Ticket
-    Route::middleware(['role:ROLE_SUPER_ADMIN,ROLE_SW_TICKET_USER,ROLE_SW_TICKET_ADMIN'])->group(function () {
+    Route::middleware(['role:ROLE_SUPER_ADMIN,ROLE_SW_TICKET_USER,ROLE_SW_TICKET_ADMIN,ROLE_APPROVE_ROLLBACK,ROLE_APPROVE_EXPORT_DATA'])->group(function () {
     
         Route::get('/software-tickets-menu', [EEGTicketsController::class, 'Show_Pending_Tickets']);
         
@@ -130,7 +130,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/invoice-exceptional-approve-lv2/{id}', [InvoiceExceptionalTicketsController::class,'Invoice_Exceptional_Approve_Lv2'])->name('invoice-exceptional-approve-lv2');
         Route::post('/invoice-exceptional-reject/{id}', [InvoiceExceptionalTicketsController::class,'Invoice_Exceptional_Reject'])->name('invoice-exceptional-reject');
         Route::patch('/re-open-invoice-exceptional-ticket/{id}', [InvoiceExceptionalTicketsController::class,'Re_Open_Invoice_Exceptional_Ticket'])->name('re-open-invoice-exceptional-ticket');
-
+        Route::post('/request-sale-support-invoice-exceptional-ticket/{id}', [InvoiceExceptionalTicketsController::class, 'Request_Sale_Support'])->name('request-sale-support-invoice-exceptional-ticket');
     });
 
     //6. Quản lý SubK
@@ -158,7 +158,7 @@ Route::middleware(['auth'])->group(function () {
     });
 
     //11. Quản lý kho Crown - Spectre
-    Route::middleware(['role:ROLE_SUPER_ADMIN'])->group(function () {
+    Route::middleware(['role:ROLE_SUPER_ADMIN,ROLE_SPECTRE_CROWN_WAREHOUSE_ADMIN'])->group(function () {
         Route::get('/spectre-crown-warehouse-menu', [SpectreCrownWarehouseController::class, 'index']);
         Route::get('/spectre-crown-warehouse-item-details/{id}', [SpectreCrownWarehouseController::class, 'Item_Details']);
 

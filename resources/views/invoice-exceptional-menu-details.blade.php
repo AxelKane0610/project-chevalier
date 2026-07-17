@@ -33,6 +33,12 @@
                 
             </li>
 
+            <li>
+                <form action="/main-menu">
+                    <button type="submit"><i class="ti-layout-grid2"></i>Quick Navigation</button>
+                </form>
+            </li>
+
             @switch($ticket->status)
                 @case(1)
                     @if( (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_INVOICE_EXCEPTIONAL_USER')) && $ticket->user_id == auth()->user()->id)
@@ -91,6 +97,14 @@
                                 <button type="submit"><i class="ti-back-left"></i>Request Re-Open</button>
                             </form>
                         </li>
+
+                        <li>
+                            <form >
+                                <button type="button" class="js-input-required-btn" data-target="request-sale-support-invoice-exceptional-ticket"><i class="ti-angle-double-right"></i> Request Sale Support</button>
+                            </form>
+                        </li>
+
+
                     @endif
                 @break
 
@@ -360,6 +374,20 @@
                     <button class="ticket-form-body-input" type="submit" >Save</button> 
                 </x-slot:footer>
             </x-common-ticket-form>
+
+            <x-common-ticket-form title="Request Sale Support" id="request-sale-support-invoice-exceptional-ticket" action1="{{ route('request-sale-support-invoice-exceptional-ticket', $ticket->id) }}">
+                @method('POST')
+                <label>Email team sale cần request hỗ trợ</label>
+                <input type="text" class="ticket-form-body-input" name="email_request" value="" required>
+
+                <label>Hạn chót trả lời</label>
+                <input type="datetime-local" class="ticket-form-body-input" name="deadline_date" value="" required>
+
+                <x-slot:footer>
+                    <button class="ticket-form-body-input" type="submit" >Request sale support</button> 
+                </x-slot:footer>
+            </x-common-ticket-form>
+
         </div>
     </body>
 </html>
