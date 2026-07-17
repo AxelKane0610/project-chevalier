@@ -178,7 +178,7 @@
 
 
             <label class="ticket-form-body-input">Description</label>
-            <textarea name="description" class="ticket-form-body-input multiple-row" placeholder="Nhập mô tả vấn đề bạn cần hỗ trợ" required></textarea>
+            <textarea name="description" class="ticket-form-body-input multiple-row" placeholder="Nhập lỗi máy của KH" required></textarea>
             
             <label class="ticket-form-body-input">Attach File:</label>
             <div class="upload-group ">
