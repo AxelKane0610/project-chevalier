@@ -304,7 +304,6 @@ class TTEXTicketsController extends Controller
                 
                 $ticket->status = $ticket_info_input['status'];
                 $ticket->ttex_bill = $ticket_info_input['ttex_bill'];
-                $ticket->booking_date = now();
                 $ticket->save();
 
                 switch ($ticket_info_input['status']) {

@@ -45,6 +45,7 @@ return [
         'out_of_office_approve_reject_from_web' => env('API_POWER_AUTOMATE_OUT_OF_OFFICE_APPROVE_REJECT_FROM_WEB'),
         'thermal_event_request_url' => env('API_POWER_AUTOMATE_THERMAL_EVENT_REQUEST'),
         'invoice_exceptional_create_ticket_request_url' => env('API_POWER_AUTOMATE_CREATE_INVOICE_EXCEPTIONAL_REQUEST'),
+        'invoice_exceptional_request_sale_support_url' => env('API_POWER_AUTOMATE_INVOICE_EXCEPTIONAL_REQUEST_SALE_SUPPORT'),
     ],
 
 ];

@@ -9,6 +9,7 @@ use App\Models\Attachments_Model;
 use App\Models\Comments_Model;
 use App\Models\User;
 use App\Services\tracking_info_service;
+use DateTime;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Http;
 
@@ -528,7 +529,93 @@ class InvoiceExceptionalTicketsController extends Controller
     }
 
     public function Request_Sale_Support(Request $request, $id){
+        $request_info = $request->validate([
+            'email_request' => 'required|email',
+            'deadline_date' => 'required',
+        ]);
 
+        $request_info['email_request'] = strip_tags($request_info['email_request']);
+        // $request_info['deadline_date'] = $request_info['deadline_date']->format('Y-m-d H:i:s');
+        $date = new DateTime($request_info['deadline_date']); 
+        $request_info['deadline_date'] = $date->format('Y-m-d H:i:s');
+
+        $ticket = Invoice_Exceptional_Tickets_Model::with('user_owner', 'active_attachments')->findOrFail($id);
+        try {
+            if ($ticket->status == '5' && ($ticket->support_type == '1' || $ticket->support_type == '2')) {
+                $attachments = $ticket->active_attachments->map(function ($file) {
+                    return [
+                        'fileName' => basename($file->file_path),
+                        'fileContent' => base64_encode(
+                            Storage::disk('attachments')->get(
+                                $file->file_path
+                            )
+                        ),
+                    ];
+                });
+
+                $send_approval = Http::post(config('services.api_service.invoice_exceptional_request_sale_support_url'), [
+                    'ticket_id' => $ticket->id,
+                    'ticket_owner' => $ticket->user_owner->fullname,
+                    'ticket_owner_email' => $ticket->user_owner->email,
+                    'leader_email' => User::where('id', $ticket->user_owner->leader_id)->value('email'),
+                    'receipt' => $ticket->ticket_receipt,
+                    'invoice_number' => $ticket->invoice_number,
+                    'serial_number' => $ticket->serial_number,
+                    'product_number' => $ticket->product_number,
+                    'product_model' => $ticket->product_model,
+                    'invoice_date' => $ticket->invoice_date,
+                    'expired_date' => $ticket->expired_date,
+                    'retail_name' => $ticket->retail_name,
+                    'company_customer_name' => $ticket->company_customer_name,
+
+                    'support_type' => match($ticket->support_type)
+                    {
+                        '1' => 'Hóa đơn xuất sau (1 máy)',
+                        '2' => 'Hóa đơn xuất sau (Nhiều máy)',
+                        '3' => 'Kích hoạt bảo hành (1 máy)',
+                        '4' => 'Kích hoạt bảo hành (Nhiều máy)',
+                        default => 'Unknown',
+                    },
+                    'support_type_id' => $ticket->support_type,
+                    'description' => $ticket->description,
+                    'attachments' => $attachments,
+                    'email_request' => $request_info['email_request'],
+                    'deadline_date' => $request_info['deadline_date'],
+                ]);
+
+
+                if ($send_approval->successful()) {
+                    tracking_info_service::add(
+                        $ticket->id,
+                        auth()->id(),
+                        7, //1 là mã cho software ticket
+                        'requested sale support at',
+                    );
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'Sale support request sent successfully',
+                    ]);
+                } else {
+                    // Xử lý lỗi nếu phản hồi không thành công
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Sale support request sent failed, API returned error: ' . $send_approval->body(),
+                    ], 500);
+                }
+                
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Không thể request support do ticket không phải ticket hóa đơn xuất sau và đang ở trạng thái "Rejected" !',
+                ], 500);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to request sale support due to: ',
+                'error' => $e->getMessage(), // Có thể bỏ ở môi trường production
+            ], 500);
+        }
     }
 
 
