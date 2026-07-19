@@ -113,6 +113,7 @@ class InvoiceExceptionalTicketsController extends Controller
             try {
                 $send_approval = Http::post(config('services.api_service.invoice_exceptional_create_ticket_request_url'), [
                     'ticket_id' => $ticket->id,
+                    'ticket_status' => '2',
                     'ticket_owner' => $send_approve_ticket->user_owner->fullname,
                     'ticket_owner_email' => $send_approve_ticket->user_owner->email,
                     'leader_email' => User::where('id', $send_approve_ticket->user_owner->leader_id)->value('email'),
@@ -337,30 +338,123 @@ class InvoiceExceptionalTicketsController extends Controller
                 
                 $ticket->status = '2';
                 $ticket->save();
-                tracking_info_service::add(
-                    $ticket->id, 
-                    auth()->id(), 
-                    7,
-                    'sent approval request at',
-                );
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Approval request sent successfully',
-                ]);
+                $attachments = $ticket->active_attachments->map(function ($file) {
+                    return [
+                        'fileName' => basename($file->file_path),
+                        'fileContent' => base64_encode(
+                            Storage::disk('attachments')->get(
+                                $file->file_path
+                            )
+                        ),
+                    ];
+                });
+                try {
+                    $send_approval = Http::post(config('services.api_service.invoice_exceptional_create_ticket_request_url'), [
+                        'ticket_id' => $ticket->id,
+                        'ticket_status' => '2',
+                        'ticket_owner' => $ticket->user_owner->fullname,
+                        'ticket_owner_email' => $ticket->user_owner->email,
+                        'leader_email' => User::where('id', $ticket->user_owner->leader_id)->value('email'),
+                        'receipt' => $ticket->ticket_receipt,
+                        'invoice_number' => $ticket->invoice_number,
+                        'serial_number' => $ticket->serial_number,
+                        'product_number' => $ticket->product_number,
+                        'product_model' => $ticket->product_model,
+                        'invoice_date' => $ticket->invoice_date,
+                        'expired_date' => $ticket->expired_date,
+                        'retail_name' => $ticket->retail_name,
+                        'company_customer_name' => $ticket->company_customer_name,
+
+                        'support_type' => match($ticket->support_type)
+                        {
+                            '1' => 'Hóa đơn xuất sau (1 máy)',
+                            '2' => 'Hóa đơn xuất sau (Nhiều máy)',
+                            '3' => 'Kích hoạt bảo hành (1 máy)',
+                            '4' => 'Kích hoạt bảo hành (Nhiều máy)',
+                            default => 'Unknown',
+                        },
+                        'support_type_id' => $ticket->support_type,
+                        'description' => $ticket->description,
+                        'attachments' => $attachments,
+                    ]);
+
+                    if ($send_approval->successful()) {
+                        tracking_info_service::add(
+                            $ticket->id, 
+                            auth()->id(), 
+                            7,
+                            'sent approval request at'
+                        );
+                    } else {
+                        // Xử lý lỗi nếu phản hồi không thành công
+                        return response()->json([
+                            'success' => false,
+                            'message' => 'Failed to send approve due to: ' . $send_approval->body(),
+                        ], 500);
+                    } 
+                } catch (\Exception $e) {
+                    // Xử lý lỗi nếu có
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Failed to send approve due to: ',
+                        'error' => $e->getMessage(), // Có thể bỏ ở môi trường production
+                    ], 500);
+                }
                 
             } else if ($ticket->status == '1' && $ticket->highest_approved_step == '2') {
                 $ticket->status = '3';
                 $ticket->save();
-                tracking_info_service::add(
-                    $ticket->id, 
-                    auth()->id(), 
-                    7,
-                    'sent approval request at',
-                );
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Approval request sent successfully',
-                ]);
+                try {
+                    $send_approval = Http::post(config('services.api_service.invoice_exceptional_create_ticket_request_url'), [
+                        'ticket_id' => $ticket->id,
+                        'ticket_status' => '3',
+                        'ticket_owner' => $ticket->user_owner->fullname,
+                        'ticket_owner_email' => $ticket->user_owner->email,
+                        'leader_email' => User::where('id', $ticket->user_owner->leader_id)->value('email'),
+                        'receipt' => $ticket->ticket_receipt,
+                        'invoice_number' => $ticket->invoice_number,
+                        'serial_number' => $ticket->serial_number,
+                        'product_number' => $ticket->product_number,
+                        'product_model' => $ticket->product_model,
+                        'invoice_date' => $ticket->invoice_date,
+                        'expired_date' => $ticket->expired_date,
+                        'retail_name' => $ticket->retail_name,
+                        'company_customer_name' => $ticket->company_customer_name,
+
+                        'support_type' => match($ticket->support_type)
+                        {
+                            '1' => 'Hóa đơn xuất sau (1 máy)',
+                            '2' => 'Hóa đơn xuất sau (Nhiều máy)',
+                            '3' => 'Kích hoạt bảo hành (1 máy)',
+                            '4' => 'Kích hoạt bảo hành (Nhiều máy)',
+                            default => 'Unknown',
+                        },
+                        'support_type_id' => $ticket->support_type,
+                        'description' => $ticket->description,
+                    ]);
+
+                    if ($send_approval->successful()) {
+                        tracking_info_service::add(
+                            $ticket->id, 
+                            auth()->id(), 
+                            7,
+                            'sent approval request at'
+                        );
+                    } else {
+                        // Xử lý lỗi nếu phản hồi không thành công
+                        return response()->json([
+                            'success' => false,
+                            'message' => 'Failed to send approve due to: ' . $send_approval->body(),
+                        ], 500);
+                    } 
+                } catch (\Exception $e) {
+                    // Xử lý lỗi nếu có
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Failed to send approve due to: ',
+                        'error' => $e->getMessage(), // Có thể bỏ ở môi trường production
+                    ], 500);
+                }
 
             } else {
                 return response()->json([
@@ -371,7 +465,7 @@ class InvoiceExceptionalTicketsController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to create ticket due to ' .$e->getMessage(),
+                'message' => 'Failed to send approve due to ' .$e->getMessage(),
                 'error' => $e->getMessage(), // Có thể bỏ ở môi trường production
             ], 500);
         }
