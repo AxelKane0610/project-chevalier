@@ -226,12 +226,17 @@
                 </select>
 
                 <lable>Part Status</label>
-                <select name="part_status" class="ticket-form-body-input">
+                <select name="part_status" class="ticket-form-body-input" id="def_unused_return_check">
                     <option value="1">Good part</option>
                     <option value="2">Def part</option>
                     <option value="3">Good part - Unused</option>
 
                 </select>
+
+                <div id="def_part_return_deadline">
+                    <lable>Hạn trả def cho kho</label>
+                    <input type="datetime-local" class="ticket-form-body-input" name="part_return_deadline" required>
+                </div>
 
                 <label>Thông tin người gửi</label>
                 <input type="text" class="ticket-form-body-input" placeholder="Nhập thông tin người gửi" name="sender_info" required>

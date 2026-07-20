@@ -248,3 +248,43 @@ document.addEventListener('submit', function (e) {
 
     }
 });
+
+const checkDefUnusedPartReturn =
+    document.getElementById('def_unused_return_check');
+
+const DefUnusedPartReturnContainer =
+    document.getElementById('def_part_return_deadline');
+
+if (checkDefUnusedPartReturn && DefUnusedPartReturnContainer) {
+
+    function toggleDefReturnDeadlineField() {
+        const inputs = DefUnusedPartReturnContainer.querySelectorAll('input');
+
+        if (checkDefUnusedPartReturn.value === '2' || checkDefUnusedPartReturn.value === '3') {
+
+            def_part_return_deadline.style.display = 'block';
+
+            inputs.forEach(input => {
+                input.required = true;
+                input.disabled = false;
+            });
+
+        } else {
+
+            def_part_return_deadline.style.display = 'none';
+
+            inputs.forEach(input => {
+                input.required = false;
+                input.disabled = true;
+            });
+
+        }
+    }
+
+    checkDefUnusedPartReturn.addEventListener(
+        'change',
+        toggleDefReturnDeadlineField
+    );
+
+    toggleDefReturnDeadlineField();
+}

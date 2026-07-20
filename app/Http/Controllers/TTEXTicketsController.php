@@ -57,6 +57,7 @@ class TTEXTicketsController extends Controller
                 'category' => 'required',
                 'shipment_type' => 'required',
                 'part_status' => 'required',
+                'part_return_deadline' => 'required_if:part_status,2,3',
                 'sender_info' => 'required',
                 'receiver_info' => 'required',
                 'shipment_description' => 'required',
@@ -71,6 +72,11 @@ class TTEXTicketsController extends Controller
             $ticket_info_input['receiver_info'] = strip_tags($ticket_info_input['receiver_info']);
             $ticket_info_input['shipment_description'] = strip_tags($ticket_info_input['shipment_description']);
             $ticket_info_input['note'] = strip_tags($ticket_info_input['note']);
+            if($ticket_info_input['part_status'] == '2' || $ticket_info_input['part_status'] == '3' ){
+                $ticket_info_input['part_return_deadline'] = strip_tags($ticket_info_input['part_return_deadline']);
+            } else {
+                $ticket_info_input['part_return_deadline'] = null;
+            }
 
 
             
