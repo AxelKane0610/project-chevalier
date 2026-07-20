@@ -40,7 +40,7 @@
 
             @switch($ticket->status)
                 @case(1)
-                    @if( (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_THERMAL_EVENT_USER')) && $ticket->user_id == auth()->user()->id)
+                    @if( auth()->user()->hasRole('ROLE_SUPER_ADMIN') || $ticket->user_id == auth()->user()->id)
                         <li>
                             <form class="js-input-required-btn" data-target="send-approve-thermal-event" id="send-approve-thermal-event" action = "{{ route('send-approve-thermal-event', $ticket->id)}}" method="POST">
                                 @method('POST')
