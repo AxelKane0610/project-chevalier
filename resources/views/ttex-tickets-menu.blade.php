@@ -113,37 +113,50 @@
                         </tr>
                     
                         <tbody>
-                            @foreach ($tickets_def_part_pending as $ticket)
-                                
-                                    <tr>
-                                        <td>
-                                            <a href="/ttex-tickets-menu-details/{{ $ticket->id }}">
-                                                <button><i class="ti-arrow-right" ></i></button>
-                                            </a>
-                                            @if( (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_TTEX_TICKET_ADMIN')))
+                            
 
-                                                <input type="checkbox" name="booking_def[]" value="{{ $ticket->id }}" form="booking-def-part">
-                                            @endif
-                                        </td>
-                                        <!-- <td>{{ $ticket->shipment_type }}</td> -->
-                                        <td>
-                                            <span class="ticket-status {{ $ticket->shipment_type_data['class'] }}">
-                                                {{ $ticket->shipment_type_data['text'] }}
-                                            </span>
-                                        </td>
-                                        <td>{{ $ticket->sender_info  }}</td>
-                                        <td>{{ $ticket->receiver_info }}</td>
-                                        <td>{{ $ticket->shipment_description }}</td>
-                                        <td>{{ $ticket->note }}</td>
-                                        <td>{{ $ticket->part_return_deadline }}</td>
-                                        
-                                        <td>
-                                            <span class="ticket-status {{ $ticket->status_data['class'] }}">
-                                                {{ $ticket->status_data['text'] }}
-                                            </span>
-                                        </td>
-                                    </tr>
+                            @foreach($tickets_def_part_pending as $date => $group)
+
+                                <tr class="table-secondary">
+                                    <td colspan="10">
+                                        ▼ Hạn trả def cho kho:
+                                        {{ \Carbon\Carbon::parse($date)->format('d/m/Y') }}
+                                        ({{ count($group) }})
+                                    </td>
+                                </tr>
+
+                                @foreach($group as $ticket)
+
+                                <tr>
+                                    <td>
+                                        <a href="/ttex-tickets-menu-details/{{ $ticket->id }}">
+                                            <button><i class="ti-arrow-right" ></i></button>
+                                        </a>
+                                        @if( (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_TTEX_TICKET_ADMIN')))
+
+                                            <input type="checkbox" name="booking_def[]" value="{{ $ticket->id }}" form="booking-def-part">
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <span class="ticket-status {{ $ticket->shipment_type_data['class'] }}">
+                                            {{ $ticket->shipment_type_data['text'] }}
+                                        </span>
+                                    </td>
+                                    <td>{{ $ticket->sender_info  }}</td>
+                                    <td>{{ $ticket->receiver_info }}</td>
+                                    <td>{{ $ticket->shipment_description }}</td>
+                                    <td>{{ $ticket->note }}</td>
+                                    <td>{{ $ticket->part_return_deadline }}</td>
                                     
+                                    <td>
+                                        <span class="ticket-status {{ $ticket->status_data['class'] }}">
+                                            {{ $ticket->status_data['text'] }}
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                @endforeach
+
                             @endforeach
                         </tbody>
 
