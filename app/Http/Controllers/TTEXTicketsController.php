@@ -24,6 +24,7 @@ class TTEXTicketsController extends Controller
 
             $tickets_def_part_pending = TTEX_Tickets_Model::where('status', '1')
             ->whereIn('part_status', ['2', '3'])
+            ->orderBy('part_return_deadline', 'asc')
             ->get()
             ->groupBy(function ($ticket) {
                 return \Carbon\Carbon::parse($ticket->part_return_deadline)
