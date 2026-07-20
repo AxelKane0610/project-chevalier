@@ -379,6 +379,10 @@ class InvoiceExceptionalTicketsController extends Controller
                     ]);
 
                     if ($send_approval->successful()) {
+                        return response()->json([
+                            'success' => true,
+                            'message' => 'Sent approve successfully'
+                        ]);
                         tracking_info_service::add(
                             $ticket->id, 
                             auth()->id(), 
