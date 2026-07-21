@@ -27,7 +27,7 @@
             <div class="spectre-crown-warehouse-menu-content">
 
                 <form action=""  >
-                    <button type="button" class="js-input-required-btn" id="create-spectre-crown-warehouse-ticket-btn" data-target="create-spectre-crown-warehouse-ticket-form"><i class="ti-plus"></i> Nhập kho</button>
+                    <button type="button" class="js-input-required-btn" data-target="create-spectre-crown-warehouse-item-form"><i class="ti-plus"></i> Nhập kho</button>
                 </form>
                 
 
@@ -141,7 +141,27 @@
 
                     </table>
 
+                    {{-- <div class="d-flex justify-content-end"> --}}
+                    <div width="100%">
+                        {{ $items->links('pagination::bootstrap-5') }}
+                    </div>
+
                 </div>
+
+                <x-common-ticket-form title="Nhập kho" id="create-spectre-crown-warehouse-item-form" action1="">
+                    @method('POST')
+                    <label>Asset Type</label>
+                    <select name="asset_type" class="ticket-form-body-input">
+                        <option value="1">BUFFER</option>
+                        <option value="2">CRT Unit</option>
+                        <option value="3">DASS Unit</option>
+                        <option value="4">DEMO Unit</option>
+                        <option value="5">DOA</option>
+                        <option value="6">Support Unit</option>
+
+                    </select>
+                    
+                </x-common-ticket-form>
             
         </div>
     </body>

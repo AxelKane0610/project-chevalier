@@ -14,7 +14,7 @@ class SpectreCrownWarehouseController extends Controller
 {
     //
     public function index() {
-        $items = Spectre_Crown_Warehouse_Model::all();
+        $items = Spectre_Crown_Warehouse_Model::paginate(10);
         return view('spectre-crown-warehouse-menu', compact('items'));
     }
 

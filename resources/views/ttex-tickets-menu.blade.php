@@ -214,6 +214,9 @@
                         </tbody>
 
                     </table>
+                    <div class="d-flex justify-content-end">
+                        {{ $tickets->links('pagination::bootstrap-5') }}
+                    </div>
                 </div>
                 
             </div>
