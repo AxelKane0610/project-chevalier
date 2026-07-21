@@ -46,7 +46,12 @@ class TTEXTicketsController extends Controller
                 ['user_id', auth()->id()]
             ])
             ->whereIn('part_status', ['2', '3'])
-            ->get();
+            ->orderBy('part_return_deadline', 'asc')
+            ->get()
+            ->groupBy(function ($ticket) {
+                return \Carbon\Carbon::parse($ticket->part_return_deadline)
+                    ->format('Y-m-d');
+            });
 
             return view('ttex-tickets-menu', compact('tickets', 'tickets_good_part_pending', 'tickets_def_part_pending'));
 
