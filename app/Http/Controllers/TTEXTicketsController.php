@@ -231,7 +231,7 @@ class TTEXTicketsController extends Controller
                     'sender_info' => 'required',
                     'receiver_info' => 'required',
                     'shipment_description' => 'required',
-                    'note' => 'required',
+                    'note' => 'nullable',
                     'attachments.*' => 'file|max:20480|mimes:jpg,png,jpeg'
             ]);
 
