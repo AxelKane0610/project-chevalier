@@ -161,6 +161,8 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:ROLE_SUPER_ADMIN,ROLE_SPECTRE_CROWN_WAREHOUSE_ADMIN'])->group(function () {
         Route::get('/spectre-crown-warehouse-menu', [SpectreCrownWarehouseController::class, 'index']);
         Route::get('/spectre-crown-warehouse-item-details/{id}', [SpectreCrownWarehouseController::class, 'Item_Details']);
+        Route::get('/spectre-crown-warehouse-menu', [SpectreCrownWarehouseController::class, 'index']);
+
 
     });
 
