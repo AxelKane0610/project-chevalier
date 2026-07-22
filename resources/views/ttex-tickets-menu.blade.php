@@ -214,9 +214,7 @@
                         </tbody>
 
                     </table>
-                    <div class="d-flex justify-content-end">
-                        {{ $tickets->links('pagination::bootstrap-5') }}
-                    </div>
+                    
                 </div>
                 
             </div>
@@ -290,27 +288,7 @@
 
     </body>
 
-    <script>
-  const textarea = document.getElementById('shipment_description');
-  let isFocused = false;
 
-  // Khi người dùng click vào ô
-  textarea.addEventListener('focus', function() {
-    if (!isFocused) {
-      // Chỉ đưa con trỏ về đầu ở LẦN ĐẦU TIÊN focus vào ô
-      setTimeout(() => {
-        this.setSelectionRange(0, 0);
-      }, 0); // setTimeout giúp chạy ngay sau khi trình duyệt định vị click mặc định
-      isFocused = true;
-    }
-  });
-
-  // Khi người dùng click ra ngoài (mất focus)
-  textarea.addEventListener('blur', function() {
-    // Reset lại trạng thái để lần sau click vào lại nhảy lên đầu
-    isFocused = false;
-  });
-</script>
 
     
 
