@@ -320,6 +320,7 @@ class TTEXTicketsController extends Controller
                 
                 $ticket->status = $ticket_info_input['status'];
                 $ticket->ttex_bill = $ticket_info_input['ttex_bill'];
+                $ticket->booking_date = now('UTC')->toDateString();
                 $ticket->save();
 
                 switch ($ticket_info_input['status']) {
