@@ -386,20 +386,9 @@
                     <x-common-ticket-comments-card
                         :comments="$ticket->ticket_comments"
                         :showAttachments="true"
+                        :actionRoute="route('add-comment-software-ticket', $ticket->id)"
                     >
-                        <x-slot:footer>
-                            <form action="{{ route('add-comment-software-ticket', $ticket->id) }}">
-                                <label>Write a comment</label>
-                                <textarea name="comment" style="height: 100px; font-family: inherit ;" placeholder="Nhập comment tại đây"></textarea>
-                                <label class="ticket-form-body-input">Attach File:</label>
-                                <div class="upload-group ">
-                                    <input class="ticket-form-body-input file-input" type="file" name="attachments[]" multiple>
-                                    <ul class="file-list"></ul>
-                                </div>
-                                <button type="submit"><i class="ti-comment"></i>Comment</button>
-                            </form>
 
-                        </x-slot:footer>
 
                     </x-common-ticket-comments-card>
 

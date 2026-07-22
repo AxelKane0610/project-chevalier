@@ -206,10 +206,8 @@ class TTEXTicketsController extends Controller
                     'type_of_ticket' => 2,
                     'ticket_id' => $id,
                     'comment_id' => $comment->id,
-
                     'file_path' => $filePath,
                     'name' => $originalName,
-
                     'status' => 1
                 ]);
             }

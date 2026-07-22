@@ -32,7 +32,7 @@ class EEG_Software_Ticket extends Model
     public function active_attachments()
     {
         return $this->hasMany(Attachments_Model::class, 'ticket_id', 'id')
-            ->where(['type_of_ticket' => 1, 'status' => '1']); // Chỉ lấy những attachment có status = 1 (còn hiệu lực)
+            ->where(['type_of_ticket' => 1, 'status' => '1','comment_id' => null]); // Chỉ lấy những attachment có status = 1 (còn hiệu lực)
     }
 
     public function ticket_comments()

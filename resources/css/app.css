@@ -769,35 +769,29 @@ h1, h2, h3 {
     justify-content: space-evenly;
 } */
 
-.ticket-comments-footer {
+/* .ticket-comments-footer {
     display: flex;
     width: 100%;
-    /* 1. Đổi từ 50% thành auto để footer tự mở rộng theo form */
     height: auto; 
     max-height: 60%;
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
-    /* 2. Thêm padding dưới đáy để tạo khoảng trống an toàn cho nút bấm */
     padding: 15px; 
-}
+} */
 
 .ticket-comments-footer > form {
     display: flex;
     flex-direction: column;
     width: 100%;
-    /* 3. Bỏ max-height cũ đi, để height: auto nhằm ôm trọn tất cả input và nút */
     height: auto; 
     gap: 12px;
-    /* 4. Đổi sang flex-start để các phần tử xếp đều từ trên xuống */
     justify-content: flex-start; 
 }
 
-/* 5. Gợi ý thêm: Khống chế ô nhập comment không cho nó quá to */
 .ticket-comments-footer > form textarea {
     min-height: 80px;
     max-height: 120px;
-    resize: vertical; /* Chỉ cho kéo giãn chiều dọc, không lỗi chiều ngang */
 }
 
 .ttex-ticket-content,

@@ -34,7 +34,7 @@
 
         
         
-        <div id="main-menu-categories-container">
+        <!-- <div id="main-menu-categories-container">
             
             <a href="{{ url('/software-tickets-menu') }}">
                 <div class="software-tickets-btn">
@@ -236,8 +236,150 @@
             </a>
             @endif
 
-        </div>
+        </div> -->
         
+<div class="container">
+
+    <div class="card-group">
+        <div class="card" style="width: 300px">
+            <img src="{{ asset('imgs/spectre_crown_warehouse_image.png') }}" alt="" class="card-img-top">
+            <div class="card-body">
+                
+                <div class="card-title">
+                    <h4>Software Support</h4>
+                </div>
+                <div class="card-subtitle">
+                Liên quan tới lỗi hệ thống EEG hoặc có đề xuất cải thiện hệ thống
+
+                </div>
+                <div class="card-footer">
+                    Learn more <i class="ti-angle-right"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" style="width: 300px">
+            <img src="{{ asset('imgs/spectre_crown_warehouse_image.png') }}" alt="" class="card-img-top">
+            <div class="card-body">
+                
+                <div class="card-title">
+                    <h4>Software Support</h4>
+                </div>
+                <div class="card-subtitle">
+                Liên quan tới lỗi hệ thống EEG hoặc có đề xuất cải thiện hệ thống
+
+                </div>
+                <div class="card-footer">
+                    Learn more <i class="ti-angle-right"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" style="width: 300px">
+            <img src="{{ asset('imgs/spectre_crown_warehouse_image.png') }}" alt="" class="card-img-top">
+            <div class="card-body">
+                
+                <div class="card-title">
+                    <h4>Software Support</h4>
+                </div>
+                <div class="card-subtitle">
+                Liên quan tới lỗi hệ thống EEG hoặc có đề xuất cải thiện hệ thống
+
+                </div>
+                <div class="card-footer">
+                    Learn more <i class="ti-angle-right"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" style="width: 300px">
+            <img src="{{ asset('imgs/spectre_crown_warehouse_image.png') }}" alt="" class="card-img-top">
+            <div class="card-body">
+                
+                <div class="card-title">
+                    <h4>Software Support</h4>
+                </div>
+                <div class="card-subtitle">
+                Liên quan tới lỗi hệ thống EEG hoặc có đề xuất cải thiện hệ thống
+
+                </div>
+                <div class="card-footer">
+                    Learn more <i class="ti-angle-right"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" style="width: 300px">
+            <img src="{{ asset('imgs/spectre_crown_warehouse_image.png') }}" alt="" class="card-img-top">
+            <div class="card-body">
+                
+                <div class="card-title">
+                    <h4>Software Support</h4>
+                </div>
+                <div class="card-subtitle">
+                Liên quan tới lỗi hệ thống EEG hoặc có đề xuất cải thiện hệ thống
+
+                </div>
+                <div class="card-footer">
+                    Learn more <i class="ti-angle-right"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" style="width: 300px">
+            <img src="{{ asset('imgs/spectre_crown_warehouse_image.png') }}" alt="" class="card-img-top">
+            <div class="card-body">
+                
+                <div class="card-title">
+                    <h4>Software Support</h4>
+                </div>
+                <div class="card-subtitle">
+                Liên quan tới lỗi hệ thống EEG hoặc có đề xuất cải thiện hệ thống
+
+                </div>
+                <div class="card-footer">
+                    Learn more <i class="ti-angle-right"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" style="width: 300px">
+            <img src="{{ asset('imgs/spectre_crown_warehouse_image.png') }}" alt="" class="card-img-top">
+            <div class="card-body">
+                
+                <div class="card-title">
+                    <h4>Software Support</h4>
+                </div>
+                <div class="card-subtitle">
+                Liên quan tới lỗi hệ thống EEG hoặc có đề xuất cải thiện hệ thống
+
+                </div>
+                <div class="card-footer">
+                    Learn more <i class="ti-angle-right"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" style="width: 300px">
+            <img src="{{ asset('imgs/spectre_crown_warehouse_image.png') }}" alt="" class="card-img-top">
+            <div class="card-body">
+                
+                <div class="card-title">
+                    <h4>Software Support</h4>
+                </div>
+                <div class="card-subtitle">
+                Liên quan tới lỗi hệ thống EEG hoặc có đề xuất cải thiện hệ thống
+
+                </div>
+                <div class="card-footer">
+                    Learn more <i class="ti-angle-right"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+</div>
         
     </body>
 </html>

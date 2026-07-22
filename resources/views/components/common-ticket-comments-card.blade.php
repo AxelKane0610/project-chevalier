@@ -1,11 +1,12 @@
 @props([
     'comments',
-    'showAttachments' => true
+    'showAttachments' => true,
+    'actionRoute' => null
 ])
 
-<div class="col-lg-4">
+<div class="col-lg-4" >
 
-    <div class="card shadow border-0 rounded-4 h-100 d-flex flex-column">
+    <div class="card shadow border-0 rounded-4 h-100 ">
 
         <div class="card-header bg-white py-3 px-4">
 
@@ -25,11 +26,11 @@
 
         </div>
 
-        <div class="card-body overflow-auto p-4">
+        <div class="card-body overflow-y-scroll p-4 h-70" style="max-height: 70%;">
 
             @forelse($comments as $comment)
 
-                <div class="border rounded-4 p-3 mb-3 shadow-sm">
+                <div class="border rounded-4 p-3 mb-3 shadow-sm ">
                     <div class="d-flex justify-content-between">
                         <div>
                             <h6 class="fw-bold mb-1">
@@ -66,15 +67,24 @@
             
         </div>
 
-        @isset($footer)
+        
 
-        <div class="card-footer bg-white p-4 d-flex justify-content-center">
-
-            {{ $footer }}
+        <div class="card-footer bg-white p-4 d-flex flex-column w-100">
+            <label>Write a comment</label>
+            <form action="{{ $actionRoute }}" class="w-100" method="POST" enctype="multipart/form-data">
+                @csrf
+                <textarea name="comment" style="height: 100px; font-family: inherit ;" placeholder="Nhập comment tại đây" class="w-100"></textarea>
+                <label class="ticket-form-body-input">Attach File:</label>
+                <div class="upload-group ">
+                    <input class="ticket-form-body-input file-input" type="file" name="attachments[]" multiple>
+                    <ul class="file-list"></ul>
+                </div>
+                <button type="submit"><i class="ti-comment"></i>Comment</button>
+            </form>
 
         </div>
 
-        @endisset
+        
 
         
 
