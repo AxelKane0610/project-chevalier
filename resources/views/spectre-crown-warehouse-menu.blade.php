@@ -142,9 +142,9 @@
                     </table>
 
                     {{-- <div class="d-flex justify-content-end"> --}}
-                    <div width="100%">
+                    {{-- <div width="100%">
                         {{ $items->links('pagination::bootstrap-5') }}
-                    </div>
+                    </div> --}}
 
                 </div>
 

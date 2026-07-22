@@ -15,8 +15,7 @@ class TTEXTicketsController extends Controller
     //
     public function Show_Pending_Tickets(){ 
         if (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_TTEX_TICKET_ADMIN')) {
-            // $tickets = TTEX_Tickets_Model::all();
-            $tickets = TTEX_Tickets_Model::paginate(10);
+            $tickets = TTEX_Tickets_Model::all();
             $tickets_good_part_pending = TTEX_Tickets_Model::where([
                 ['status', '1'],
                 ['part_status', '1'],
