@@ -108,9 +108,9 @@
         </x-common-header>
 
                 
-        <div class="software-ticket-content">
+        {{-- <div class="software-ticket-content"> --}}
 
-            <x-common-ticket-detail-form>
+            {{-- <x-common-ticket-detail-form>
                 <h2>Tickets Details</h2>
                 <li>
                     <lable>Receipt</lable>
@@ -173,7 +173,7 @@
                     <lable>Attachments ({{ $ticket->active_attachments->count() }} files)</lable>
                     <x-common-attachments-table>
                             @foreach ($ticket->active_attachments as $attachment)
-                                @if(in_array($attachment->type_of_ticket, [1])) {{-- Cách viết gọn thay cho switch --}}
+                                @if(in_array($attachment->type_of_ticket, [1]))
                                 <tr>
                                     <td>{{ $attachment->name }}</td>
                                     <td>
@@ -197,10 +197,10 @@
                 @endif
                 
 
-            </x-common-ticket-detail-form>
+            </x-common-ticket-detail-form> --}}
 
 
-            <x-common-ticket-comments action1="{{ route('add-comment-software-ticket', $ticket->id) }}" id="add-comment-form">
+            {{-- <x-common-ticket-comments action1="{{ route('add-comment-software-ticket', $ticket->id) }}" id="add-comment-form">
                 <h2>Comments</h2>
                 @foreach($ticket->ticket_comments as $comment)
                 <li>
@@ -242,9 +242,9 @@
                     <button type="submit"><i class="ti-comment"></i>Comment</button>
 
                 </x-slot:footer>
-            </x-common-ticket-comments>
+            </x-common-ticket-comments> --}}
 
-            <div class="software-tickets-tracking-info">
+            {{-- <div class="software-tickets-tracking-info">
                 <h2>Tracking Info</h2>
                     
                 @foreach($ticket->ticket_tracking_info as $tracking)
@@ -257,6 +257,208 @@
     
                 @endforeach
                 
+            </div> --}}
+
+
+
+            
+
+            <div class="container-fluid px-4 py-4">
+
+                <div class="row g-4" style="min-height: calc(100vh - 90px);">
+
+                    <!-- ================= Ticket Detail ================= -->
+
+                    <x-common-ticket-details-card 
+                        :rows="[
+                            [
+                                'icon' => 'ti-receipt',
+                                'label' => 'Receipt',
+                                'value' => $ticket->ticket_receipt,
+                                'type' => 'text'
+                            ],
+                            [
+                                'icon' => 'ti-user',
+                                'label' => 'Người request',
+                                'value' => $ticket->user_owner->fullname,
+                                'type' => 'text'
+                            ],
+                            [
+                                'icon' => 'ti-agenda',
+                                'label' => 'Ngày request',
+                                'value' => $ticket->created_at,
+                                'type' => 'text'
+                            ],
+                            [
+                                'icon' => 'ti-angle-double-up',
+                                'label' => 'Priority',
+                                'value' => match ($ticket->priority) {
+                                    '1' => 'Normal',
+                                    '2' => 'Critical',
+                                    '3' => 'High',
+                                    '4' => 'Low',
+
+                                    default => 'Unknown',
+                                },
+                                'type' => 'badge',
+                                'color' => match ($ticket->priority) {
+                                    '1' => 'success',
+                                    '2' => 'danger',
+                                    '3' => 'warning',
+                                    '4' => 'primary',
+
+                                    default => 'Unknown',
+                                },
+                            ],
+                            [
+                                'icon' => 'ti-arrow-right',
+                                'label' => 'Support Type',
+                                'value' => match ($ticket->support_type) {
+                                    '1' => 'Thêm mã part/product',
+                                    '2' => 'Rollback',
+                                    '3' => 'Hủy số phiếu/Ẩn lịch sử bảo hành',
+                                    '4' => 'Điều chỉnh thông tin',
+                                    '5' => 'Unmark Re-Repair',
+                                    '6' => 'Lỗi hệ thống',
+                                    '7' => 'Cấp quyền export data',
+                                    '8' => 'Đề xuất thay đổi/cải tiến',
+                                    '9' => 'Vấn đề khác',
+
+
+                                    default => 'Unknown',
+                                },
+                                'type' => 'badge',
+                                'color' => 'primary'
+                            ],
+                            [
+                                'icon' => 'ti-arrow-circle-right',
+                                'label' => 'Status',
+                                'value' => match ($ticket->status) {
+                                    '1' => 'Open',
+                                    '2' => 'In progress',
+                                    '3' => 'Waiting approval',
+                                    '4' => 'Complete',
+                                    '5' => 'Rejected',
+                                    '6' => 'Canceled',
+
+                                    default => 'Unknown',
+                                },
+                                'type' => 'badge',
+                                'color' => match ($ticket->status) {
+                                    '1' => 'primary',
+                                    '2' => 'secondary',
+                                    '3' => 'info',
+                                    '4' => 'success',
+                                    '5' => 'light',
+                                    '6' => 'dark',
+
+                                    default => 'Unknown',
+                                },
+                            ],
+                            [
+                                'icon' => 'ti-menu',
+                                'label' => 'Issue Description',
+                                'value' => $ticket->description,
+                                'type' => 'text'
+                            ]
+                        ]"
+
+                        
+                    >
+                    
+                    <x-common-attachments-table-card
+                        :attachments="$ticket->active_attachments"
+                    />
+
+                    
+                    <x-slot:footer>
+                        @if((($ticket->status == '1') && $ticket->user_id == auth()->user()->id) || (auth()->user()->hasRole('ROLE_SUPER_ADMIN')))
+                        <button type="button" class="js-input-required-btn" data-target="edit-ticket-details"><i class="ti-pencil"></i> Edit</button>
+                        @endif
+                    </x-slot:footer>
+                    
+
+                    </x-common-ticket-details-card>
+                        
+
+                    <!-- ================= Comment ================= -->
+
+                    <x-common-ticket-comments-card
+                        :comments="$ticket->ticket_comments"
+                        :showAttachments="true"
+                    >
+                        <x-slot:footer>
+                            <form action="{{ route('add-comment-software-ticket', $ticket->id) }}">
+                                <label>Write a comment</label>
+                                <textarea name="comment" style="height: 100px; font-family: inherit ;" placeholder="Nhập comment tại đây"></textarea>
+                                <label class="ticket-form-body-input">Attach File:</label>
+                                <div class="upload-group ">
+                                    <input class="ticket-form-body-input file-input" type="file" name="attachments[]" multiple>
+                                    <ul class="file-list"></ul>
+                                </div>
+                                <button type="submit"><i class="ti-comment"></i>Comment</button>
+                            </form>
+
+                        </x-slot:footer>
+
+                    </x-common-ticket-comments-card>
+
+                    <!-- ================= Timeline ================= -->
+
+                    <div class="col-lg-4">
+                        <div class="card shadow border-0 rounded-4 h-100">
+                            <div class="card-header bg-white py-3 px-4">
+                                <h5 class="mb-0 fw-semibold">
+                                    <i class="bi bi-clock-history text-warning me-2"></i>
+                                    Tracking History
+                                </h5>
+
+                            </div>
+
+                            <div class="card-body p-4 overflow-auto">
+                                <!-- item -->
+                                <div class="d-flex mb-4">
+                                    <div class="me-3 text-center">
+                                        <div class="bg-primary rounded-circle"
+                                            style="width:14px;height:14px;"></div>
+
+                                        <div class="border-start mx-auto"
+                                            style="height:55px;"></div>
+
+                                    </div>
+
+                                    <div>
+                                        <div class="fw-semibold">
+                                            Nguyễn Thanh Hải
+                                        </div>
+
+                                        <div class="text-muted">
+                                            Created Ticket
+                                        </div>
+
+                                        <small class="text-secondary">
+                                            16 Jun 2026 14:38
+                                        </small>
+
+                                    </div>
+
+                                </div>
+
+                                <!-- item -->
+                                
+
+                                <!-- item -->
+
+                                
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
             </div>
 
             <x-common-ticket-form title="EEG Ticket Close" id="close-ticket-form" action1="{{ route('close-software-ticket', $ticket->id) }}">
@@ -385,7 +587,7 @@
                 </x-slot:footer>
             </x-common-ticket-form>
 
-        </div>
+        {{-- </div> --}}
 
 
         
