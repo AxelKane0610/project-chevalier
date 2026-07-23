@@ -34,351 +34,392 @@
 
         
         
-        <!-- <div id="main-menu-categories-container">
-            
-            <a href="{{ url('/software-tickets-menu') }}">
-                <div class="software-tickets-btn">
-                    <div class="ticket-img-description">
-                        <img src="{{ asset('imgs/Ticket Software Icon.png') }}" alt="">
+<div class="container-fluid py-4">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 row-cols-xl-5 g-4 d-flex justify-content-center">
+
+        <!-- Card -->
+
+        <div class="main-menu col" style="width: 300px">
+            <a href="{{ url('/software-tickets-menu') }}"
+               class="text-decoration-none">
+
+                <div class="card h-100 shadow-lg border-0 rounded-5">
+
+                    <div class="card-body d-flex flex-column text-center">
+
+                        <div class="ticket-img-description">
+                            <img src="{{ asset('imgs/Ticket Software Icon.png') }}"
+                                 class="img-fluid"
+                                 alt="">
+                        </div>
+
+                        <h4 class="fw-bold mt-3">
+                            Software Support
+                        </h4>
+
+                        <p class="text-muted flex-grow-1">
+                            Liên quan tới lỗi hệ thống hoặc có đề xuất cải thiện hệ thống
+                        </p>
+
+                        <div class="mt-auto d-flex justify-content-center align-items-center gap-2">
+                            <span>Learn more</span>
+                            <i class="ti-angle-right"></i>
+                        </div>
+
                     </div>
-                    
-                    <h2>Software</h2>
-                    <p>Liên quan tới lỗi hệ thống EEG hoặc có đề xuất cải thiện hệ thống</p>
-                    <div class="card-footer">
-                        <div class="card-footer-text">Learn more</div>
-                        <div class="card-footer-icon"><i class="ti-angle-right"></i></div>
-                    </div>
+
                 </div>
             </a>
-            
-           <a href="{{ url('/ttex-tickets-menu') }}">
-                <div class="ttex-tickets-btn">
-                    <div class="ticket-img-description">
-                        <img src="{{ asset('imgs/transport_image.png') }}" alt="">
-                    </div>
-                    
-                    <h2>Điều tin TTEX</h2>
-                    <p>Luân chuyển hàng hóa từ TTBH hoặc ngược lại</p>
-                    <div class="card-footer">
-                        <div class="card-footer-text">Learn more</div>
-                        <div class="card-footer-icon"><i class="ti-angle-right"></i></div>
-                    </div>
-                </div>
-           </a>
-            
-            @if(auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_LASER_ENGRAVING_USER') || auth()->user()->hasRole('ROLE_LASER_ENGRAVING_ADMIN'))
-            <a href="{{ url('/laser-engraving-menu') }}">
-                <div class="laser-engraving-btn">
-                    
-                    <div class="ticket-img-description">
-                        <img src="{{ asset('imgs/laser_engraving_image.png') }}" alt="">
-                    </div>
-                    
-                    <h2>Khắc base</h2>
-                    <p>Khắc base (Mặt D) sau khi thay</p>
-                    <div class="card-footer">
-                        <div class="card-footer-text">Learn more</div>
-                        <div class="card-footer-icon"><i class="ti-angle-right"></i></div>
-                    </div>
-                    
-                </div>
-            </a>
-            @endif
-
-            @if(auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_LOAN_UNIT_USER') || auth()->user()->hasRole('ROLE_LOAN_UNIT_ADMIN'))
-            
-            <a href="{{ url('/loan-unit-part-menu') }}">
-                <div class="loanunit-tickets-btn">
-                    <div class="ticket-img-description">
-                        <img src="{{ asset('imgs/loanunit_image.png') }}" alt="">
-                    </div>
-                    
-                    <h2>Mượn máy & parts</h2>
-                    <p>Mượn máy/part để bảo hành hoặc test</p>
-                    <div class="card-footer">
-                        <div class="card-footer-text">Learn more</div>
-                        <div class="card-footer-icon"><i class="ti-angle-right"></i></div>
-                    </div>
-                </div>
-            </a>
-            @endif
-
-
-            @if(auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_SUBMIT_TRAINING_USER') || auth()->user()->hasRole('ROLE_TRAINING_ADMIN'))
-            
-            <div class="training-submit-btn">
-                <div class="ticket-img-description">
-                    <img src="{{ asset('imgs/training_image.png') }}" alt="">
-                </div>
-                
-                <h2>Submit training</h2>
-                <p>Submit các chứng chỉ sau khi hoàn thành training</p>
-                <div class="card-footer">
-                    <div class="card-footer-text">Learn more</div>
-                    <div class="card-footer-icon"><i class="ti-angle-right"></i></div>
-                </div>
-            </div>
-            @endif
-
-            @if(auth()->user()->hasRole('ROLE_SUPER_ADMIN'))
-            <a href="{{ url('/subk-management') }}">
-
-                <div class="subk-management-btn">
-                    <div class="ticket-img-description">
-                        <img src="{{ asset('imgs/subk_image.png') }}" alt="">
-                    </div>
-                    
-                    <h2>Quản lý SubK</h2>
-                    <p>Quản lý các thành viên trong team/country</p>
-                    <div class="card-footer">
-                        <div class="card-footer-text">Learn more</div>
-                        <div class="card-footer-icon"><i class="ti-angle-right"></i></div>
-                    </div>
-                </div>
-
-            </a>
-            @endif
-
-            @if(auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_INVOICE_EXCEPTIONAL_USER') || auth()->user()->hasRole('ROLE_INVOICE_EXCEPTIONAL_L1_APPROVER') || auth()->user()->hasRole('ROLE_INVOICE_EXCEPTIONAL_L2_APPROVER'))
-            
-            <a href="{{ url('/invoice-exceptional-menu') }}">
-
-                <div class="invoice-exceptional-btn">
-                    <div class="ticket-img-description">
-                        <img src="{{ asset('imgs/invoice_exceptional_image.png') }}" alt="">
-                    </div>
-                    
-                    <h2>Invoice Exceptional</h2>
-                    <p>Xin approve đối với các trường hợp hóa đơn xuất sau hoặc cần active bảo hành </p>
-                    <div class="card-footer">
-                        <div class="card-footer-text">Learn more</div>
-                        <div class="card-footer-icon"><i class="ti-angle-right"></i></div>
-                    </div>
-                </div>
-                
-            </a>
-
-            @endif
-
-            @if(auth()->user()->hasRole('ROLE_SUPER_ADMIN'))
-            <a href="#">
-
-                <div class="onboard-offboard-btn">
-                    <div class="ticket-img-description">
-                        <img src="{{ asset('imgs/onboard_offboard_image.png') }}" alt="">
-                    </div>
-                    
-                    <h2>Onboard & Offboard</h2>
-                    <p>Thực hiện onboard khi có nhân sự mới và offboard khi có nhân sự nghỉ việc</p>
-                    <div class="card-footer">
-                        <div class="card-footer-text">Learn more</div>
-                        <div class="card-footer-icon"><i class="ti-angle-right"></i></div>
-                    </div>
-                </div>
-                
-            </a>
-            @endif
-
-            @if(auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_OUT_OF_OFFICE_USER') || auth()->user()->hasRole('ROLE_OUT_OF_OFFICE_ADMIN') )
-            <a href="{{ url('/out-of-office-tickets-menu') }}">
-
-                <div class="offline-request-btn">
-                    <div class="ticket-img-description">
-                        <img src="{{ asset('imgs/offline_request_image.png') }}" alt="">
-                    </div>
-                    
-                    <h2>Out of office Request</h2>
-                    <p>Xin nghỉ phép/đi trễ/về sớm</p>
-                    <div class="card-footer">
-                        <div class="card-footer-text">Learn more</div>
-                        <div class="card-footer-icon"><i class="ti-angle-right"></i></div>
-                    </div>
-                </div>
-                
-            </a>
-            @endif
-
-            @if(auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_THERMAL_EVENT_USER') || auth()->user()->hasRole('ROLE_THERMAL_EVENT_LV1_APPROVER') || auth()->user()->hasRole('ROLE_THERMAL_EVENT_LV2_APPROVER'))
-            <a href="{{ url('/thermal-event-tickets-menu') }}">
-
-                <div class="overheat-request-btn">
-                    <div class="ticket-img-description">
-                        <img src="{{ asset('imgs/overheat.png') }}" alt="">
-                    </div>
-                    
-                    <h2>Thermal Event</h2>
-                    <p>Xin approve exceptional cho các trường hợp quá nhiệt</p>
-                    <div class="card-footer">
-                        <div class="card-footer-text">Learn more</div>
-                        <div class="card-footer-icon"><i class="ti-angle-right"></i></div>
-                    </div>
-                </div>
-                
-            </a>
-            @endif
-
-            @if(auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_SPECTRE_CROWN_WAREHOUSE_ADMIN'))
-            <a href="{{ url('/spectre-crown-warehouse-menu') }}">
-
-                <div class="spectre-crown-warehouse-btn">
-                    <div class="ticket-img-description">
-                        <img src="{{ asset('imgs/spectre_crown_warehouse_image.png') }}" alt="">
-                    </div>
-                    
-                    <h2>Quản lý kho Crown - Spectre</h2>
-                    <p>Quản lý kho Crown Spectre</p>
-                    <div class="card-footer">
-                        <div class="card-footer-text">Learn more</div>
-                        <div class="card-footer-icon"><i class="ti-angle-right"></i></div>
-                    </div>
-                </div>
-                
-            </a>
-            @endif
-
-        </div> -->
-        
-<div class="container">
-
-    <div class="card-group">
-        <div class="card" style="width: 300px">
-            <img src="{{ asset('imgs/spectre_crown_warehouse_image.png') }}" alt="" class="card-img-top">
-            <div class="card-body">
-                
-                <div class="card-title">
-                    <h4>Software Support</h4>
-                </div>
-                <div class="card-subtitle">
-                Liên quan tới lỗi hệ thống EEG hoặc có đề xuất cải thiện hệ thống
-
-                </div>
-                <div class="card-footer">
-                    Learn more <i class="ti-angle-right"></i>
-                </div>
-            </div>
         </div>
 
-        <div class="card" style="width: 300px">
-            <img src="{{ asset('imgs/spectre_crown_warehouse_image.png') }}" alt="" class="card-img-top">
-            <div class="card-body">
-                
-                <div class="card-title">
-                    <h4>Software Support</h4>
-                </div>
-                <div class="card-subtitle">
-                Liên quan tới lỗi hệ thống EEG hoặc có đề xuất cải thiện hệ thống
+        <div class="main-menu col" style="width: 300px">
+            <a href="{{ url('/ttex-tickets-menu') }}"
+               class="text-decoration-none">
+
+                <div class="card h-100 shadow-lg border-0 rounded-5">
+
+                    <div class="card-body d-flex flex-column text-center">
+
+                        <div class="ticket-img-description">
+                            <img src="{{ asset('imgs/transport_image.png') }}"
+                                 class="img-fluid"
+                                 alt="">
+                        </div>
+
+                        <h4 class="fw-bold mt-3">
+                            Điều tin TTEX
+                        </h4>
+
+                        <p class="text-muted flex-grow-1">
+                            Luân chuyển hàng hóa từ TTBH hoặc ngược lại
+                        </p>
+
+                        <div class="mt-auto d-flex justify-content-center align-items-center gap-2">
+                            <span>Learn more</span>
+                            <i class="ti-angle-right"></i>
+                        </div>
+
+                    </div>
 
                 </div>
-                <div class="card-footer">
-                    Learn more <i class="ti-angle-right"></i>
-                </div>
-            </div>
+            </a>
         </div>
 
-        <div class="card" style="width: 300px">
-            <img src="{{ asset('imgs/spectre_crown_warehouse_image.png') }}" alt="" class="card-img-top">
-            <div class="card-body">
-                
-                <div class="card-title">
-                    <h4>Software Support</h4>
-                </div>
-                <div class="card-subtitle">
-                Liên quan tới lỗi hệ thống EEG hoặc có đề xuất cải thiện hệ thống
+        @if(auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_LASER_ENGRAVING_USER') || auth()->user()->hasRole('ROLE_LASER_ENGRAVING_ADMIN'))
+            <div class="main-menu col" style="width: 300px">
+                <a href="{{ url('/laser-engraving-menu') }}"
+                class="text-decoration-none">
+
+                    <div class="card h-100 shadow-lg border-0 rounded-5">
+
+                        <div class="card-body d-flex flex-column text-center">
+
+                            <div class="ticket-img-description">
+                                <img src="{{ asset('imgs/laser_engraving_image.png') }}"
+                                    class="img-fluid"
+                                    alt="">
+                            </div>
+
+                            <h4 class="fw-bold mt-3">
+                                Khắc base
+                            </h4>
+
+                            <p class="text-muted flex-grow-1">
+                                Khắc base (Mặt D) sau khi thay
+                            </p>
+
+                            <div class="mt-auto d-flex justify-content-center align-items-center gap-2">
+                                <span>Learn more</span>
+                                <i class="ti-angle-right"></i>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </a>
+            </div>
+        @endif
+
+        @if(auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_LOAN_UNIT_USER') || auth()->user()->hasRole('ROLE_LOAN_UNIT_ADMIN'))
+            <div class="main-menu col" style="width: 300px">
+                <a href="{{ url('/loan-unit-part-menu') }}"
+                class="text-decoration-none">
+
+                    <div class="card h-100 shadow-lg border-0 rounded-5">
+
+                        <div class="card-body d-flex flex-column text-center">
+
+                            <div class="ticket-img-description">
+                                <img src="{{ asset('imgs/loanunit_image.png') }}"
+                                    class="img-fluid"
+                                    alt="">
+                            </div>
+
+                            <h4 class="fw-bold mt-3">
+                                Mượn máy & part
+                            </h4>
+
+                            <p class="text-muted flex-grow-1">
+                                Mượn máy/part để bảo hành hoặc test
+                            </p>
+
+                            <div class="mt-auto d-flex justify-content-center align-items-center gap-2">
+                                <span>Learn more</span>
+                                <i class="ti-angle-right"></i>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </a>
+            </div>
+        @endif
+
+
+        <div class="main-menu col" style="width: 300px">
+            <a href="{{ url('/submit-training') }}"
+               class="text-decoration-none">
+
+                <div class="card h-100 shadow-lg border-0 rounded-5">
+
+                    <div class="card-body d-flex flex-column text-center">
+
+                        <div class="ticket-img-description">
+                            <img src="{{ asset('imgs/training_image.png') }}"
+                                 class="img-fluid"
+                                 alt="">
+                        </div>
+
+                        <h4 class="fw-bold mt-3">
+                            Submit Training
+                        </h4>
+
+                        <p class="text-muted flex-grow-1">
+                            Submit các chứng chỉ sau khi hoàn thành training
+                        </p>
+
+                        <div class="mt-auto d-flex justify-content-center align-items-center gap-2">
+                            <span>Learn more</span>
+                            <i class="ti-angle-right"></i>
+                        </div>
+
+                    </div>
 
                 </div>
-                <div class="card-footer">
-                    Learn more <i class="ti-angle-right"></i>
-                </div>
-            </div>
+            </a>
         </div>
 
-        <div class="card" style="width: 300px">
-            <img src="{{ asset('imgs/spectre_crown_warehouse_image.png') }}" alt="" class="card-img-top">
-            <div class="card-body">
-                
-                <div class="card-title">
-                    <h4>Software Support</h4>
-                </div>
-                <div class="card-subtitle">
-                Liên quan tới lỗi hệ thống EEG hoặc có đề xuất cải thiện hệ thống
+        @if(auth()->user()->hasRole('ROLE_SUPER_ADMIN'))
+            <div class="main-menu col" style="width: 300px">
+                <a href="{{ url('/subk-management') }}"
+                class="text-decoration-none">
 
-                </div>
-                <div class="card-footer">
-                    Learn more <i class="ti-angle-right"></i>
-                </div>
+                    <div class="card h-100 shadow-lg border-0 rounded-5">
+
+                        <div class="card-body d-flex flex-column text-center">
+
+                            <div class="ticket-img-description">
+                                <img src="{{ asset('imgs/subk_image.png') }}"
+                                    class="img-fluid"
+                                    alt="">
+                            </div>
+
+                            <h4 class="fw-bold mt-3">
+                                Quản lý SubK
+                            </h4>
+
+                            <p class="text-muted flex-grow-1">
+                                Quản lý các thành viên trong team/country
+                            </p>
+
+                            <div class="mt-auto d-flex justify-content-center align-items-center gap-2">
+                                <span>Learn more</span>
+                                <i class="ti-angle-right"></i>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </a>
             </div>
-        </div>
+        @endif
 
-        <div class="card" style="width: 300px">
-            <img src="{{ asset('imgs/spectre_crown_warehouse_image.png') }}" alt="" class="card-img-top">
-            <div class="card-body">
-                
-                <div class="card-title">
-                    <h4>Software Support</h4>
-                </div>
-                <div class="card-subtitle">
-                Liên quan tới lỗi hệ thống EEG hoặc có đề xuất cải thiện hệ thống
+        @if(auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_INVOICE_EXCEPTIONAL_USER') || auth()->user()->hasRole('ROLE_INVOICE_EXCEPTIONAL_L1_APPROVER') || auth()->user()->hasRole('ROLE_INVOICE_EXCEPTIONAL_L2_APPROVER'))
+            <div class="main-menu col" style="width: 300px">
+                <a href="{{ url('/invoice-exceptional-menu') }}"
+                class="text-decoration-none">
 
-                </div>
-                <div class="card-footer">
-                    Learn more <i class="ti-angle-right"></i>
-                </div>
+                    <div class="card h-100 shadow-lg border-0 rounded-5">
+
+                        <div class="card-body d-flex flex-column text-center">
+
+                            <div class="ticket-img-description">
+                                <img src="{{ asset('imgs/invoice_exceptional_image.png') }}"
+                                    class="img-fluid"
+                                    alt="">
+                            </div>
+
+                            <h4 class="fw-bold mt-3">
+                                Invoice Exceptional
+                            </h4>
+
+                            <p class="text-muted flex-grow-1">
+                                Xin approve đối với các trường hợp hóa đơn xuất sau hoặc cần active bảo hành
+                            </p>
+
+                            <div class="mt-auto d-flex justify-content-center align-items-center gap-2">
+                                <span>Learn more</span>
+                                <i class="ti-angle-right"></i>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </a>
             </div>
-        </div>
+        @endif
 
-        <div class="card" style="width: 300px">
-            <img src="{{ asset('imgs/spectre_crown_warehouse_image.png') }}" alt="" class="card-img-top">
-            <div class="card-body">
-                
-                <div class="card-title">
-                    <h4>Software Support</h4>
-                </div>
-                <div class="card-subtitle">
-                Liên quan tới lỗi hệ thống EEG hoặc có đề xuất cải thiện hệ thống
+        @if(auth()->user()->hasRole('ROLE_SUPER_ADMIN'))
+            <div class="main-menu col" style="width: 300px">
+                <a href="{{ url('/onboard-offboard-menu') }}"
+                class="text-decoration-none">
 
-                </div>
-                <div class="card-footer">
-                    Learn more <i class="ti-angle-right"></i>
-                </div>
+                    <div class="card h-100 shadow-lg border-0 rounded-5">
+
+                        <div class="card-body d-flex flex-column text-center">
+
+                            <div class="ticket-img-description">
+                                <img src="{{ asset('imgs/onboard_offboard_image.png') }}"
+                                    class="img-fluid"
+                                    alt="">
+                            </div>
+
+                            <h4 class="fw-bold mt-3">
+                                Onboard & Offboard
+                            </h4>
+
+                            <p class="text-muted flex-grow-1">
+                                Thực hiện onboard khi có nhân sự mới và offboard khi có nhân sự nghỉ việc
+                            </p>
+
+                            <div class="mt-auto d-flex justify-content-center align-items-center gap-2">
+                                <span>Learn more</span>
+                                <i class="ti-angle-right"></i>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </a>
             </div>
-        </div>
+        @endif
 
-        <div class="card" style="width: 300px">
-            <img src="{{ asset('imgs/spectre_crown_warehouse_image.png') }}" alt="" class="card-img-top">
-            <div class="card-body">
-                
-                <div class="card-title">
-                    <h4>Software Support</h4>
-                </div>
-                <div class="card-subtitle">
-                Liên quan tới lỗi hệ thống EEG hoặc có đề xuất cải thiện hệ thống
+        @if(auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_OUT_OF_OFFICE_USER') || auth()->user()->hasRole('ROLE_OUT_OF_OFFICE_ADMIN') )
+            <div class="main-menu col" style="width: 300px">
+                <a href="{{ url('/out-of-office-tickets-menu') }}"
+                class="text-decoration-none">
 
-                </div>
-                <div class="card-footer">
-                    Learn more <i class="ti-angle-right"></i>
-                </div>
+                    <div class="card h-100 shadow-lg border-0 rounded-5">
+
+                        <div class="card-body d-flex flex-column text-center">
+
+                            <div class="ticket-img-description">
+                                <img src="{{ asset('imgs/offline_request_image.png') }}"
+                                    class="img-fluid"
+                                    alt="">
+                            </div>
+
+                            <h4 class="fw-bold mt-3">
+                                Out of Office Request
+                            </h4>
+
+                            <p class="text-muted flex-grow-1">
+                                Xin nghỉ phép/đi trễ/về sớm
+                            </p>
+
+                            <div class="mt-auto d-flex justify-content-center align-items-center gap-2">
+                                <span>Learn more</span>
+                                <i class="ti-angle-right"></i>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </a>
             </div>
-        </div>
+        @endif
 
-        <div class="card" style="width: 300px">
-            <img src="{{ asset('imgs/spectre_crown_warehouse_image.png') }}" alt="" class="card-img-top">
-            <div class="card-body">
-                
-                <div class="card-title">
-                    <h4>Software Support</h4>
-                </div>
-                <div class="card-subtitle">
-                Liên quan tới lỗi hệ thống EEG hoặc có đề xuất cải thiện hệ thống
+        @if(auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_THERMAL_EVENT_USER') || auth()->user()->hasRole('ROLE_THERMAL_EVENT_LV1_APPROVER') || auth()->user()->hasRole('ROLE_THERMAL_EVENT_LV2_APPROVER'))
+            <div class="main-menu col" style="width: 300px">
+                <a href="{{ url('/thermal-event-tickets-menu') }}"
+                class="text-decoration-none">
 
-                </div>
-                <div class="card-footer">
-                    Learn more <i class="ti-angle-right"></i>
-                </div>
+                    <div class="card h-100 shadow-lg border-0 rounded-5">
+
+                        <div class="card-body d-flex flex-column text-center">
+
+                            <div class="ticket-img-description">
+                                <img src="{{ asset('imgs/overheat.png') }}"
+                                    class="img-fluid"
+                                    alt="">
+                            </div>
+
+                            <h4 class="fw-bold mt-3">
+                                Thermal Event
+                            </h4>
+
+                            <p class="text-muted flex-grow-1">
+                                Xin approve exceptional cho các trường hợp quá nhiệt
+                            </p>
+
+                            <div class="mt-auto d-flex justify-content-center align-items-center gap-2">
+                                <span>Learn more</span>
+                                <i class="ti-angle-right"></i>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </a>
             </div>
-        </div>
+        @endif
+
+        @if(auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_SPECTRE_CROWN_WAREHOUSE_ADMIN'))
+            <div class="main-menu col" style="width: 300px">
+                <a href="{{ url('/spectre-crown-warehouse-menu') }}"
+                class="text-decoration-none">
+
+                    <div class="card h-100 shadow-lg border-0 rounded-5">
+
+                        <div class="card-body d-flex flex-column text-center">
+
+                            <div class="ticket-img-description">
+                                <img src="{{ asset('imgs/spectre_crown_warehouse_image.png') }}"
+                                    class="img-fluid"
+                                    alt="">
+                            </div>
+
+                            <h4 class="fw-bold mt-3">
+                                Spectre - Crown Warehouse
+                            </h4>
+
+                            <p class="text-muted flex-grow-1">
+                                Quản lý kho Spectre & Crown
+                            </p>
+
+                            <div class="mt-auto d-flex justify-content-center align-items-center gap-2">
+                                <span>Learn more</span>
+                                <i class="ti-angle-right"></i>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </a>
+            </div>
+        @endif
+
     </div>
-    
-
 </div>
         
     </body>

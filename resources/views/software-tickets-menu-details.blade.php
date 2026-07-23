@@ -107,162 +107,6 @@
             
         </x-common-header>
 
-                
-        {{-- <div class="software-ticket-content"> --}}
-
-            {{-- <x-common-ticket-detail-form>
-                <h2>Tickets Details</h2>
-                <li>
-                    <lable>Receipt</lable>
-                    
-                    <h2>{{ $ticket->ticket_receipt }}</h2>
-                    
-                </li>
-                <li>
-                    <lable>Người request</lable>
-                    
-                    <h2>{{ $ticket->user_owner->fullname }}</h2>
-                    
-                </li>
-                <li>
-                    <lable>Ngày request</lable>
-                    
-                    <h2>{{ $ticket->created_at }}</h2>
-                    
-                </li>
-                <li>
-                    <lable>Priority</lable>
-                    
-                        <h2>
-                            <span class="ticket-priority {{ $ticket->priority_data['class'] }}">
-                                {{ $ticket->priority_data['text'] }}
-                            </span>
-                        </h2>
-                        
-                </li>
-                <li>
-                    <lable>Support type</lable>
-                    
-                        <h2>
-                            <span class="ticket-support-type {{ $ticket->support_type_data['class'] }}">
-                                {{ $ticket->support_type_data['text'] }}
-                            </span>
-
-                        </h2>
-                        
-                </li>
-                <li>
-                    <lable>Status</lable>
-                    
-                        <h2>
-                            <span class="ticket-status {{ $ticket->status_data['class'] }}">
-                                {{ $ticket->status_data['text'] }}
-                            </span>
-
-                        </h2>
-                        
-                </li>
-                <li style="height: 200px;">
-                    <lable>Issue description</lable>
-                    
-                    <p>{{ $ticket->description }}</p>
-                    
-                </li>
-
-                <li>
-                    <lable>Attachments ({{ $ticket->active_attachments->count() }} files)</lable>
-                    <x-common-attachments-table>
-                            @foreach ($ticket->active_attachments as $attachment)
-                                @if(in_array($attachment->type_of_ticket, [1]))
-                                <tr>
-                                    <td>{{ $attachment->name }}</td>
-                                    <td>
-                                        <a href="{{ asset('attachments/' . $attachment->file_path) }}" target="_blank" class="btn btn-info">
-                                            <i class="ti-eye"></i>
-                                        </a>
-                                        <a href="{{ asset('attachments/' . $attachment->file_path) }}" download="{{ $attachment->name }}" class="btn btn-secondary">
-                                            <i class="ti-download"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                                @endif
-                            @endforeach
-                    </x-common-attachments-table>
-                </li>
-                    
-                @if(($ticket->status == '1') && $ticket->user_id == auth()->user()->id)
-                <x-slot:footer>
-                    <button type="button" class="js-input-required-btn" data-target="edit-ticket-details"><i class="ti-pencil"></i> Edit</button>
-                </x-slot:footer>
-                @endif
-                
-
-            </x-common-ticket-detail-form> --}}
-
-
-            {{-- <x-common-ticket-comments action1="{{ route('add-comment-software-ticket', $ticket->id) }}" id="add-comment-form">
-                <h2>Comments</h2>
-                @foreach($ticket->ticket_comments as $comment)
-                <li>
-                    <h2>{{ $comment->user->fullname }}</h2>
-                    <h3>{{ $comment->created_at }}</h3>
-                    <p>{{ $comment->comment }}</p>
-                    @if ($comment->attachments->count() > 0)
-                    <x-common-attachments-table>
-                            @foreach($comment->attachments as $attachment)
-                                <tr>
-                                    <td>{{ $attachment->name }}</td>
-                                    <td>
-                                        <a href="{{ asset('attachments/' . $attachment->file_path) }}" target="_blank" class="btn btn-info">
-                                            <i class="ti-eye"></i>
-                                        </a>
-                                        <a href="{{ asset('attachments/' . $attachment->file_path) }}" download="{{ $attachment->name }}" class="btn btn-secondary">
-                                            <i class="ti-download"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                            @endforeach
-                    </x-common-attachments-table>
-                    @endif
-                    
-                </li>
-                @endforeach
-
-                
-
-                <x-slot:footer>
-                    
-                    <label>Write a comment</label>
-                    <textarea name="comment" style="height: 100px; font-family: inherit ;" placeholder="Nhập comment tại đây"></textarea>
-                    <label class="ticket-form-body-input">Attach File:</label>
-                    <div class="upload-group ">
-                        <input class="ticket-form-body-input file-input" type="file" name="attachments[]" multiple>
-                        <ul class="file-list"></ul>
-                    </div>
-                    <button type="submit"><i class="ti-comment"></i>Comment</button>
-
-                </x-slot:footer>
-            </x-common-ticket-comments> --}}
-
-            {{-- <div class="software-tickets-tracking-info">
-                <h2>Tracking Info</h2>
-                    
-                @foreach($ticket->ticket_tracking_info as $tracking)
-                    <h3>
-                        {{ $tracking->user->fullname }}
-                        {{ $tracking->action }}
-                        {{ $tracking->created_at }}
-                    </h3>
-                    
-    
-                @endforeach
-                
-            </div> --}}
-
-
-
-            
-
             <div class="container-fluid px-4 py-4">
 
                 <div class="row g-4" style="min-height: calc(100vh - 90px);">
@@ -366,16 +210,16 @@
                         
                     >
                     
-                    <x-common-attachments-table-card
-                        :attachments="$ticket->active_attachments"
-                    />
+                        <x-common-attachments-table-card
+                            :attachments="$ticket->active_attachments"
+                        />
 
                     
-                    <x-slot:footer>
-                        @if((($ticket->status == '1') && $ticket->user_id == auth()->user()->id) || (auth()->user()->hasRole('ROLE_SUPER_ADMIN')))
-                        <button type="button" class="js-input-required-btn" data-target="edit-ticket-details"><i class="ti-pencil"></i> Edit</button>
-                        @endif
-                    </x-slot:footer>
+                        <x-slot:footer>
+                            @if((($ticket->status == '1') && $ticket->user_id == auth()->user()->id) || (auth()->user()->hasRole('ROLE_SUPER_ADMIN')))
+                            <button type="button" class="js-input-required-btn" data-target="edit-ticket-details"><i class="ti-pencil"></i> Edit</button>
+                            @endif
+                        </x-slot:footer>
                     
 
                     </x-common-ticket-details-card>
@@ -394,57 +238,9 @@
 
                     <!-- ================= Timeline ================= -->
 
-                    <div class="col-lg-4">
-                        <div class="card shadow border-0 rounded-4 h-100">
-                            <div class="card-header bg-white py-3 px-4">
-                                <h5 class="mb-0 fw-semibold">
-                                    <i class="bi bi-clock-history text-warning me-2"></i>
-                                    Tracking History
-                                </h5>
-
-                            </div>
-
-                            <div class="card-body p-4 overflow-auto">
-                                <!-- item -->
-                                <div class="d-flex mb-4">
-                                    <div class="me-3 text-center">
-                                        <div class="bg-primary rounded-circle"
-                                            style="width:14px;height:14px;"></div>
-
-                                        <div class="border-start mx-auto"
-                                            style="height:55px;"></div>
-
-                                    </div>
-
-                                    <div>
-                                        <div class="fw-semibold">
-                                            Nguyễn Thanh Hải
-                                        </div>
-
-                                        <div class="text-muted">
-                                            Created Ticket
-                                        </div>
-
-                                        <small class="text-secondary">
-                                            16 Jun 2026 14:38
-                                        </small>
-
-                                    </div>
-
-                                </div>
-
-                                <!-- item -->
-                                
-
-                                <!-- item -->
-
-                                
-
-                            </div>
-
-                        </div>
-
-                    </div>
+                    <x-common-ticket-tracking-info
+                        :trackings="$ticket->ticket_tracking_info"
+                    />
 
                 </div>
 
