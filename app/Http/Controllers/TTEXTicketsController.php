@@ -14,14 +14,16 @@ class TTEXTicketsController extends Controller
 {
     //
     public function Show_Pending_Tickets(){ 
+        $tickets = TTEX_Tickets_Model::query()->paginate(10);
         if (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_TTEX_TICKET_ADMIN')) {
-            $tickets = TTEX_Tickets_Model::all();
+            
             $tickets_good_part_pending = TTEX_Tickets_Model::where([
                 ['status', '1'],
                 ['part_status', '1'],
             ])
             ->get();
 
+            $tickets_booked_today = TTEX_Tickets_Model::where('booking_date', now('UTC')->toDateString())->get();
             $tickets_def_part_pending = TTEX_Tickets_Model::where('status', '1')
             ->whereIn('part_status', ['2', '3'])
             ->orderBy('part_return_deadline', 'asc')
@@ -30,16 +32,20 @@ class TTEXTicketsController extends Controller
                 return \Carbon\Carbon::parse($ticket->part_return_deadline)
                     ->format('Y-m-d');
             });
-            return view('ttex-tickets-menu', compact('tickets', 'tickets_good_part_pending', 'tickets_def_part_pending'));
+            return view('ttex-tickets-menu', compact('tickets', 'tickets_booked_today', 'tickets_good_part_pending', 'tickets_def_part_pending'));
         } 
         else {
-            $tickets = TTEX_Tickets_Model::where('user_id', auth()->id())->get();
+            
             $tickets_good_part_pending = TTEX_Tickets_Model::where([
                 ['status', '1'],
                 ['part_status', '1'],
                 ['user_id', auth()->id()]
-            ])
-            ->get();
+            ])->get();
+
+            $tickets_booked_today = TTEX_Tickets_Model::where([
+                ['booking_date', now('UTC')->toDateString()],
+                ['user_id', auth()->id()],
+            ])->get();
 
             $tickets_def_part_pending = TTEX_Tickets_Model::where([
                 ['status', '1'],
@@ -53,7 +59,8 @@ class TTEXTicketsController extends Controller
                     ->format('Y-m-d');
             });
 
-            return view('ttex-tickets-menu', compact('tickets', 'tickets_good_part_pending', 'tickets_def_part_pending'));
+            return view('ttex-tickets-menu', compact('tickets', 'tickets_booked_today', 'tickets_good_part_pending', 'tickets_def_part_pending'));
+
 
 
             
@@ -119,7 +126,7 @@ class TTEXTicketsController extends Controller
                 $temp = $ticket_info_input['sender_info'];
                 $ticket_info_input['sender_info'] = $ticket_info_input['receiver_info'];
                 $ticket_info_input['receiver_info'] = $temp;
-                $ticket_info_input['part_return_deadline'] = now('UTC')->addDays(14)->toDateString();
+                $ticket_info_input['part_return_deadline'] = now('UTC')->addDays(10)->toDateString();
                 $ticket_info_input['part_status'] = '2';
                 $ticket_def = TTEX_Tickets_Model::create($ticket_info_input);
 
