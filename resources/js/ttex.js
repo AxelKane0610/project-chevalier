@@ -19,6 +19,35 @@ if (searchInput) {
     
 }
 
+document.addEventListener('DOMContentLoaded', function () {
+
+    const buttons = document.querySelectorAll('.table-btn');
+    const tables = document.querySelectorAll('.ticket-table');
+
+    buttons.forEach(button => {
+
+        button.addEventListener('click', function () {
+
+            // Ẩn tất cả bảng
+            tables.forEach(table => {
+                table.classList.add('d-none');
+            });
+
+            // Hiện bảng được chọn
+            const target = document.getElementById(this.dataset.target);
+
+            if (target) {
+                target.classList.remove('d-none');
+            }
+
+        });
+
+    });
+
+});
+
+
+
 document.addEventListener('submit', function (e) {
     // Kiểm tra xem form nào đang được submit dựa vào ID
     
@@ -288,3 +317,95 @@ if (checkDefUnusedPartReturn && DefUnusedPartReturnContainer) {
 
     toggleDefReturnDeadlineField();
 }
+
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    const container = document.getElementById('all-ttex-tickets-table-container');
+    const searchInput = document.getElementById('search-ttex-bill-input-all-tickets-table');
+
+    const statusFilter = document.getElementById('all-ttex-tickets-status-filter');
+    const partstatusFilter = document.getElementById('all-ttex-tickets-part-status-filter');
+    // Lấy tất cả giá trị filter hiện tại
+    function getFilters() {
+        return {
+            search: searchInput.value,
+            status: statusFilter.value,
+            partStatus: partstatusFilter.value
+        };
+    }
+
+    // Hàm gọi AJAX
+    function fetchData(page = 1) {
+
+        const filters = getFilters();
+
+        const params = new URLSearchParams({
+            page: page,
+            search: filters.search,
+            status: filters.status,
+            partStatus: filters.partStatus
+        });
+
+        fetch(`/ttex-tickets-menu/filter-all-tickets-table?${params.toString()}`, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.text())
+        .then(html => {
+            container.innerHTML = html;
+        })
+        .catch(error => console.error('Lỗi AJAX:', error));
+    }
+
+    // ===========================
+    // SEARCH (Debounce)
+    // ===========================
+    let timer;
+
+    searchInput.addEventListener('keyup', function () {
+
+        clearTimeout(timer);
+
+        timer = setTimeout(() => {
+            fetchData(1);
+        }, 300);
+
+    });
+
+    // ===========================
+    // FILTERS
+    // ===========================
+    [
+        statusFilter,
+        partstatusFilter
+        
+    ].forEach(filter => {
+
+        filter.addEventListener('change', function () {
+            fetchData(1);
+        });
+
+    });
+
+    // ===========================
+    // PAGINATION
+    // ===========================
+    container.addEventListener('click', function (e) {
+
+        const link = e.target.closest('.pagination a');
+
+        if (!link) return;
+
+        e.preventDefault();
+
+        const url = new URL(link.href);
+
+        const page = url.searchParams.get('page') || 1;
+
+        fetchData(page);
+
+    });
+
+});

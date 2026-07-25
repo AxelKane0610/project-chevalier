@@ -91,19 +91,21 @@ form > button {
     gap: 10px;
 }
 
-
+.btn-primary:hover {
+    background-color: white;
+    color: black;
+    cursor: pointer;
+}
 button:hover {
     background-color: white;
     color: black;
     cursor: pointer;
 }
 
-/* button:disabled {
-    background-color: #cccccc !important;
-    color: #666666 !important;
-    cursor: not-allowed !important;
-    pointer-events: none; /* Ngăn chặn hoàn toàn mọi sự kiện chuột 
-} */
+.btn-primary {
+    background-color: var(--button-background-color) !important;
+    color: var(--button-text-color) !important;
+}
 
 .spinner {
     display: inline-block;
@@ -559,9 +561,8 @@ h1, h2, h3 {
 
 .common-table-container {
     padding: 10px;
-    margin-top: 10px;
     width: 100%;
-    height: auto;
+    height: 70vh;
     max-height: 70vh;
     background-color: white;
     border-radius: 10px;
@@ -571,9 +572,11 @@ h1, h2, h3 {
     
 }
 
-.common-table {
+/* .common-table {
     text-align: left;
     text-decoration: none;
+    height: auto;
+    max-height: 500px;
     line-height: 30px;
     overflow-x: scroll;
 }
@@ -581,9 +584,8 @@ h1, h2, h3 {
 .common-table th {
     position: sticky;
     top: 0;
-    /* background: white; */
     z-index: 10;
-}
+} */
 
 .common-table-filter {
     width: 100%;
@@ -591,6 +593,10 @@ h1, h2, h3 {
     flex-direction: row;
     align-items: center;
     gap: 10px;
+    
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 
 

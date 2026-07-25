@@ -13,8 +13,9 @@ use App\Services\tracking_info_service;
 class TTEXTicketsController extends Controller
 {
     //
-    public function Show_Pending_Tickets(){ 
+    public function index(){ 
         $tickets = TTEX_Tickets_Model::query()->paginate(10);
+
         if (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_TTEX_TICKET_ADMIN')) {
             
             $tickets_good_part_pending = TTEX_Tickets_Model::where([
@@ -61,11 +62,45 @@ class TTEXTicketsController extends Controller
 
             return view('ttex-tickets-menu', compact('tickets', 'tickets_booked_today', 'tickets_good_part_pending', 'tickets_def_part_pending'));
 
-
-
-            
         }
         
+    }
+
+    public function Filter_All_Tickets_Table(Request $request)
+    {
+        
+        $query = TTEX_Tickets_Model::with('user_owner');
+
+        
+        if ($request->filled('search')) {
+            $search = $request->search;
+
+            $query->where(function ($q) use ($search) {
+                $q->where('ttex_bill', 'like', "%{$search}%")
+                    ->orWhere('shipment_description', 'like', "%{$search}%");
+            });
+        }
+
+        // Status Filter
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->filled('partStatus')) {
+            $query->where('part_status', $request->partStatus);
+        }
+
+
+        $tickets = $query
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
+
+        // AJAX Search
+        if ($request->ajax()) {
+            return view('tables.ttex-all-tickets-table', compact('tickets'))->render();
+        }
+
     }
 
     public function Create_TTEX_Ticket(Request $request){
