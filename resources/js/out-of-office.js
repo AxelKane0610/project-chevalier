@@ -1,5 +1,33 @@
 console.log('JS Loaded');
 
+document.addEventListener('DOMContentLoaded', function () {
+
+    const buttons = document.querySelectorAll('.table-btn');
+    const tables = document.querySelectorAll('.ticket-table');
+
+    buttons.forEach(button => {
+
+        button.addEventListener('click', function () {
+
+            // Ẩn tất cả bảng
+            tables.forEach(table => {
+                table.classList.add('d-none');
+            });
+
+            // Hiện bảng được chọn
+            const target = document.getElementById(this.dataset.target);
+
+            if (target) {
+                target.classList.remove('d-none');
+            }
+
+        });
+
+    });
+
+});
+
+
 document.addEventListener('submit', function (e) {
     // Kiểm tra xem form nào đang được submit dựa vào ID
     const formData = new FormData(e.target);

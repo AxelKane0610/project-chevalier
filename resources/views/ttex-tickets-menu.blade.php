@@ -45,7 +45,7 @@
                                 <button type="button" class="js-input-required-btn" data-target="create-ttex-ticket-form"><i class="ti-plus"></i> Create Ticket</button>
                             </form>
 
-                            <button class="btn btn-primary table-btn w-100" id="show-pending-good-part-tickets-btn" data-target = "pending-good-part-ttex-tickets-container"><i class="ti-timer"></i> Show Pending Good PartTickets</button>
+                            <button class="btn btn-primary table-btn w-100" id="show-pending-good-part-tickets-btn" data-target = "pending-good-part-ttex-tickets-container"><i class="ti-timer"></i> Show Pending Good Part Tickets</button>
                             <button class="btn btn-primary table-btn w-100" id="show-waiting-def-part-tickets-btn" data-target = "pending-def-part-ttex-tickets-container"><i class="ti-check"></i> Show Pending Def Part Tickets</button>
                             <button class="btn btn-primary table-btn w-100" id="show-all-ttex-tickets-btn" data-target = "all-ttex-tickets-container"><i class="ti-list-ol"></i> Show All Tickets</button>
                         </div>

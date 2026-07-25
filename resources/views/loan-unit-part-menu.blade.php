@@ -9,124 +9,134 @@
     </head>
 
     <body>
-        <div id="loan-unit-part-menu">
-            <x-common-header title="Loan Unit & Part Menu">
-                <li>
-                    <form action="/main-menu">
-                        <button type="submit"><i class="ti-home"></i>Home</button>
-                    </form>
-                </li>
-                <li>
-                    <div class="search-container">
-                        <form action="">
-                            <button type="button" id="btn-toggle-search" class="nav-btn search-btn">
-                                <i class="ti-search"></i> Search
-                            </button>
-
-                            <div id="search-dropdown" class="search-dropdown-box hidden">
-                                <div class="search-input-group">
-                                    
-                                    @livewire('quick-search-dropdown')
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    
-                </li>
-            </x-common-header>
-
-            <div class="loan-unit-part-menu-content">
-
-                <form action=""  >
-                    <button type="button" class="js-input-required-btn" data-target="create-loan-unit-part-ticket"><i class="ti-plus"></i> Create Ticket</button>
+        <x-common-header title="Loan Unit & Part Menu">
+            <li>
+                <form action="/main-menu">
+                    <button type="submit"><i class="ti-home"></i>Home</button>
                 </form>
+            </li>
+            <li>
+                <div class="search-container">
+                    <form action="">
+                        <button type="button" id="btn-toggle-search" class="nav-btn search-btn">
+                            <i class="ti-search"></i> Search
+                        </button>
 
-                <div class="common-table-container">
-                    <h2>Pending Tickets</h2>
-                    <table id="pending-loan-unit-part-tickets-table" class="common-table" width="100%" >
-                        <thead>
-                            <th width="5%"></th>
-                            <th width="15%">Receipt</th>
-                            <th width="15%">User Owner</th>
-                            <th width="15%">Status</th>
-                            <th width="15%">Customer Unit Info</th>
-                            
-
-                        </thead>
-                    
-                        <tbody>
-                            @foreach ($tickets as $ticket)
-                                <tr>
-                                    <td>
-                                        <a href="/loan-unit-part-ticket-details/{{ $ticket->id }}">
-                                            <button><i class="ti-arrow-right" ></i></button>
-                                        </a>
-                                        
-                                    </td>
-                                    <td>{{ $ticket->ticket_receipt }}</td>
-                                    <td>{{ $ticket->user_owner->fullname }}</td>
-                                    <td>
-                                        <span class="ticket-status {{ $ticket->status_data['class'] }}">
-                                            {{ $ticket->status_data['text'] }}
-                                        </span>
-                                    </td>
-                                    <td>{{ $ticket->customer_unit_info }}</td>
-
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                        <div id="search-dropdown" class="search-dropdown-box hidden">
+                            <div class="search-input-group">
+                                
+                                @livewire('quick-search-dropdown')
+                            </div>
+                        </div>
+                    </form>
                 </div>
+                
+            </li>
+        </x-common-header>
 
-                <div class="common-table-container">
-                    <h2>All Tickets</h2>
-                    <div class="common-table-filter">
-                        <div class="search-box">
-                            <i class="ti-search"></i>
-                            <input type="text" placeholder="Search Receipt" id="search-loan-unit-part-receipt-input">
+        <div class="d-flex flex-grow-1 overflow-hidden vh-100">
+            <div class="container-fluid my-5 flex-grow-1">
+                <div class="row flex-grow-1 h-100">
+                    <div class="col-2 d-flex justify-content-center align-items-center flex-column gap-3">
+                        <form action=""  >
+                            <button type="button" class="js-input-required-btn" data-target="create-loan-unit-part-ticket"><i class="ti-plus"></i> Create Ticket</button>
+                        </form>
+
+                        <button class="btn btn-primary table-btn w-100" id="show-pending-loan-unit-part-tickets-btn" data-target = "pending-loan-unit-part-tickets-container"><i class="ti-timer"></i> Show Pending Loan Unit Part Tickets</button>
+                        <button class="btn btn-primary table-btn w-100" id="show-all-loan-unit-part-tickets-btn" data-target = "all-loan-unit-part-tickets-container"><i class="ti-list-ol"></i> Show All Tickets</button>
+                    </div>
+
+                    <div class="col-10 h-100 overflow-auto">
+                        <div class="bg-white p-3 rounded shadow-sm ticket-table" id="pending-loan-unit-part-tickets-container">
+                            <h2>Pending Tickets</h2>
+                            <table id="pending-loan-unit-part-tickets-table" class="common-table" width="100%" >
+                                <thead>
+                                    <th width="5%"></th>
+                                    <th width="15%">Receipt</th>
+                                    <th width="15%">User Owner</th>
+                                    <th width="15%">Status</th>
+                                    <th width="15%">Customer Unit Info</th>
+                                    
+
+                                </thead>
+                            
+                                <tbody>
+                                    @foreach ($tickets as $ticket)
+                                        <tr>
+                                            <td>
+                                                <button type="button" 
+                                                    class="btn btn-primary" 
+                                                    onclick="window.location.href='/loan-unit-part-ticket-details/{{ $ticket->id }}'">
+                                                    <i class="ti-arrow-right"></i>
+                                                </button>
+                                                
+                                            </td>
+                                            <td>{{ $ticket->ticket_receipt }}</td>
+                                            <td>{{ $ticket->user_owner->fullname }}</td>
+                                            <td>
+                                                <span class="ticket-status {{ $ticket->status_data['class'] }}">
+                                                    {{ $ticket->status_data['text'] }}
+                                                </span>
+                                            </td>
+                                            <td>{{ $ticket->customer_unit_info }}</td>
+
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
 
-                        
+                        <div class="bg-white p-3 rounded shadow-sm ticket-table d-none" id="all-loan-unit-part-tickets-container">
+                            <h2>All Tickets</h2>
+                            <div class="common-table-filter">
+                                <div class="search-box">
+                                    <i class="ti-search"></i>
+                                    <input type="text" placeholder="Search Receipt" id="search-loan-unit-part-receipt-input">
+                                </div>
 
+                            </div>
+                            <table id="all-loan-unit-part-tickets-table" class="common-table" width="100%" >
+                                <thead>
+                                    <th width="5%"></th>
+                                    <th width="15%">Receipt</th>
+                                    <th width="15%">User Owner</th>
+                                    <th width="15%">Status</th>
+                                    <th width="15%">Customer Unit Info</th>
+                                    
+
+                                </thead>
+                            
+                                <tbody>
+                                    @foreach ($all_tickets as $ticket)
+                                        <tr>
+                                            <td>
+                                                <button type="button" 
+                                                    class="btn btn-primary" 
+                                                    onclick="window.location.href='/loan-unit-part-ticket-details/{{ $ticket->id }}'">
+                                                    <i class="ti-arrow-right"></i>
+                                                </button>
+                                                
+                                            </td>
+                                            <td>{{ $ticket->ticket_receipt }}</td>
+                                            <td>{{ $ticket->user_owner->fullname }}</td>
+                                            <td>
+                                                <span class="ticket-status {{ $ticket->status_data['class'] }}">
+                                                    {{ $ticket->status_data['text'] }}
+                                                </span>
+                                            </td>
+                                            <td>{{ $ticket->customer_unit_info }}</td>
+
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
 
                     </div>
-                    <table id="all-loan-unit-part-tickets-table" class="common-table" width="100%" >
-                        <thead>
-                            <th width="5%"></th>
-                            <th width="15%">Receipt</th>
-                            <th width="15%">User Owner</th>
-                            <th width="15%">Status</th>
-                            <th width="15%">Customer Unit Info</th>
-                            
-
-                        </thead>
-                    
-                        <tbody>
-                            @foreach ($all_tickets as $ticket)
-                                <tr>
-                                    <td>
-                                        <a href="/loan-unit-part-ticket-details/{{ $ticket->id }}">
-                                            <button><i class="ti-arrow-right" ></i></button>
-                                        </a>
-                                        
-                                    </td>
-                                    <td>{{ $ticket->ticket_receipt }}</td>
-                                    <td>{{ $ticket->user_owner->fullname }}</td>
-                                    <td>
-                                        <span class="ticket-status {{ $ticket->status_data['class'] }}">
-                                            {{ $ticket->status_data['text'] }}
-                                        </span>
-                                    </td>
-                                    <td>{{ $ticket->customer_unit_info }}</td>
-
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
                 </div>
-
             </div>
         </div>
+
 
         <x-common-ticket-form title="Mượn máy & part form" action1="/create-loan-unit-part-ticket" id="create-loan-unit-part-ticket">
             <lable>Receipt</label>

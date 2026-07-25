@@ -37,107 +37,118 @@
                 
             </x-common-header>
 
-            <div class="invoice-exceptional-tickets-menu-content">
+            <div class="d-flex flex-grow-1 overflow-hidden vh-100">
+                <div class="container-fluid my-5 flex-grow-1">
+                    <div class="row flex-grow-1 h-100">
+                        <div class="col-2 d-flex justify-content-center align-items-center flex-column gap-3">
+                            <form action="" >
+                                <button type="button" class="js-input-required-btn" id="create-invoice-exceptional-ticket-btn" data-target="create-invoice-exceptional-ticket-form"><i class="ti-plus"></i> Create Ticket</button>
+                            </form>
+                            <button class="btn btn-primary table-btn w-100" id="show-pending-invoice-exceptional-tickets-btn" data-target = "pending-invoice-exceptional-tickets-container"><i class="ti-timer"></i> Show Pending Tickets</button>
+                            <button class="btn btn-primary table-btn w-100" id="show-all-invoice-exceptional-tickets-btn" data-target = "all-invoice-exceptional-tickets-container"><i class="ti-check"></i> Show All Tickets</button>
 
-                <form action="" >
-                    <button type="button" class="js-input-required-btn" id="create-invoice-exceptional-ticket-btn" data-target="create-invoice-exceptional-ticket-form"><i class="ti-plus"></i> Create Ticket</button>
-                </form>
-                
-
-                <div class="common-table-container">
-                    <h2>Pending Tickets</h2>
-
-                    <table class="common-table pending-invoice-exceptional-tickets-table" width="100%" >
-                        <tr>
-                            <th width="5%"></th>
-                            <th width="14%">Receipt</th>
-                            <th width="20%">Support Type</th>
-                            <th width="39%">Issue Description</th>
-                            <th width="11%">Product Model</th>
-                            <th width="11%">Status</th>
-                        </tr>
-                    
-                        <tbody>
-                            @foreach ($tickets as $ticket)
-                                
-                                    <tr>
-                                        <td>
-                                            <a href="/invoice-exceptional-menu-details/{{ $ticket->id }}">
-                                                <button><i class="ti-arrow-right" ></i></button>
-                                            </a>
-                                        </td>
-                                        <td>{{ $ticket->ticket_receipt }}</td>
-                                        <td>
-                                            
-                                            <span class="ticket-support-type {{ $ticket->support_type_data['class'] }}">
-                                                {{ $ticket->support_type_data['text'] }}
-                                            </span>
-                                        </td>
-                                        <td>{{ $ticket->description }}</td>
-                                        <td>{{ $ticket->product_model }}</td>
-                                        <td>
-                                            <span class="ticket-status {{ $ticket->status_data['class'] }}">
-                                                {{ $ticket->status_data['text'] }}
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    
-                            @endforeach
-                        </tbody>
-                    </table>
-
-                </div>
-
-                <div class="common-table-container">
-                    <h2>All Tickets</h2>
-                    <div class="common-table-filter">
-                        <div class="search-box">
-                            <i class="ti-search"></i>
-                            <input type="text" placeholder="Search Receipt" id="search-invoice-exceptional-receipt-input">
                         </div>
 
-                    </div>
+                        <div class="col-10 h-100 overflow-auto">
+                            <div class="bg-white p-3 rounded shadow-sm ticket-table" id="pending-invoice-exceptional-tickets-container">
+                                <h2>Pending Tickets</h2>
 
-                    <table class="common-table" id="all-invoice-exceptional-tickets-table" width="100%" >
-                        <thead>
-                            <th width="5%"></th>
-                            <th width="14%">Receipt</th>
-                            <th width="20%">Support Type</th>
-                            <th width="39%">Issue Description</th>
-                            <th width="11%">Product Model</th>
-                            <th width="11%">Status</th>
-                        </thead>
-                    
-                        <tbody>
-                            @foreach ($all_tickets as $ticket)
-                                
+                                <table class="common-table pending-invoice-exceptional-tickets-table" width="100%" >
                                     <tr>
-                                        <td>
-                                            <a href="/invoice-exceptional-menu-details/{{ $ticket->id }}">
-                                                <button><i class="ti-arrow-right" ></i></button>
-                                            </a>
-                                        </td>
-                                        <td>{{ $ticket->ticket_receipt }}</td>
-                                        <td>
-                                            
-                                            <span class="ticket-support-type {{ $ticket->support_type_data['class'] }}">
-                                                {{ $ticket->support_type_data['text'] }}
-                                            </span>
-                                        </td>
-                                        <td>{{ $ticket->description }}</td>
-                                        <td>{{ $ticket->product_model }}</td>
-                                        <td>
-                                            <span class="ticket-status {{ $ticket->status_data['class'] }}">
-                                                {{ $ticket->status_data['text'] }}
-                                            </span>
-                                        </td>
+                                        <th width="5%"></th>
+                                        <th width="14%">Receipt</th>
+                                        <th width="20%">Support Type</th>
+                                        <th width="39%">Issue Description</th>
+                                        <th width="11%">Product Model</th>
+                                        <th width="11%">Status</th>
                                     </tr>
-                                    
-                            @endforeach
-                        </tbody>
-                    </table>
+                                
+                                    <tbody>
+                                        @foreach ($tickets as $ticket)
+                                            
+                                            <tr>
+                                                <td>
+                                                    <a href="/invoice-exceptional-menu-details/{{ $ticket->id }}">
+                                                        <button><i class="ti-arrow-right" ></i></button>
+                                                    </a>
+                                                </td>
+                                                <td>{{ $ticket->ticket_receipt }}</td>
+                                                <td>
+                                                    
+                                                    <span class="ticket-support-type {{ $ticket->support_type_data['class'] }}">
+                                                        {{ $ticket->support_type_data['text'] }}
+                                                    </span>
+                                                </td>
+                                                <td>{{ $ticket->description }}</td>
+                                                <td>{{ $ticket->product_model }}</td>
+                                                <td>
+                                                    <span class="ticket-status {{ $ticket->status_data['class'] }}">
+                                                        {{ $ticket->status_data['text'] }}
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                                
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
 
+                            <div class="bg-white p-3 rounded shadow-sm ticket-table d-none" id="all-invoice-exceptional-tickets-container">
+                                <h2>All Tickets</h2>
+                                <div class="common-table-filter">
+                                    <div class="search-box">
+                                        <i class="ti-search"></i>
+                                        <input type="text" placeholder="Search Receipt" id="search-invoice-exceptional-receipt-input">
+                                    </div>
+
+                                </div>
+
+                                <table class="common-table" id="all-invoice-exceptional-tickets-table" width="100%" >
+                                    <thead>
+                                        <th width="5%"></th>
+                                        <th width="14%">Receipt</th>
+                                        <th width="20%">Support Type</th>
+                                        <th width="39%">Issue Description</th>
+                                        <th width="11%">Product Model</th>
+                                        <th width="11%">Status</th>
+                                    </thead>
+                                
+                                    <tbody>
+                                        @foreach ($all_tickets as $ticket)
+                                            
+                                            <tr>
+                                                <td>
+                                                    <a href="/invoice-exceptional-menu-details/{{ $ticket->id }}">
+                                                        <button><i class="ti-arrow-right" ></i></button>
+                                                    </a>
+                                                </td>
+                                                <td>{{ $ticket->ticket_receipt }}</td>
+                                                <td>
+                                                    
+                                                    <span class="ticket-support-type {{ $ticket->support_type_data['class'] }}">
+                                                        {{ $ticket->support_type_data['text'] }}
+                                                    </span>
+                                                </td>
+                                                <td>{{ $ticket->description }}</td>
+                                                <td>{{ $ticket->product_model }}</td>
+                                                <td>
+                                                    <span class="ticket-status {{ $ticket->status_data['class'] }}">
+                                                        {{ $ticket->status_data['text'] }}
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                                
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
+            </div>
+
+            
 
         <x-common-ticket-form title="Invoice Exceptional Ticket Form" action1="/create-invoice-exceptional-ticket" id="create-invoice-exceptional-ticket-form">
 
