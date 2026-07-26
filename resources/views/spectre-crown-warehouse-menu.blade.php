@@ -4,7 +4,7 @@
 
         <title>Project Chevalier</title>
         <meta charset="utf-8">
-        @vite(['resources/js/app.js', 'resources/js/spectre-crown-warehouse.js', 'resources/css/app.css',  'resources/css/icons/themify-icons.css', ])
+        @vite(['resources/js/app.js', 'resources/js/spectre-crown-warehouse.js',  'resources/css/icons/themify-icons.css', ])
         {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> --}}
     </head>
 

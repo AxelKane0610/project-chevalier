@@ -4,7 +4,7 @@
 
         <title>Project Chevalier</title>
         <meta charset="utf-8">
-        @vite(['resources/js/app.js', 'resources/js/subk-management.js', 'resources/css/app.css',  'resources/css/icons/themify-icons.css', ])
+        @vite(['resources/js/app.js', 'resources/js/subk-management.js',  'resources/css/icons/themify-icons.css', ])
     
     </head>
 

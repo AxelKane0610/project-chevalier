@@ -4,8 +4,7 @@
 
         <title>Project Chevalier</title>
         <meta charset="utf-8">
-        @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/css/icons/themify-icons.css'])
-        <!-- <link rel="stylesheet" href="/icons/themify-icons.css"> -->
+        @vite([ 'resources/js/app.js', 'resources/css/icons/themify-icons.css'])
     
     </head>
 
@@ -34,8 +33,8 @@
 
         
         
-<div class="container-fluid py-4 d-flex flex-grow-1 overflow-hidden vh-100">
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 row-cols-xl-5 g-4 d-flex flex-grow-1 justify-content-center align-items-center">
+<div class="container-fluid py-4">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 row-cols-xl-5 g-4 d-flex flex-grow-1 justify-content-center align-items-center overflow-auto">
 
         <!-- Card -->
 

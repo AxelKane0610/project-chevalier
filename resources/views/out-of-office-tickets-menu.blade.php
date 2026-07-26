@@ -6,7 +6,7 @@
         <script>
             window.searchReceiptUrl = "{{ route('search.receipt') }}";
         </script>
-        @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/out-of-office.js', 'resources/css/icons/themify-icons.css'])
+        @vite([ 'resources/js/app.js', 'resources/js/out-of-office.js', 'resources/css/icons/themify-icons.css'])
         
     </head>
 
