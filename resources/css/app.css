@@ -265,7 +265,7 @@ h1, h2, h3 {
 
 
 /* -------------------- CSS Cho main menu chọn tickets --------------------*/
-.main-menu-categories-header {
+/* .main-menu-categories-header {
     display: flex;
     text-align: center;
     justify-content: center;
@@ -275,7 +275,7 @@ h1, h2, h3 {
     height: 10vh;
     color: white;
     text-decoration: white;
-}
+} */
 
 
 
@@ -298,7 +298,6 @@ h1, h2, h3 {
     padding: 0 24px;
     color: white;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    margin-bottom: 10px;
 
     position: sticky;
     top: 0;
@@ -429,14 +428,7 @@ h1, h2, h3 {
     font-size: 15px;
 }
 
-.loan-unit-part-menu-content,
-.spectre-crown-warehouse-menu-content,
-.subk-management-menu-content,
-.out-of-office-tickets-menu-content,
-.invoice-exceptional-tickets-menu-content,
-.thermal-event-tickets-menu-content,
-.laser-engraving-menu-content,
-.software-tickets-menu-content {
+.spectre-crown-warehouse-menu-content {
     padding: 20px;
     /* display: flex; */
     flex: 1;
@@ -562,7 +554,7 @@ h1, h2, h3 {
 .common-table-container {
     padding: 10px;
     width: 100%;
-    height: 70vh;
+    height: auto;
     max-height: 70vh;
     background-color: white;
     border-radius: 10px;
@@ -571,21 +563,6 @@ h1, h2, h3 {
 
     
 }
-
-/* .common-table {
-    text-align: left;
-    text-decoration: none;
-    height: auto;
-    max-height: 500px;
-    line-height: 30px;
-    overflow-x: scroll;
-}
-
-.common-table th {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-} */
 
 .common-table-filter {
     width: 100%;
@@ -600,120 +577,6 @@ h1, h2, h3 {
 }
 
 
-
-
-.ticket-comments-box,
-.software-tickets-tracking-info,
-.tickets-details-box
-{
-    display: flex;
-    padding: 10px;
-    width: 100%;
-    height: 90vh;
-    background-color: white;
-    box-sizing: border-box;
-    border-radius: 20px;
-    flex-direction: column;
-    align-items: center;
-    box-shadow: 0 4px 10px 10px rgba(0,0,0,0.4);
-    
-}
-.ticket-comments-body,
-.ticket-details-body {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    max-height: 95%;
-    height: 95%;
-    box-sizing: border-box;
-    overflow-y: scroll;
-}
-
-
-.tickets-details-items {
-    display: grid;
-    grid-template-columns: 1fr;
-    width: 100%;
-    justify-content: space-evenly;
-    overflow-y: scroll;
-    box-sizing: border-box;
-}
-
-
-.tickets-comments-items li,
-.tickets-details-items li{
-    display: flex;
-    flex-direction: column;
-    padding: 5px;
-    background-color: white;
-    width: 99%;
-    height: auto;
-    
-    
-}
-
-
-/* .ticket-comments-footer {
-    display: flex;
-    width: 100%;
-    height: 50%;
-    align-items: center;
-    justify-content: center;
-    overflow-y: scroll;
-    box-sizing: border-box;
-
-    
-}
-.ticket-comments-footer > form{
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: auto;
-    max-height: 40%;
-    gap: 10px;
-    justify-content: space-evenly;
-} */
-
-/* .ticket-comments-footer {
-    display: flex;
-    width: 100%;
-    height: auto; 
-    max-height: 60%;
-    align-items: center;
-    justify-content: center;
-    box-sizing: border-box;
-    padding: 15px; 
-} */
-
-.ticket-comments-footer > form {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: auto; 
-    gap: 12px;
-    justify-content: flex-start; 
-}
-
-.ticket-comments-footer > form textarea {
-    min-height: 80px;
-    max-height: 120px;
-}
-
-.ttex-ticket-content,
-.out-of-office-tickets-content,
-.loan-unit-part-ticket-content,
-.invoice-exceptional-ticket-content,
-.thermal-event-ticket-content,
-.laser-engraving-ticket-content,
-.software-ticket-content {
-    display: grid;
-    grid-template-columns: 30vw 30vw 30vw;
-    width: 100%;
-    max-height: 800px;
-    padding: 20px;
-    justify-content: space-evenly;
-    gap: 20px;
-}
 
 .dialog-box {
     position: fixed;
@@ -759,156 +622,7 @@ h1, h2, h3 {
 }
 
 
-.ticket-status,
-.ticket-support-type,
-.ticket-priority{
-    padding: 5px;
-    border-radius: 10px;
-    color: white;
-}
 
-.ticket-priority.normal{
-    background: rgb(72,176,79);
-}
-
-.ticket-priority.critical {
-    background: rgb(239,81,34);
-}
-
-.ticket-priority.high {
-    background: rgb(244,128,32);
-}
-
-.ticket-priority.low {
-    background: rgb(84,195,240);
-}
-
-.ticket-status.completed,
-.ticket-status.open {
-    background: rgb(72,176,79);
-}
-
-.ticket-status.in-progress {
-    background: rgb(244,128,32);
-}
-
-.ticket-status.waiting-approval {
-    background: rgb(39,116,186);
-}
-
-.ticket-status.canceled,
-.ticket-status.cancel,
-.ticket-status.rejected {
-    background: rgb(239,81,34);
-}
-
-.ticket-status.not-started {
-    background: rgb(128,128,128);
-}
-
-.ticket-status.waiting-for-verifier {
-    background: rgb(51,106,51);
-}
-
-.ticket-status.waiting-for-approver {
-    background: rgb(136,25,81);
-}
-
-.ticket-support-type.add-part-product {
-    background: rgb(51,106,51);
-}
-
-.ticket-support-type.rollback {
-    background: rgb(136,25,81);
-}
-
-.ticket-support-type.cancel-reciept {
-    background: rgb(75,46,138);
-}
-
-.ticket-support-type.adjust-information {
-    background: rgb(54,47,140);
-}
-
-.ticket-support-type.unmark-rerepair {
-    background: rgb(45,47,122);
-}
-
-.ticket-support-type.system-issue {
-    background: rgb(22,72,159);
-}
-
-.ticket-support-type.data-export-request {
-    background: rgb(7,88,157);
-}
-
-.ticket-support-type.request-improvement {
-    background: rgb(14,97,101);
-}
-
-.ticket-support-type.others {
-    background: rgb(12,78,66);
-}
-
-
-.approve-invoice-1-unit,
-.re-activate-warranty-1-unit {
-    background: rgb(73 163 160);
-}
-
-.approve-invoice-multiples-units,
-.re-activate-warranty-multiples-units {
-    background: rgb(66 27 38);
-}
-
-.waiting-approve-invoice,
-.waiting-re-activate {
-    background: rgb(21 16 66);
-}
-
-.leave {
-    background: rgb(91, 201, 47);
-}
-
-.late,
-.early,
-.no-check-in,
-.no-check-out,
-.forgot-check-in {
-    background: rgb(127 0 10);
-}
-
-.crown,
-.good-working,
-.available,
-.crown-hcm {
-    background: rgb(91, 201, 47);
-}
-
-.t1,
-.can-t-use,
-.not-available,
-.crown-hn {
-    background: rgb(127 0 10);
-}
-
-.spectre,
-.not-tested,
-.in-use,
-.spectre {
-    background: rgb(66 27 38);
-}
-
-.laptop,
-.accessories,
-.monitor,
-.scanner,
-.pc,
-.large-format-printer,
-.small-format-printer,
-.others {
-    background: rgb(27, 132, 255);
-}
 
 .file-list {
     max-height: 300px;

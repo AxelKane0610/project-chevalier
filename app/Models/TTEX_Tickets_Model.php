@@ -34,7 +34,7 @@ class TTEX_Tickets_Model extends Model
     public function active_attachments()
     {
         return $this->hasMany(Attachments_Model::class, 'ticket_id', 'id')
-            ->where(['type_of_ticket' => 2, 'status' => '1']); // Chỉ lấy những attachment có status = 1 (còn hiệu lực)
+            ->where(['type_of_ticket' => 2, 'status' => '1', 'comment_id' => null]); // Chỉ lấy những attachment có status = 1 (còn hiệu lực)
     }
 
     public function ticket_comments()
@@ -55,24 +55,24 @@ class TTEX_Tickets_Model extends Model
         return match ($this->status){
              "1" => [
                 'text' => 'Open - Chưa điều tin',
-                'class' => 'open'
+                'color' => 'primary'
             ],
 
             "2" => [
                 'text' => 'Completed - Đã điều tin',
-                'class' => 'waiting-for-verifier'
+                'color' => 'success'
             ],
 
             "3" => [
                 'text' => 'Rejected',
-                'class' => 'waiting-for-approver'
+                'color' => 'danger'
             ],
 
 
 
             default => [
                 'text' => 'Unknown',
-                'class' => 'unknown'
+                'color' => 'primary'
             ]
         };
     }
@@ -82,24 +82,24 @@ class TTEX_Tickets_Model extends Model
         return match ($this->part_status){
              "1" => [
                 'text' => 'Good part',
-                'class' => 'open'
+                'color' => 'primary'
             ],
 
             "2" => [
                 'text' => 'Def part',
-                'class' => 'waiting-for-verifier'
+                'color' => 'primary'
             ],
 
             "3" => [
                 'text' => 'Good part - Unused',
-                'class' => 'waiting-for-approver'
+                'color' => 'primary'
             ],
 
 
 
             default => [
                 'text' => 'Unknown',
-                'class' => 'unknown'
+                'color' => 'primary'
             ]
         };
     }
@@ -109,39 +109,39 @@ class TTEX_Tickets_Model extends Model
         return match ($this->category){
              "1" => [
                 'text' => 'ASRC',
-                'class' => 'open'
+                'color' => 'primary'
             ],
 
             "2" => [
                 'text' => 'HPS',
-                'class' => 'waiting-for-verifier'
+                'color' => 'secondary'
             ],
 
             "3" => [
                 'text' => 'Onsite Geox',
-                'class' => 'waiting-for-approver'
+                'color' => 'success'
             ],
 
             "4" => [
                 'text' => 'Part NBD',
-                'class' => 'completed'
+                'color' => 'danger'
             ],
 
             "5" => [
                 'text' => 'Others',
-                'class' => 'rejected'
+                'color' => 'warning'
             ],
 
             "6" => [
                 'text' => 'Văn phòng phẩm/Tài liệu',
-                'class' => 'rejected'
+                'color' => 'info'
             ],
 
 
 
             default => [
                 'text' => 'Unknown',
-                'class' => 'unknown'
+                'color' => 'primary'
             ]
         };
     }
@@ -151,24 +151,24 @@ class TTEX_Tickets_Model extends Model
         return match ($this->shipment_type){
              "1" => [
                 'text' => 'Tài liệu',
-                'class' => 'open'
+                'color' => 'primary'
             ],
 
             "2" => [
                 'text' => 'Thiết bị điện/điện tử',
-                'class' => 'waiting-for-verifier'
+                'color' => 'secondary'
             ],
 
             "3" => [
                 'text' => 'Văn phòng phẩm',
-                'class' => 'waiting-for-approver'
+                'color' => 'success'
             ],
 
 
 
             default => [
                 'text' => 'Unknown',
-                'class' => 'unknown'
+                'color' => 'primary'
             ]
         };
     }

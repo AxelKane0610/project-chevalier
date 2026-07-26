@@ -44,8 +44,20 @@
                             <form action="" >
                                 <button type="button" class="js-input-required-btn" id="create-invoice-exceptional-ticket-btn" data-target="create-invoice-exceptional-ticket-form"><i class="ti-plus"></i> Create Ticket</button>
                             </form>
-                            <button class="btn btn-primary table-btn w-100" id="show-pending-invoice-exceptional-tickets-btn" data-target = "pending-invoice-exceptional-tickets-container"><i class="ti-timer"></i> Show Pending Tickets</button>
-                            <button class="btn btn-primary table-btn w-100" id="show-all-invoice-exceptional-tickets-btn" data-target = "all-invoice-exceptional-tickets-container"><i class="ti-check"></i> Show All Tickets</button>
+                            <button class="btn btn-primary table-btn w-100 position-relative" id="show-pending-invoice-exceptional-tickets-btn" data-target = "pending-invoice-exceptional-tickets-container">
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {{$tickets->count()}}
+                                </span>
+                                <i class="ti-timer"></i> 
+                                Show Pending Tickets
+                            </button>
+                            <button class="btn btn-primary table-btn w-100 position-relative" id="show-all-invoice-exceptional-tickets-btn" data-target = "all-invoice-exceptional-tickets-container">
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {{$all_tickets->count()}}
+                                </span>
+                                <i class="ti-check"></i> 
+                                Show All Tickets
+                            </button>
 
                         </div>
 
@@ -75,14 +87,14 @@
                                                 <td>{{ $ticket->ticket_receipt }}</td>
                                                 <td>
                                                     
-                                                    <span class="ticket-support-type {{ $ticket->support_type_data['class'] }}">
+                                                    <span class="badge rounded-pill bg-{{ $ticket->support_type_data['color'] ?? 'primary' }} px-3 py-2">
                                                         {{ $ticket->support_type_data['text'] }}
                                                     </span>
                                                 </td>
                                                 <td>{{ $ticket->description }}</td>
                                                 <td>{{ $ticket->product_model }}</td>
                                                 <td>
-                                                    <span class="ticket-status {{ $ticket->status_data['class'] }}">
+                                                    <span class="badge rounded-pill bg-{{ $ticket->status_data['color'] ?? 'primary' }} px-3 py-2">
                                                         {{ $ticket->status_data['text'] }}
                                                     </span>
                                                 </td>
@@ -125,14 +137,14 @@
                                                 <td>{{ $ticket->ticket_receipt }}</td>
                                                 <td>
                                                     
-                                                    <span class="ticket-support-type {{ $ticket->support_type_data['class'] }}">
+                                                    <span class="badge rounded-pill bg-{{ $ticket->support_type_data['color'] ?? 'primary' }} px-3 py-2">
                                                         {{ $ticket->support_type_data['text'] }}
                                                     </span>
                                                 </td>
                                                 <td>{{ $ticket->description }}</td>
                                                 <td>{{ $ticket->product_model }}</td>
                                                 <td>
-                                                    <span class="ticket-status {{ $ticket->status_data['class'] }}">
+                                                    <span class="badge rounded-pill bg-{{ $ticket->status_data['color'] ?? 'primary' }} px-3 py-2">
                                                         {{ $ticket->status_data['text'] }}
                                                     </span>
                                                 </td>

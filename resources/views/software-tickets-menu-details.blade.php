@@ -128,7 +128,7 @@
                                 'type' => 'text'
                             ],
                             [
-                                'icon' => 'ti-agenda',
+                                'icon' => 'ti-calendar',
                                 'label' => 'Ngày request',
                                 'value' => $ticket->created_at,
                                 'type' => 'text'
@@ -200,7 +200,7 @@
                                 },
                             ],
                             [
-                                'icon' => 'ti-menu',
+                                'icon' => 'ti-align-justify',
                                 'label' => 'Issue Description',
                                 'value' => $ticket->description,
                                 'type' => 'text'
@@ -253,6 +253,19 @@
                     <option value="4">Complete</option>
                     <option value="5">Reject</option>
                     <option value="6">Cancel</option>
+                </select>
+
+                <label>Support Type</label>
+                <select name="support_type" class="ticket-form-body-input">
+                    <option value="1">Thêm mã part/product</option>
+                    <option value="2">Rollback</option>
+                    <option value="3">Hủy số phiếu/Ẩn lịch sử bảo hành</option>
+                    <option value="4">Điều chỉnh thông tin</option>
+                    <option value="5">Unmark Re-Repair</option>
+                    <option value="6">Lỗi hệ thống</option>
+                    <option value="7">Cấp quyền export data</option>
+                    <option value="8">Đề xuất thay đổi/cải tiến</option>
+                    <option value="9">Vấn đề khác</option>
                 </select>
 
                 <label>Issue Owner</label>

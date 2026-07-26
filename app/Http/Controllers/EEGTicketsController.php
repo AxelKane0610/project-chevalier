@@ -244,19 +244,21 @@ class EEGTicketsController extends Controller
                 $ticket_info_input = $request->validate([
                     'ticket_status' => 'required',
                     'issue_owner' => 'required',
+                    'support_type' => 'required',
                     'ticket_comment' => 'nullable'
                 ]);
 
                 $ticket_info_input['ticket_status'] = strip_tags($ticket_info_input['ticket_status']);
                 $ticket_info_input['issue_owner'] = strip_tags($ticket_info_input['issue_owner']);
+                $ticket_info_input['support_type'] = strip_tags($ticket_info_input['support_type']);
                 $ticket_info_input['ticket_comment'] = strip_tags($ticket_info_input['ticket_comment']);
                 
                 
                 $ticket->status = $ticket_info_input['ticket_status'];
                 $ticket->issue_owner = $ticket_info_input['issue_owner'];
+                $ticket->support_type = $ticket_info_input['support_type'];
                 $ticket->completed_date = now();
                 $ticket->ticket_completed_by = auth()->id();
-                // dd($ticket->user_owner->fullname);
                 $ticket->save();
 
                 switch ($ticket_info_input['ticket_status']) {

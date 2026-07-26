@@ -32,7 +32,7 @@ class Thermal_Event_Exceptional_Tickets_Model extends Model
     public function active_attachments()
     {
         return $this->hasMany(Attachments_Model::class, 'ticket_id', 'id')
-            ->where(['type_of_ticket' => 10, 'status' => '1']); // Chỉ lấy những attachment có status = 1 (còn hiệu lực)
+            ->where(['type_of_ticket' => 10, 'status' => '1', 'comment_id' => null]); // Chỉ lấy những attachment có status = 1 (còn hiệu lực)
     }
 
     public function ticket_comments()
@@ -59,34 +59,34 @@ class Thermal_Event_Exceptional_Tickets_Model extends Model
         return match ($this->status){
              "1" => [
                 'text' => 'Open',
-                'class' => 'open'
+                'color' => 'primary'
             ],
 
             "2" => [
                 'text' => 'Waiting for verifier',
-                'class' => 'waiting-for-verifier'
+                'color' => 'secondary'
             ],
 
             "3" => [
                 'text' => 'Waiting for approver',
-                'class' => 'waiting-for-approver'
+                'color' => 'secondary'
             ],
 
             "4" => [
                 'text' => 'Completed',
-                'class' => 'completed'
+                'color' => 'success'
             ],
 
             "5" => [
                 'text' => 'Rejected',
-                'class' => 'rejected'
+                'color' => 'danger'
             ],
 
 
 
             default => [
                 'text' => 'Unknown',
-                'class' => 'unknown'
+                'color' => 'primary'
             ]
         };
     }
@@ -96,23 +96,23 @@ class Thermal_Event_Exceptional_Tickets_Model extends Model
         return match ($this->customer_type){
              "1" => [
                 'text' => 'Khách hàng lẻ',
-                'class' => 'open'
+                'color' => 'primary'
             ],
 
             "2" => [
                 'text' => 'Khách hàng công ty/doanh nghiệp',
-                'class' => 'waiting-for-verifier'
+                'color' => 'danger'
             ],
 
             "3" => [
                 'text' => 'T1/Đại lý bán lẻ',
-                'class' => 'waiting-for-approver'
+                'color' => 'secondary'
             ],
 
 
             default => [
                 'text' => 'Unknown',
-                'class' => 'unknown'
+                'color' => 'primary'
             ]
         };
     }

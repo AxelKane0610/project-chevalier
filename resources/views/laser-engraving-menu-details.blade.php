@@ -72,76 +72,119 @@
             @endswitch
 
         </x-common-header>
+        <div class="container-fluid px-4 py-4">
+            <div class="row g-4" style="min-height: calc(100vh - 90px);">
+                <!-- ================= Ticket Detail ================= -->
 
-        <div class = "laser-engraving-ticket-content">
-            <x-common-ticket-detail-form>
-                <h2>Tickets Details</h2>
-                <li>
-                    <lable>Receipt</lable>
-                    <h2>{{ $ticket->ticket_receipt }}</h2>
-                </li>
-                <li>
-                    <lable>Người request</lable>
-                    <h2>{{ $ticket->user_owner->fullname }}</h2>
-                </li>
-                <li>
-                    <lable>Ngày request</lable>
-                    <h2>{{ $ticket->created_at }}</h2>
-                </li>
-                <li>
-                    <lable>Priority</lable>
-                    <h2>
-                        <span class="ticket-priority {{ $ticket->priority_data['class'] }}">
-                            {{ $ticket->priority_data['text'] }}
-                        </span>
-                    </h2>
-                </li>
-                <li>
-                    <lable>Status</lable>
-                    <h2>
-                        <span class="ticket-status {{ $ticket->status_data['class'] }}">
-                            {{ $ticket->status_data['text'] }}
-                        </span>
-                    </h2>
-                </li>
-                <li>
-                    <label>Info base</label>
-                    <h2>{{ $ticket->info_base }}</h2>
-                </li>
-                <li style="height: 200px;">
-                    <lable>Description</lable>
-                    <p>{{ $ticket->description }}</p>
-                </li>
+                <x-common-ticket-details-card 
+                    :rows="[
+                        [
+                            'icon' => 'ti-receipt',
+                            'label' => 'Receipt',
+                            'value' => $ticket->ticket_receipt,
+                            'type' => 'text'
+                        ],
+                        [
+                            'icon' => 'ti-user',
+                            'label' => 'Người request',
+                            'value' => $ticket->user_owner->fullname,
+                            'type' => 'text'
+                        ],
+                        [
+                            'icon' => 'ti-calendar',
+                            'label' => 'Ngày request',
+                            'value' => $ticket->created_at,
+                            'type' => 'text'
+                        ],
+                        [
+                            'icon' => 'ti-angle-double-up',
+                            'label' => 'Priority',
+                            'value' => match ($ticket->priority) {
+                                '1' => 'Normal',
+                                '2' => 'Critical',
+                                '3' => 'High',
+                                '4' => 'Low',
 
-                <li>
-                    <lable>Attachments ({{ $ticket->active_attachments->count() }} files)</lable>
-                    <x-common-attachments-table>
-                            @foreach ($ticket->active_attachments as $attachment)
-                                @if(in_array($attachment->type_of_ticket, [3])) {{-- Cách viết gọn thay cho switch --}}
-                                <tr>
-                                    <td>{{ $attachment->name }}</td>
-                                    <td>
-                                        <a href="{{ asset('attachments/' . $attachment->file_path) }}" target="_blank" class="btn btn-info">
-                                            <i class="ti-eye"></i>
-                                        </a>
-                                        <a href="{{ asset('attachments/' . $attachment->file_path) }}" download="{{ $attachment->name }}" class="btn btn-secondary">
-                                            <i class="ti-download"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                                @endif
-                            @endforeach
-                    </x-common-attachments-table>
-                        
+                                default => 'Unknown',
+                            },
+                            'type' => 'badge',
+                            'color' => match ($ticket->priority) {
+                                '1' => 'success',
+                                '2' => 'danger',
+                                '3' => 'warning',
+                                '4' => 'primary',
+
+                                default => 'Unknown',
+                            },
+                        ],
+                        [
+                            'icon' => 'ti-arrow-circle-right',
+                            'label' => 'Status',
+                            'value' => match ($ticket->status) {
+                                '1' => 'Not started',
+                                '2' => 'In progress',
+                                '3' => 'Completed',
+                                '4' => 'Rejected',
+                                default => 'Unknown',
+                            },
+                            'type' => 'badge',
+                            'color' => match ($ticket->status) {
+                                '1' => 'primary',
+                                '2' => 'secondary',
+                                '3' => 'success',
+                                '4' => 'danger',
+                                default => 'Unknown',
+                            },
+                        ],
+                        [
+                            'icon' => 'ti-align-justify',
+                            'label' => 'Info base',
+                            'value' => $ticket->info_base,
+                            'type' => 'text'
+                        ],
+                        [
+                            'icon' => 'ti-align-justify',
+                            'label' => 'Description',
+                            'value' => $ticket->description,
+                            'type' => 'text'
+                        ]
+                    ]"
+
                     
-                </li>
+                >
 
-                @if(($ticket->status == '1') && $ticket->user_id == auth()->user()->id)
-                <x-slot:footer>
-                    <button type="button" class="js-input-required-btn" data-target="edit-laser-engraving-ticket-details"><i class="ti-pencil"></i> Edit</button>
-                </x-slot:footer>
-                @endif
-            </x-common-ticket-detail-form>
+                    <x-common-attachments-table-card
+                        :attachments="$ticket->active_attachments"
+                    />
+
+                    <x-slot:footer>
+                        @if((($ticket->status == '1') && $ticket->user_id == auth()->user()->id) || (auth()->user()->hasRole('ROLE_SUPER_ADMIN')))
+                        <button type="button" class="js-input-required-btn" data-target="edit-laser-engraving-ticket-details"><i class="ti-pencil"></i> Edit</button>
+                        @endif
+                    </x-slot:footer>
+
+                </x-common-ticket-details-card>
+
+                <!-- ================= Comment ================= -->
+
+                    <x-common-ticket-comments-card
+                        :comments="$ticket->ticket_comments"
+                        :showAttachments="true"
+                        :actionRoute="route('add-comment-laser-engraving-ticket', $ticket->id)"
+                    >
+
+
+                    </x-common-ticket-comments-card>
+
+                    <!-- ================= Timeline ================= -->
+
+                    <x-common-ticket-tracking-info
+                        :trackings="$ticket->ticket_tracking_info"
+                    />
+
+            </div>
+        </div>
+        
 
             <x-common-ticket-form title="Edit Ticket Khắc Base" id="edit-laser-engraving-ticket-details" action1="{{ route('edit-laser-engraving-ticket', $ticket->id) }}">
                 @method('PATCH')
@@ -206,51 +249,6 @@
                 </x-slot:footer>
             </x-common-ticket-form>
 
-            <x-common-ticket-comments action1="{{ route('add-comment-laser-engraving-ticket', $ticket->id) }}" id="add-comment-form">
-                <h2>Comments</h2>
-                @foreach($ticket->ticket_comments as $comment)
-                <li>
-                    <h2>{{ $comment->user->fullname }}</h2>
-                    <h3>{{ $comment->created_at }}</h3>
-                    <p>{{ $comment->comment }}</p>
-                    @if ($comment->attachments->count() > 0)
-                    <x-common-attachments-table>
-                            @foreach($comment->attachments as $attachment)
-                                <tr>
-                                    <td>{{ $attachment->name }}</td>
-                                    <td>
-                                        <a href="{{ asset('attachments/' . $attachment->file_path) }}" target="_blank" class="btn btn-info">
-                                            <i class="ti-eye"></i>
-                                        </a>
-                                        <a href="{{ asset('attachments/' . $attachment->file_path) }}" download="{{ $attachment->name }}" class="btn btn-secondary">
-                                            <i class="ti-download"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                            @endforeach
-                    </x-common-attachments-table>
-                    @endif
-                    
-                </li>
-                @endforeach
-
-                
-
-                <x-slot:footer>
-                    
-                    <label>Write a comment</label>
-                    <textarea name="comment" style="height: 100px; font-family: inherit ;" placeholder="Nhập comment tại đây"></textarea>
-
-                    <label class="ticket-form-body-input">Attach File:</label>
-                    <div class="upload-group ">
-                        <input class="ticket-form-body-input file-input" type="file" name="attachments[]" multiple>
-                        <ul class="file-list"></ul>
-                    </div>
-                    <button type="submit"><i class="ti-comment"></i>Comment</button>
-
-                </x-slot:footer>
-            </x-common-ticket-comments>
-
             <x-common-ticket-form title="Close Ticket Khắc Base" id="close-laser-engraving-ticket-form" action1="{{ route('close-laser-engraving-ticket', $ticket->id) }}">
                 @method('PATCH')
                 <label>Status</label>
@@ -274,20 +272,6 @@
                 </x-slot:footer>
             </x-common-ticket-form>
 
-            <div class="software-tickets-tracking-info">
-                <h2>Tracking Info</h2>
-                    
-                @foreach($ticket->ticket_tracking_info as $tracking)
-                    <h3>
-                        {{ $tracking->user->fullname }}
-                        {{ $tracking->action }}
-                        {{ $tracking->created_at }}
-                    </h3>
-                    
-    
-                @endforeach
-                
-            </div>
-        </div>
+        
     </body>
 </html>

@@ -30,7 +30,7 @@
                     <td>{{ $ticket->shipment_description }}</td>
                     
                     <td>
-                        <span class="ticket-status {{ $ticket->status_data['class'] }}">
+                        <span class="badge rounded-pill bg-{{ $ticket->status_data['color'] ?? 'primary' }} px-3 py-2">
                             {{ $ticket->status_data['text'] }}
                         </span>
                     </td>

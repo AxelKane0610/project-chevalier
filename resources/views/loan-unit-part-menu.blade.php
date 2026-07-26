@@ -42,9 +42,23 @@
                             <button type="button" class="js-input-required-btn" data-target="create-loan-unit-part-ticket"><i class="ti-plus"></i> Create Ticket</button>
                         </form>
 
-                        <button class="btn btn-primary table-btn w-100" id="show-pending-loan-unit-part-tickets-btn" data-target = "pending-loan-unit-part-tickets-container"><i class="ti-timer"></i> Show Pending Loan Unit Part Tickets</button>
-                        <button class="btn btn-primary table-btn w-100" id="show-all-loan-unit-part-tickets-btn" data-target = "all-loan-unit-part-tickets-container"><i class="ti-list-ol"></i> Show All Tickets</button>
+                        <button class="btn btn-primary table-btn w-100 position-relative" id="show-pending-loan-unit-part-tickets-btn" data-target = "pending-loan-unit-part-tickets-container">
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                {{$tickets->count()}}
+                            </span>
+                            <i class="ti-timer"></i> 
+                            Show Pending Loan Unit Part Tickets
+                        </button>
+                        <button class="btn btn-primary table-btn w-100 position-relative" id="show-all-loan-unit-part-tickets-btn" data-target = "all-loan-unit-part-tickets-container">
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                {{$all_tickets->count()}}
+                            </span>
+                            <i class="ti-list-ol"></i> 
+                            Show All Tickets
+                        </button>
                     </div>
+
+
 
                     <div class="col-10 h-100 overflow-auto">
                         <div class="bg-white p-3 rounded shadow-sm ticket-table" id="pending-loan-unit-part-tickets-container">
@@ -74,7 +88,7 @@
                                             <td>{{ $ticket->ticket_receipt }}</td>
                                             <td>{{ $ticket->user_owner->fullname }}</td>
                                             <td>
-                                                <span class="ticket-status {{ $ticket->status_data['class'] }}">
+                                                <span class="badge rounded-pill bg-{{ $ticket->status_data['color'] ?? 'primary' }} px-3 py-2">
                                                     {{ $ticket->status_data['text'] }}
                                                 </span>
                                             </td>
@@ -120,7 +134,7 @@
                                             <td>{{ $ticket->ticket_receipt }}</td>
                                             <td>{{ $ticket->user_owner->fullname }}</td>
                                             <td>
-                                                <span class="ticket-status {{ $ticket->status_data['class'] }}">
+                                                <span class="badge rounded-pill bg-{{ $ticket->status_data['color'] ?? 'primary' }} px-3 py-2">
                                                     {{ $ticket->status_data['text'] }}
                                                 </span>
                                             </td>

@@ -44,8 +44,20 @@
                         <button type="button" class="js-input-required-btn" id="create-laser-engraving-ticket-btn" data-target="create-laser-engraving-ticket-form"><i class="ti-plus"></i> Create Ticket</button>
                     </form>
 
-                    <button class="btn btn-primary table-btn w-100" id="show-pending-laser-engraving-tickets-btn" data-target = "pending-laser-engraving-tickets-container"><i class="ti-timer"></i> Show Pending Laser Engraving Tickets</button>
-                    <button class="btn btn-primary table-btn w-100" id="show-all-laser-engraving-tickets-btn" data-target = "all-laser-engraving-tickets-container"><i class="ti-list-ol"></i> Show All Tickets</button>
+                    <button class="btn btn-primary table-btn w-100 position-relative" id="show-pending-laser-engraving-tickets-btn" data-target = "pending-laser-engraving-tickets-container">
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            {{$tickets->count()}}
+                        </span>
+                        <i class="ti-timer"></i> 
+                        Show Pending Laser Engraving Tickets
+                    </button>
+                    <button class="btn btn-primary table-btn w-100 position-relative" id="show-all-laser-engraving-tickets-btn" data-target = "all-laser-engraving-tickets-container">
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            {{$all_tickets->count()}}
+                        </span>
+                        <i class="ti-list-ol"></i> 
+                        Show All Tickets
+                    </button>
                 
                     </div>
 
@@ -77,14 +89,15 @@
                                             <td>{{ $ticket->info_base }}</td>
                                             <td>{{ $ticket->description }}</td>
                                             <td>
-                                                <span class="ticket-priority {{ $ticket->priority_data['class'] }}">
+                                                <span class="badge rounded-pill bg-{{ $ticket->priority_data['color'] ?? 'primary' }} px-3 py-2">
                                                     {{ $ticket->priority_data['text'] }}
                                                 </span>
                                             </td>
                                             <td>
-                                                <span class="ticket-status {{ $ticket->status_data['class'] }}">
+                                                <span class="badge rounded-pill bg-{{ $ticket->status_data['color'] ?? 'primary' }} px-3 py-2">
                                                     {{ $ticket->status_data['text'] }}
-                                                </span></td>
+                                                </span>
+                                            </td>
                                         </tr>
                                     
                                 @endforeach
@@ -126,14 +139,15 @@
                                             <td>{{ $ticket->info_base }}</td>
                                             <td>{{ $ticket->description }}</td>
                                             <td>
-                                                <span class="ticket-priority {{ $ticket->priority_data['class'] }}">
+                                                <span class="badge rounded-pill bg-{{ $ticket->priority_data['color'] ?? 'primary' }} px-3 py-2">
                                                     {{ $ticket->priority_data['text'] }}
                                                 </span>
                                             </td>
                                             <td>
-                                                <span class="ticket-status {{ $ticket->status_data['class'] }}">
+                                                <span class="badge rounded-pill bg-{{ $ticket->status_data['color'] ?? 'primary' }} px-3 py-2">
                                                     {{ $ticket->status_data['text'] }}
-                                                </span></td>
+                                                </span>
+                                            </td>
                                         </tr>
                                     
                                 @endforeach

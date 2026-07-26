@@ -26,7 +26,7 @@ class Loan_Unit_Part_Tickets_Model extends Model
     public function active_attachments()
     {
         return $this->hasMany(Attachments_Model::class, 'ticket_id', 'id')
-            ->where(['type_of_ticket' => 4, 'status' => '1']); // Chỉ lấy những attachment có status = 1 (còn hiệu lực)
+            ->where(['type_of_ticket' => 4, 'status' => '1', 'comment_id' => null]); // Chỉ lấy những attachment có status = 1 (còn hiệu lực)
     }
 
     public function ticket_comments()
@@ -52,27 +52,27 @@ class Loan_Unit_Part_Tickets_Model extends Model
         return match ($this->status){
              "1" => [
                 'text' => 'Open',
-                'class' => 'open'
+                'color' => 'primary'
             ],
 
             "2" => [
                 'text' => 'In Progress',
-                'class' => 'in-progress'
+                'color' => 'secondary'
             ],
 
             "3" => [
                 'text' => 'Completed',
-                'class' => 'completed'
+                'color' => 'success'
             ],
 
             "4" => [
                 'text' => 'Canceled',
-                'class' => 'canceled'
+                'color' => 'info'
             ],
 
             default => [
                 'text' => 'Unknown',
-                'class' => 'unknown'
+                'color' => 'primary'
             ]
         };
     }

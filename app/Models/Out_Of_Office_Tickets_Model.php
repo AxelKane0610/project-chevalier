@@ -35,7 +35,7 @@ class Out_Of_Office_Tickets_Model extends Model
     public function active_attachments()
     {
         return $this->hasMany(Attachments_Model::class, 'ticket_id', 'id')
-            ->where(['type_of_ticket' => 9, 'status' => '1']); // Chỉ lấy những attachment có status = 1 (còn hiệu lực)
+            ->where(['type_of_ticket' => 9, 'status' => '1', 'comment_id' => null]); // Chỉ lấy những attachment có status = 1 (còn hiệu lực)
     }
 
     public function ticket_comments()
@@ -54,31 +54,31 @@ class Out_Of_Office_Tickets_Model extends Model
     public function getStatusDataAttribute()
     {
         return match ($this->status){
-             "1" => [
+            "1" => [
                 'text' => 'Open',
-                'class' => 'open'
+                'color' => 'primary'
             ],
 
             "2" => [
                 'text' => 'Waiting for approval',
-                'class' => 'waiting-approve-invoice'
+                'color' => 'secondary'
             ],
 
             "3" => [
                 'text' => 'Completed',
-                'class' => 'completed'
+                'color' => 'success'
             ],
 
             "4" => [
                 'text' => 'Rejected',
-                'class' => 'rejected'
+                'color' => 'danger'
             ],
 
 
 
             default => [
                 'text' => 'Unknown',
-                'class' => 'unknown'
+                'color' => 'primary'
             ]
         };
     }
@@ -86,34 +86,34 @@ class Out_Of_Office_Tickets_Model extends Model
     public function getTypeOfLeaveDataAttribute()
     {
         return match ($this->type_of_leave){
-             "1" => [
+            "1" => [
                 'text' => 'Xin nghỉ phép',
-                'class' => 'leave'
+                'color' => 'primary'
             ],
             "2" => [
                 'text' => 'Xin đi trễ',
-                'class' => 'late'
+                'color' => 'secondary'
             ],
             "3" => [
                 'text' => 'Xin về sớm',
-                'class' => 'early'
+                'color' => 'success'
             ],
             "4" => [
                 'text' => 'Xin không chấm công vào',
-                'class' => 'no-check-in'
+                'color' => 'danger'
             ],
             "5" => [
                 'text' => 'Xin không chấm công ra',
-                'class' => 'no-check-out'
+                'color' => 'warning'
             ],
             "6" => [
                 'text' => 'Quên chấm công vào/ra',
-                'class' => 'forgot-check'
+                'color' => 'info'
             ],
 
             default => [
                 'text' => 'Unknown',
-                'class' => 'unknown'
+                'color' => 'primary'
             ]
         };
     }

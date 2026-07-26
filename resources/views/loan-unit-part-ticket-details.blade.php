@@ -71,9 +71,6 @@
                 <th width="50px">Start Date</th>
                 <th width="50px">End Date</th>
 
-                
-
-
                 @foreach($ticket->parts_details as $parts)
                 <tr>
                     <td>
@@ -148,292 +145,253 @@
             </table>
         </div>
 
-        <div class="loan-unit-part-ticket-content">
-            <x-common-ticket-detail-form>
-                <li>
-                    <lable>Receipt</lable>
-                    <h2>{{ $ticket->ticket_receipt }}</h2>
-                    
-                </li>
 
-                <li>
-                    <lable>User Owner</lable>
-                    <h2>{{ $ticket->user_owner->fullname }}</h2>
-                    
-                </li>
+        <div class="container-fluid px-4 py-4">
+            <div class="row g-4" style="min-height: calc(100vh - 90px);">
+                <!-- ================= Ticket Detail ================= -->
 
-                <li>
-                    <lable>Status</lable>
-                    <h2>
-                        <span class="ticket-status {{ $ticket->status_data['class'] }}">
-                            {{ $ticket->status_data['text'] }}
-                        </span>
-                    </h2>
-                    
-                    
-                </li>
+                    <x-common-ticket-details-card 
+                        :rows="[
+                            [
+                                'icon' => 'ti-receipt',
+                                'label' => 'Receipt',
+                                'value' => $ticket->ticket_receipt,
+                                'type' => 'text'
+                            ],
+                            [
+                                'icon' => 'ti-user',
+                                'label' => 'Người request',
+                                'value' => $ticket->user_owner->fullname,
+                                'type' => 'text'
+                            ],
+                            [
+                                'icon' => 'ti-arrow-circle-right',
+                                'label' => 'Status',
+                                'value' => match ($ticket->status) {
+                                    '1' => 'Open',
+                                    '2' => 'In progress',
+                                    '3' => 'Completed',
+                                    '4' => 'Canceled',
+                                    default => 'Unknown',
+                                },
+                                'type' => 'badge',
+                                'color' => match ($ticket->status) {
+                                    '1' => 'primary',
+                                    '2' => 'secondary',
+                                    '3' => 'success',
+                                    '4' => 'info',
+                                    default => 'Unknown',
+                                },
+                            ],
+                            [
+                                'icon' => 'ti-align-justify',
+                                'label' => 'Customer Unit Info',
+                                'value' => $ticket->customer_unit_info,
+                                'type' => 'text'
+                            ],
+                            [
+                                'icon' => 'ti-calendar',
+                                'label' => 'Ngày request',
+                                'value' => $ticket->created_at,
+                                'type' => 'text'
+                            ],
+                        ]"
 
-                <li>
-                    <lable>Customer Unit Info</lable>
-                    <h2>{{ $ticket->customer_unit_info }}</h2>
+                        
+                    >
                     
-                </li>
+                        <x-common-attachments-table-card
+                            :attachments="$ticket->active_attachments"
+                        />
 
-                <li>
-                    <lable>Ngày request</lable>
-                    <h2>{{ $ticket->created_at }}</h2>
                     
-                </li>
+                        <x-slot:footer>
+                            @if((($ticket->status == '1') && $ticket->user_id == auth()->user()->id) || (auth()->user()->hasRole('ROLE_SUPER_ADMIN')))
+                            <button type="button" class="js-input-required-btn" data-target="edit-ticket-details"><i class="ti-pencil"></i> Edit</button>
+                            @endif
+                        </x-slot:footer>
+                    
 
-                <li>
-                    <lable>Attachments ({{ $ticket->active_attachments->count() }} files)</lable>
-                    <x-common-attachments-table>
-                        @foreach ($ticket->active_attachments as $attachment)
-                            
-                            <tr>
-                                <td>{{ $attachment->name }}</td>
-                                <td>
-                                    
+                    </x-common-ticket-details-card>
+
+                    <!-- ================= Comment ================= -->
+
+                    <x-common-ticket-comments-card
+                        :comments="$ticket->ticket_comments"
+                        :showAttachments="true"
+                        :actionRoute="route('add-comment-loan-unit-part-ticket', $ticket->id)"
+                    >
+
+
+                    </x-common-ticket-comments-card>
+
+                    <!-- ================= Timeline ================= -->
+
+                    <x-common-ticket-tracking-info
+                        :trackings="$ticket->ticket_tracking_info"
+                    />
+            </div>
+        </div>
+
+            
+
+        <x-common-ticket-form title="Edit Loan Unit & Part Ticket" id="edit-ticket-details" action1="{{ route('edit-loan-unit-part-ticket', $ticket->id) }}">
+            @method('PATCH')
+            <label>Receipt</label>
+            <input type="text" class="ticket-form-body-input" name="ticket_receipt" value="{{ $ticket->ticket_receipt }}">
+
+            <label>Customer Unit Info</label>
+            <input type="text" class="ticket-form-body-input" name="customer_unit_info" value="{{ $ticket->customer_unit_info }}">
+
+            <label><b>Attachments</b></label>
+            
+            @if($ticket->active_attachments->count() > 0) 
+                <x-common-attachments-table>
+                    @foreach($ticket->active_attachments as $attachment)
+                        <tr>
+                            <td>
+                                {{ $attachment->name ?? 'File đính kèm' }}
+                            </td>
+                            <td>
+
+                                <div>
                                     
                                     <a href="{{ asset('attachments/' . $attachment->file_path) }}" target="_blank" class="btn btn-info">
                                         <i class="ti-eye"></i>
                                     </a>
-                                    
-                                    
-                                    <a href="{{ asset('attachments/' . $attachment->file_path) }}" download="{{ $attachment->name }}" class="btn btn-secondary">
-                                        <i class="ti-download"></i>
-                                    </a>
-
-                                    
-                                </td>
-                            </tr>
-                        @endforeach
-                    </x-common-attachments-table>
-
-                    @if(($ticket->status == '1') && $ticket->user_id == auth()->user()->id)
-                        <x-slot:footer>
-                            <button type="button" class="js-input-required-btn" data-target="edit-ticket-details"><i class="ti-pencil"></i> Edit</button>
-                        </x-slot:footer>
-                    @endif
-                </li>
-            </x-common-ticket-detail-form>
-
-            <x-common-ticket-comments action1="{{ route('add-comment-loan-unit-part-ticket', $ticket->id) }}" id="add-comment-form">
-                <h2>Comments</h2>
-                @foreach($ticket->ticket_comments as $comment)
-                <li>
-                    <h2>{{ $comment->user->fullname }}</h2>
-                    <h3>{{ $comment->created_at }}</h3>
-                    <p>{{ $comment->comment }}</p>
-                    @if ($comment->attachments->count() > 0)
-                    <x-common-attachments-table>
-                            @foreach($comment->attachments as $attachment)
-                                <tr>
-                                    <td>{{ $attachment->name }}</td>
-                                    <td>
-                                        <a href="{{ asset('attachments/' . $attachment->file_path) }}" target="_blank" class="btn btn-info">
-                                            <i class="ti-eye"></i>
-                                        </a>
-                                        <a href="{{ asset('attachments/' . $attachment->file_path) }}" download="{{ $attachment->name }}" class="btn btn-secondary">
-                                            <i class="ti-download"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                            @endforeach
-                    </x-common-attachments-table>
-                    @endif
-                    
-                </li>
-                @endforeach
-
-                
-
-                <x-slot:footer>
-                    
-                    <label>Write a comment</label>
-                    <textarea name="comment" style="height: 100px; font-family: inherit ;" placeholder="Nhập comment tại đây"></textarea>
-                    <label class="ticket-form-body-input">Attach File:</label>
-                    <div class="upload-group ">
-                        <input class="ticket-form-body-input file-input" type="file" name="attachments[]" multiple>
-                        <ul class="file-list"></ul>
-                    </div>
-                    <button type="submit"><i class="ti-comment"></i>Comment</button>
-
-                </x-slot:footer>
-            </x-common-ticket-comments>
-
-            <div class="software-tickets-tracking-info">
-                <h2>Tracking Info</h2>
-                    
-                @foreach($ticket->ticket_tracking_info as $tracking)
-                    <h3>
-                        {{ $tracking->user->fullname }}
-                        {{ $tracking->action }}
-                        {{ $tracking->created_at }}
-                    </h3>
-                    
-    
-                @endforeach
-                
-            </div>
-
-            <x-common-ticket-form title="Edit Loan Unit & Part Ticket" id="edit-ticket-details" action1="{{ route('edit-loan-unit-part-ticket', $ticket->id) }}">
-                @method('PATCH')
-                <label>Receipt</label>
-                <input type="text" class="ticket-form-body-input" name="ticket_receipt" value="{{ $ticket->ticket_receipt }}">
-
-                <label>Customer Unit Info</label>
-                <input type="text" class="ticket-form-body-input" name="customer_unit_info" value="{{ $ticket->customer_unit_info }}">
-
-                <label><b>Attachments</b></label>
-                
-                @if($ticket->active_attachments->count() > 0) 
-                    <x-common-attachments-table>
-                        @foreach($ticket->active_attachments as $attachment)
-                            <tr>
-                                <td>
-                                    {{ $attachment->name ?? 'File đính kèm' }}
-                                </td>
-                                <td>
-
-                                    <div>
-                                        
-                                        <a href="{{ asset('attachments/' . $attachment->file_path) }}" target="_blank" class="btn btn-info">
-                                            <i class="ti-eye"></i>
-                                        </a>
-                                        <input type="checkbox" name="delete_files[]" value="{{ $attachment->id }}" id="del_{{ $attachment->id }}">
-                                        <label for="del_{{ $attachment->id }}">
-                                            Xóa
-                                        </label>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </x-common-attachments-table>
-                            
-                    <small class="text-muted">Tích vào ô "Xóa" nếu muốn gỡ bỏ file đính kèm trước đó.</small>
-                @else
-                    <p class="text-muted">Không có file nào được đính kèm</p>
-                @endif
-                
-                <label class="ticket-form-body-input">Đính kèm thêm files:</label>
-                <div class="upload-group ">
-                    <input class="ticket-form-body-input file-input" type="file" name="attachments[]" multiple>
-                    <ul class="file-list"></ul>
-                </div>
-                <x-slot:footer>
-                    <button class="ticket-form-body-input" type="submit" >Save</button> 
-                </x-slot:footer>
-            </x-common-ticket-form>
-
-            <x-common-ticket-form title="Edit Loan Unit & Part Details" id="edit-loan-unit-part-details" action1="">
-                @method('PATCH')
-
-                <label>Part Request</label>
-                <input type="text" class="ticket-form-body-input" name="part_request" value="" id="edit-part-request-part-details">
-
-                @if((auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_LOAN_UNIT_ADMIN')))
-                    <label>Loan Unit Asset Tag</label>
-                    <input type="text" class="ticket-form-body-input" name="loan_unit_asset_tag" value="" id="edit-loan-unit-asset-tag">
-
-                    <label>Loan Unit Serial Number</label>
-                    <input type="text" class="ticket-form-body-input" name="loan_unit_serial_number" value="" id="edit-loan-unit-serial-number">
-
-                    <label>CT Loaned</label>
-                    <input type="text" class="ticket-form-body-input" name="ct_loaned" value="" id="edit-ct-loaned">
-
-                    <label>New CT Return</label>
-                    <input type="text" class="ticket-form-body-input" name="new_ct_return" value="" id="edit-new-ct-return">
-
-                    <label>Original</label>
-                    <select name="original" class="ticket-form-body-input" id="edit-original">
-                        <option value="1" @selected($parts->original == '1')>Crown</option>
-                        <option value="2" @selected($parts->original == '2')>Spectre</option>
-                        <option value="3" @selected($parts->original == '3')>T1 (FPT, DGW, Elite)</option>
+                                    <input type="checkbox" name="delete_files[]" value="{{ $attachment->id }}" id="del_{{ $attachment->id }}">
+                                    <label for="del_{{ $attachment->id }}">
+                                        Xóa
+                                    </label>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                </x-common-attachments-table>
                         
-                    </select>
+                <small class="text-muted">Tích vào ô "Xóa" nếu muốn gỡ bỏ file đính kèm trước đó.</small>
+            @else
+                <p class="text-muted">Không có file nào được đính kèm</p>
+            @endif
+            
+            <label class="ticket-form-body-input">Đính kèm thêm files:</label>
+            <div class="upload-group ">
+                <input class="ticket-form-body-input file-input" type="file" name="attachments[]" multiple>
+                <ul class="file-list"></ul>
+            </div>
+            <x-slot:footer>
+                <button class="ticket-form-body-input" type="submit" >Save</button> 
+            </x-slot:footer>
+        </x-common-ticket-form>
 
-                    <label>Start Date</label>
-                    <input type="date" class="ticket-form-body-input" name="start_date" value="" id="edit-start-date">
+        <x-common-ticket-form title="Edit Loan Unit & Part Details" id="edit-loan-unit-part-details" action1="">
+            @method('PATCH')
 
-                    <label>End Date</label>
-                    <input type="date" class="ticket-form-body-input" name="end_date" value="" id="edit-end-date">
+            <label>Part Request</label>
+            <input type="text" class="ticket-form-body-input" name="part_request" value="" id="edit-part-request-part-details">
 
-                    <x-slot:footer>
-                        <button class="ticket-form-body-input" type="submit">Edit</button> 
-                    </x-slot:footer>
-
-                @endif
-
-                
-            </x-common-ticket-form>
-
-            <x-common-ticket-form title="Issue Loan Unit & Part" id="issue-loan-unit-part" action1="">
-                @method('PATCH')
-
+            @if((auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_LOAN_UNIT_ADMIN')))
                 <label>Loan Unit Asset Tag</label>
-                <input type="text" class="ticket-form-body-input" name="loan_unit_asset_tag" placeholder="Điền vào nếu máy/part cho mượn là từ kho Spectre/Crown" value="" >
+                <input type="text" class="ticket-form-body-input" name="loan_unit_asset_tag" value="" id="edit-loan-unit-asset-tag">
 
                 <label>Loan Unit Serial Number</label>
-                <input type="text" class="ticket-form-body-input" name="loan_unit_serial_number" placeholder="Serial Number của máy cho mượn, không có để N/A" value="" required>
+                <input type="text" class="ticket-form-body-input" name="loan_unit_serial_number" value="" id="edit-loan-unit-serial-number">
 
                 <label>CT Loaned</label>
-                <input type="text" class="ticket-form-body-input" name="ct_loaned" placeholder="CT của linh kiện cho mượn, không có điền N/A" required>
+                <input type="text" class="ticket-form-body-input" name="ct_loaned" value="" id="edit-ct-loaned">
+
+                <label>New CT Return</label>
+                <input type="text" class="ticket-form-body-input" name="new_ct_return" value="" id="edit-new-ct-return">
 
                 <label>Original</label>
-                <select name="original" class="ticket-form-body-input" id="edit-original" required>
+                <select name="original" class="ticket-form-body-input" id="edit-original">
                     <option value="1" @selected($parts->original == '1')>Crown</option>
                     <option value="2" @selected($parts->original == '2')>Spectre</option>
                     <option value="3" @selected($parts->original == '3')>T1 (FPT, DGW, Elite)</option>
+                    
                 </select>
 
                 <label>Start Date</label>
-                <input type="date" class="ticket-form-body-input" name="start_date" value="{{ today()->format('Y-m-d') }}" id="edit-start-date" >
-
-                <x-slot:footer>
-                    <button class="ticket-form-body-input" type="submit">Issue unit/part</button> 
-                </x-slot:footer>
-            </x-common-ticket-form>
-
-            <x-common-ticket-form title="Add Loan Unit & Part" id="add-loan-unit-part" action1="{{ route('add-loan-unit-part', $ticket->id) }}">
-                @method('POST')
-
-                <label>Part Request</label>
-                <input type="text" class="ticket-form-body-input" name="part_request" placeholder="Điền mã part & tên part muốn mượn thêm" required>
-
-                <x-slot:footer>
-                    <button class="ticket-form-body-input" type="submit">Add unit/part</button> 
-                </x-slot:footer>
-            </x-common-ticket-form>
-
-            <x-common-ticket-form title="Confirm Unit/Part Return" id="return-loan-unit-part" action1="">
-                @method('PATCH')
-
-                <label>New CT Return</label>
-                <input type="text" class="ticket-form-body-input" name="new_ct_return" value="" placeholder="Điền CT của linh kiện trả về, không có để N/A" required>
+                <input type="date" class="ticket-form-body-input" name="start_date" value="" id="edit-start-date">
 
                 <label>End Date</label>
-                <input type="date" class="ticket-form-body-input" name="end_date" value="{{ today()->format('Y-m-d') }}"  required>
+                <input type="date" class="ticket-form-body-input" name="end_date" value="" id="edit-end-date">
 
                 <x-slot:footer>
-                    <button class="ticket-form-body-input" type="submit">Return unit/part</button> 
+                    <button class="ticket-form-body-input" type="submit">Edit</button> 
                 </x-slot:footer>
-            </x-common-ticket-form>
 
-            <x-common-ticket-form title="Close ticket" id="close-loan-unit-part-ticket" action1="{{ route('close-loan-unit-part-ticket', $ticket->id) }}">
-                @method('PATCH')
-                <label>Status</label>
-                <select name="status" class="ticket-form-body-input" required>
-                    <option value="3">Completed</option>
-                    <option value="4">Canceled</option>
-                </select>
+            @endif
 
-                <x-slot:footer>
-                    <button class="ticket-form-body-input" type="submit">Close ticket</button> 
-                </x-slot:footer>
-            </x-common-ticket-form>
+            
+        </x-common-ticket-form>
 
-        </div>
+        <x-common-ticket-form title="Issue Loan Unit & Part" id="issue-loan-unit-part" action1="">
+            @method('PATCH')
+
+            <label>Loan Unit Asset Tag</label>
+            <input type="text" class="ticket-form-body-input" name="loan_unit_asset_tag" placeholder="Điền vào nếu máy/part cho mượn là từ kho Spectre/Crown" value="" >
+
+            <label>Loan Unit Serial Number</label>
+            <input type="text" class="ticket-form-body-input" name="loan_unit_serial_number" placeholder="Serial Number của máy cho mượn, không có để N/A" value="" required>
+
+            <label>CT Loaned</label>
+            <input type="text" class="ticket-form-body-input" name="ct_loaned" placeholder="CT của linh kiện cho mượn, không có điền N/A" required>
+
+            <label>Original</label>
+            <select name="original" class="ticket-form-body-input" id="edit-original" required>
+                <option value="1" @selected($parts->original == '1')>Crown</option>
+                <option value="2" @selected($parts->original == '2')>Spectre</option>
+                <option value="3" @selected($parts->original == '3')>T1 (FPT, DGW, Elite)</option>
+            </select>
+
+            <label>Start Date</label>
+            <input type="date" class="ticket-form-body-input" name="start_date" value="{{ today()->format('Y-m-d') }}" id="edit-start-date" >
+
+            <x-slot:footer>
+                <button class="ticket-form-body-input" type="submit">Issue unit/part</button> 
+            </x-slot:footer>
+        </x-common-ticket-form>
+
+        <x-common-ticket-form title="Add Loan Unit & Part" id="add-loan-unit-part" action1="{{ route('add-loan-unit-part', $ticket->id) }}">
+            @method('POST')
+
+            <label>Part Request</label>
+            <input type="text" class="ticket-form-body-input" name="part_request" placeholder="Điền mã part & tên part muốn mượn thêm" required>
+
+            <x-slot:footer>
+                <button class="ticket-form-body-input" type="submit">Add unit/part</button> 
+            </x-slot:footer>
+        </x-common-ticket-form>
+
+        <x-common-ticket-form title="Confirm Unit/Part Return" id="return-loan-unit-part" action1="">
+            @method('PATCH')
+
+            <label>New CT Return</label>
+            <input type="text" class="ticket-form-body-input" name="new_ct_return" value="" placeholder="Điền CT của linh kiện trả về, không có để N/A" required>
+
+            <label>End Date</label>
+            <input type="date" class="ticket-form-body-input" name="end_date" value="{{ today()->format('Y-m-d') }}"  required>
+
+            <x-slot:footer>
+                <button class="ticket-form-body-input" type="submit">Return unit/part</button> 
+            </x-slot:footer>
+        </x-common-ticket-form>
+
+        <x-common-ticket-form title="Close ticket" id="close-loan-unit-part-ticket" action1="{{ route('close-loan-unit-part-ticket', $ticket->id) }}">
+            @method('PATCH')
+            <label>Status</label>
+            <select name="status" class="ticket-form-body-input" required>
+                <option value="3">Completed</option>
+                <option value="4">Canceled</option>
+            </select>
+
+            <x-slot:footer>
+                <button class="ticket-form-body-input" type="submit">Close ticket</button> 
+            </x-slot:footer>
+        </x-common-ticket-form>
+
+    
     </body>
 
 </html>

@@ -28,7 +28,7 @@ class Laser_Engraving_Tickets_Model extends Model
     public function active_attachments()
     {
         return $this->hasMany(Attachments_Model::class, 'ticket_id', 'id')
-            ->where(['type_of_ticket' => 3, 'status' => '1']); // Chỉ lấy những attachment có status = 1 (còn hiệu lực)
+            ->where(['type_of_ticket' => 3, 'status' => '1', 'comment_id' => null]); // Chỉ lấy những attachment có status = 1 (còn hiệu lực)
     }
 
     public function ticket_comments()
@@ -49,27 +49,27 @@ class Laser_Engraving_Tickets_Model extends Model
         return match($this->priority){
             "1" => [
                 'text' => 'Normal',
-                'class' => 'normal'
+                'color' => 'success'
             ],
 
             "2" => [
                 'text' => 'Critical',
-                'class' => 'critical'
+                'color' => 'danger'
             ],
 
             "3" => [
                 'text' => 'High',
-                'class' => 'high'
+                'color' => 'warning'
             ],
 
             "4" => [
                 'text' => 'Low',
-                'class' => 'low'
+                'color' => 'primary'
             ],
 
             default => [
                 'text' => 'Unknown',
-                'class' => 'unknown'
+                'color' => 'primary'
             ]
         };
     }
@@ -79,29 +79,29 @@ class Laser_Engraving_Tickets_Model extends Model
         return match ($this->status){
              "1" => [
                 'text' => 'Not started',
-                'class' => 'not-started'
+                'color' => 'primary'
             ],
 
             "2" => [
                 'text' => 'In Progress',
-                'class' => 'in-progress'
+                'color' => 'secondary'
             ],
 
             "3" => [
                 'text' => 'Completed',
-                'class' => 'completed'
+                'color' => 'success'
             ],
 
             "4" => [
                 'text' => 'Rejected',
-                'class' => 'rejected'
+                'color' => 'danger'
             ],
 
 
 
             default => [
                 'text' => 'Unknown',
-                'class' => 'unknown'
+                'color' => 'primary'
             ]
         };
     }

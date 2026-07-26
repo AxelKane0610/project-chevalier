@@ -59,27 +59,27 @@ class EEG_Software_Ticket extends Model
         return match($this->priority){
             "1" => [
                 'text' => 'Normal',
-                'class' => 'normal'
+                'color' => 'success'
             ],
 
             "2" => [
                 'text' => 'Critical',
-                'class' => 'critical'
+                'color' => 'danger'
             ],
 
             "3" => [
                 'text' => 'High',
-                'class' => 'high'
+                'color' => 'warning'
             ],
 
             "4" => [
                 'text' => 'Low',
-                'class' => 'low'
+                'color' => 'primary'
             ],
 
             default => [
                 'text' => 'Unknown',
-                'class' => 'unknown'
+                'color' => 'primary'
             ]
         };
     }
@@ -87,95 +87,95 @@ class EEG_Software_Ticket extends Model
     public function getStatusDataAttribute()
     {
         return match ($this->status){
-             "1" => [
+            "1" => [
                 'text' => 'Open',
-                'class' => 'open'
+                'color' => 'primary'
             ],
 
             "2" => [
                 'text' => 'In Progress',
-                'class' => 'in-progress'
+                'color' => 'secondary'
             ],
 
             "3" => [
                 'text' => 'Waiting Approval',
-                'class' => 'waiting-approval'
+                'color' => 'info'
             ],
 
             "4" => [
                 'text' => 'Completed',
-                'class' => 'completed'
+                'color' => 'success'
             ],
 
             "5" => [
                 'text' => 'Rejected',
-                'class' => 'rejected'
+                'color' => 'light'
             ],
 
             "6" => [
                 'text' => 'Cancel',
-                'class' => 'cancel'
+                'color' => 'dark'
             ],
 
 
             default => [
                 'text' => 'Unknown',
-                'class' => 'unknown'
+                'color' => 'primary'
             ]
         };
     }
 
     public function getSupportTypeDataAttribute(){
         return match ($this->support_type){
-             "1" => [
+            "1" => [
                 'text' => 'Thêm mã part/product',
-                'class' => 'add-part-product'
+                'color' => 'primary'
             ],
 
             "2" => [
                 'text' => 'Rollback',
-                'class' => 'rollback'
+                'color' => 'primary'
             ],
 
             "3" => [
                 'text' => 'Hủy số phiếu/Ẩn lịch sử bảo hành',
-                'class' => 'cancel-reciept'
+                'color' => 'primary'
             ],
 
             "4" => [
                 'text' => 'Điều chỉnh thông tin',
-                'class' => 'adjust-information'
+                'color' => 'primary'
             ],
 
             "5" => [
                 'text' => 'Unmark Re-Repair',
-                'class' => 'unmark-rerepair'
+                'color' => 'primary'
             ],
 
             "6" => [
                 'text' => 'Lỗi hệ thống',
-                'class' => 'system-issue'
+                'color' => 'primary'
             ],
 
             "7" => [
                 'text' => 'Cấp quyền export data',
-                'class' => 'data-export-request'
+                'color' => 'primary'
             ],
 
             "8" => [
                 'text' => 'Đề xuất thay đổi/cải tiến',
-                'class' => 'request-improvement'
+                'color' => 'primary'
             ],
 
             "9" => [
                 'text' => 'Vấn đề khác',
-                'class' => 'others'
+                'color' => 'primary'
             ],
 
 
             default => [
                 'text' => 'Unknown',
-                'class' => 'unknown'
+                'color' => 'primary'
             ]
         };
     }

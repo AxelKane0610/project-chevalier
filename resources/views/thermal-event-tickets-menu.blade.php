@@ -45,9 +45,27 @@
                                 <button type="button" class="js-input-required-btn" data-target="create-thermal-event-ticket-form"><i class="ti-plus"></i> Create Ticket</button>
                             </form>
 
-                            <button class="btn btn-primary table-btn w-100" id="show-pending-thermal-event-tickets-btn" data-target = "pending-thermal-event-tickets-container"><i class="ti-timer"></i> Show Pending Tickets</button>
-                            <button class="btn btn-primary table-btn w-100" id="show-pending-approval-thermal-event-tickets-btn" data-target = "pending-approval-thermal-event-tickets-container"><i class="ti-check"></i> Show Waiting Approval Tickets</button>
-                            <button class="btn btn-primary table-btn w-100" id="show-all-thermal-event-tickets-btn" data-target = "all-thermal-event-tickets-container"><i class="ti-list-ol"></i> Show All Tickets</button>
+                            <button class="btn btn-primary table-btn w-100 position-relative" id="show-pending-thermal-event-tickets-btn" data-target = "pending-thermal-event-tickets-container">
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {{$tickets->count()}}
+                                </span>
+                                <i class="ti-timer"></i> 
+                                Show Pending Tickets
+                            </button>
+                            <button class="btn btn-primary table-btn w-100 position-relative" id="show-pending-approval-thermal-event-tickets-btn" data-target = "pending-approval-thermal-event-tickets-container">
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {{$tickets_waiting_approval->count()}}
+                                </span>
+                                <i class="ti-check"></i> 
+                                Show Waiting Approval Tickets
+                            </button>
+                            <button class="btn btn-primary table-btn w-100 position-relative" id="show-all-thermal-event-tickets-btn" data-target = "all-thermal-event-tickets-container">
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {{$all_tickets->count()}}
+                                </span>
+                                <i class="ti-list-ol"></i> 
+                                Show All Tickets
+                            </button>
 
                         </div>
 
@@ -77,7 +95,7 @@
                                                     <td>{{ $ticket->description }}</td>
                                                     
                                                     <td>
-                                                        <span class="ticket-status {{ $ticket->status_data['class'] }}">
+                                                        <span class="badge rounded-pill bg-{{ $ticket->status_data['color'] ?? 'primary' }} px-3 py-2">
                                                             {{ $ticket->status_data['text'] }}
                                                         </span>
                                                     </td>
@@ -114,7 +132,7 @@
                                                     <td>{{ $ticket->description }}</td>
                                                     
                                                     <td>
-                                                        <span class="ticket-status {{ $ticket->status_data['class'] }}">
+                                                        <span class="badge rounded-pill bg-{{ $ticket->status_data['color'] ?? 'primary' }} px-3 py-2">
                                                             {{ $ticket->status_data['text'] }}
                                                         </span>
                                                     </td>
@@ -158,7 +176,7 @@
                                                     <td>{{ $ticket->description }}</td>
                                                     
                                                     <td>
-                                                        <span class="ticket-status {{ $ticket->status_data['class'] }}">
+                                                        <span class="badge rounded-pill bg-{{ $ticket->status_data['color'] ?? 'primary' }} px-3 py-2">
                                                             {{ $ticket->status_data['text'] }}
                                                         </span>
                                                     </td>

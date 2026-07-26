@@ -45,9 +45,33 @@
                                 <button type="button" class="js-input-required-btn" data-target="create-ttex-ticket-form"><i class="ti-plus"></i> Create Ticket</button>
                             </form>
 
-                            <button class="btn btn-primary table-btn w-100" id="show-pending-good-part-tickets-btn" data-target = "pending-good-part-ttex-tickets-container"><i class="ti-timer"></i> Show Pending Good Part Tickets</button>
-                            <button class="btn btn-primary table-btn w-100" id="show-waiting-def-part-tickets-btn" data-target = "pending-def-part-ttex-tickets-container"><i class="ti-check"></i> Show Pending Def Part Tickets</button>
-                            <button class="btn btn-primary table-btn w-100" id="show-all-ttex-tickets-btn" data-target = "all-ttex-tickets-container"><i class="ti-list-ol"></i> Show All Tickets</button>
+                            <button class="btn btn-primary table-btn w-100 position-relative" id="show-pending-good-part-tickets-btn" data-target = "pending-good-part-ttex-tickets-container">
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {{$tickets_good_part_pending->count()}}
+                                </span>
+                                <i class="ti-timer"></i> Show Pending Good Part Tickets
+                            </button>
+                            <button class="btn btn-primary table-btn w-100 position-relative" id="show-waiting-def-part-tickets-btn" data-target = "pending-def-part-ttex-tickets-container">
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {{$tickets_def_part_pending->flatten()->count()}}
+                                </span>
+                                <i class="ti-timer"></i> 
+                                Show Pending Def Part Tickets
+                            </button>
+                            <button class="btn btn-primary table-btn w-100 position-relative" id="show-ttex-tickets-booked-today-btn" data-target = "ttex-tickets-booked-today-container">
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {{$tickets_booked_today->count()}}
+                                </span>
+                                <i class="ti-check"></i> 
+                                Show Tickets Booked Today
+                            </button>
+                            <button class="btn btn-primary table-btn w-100 position-relative" id="show-all-ttex-tickets-btn" data-target = "all-ttex-tickets-container">
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {{$tickets->total()}}
+                                </span><i class="ti-list-ol"></i> 
+                                Show All Tickets
+                            </button>
+
                         </div>
 
                         <div class="col-10 h-100 overflow-auto">
@@ -78,7 +102,7 @@
                                                         </button>
                                                     </td>
                                                     <td>
-                                                        <span class="ticket-status {{ $ticket->shipment_type_data['class'] }}">
+                                                        <span class="badge rounded-pill bg-{{ $ticket->shipment_type_data['color'] ?? 'primary' }} px-3 py-2">
                                                             {{ $ticket->shipment_type_data['text'] }}
                                                         </span>
                                                     </td>
@@ -88,10 +112,61 @@
                                                     <td>{{ $ticket->note }}</td>
                                                     
                                                     <td>
-                                                        <span class="ticket-status {{ $ticket->status_data['class'] }}">
+                                                        <span class="badge rounded-pill bg-{{ $ticket->status_data['color'] ?? 'primary' }} px-3 py-2">
                                                             {{ $ticket->status_data['text'] }}
                                                         </span>
                                                     </td>
+                                                </tr>
+                                                
+                                        @endforeach
+                                    </tbody>
+
+                                </table>
+
+                            </div>
+
+                            <div class="bg-white p-3 rounded shadow-sm ticket-table d-none" id="ttex-tickets-booked-today-container">
+                                <h2>Tickets đã book trong hôm nay</h2>
+                                <table id="ttex-tickets-booked-today-table" class="common-table" width="100%" >
+                                    <tr>
+                                        <th width="5%"></th>
+                                        <th width="10%">Shipment Type</th>
+                                        <th width="10%">Part Status</th>
+                                        <th width="20%">Người gửi</th>
+                                        <th width="20%">Người nhận</th>
+                                        <th width="20%">Mô tả hàng hóa</th>
+                                        <th width="15%">Note</th>
+
+                                    </tr>
+                                
+                                    <tbody>
+                                        @foreach ($tickets_booked_today as $ticket)
+                                            
+                                                <tr>
+                                                    <td>
+
+                                                        <button type="button" 
+                                                            class="btn btn-primary" 
+                                                            onclick="window.location.href='/ttex-tickets-menu-details/{{ $ticket->id }}'">
+                                                            <i class="ti-arrow-right"></i>
+                                                        </button>
+                                                    </td>
+                                                    <td>
+                                                        <span class="badge rounded-pill bg-{{ $ticket->shipment_type_data['color'] ?? 'primary' }} px-3 py-2">
+                                                            {{ $ticket->shipment_type_data['text'] }}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="badge rounded-pill bg-{{ $ticket->part_status_data['color'] ?? 'primary' }} px-3 py-2">
+                                                            {{ $ticket->part_status_data['text'] }}
+                                                        </span>
+                                                    </td>
+                                                    <td>{{ $ticket->sender_info  }}</td>
+                                                    <td>{{ $ticket->receiver_info }}</td>
+                                                    <td>{{ $ticket->shipment_description }}</td>
+                                                    <td>{{ $ticket->note }}</td>
+                                                    
+                                                    
                                                 </tr>
                                                 
                                         @endforeach
@@ -152,7 +227,7 @@
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        <span class="ticket-status {{ $ticket->shipment_type_data['class'] }}">
+                                                        <span class="badge rounded-pill bg-{{ $ticket->shipment_type_data['color'] ?? 'primary' }} px-3 py-2">
                                                             {{ $ticket->shipment_type_data['text'] }}
                                                         </span>
                                                     </td>
@@ -163,7 +238,7 @@
                                                     <td>{{ $ticket->part_return_deadline }}</td>
                                                     
                                                     <td>
-                                                        <span class="ticket-status {{ $ticket->status_data['class'] }}">
+                                                        <span class="badge rounded-pill bg-{{ $ticket->status_data['color'] ?? 'primary' }} px-3 py-2">
                                                             {{ $ticket->status_data['text'] }}
                                                         </span>
                                                     </td>

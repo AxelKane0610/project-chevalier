@@ -19,8 +19,6 @@ class LaserEngravingTicketsController extends Controller
     //
     public function Show_Pending_Tickets()
     {
-        // $tickets = Laser_Engraving_Tickets_Model::all();
-        // return view('laser-engraving-menu', compact('tickets'));
         if (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_LASER_ENGRAVING_ADMIN')) {
             $tickets = Laser_Engraving_Tickets_Model::whereIn('status', ['1', '2'])->get();
             $all_tickets = Laser_Engraving_Tickets_Model::all();

@@ -14,7 +14,7 @@ class TTEXTicketsController extends Controller
 {
     //
     public function index(){ 
-        $tickets = TTEX_Tickets_Model::query()->paginate(10);
+        $tickets = TTEX_Tickets_Model::query()->orderByDesc('created_at')->paginate(10);
 
         if (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_TTEX_TICKET_ADMIN')) {
             

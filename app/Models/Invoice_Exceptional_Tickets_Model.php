@@ -38,7 +38,7 @@ class Invoice_Exceptional_Tickets_Model extends Model
     public function active_attachments()
     {
         return $this->hasMany(Attachments_Model::class, 'ticket_id', 'id')
-            ->where(['type_of_ticket' => 7, 'status' => '1']); // Chỉ lấy những attachment có status = 1 (còn hiệu lực)
+            ->where(['type_of_ticket' => 7, 'status' => '1', 'comment_id' => null]); // Chỉ lấy những attachment có status = 1 (còn hiệu lực)
     }
 
     public function ticket_comments()
@@ -59,34 +59,34 @@ class Invoice_Exceptional_Tickets_Model extends Model
         return match ($this->status){
              "1" => [
                 'text' => 'Open',
-                'class' => 'open'
+                'color' => 'primary'
             ],
 
             "2" => [
                 'text' => 'Waiting approve invoice',
-                'class' => 'waiting-approve-invoice'
+                'color' => 'secondary'
             ],
 
             "3" => [
                 'text' => 'Waiting re-activate',
-                'class' => 'waiting-re-activate'
+                'color' => 'info'
             ],
 
             "4" => [
                 'text' => 'Completed',
-                'class' => 'completed'
+                'color' => 'success'
             ],
 
             "5" => [
                 'text' => 'Rejected',
-                'class' => 'rejected'
+                'color' => 'danger'
             ],
 
 
 
             default => [
                 'text' => 'Unknown',
-                'class' => 'unknown'
+                'color' => 'primary'
             ]
         };
     }
@@ -96,28 +96,28 @@ class Invoice_Exceptional_Tickets_Model extends Model
         return match ($this->support_type){
              "1" => [
                 'text' => 'Hóa đơn xuất sau (1 máy)',
-                'class' => 'approve-invoice-1-unit'
+                'color' => 'primary'
             ],
 
             "2" => [
                 'text' => 'Hóa đơn xuất sau (Nhiều máy)',
-                'class' => 'approve-invoice-multiples-units'
+                'color' => 'primary'
             ],
 
             "3" => [
                 'text' => 'Kích hoạt bảo hành (1 máy)',
-                'class' => 're-activate-warranty-1-unit'
+                'color' => 'primary'
             ],
 
             "4" => [
                 'text' => 'Kích hoạt bảo hành (Nhiều máy)',
-                'class' => 're-activate-warranty-multiples-units'
+                'color' => 'primary'
             ],
 
 
             default => [
                 'text' => 'Unknown',
-                'class' => 'unknown'
+                'color' => 'primary'
             ]
         };
     }

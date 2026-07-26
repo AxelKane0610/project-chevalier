@@ -34,8 +34,8 @@
 
         
         
-<div class="container-fluid py-4">
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 row-cols-xl-5 g-4 d-flex justify-content-center">
+<div class="container-fluid py-4 d-flex flex-grow-1 overflow-hidden vh-100">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 row-cols-xl-5 g-4 d-flex flex-grow-1 justify-content-center align-items-center">
 
         <!-- Card -->
 
@@ -62,8 +62,11 @@
                         </p>
 
                         <div class="mt-auto d-flex justify-content-center align-items-center gap-2">
-                            <span>Learn more</span>
-                            <i class="ti-angle-right"></i>
+                            <span style="color:#2563eb; font-weight:600;">Learn more</span>
+                            <span style="width:28px; height:28px; display:flex; align-items:center; justify-content:center; border-radius:50%; background:#eef4ff; color: #2563eb">
+                                <i class="ti-angle-right"></i>
+                            </span>
+                            
                         </div>
 
                     </div>
@@ -95,8 +98,10 @@
                         </p>
 
                         <div class="mt-auto d-flex justify-content-center align-items-center gap-2">
-                            <span>Learn more</span>
-                            <i class="ti-angle-right"></i>
+                            <span style="color:#2563eb; font-weight:600;">Learn more</span>
+                            <span style="width:28px; height:28px; display:flex; align-items:center; justify-content:center; border-radius:50%; background:#eef4ff; color: #2563eb">
+                                <i class="ti-angle-right"></i>
+                            </span>
                         </div>
 
                     </div>
@@ -129,8 +134,10 @@
                             </p>
 
                             <div class="mt-auto d-flex justify-content-center align-items-center gap-2">
-                                <span>Learn more</span>
-                                <i class="ti-angle-right"></i>
+                                <span style="color:#2563eb; font-weight:600;">Learn more</span>
+                                <span style="width:28px; height:28px; display:flex; align-items:center; justify-content:center; border-radius:50%; background:#eef4ff; color: #2563eb">
+                                    <i class="ti-angle-right"></i>
+                                </span>
                             </div>
 
                         </div>
@@ -164,8 +171,10 @@
                             </p>
 
                             <div class="mt-auto d-flex justify-content-center align-items-center gap-2">
-                                <span>Learn more</span>
-                                <i class="ti-angle-right"></i>
+                                <span style="color:#2563eb; font-weight:600;">Learn more</span>
+                                <span style="width:28px; height:28px; display:flex; align-items:center; justify-content:center; border-radius:50%; background:#eef4ff; color: #2563eb">
+                                    <i class="ti-angle-right"></i>
+                                </span>
                             </div>
 
                         </div>
@@ -199,8 +208,10 @@
                         </p>
 
                         <div class="mt-auto d-flex justify-content-center align-items-center gap-2">
-                            <span>Learn more</span>
-                            <i class="ti-angle-right"></i>
+                            <span style="color:#2563eb; font-weight:600;">Learn more</span>
+                            <span style="width:28px; height:28px; display:flex; align-items:center; justify-content:center; border-radius:50%; background:#eef4ff; color: #2563eb">
+                                <i class="ti-angle-right"></i>
+                            </span>
                         </div>
 
                     </div>
@@ -233,8 +244,10 @@
                             </p>
 
                             <div class="mt-auto d-flex justify-content-center align-items-center gap-2">
-                                <span>Learn more</span>
-                                <i class="ti-angle-right"></i>
+                                <span style="color:#2563eb; font-weight:600;">Learn more</span>
+                                <span style="width:28px; height:28px; display:flex; align-items:center; justify-content:center; border-radius:50%; background:#eef4ff; color: #2563eb">
+                                    <i class="ti-angle-right"></i>
+                                </span>
                             </div>
 
                         </div>
@@ -268,8 +281,10 @@
                             </p>
 
                             <div class="mt-auto d-flex justify-content-center align-items-center gap-2">
-                                <span>Learn more</span>
-                                <i class="ti-angle-right"></i>
+                                <span style="color:#2563eb; font-weight:600;">Learn more</span>
+                                <span style="width:28px; height:28px; display:flex; align-items:center; justify-content:center; border-radius:50%; background:#eef4ff; color: #2563eb">
+                                    <i class="ti-angle-right"></i>
+                                </span>
                             </div>
 
                         </div>
@@ -303,8 +318,10 @@
                             </p>
 
                             <div class="mt-auto d-flex justify-content-center align-items-center gap-2">
-                                <span>Learn more</span>
-                                <i class="ti-angle-right"></i>
+                                <span style="color:#2563eb; font-weight:600;">Learn more</span>
+                                <span style="width:28px; height:28px; display:flex; align-items:center; justify-content:center; border-radius:50%; background:#eef4ff; color: #2563eb">
+                                    <i class="ti-angle-right"></i>
+                                </span>
                             </div>
 
                         </div>
@@ -338,8 +355,10 @@
                             </p>
 
                             <div class="mt-auto d-flex justify-content-center align-items-center gap-2">
-                                <span>Learn more</span>
-                                <i class="ti-angle-right"></i>
+                                <span style="color:#2563eb; font-weight:600;">Learn more</span>
+                                <span style="width:28px; height:28px; display:flex; align-items:center; justify-content:center; border-radius:50%; background:#eef4ff; color: #2563eb">
+                                    <i class="ti-angle-right"></i>
+                                </span>
                             </div>
 
                         </div>
@@ -373,8 +392,10 @@
                             </p>
 
                             <div class="mt-auto d-flex justify-content-center align-items-center gap-2">
-                                <span>Learn more</span>
-                                <i class="ti-angle-right"></i>
+                                <span style="color:#2563eb; font-weight:600;">Learn more</span>
+                                <span style="width:28px; height:28px; display:flex; align-items:center; justify-content:center; border-radius:50%; background:#eef4ff; color: #2563eb">
+                                    <i class="ti-angle-right"></i>
+                                </span>
                             </div>
 
                         </div>
@@ -408,8 +429,10 @@
                             </p>
 
                             <div class="mt-auto d-flex justify-content-center align-items-center gap-2">
-                                <span>Learn more</span>
-                                <i class="ti-angle-right"></i>
+                                <span style="color:#2563eb; font-weight:600;">Learn more</span>
+                                <span style="width:28px; height:28px; display:flex; align-items:center; justify-content:center; border-radius:50%; background:#eef4ff; color: #2563eb">
+                                    <i class="ti-angle-right"></i>
+                                </span>
                             </div>
 
                         </div>
