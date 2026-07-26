@@ -102,7 +102,6 @@
                                                 </td>
                                                 <td>{{ $ticket->description }}</td>
                                                 <td>
- position-relative
                                                     <span class="badge rounded-pill bg-{{ $ticket->priority_data['color'] ?? 'primary' }} px-3 py-2">
                                                         {{ $ticket->priority_data['text'] }}
                                                     </span>
