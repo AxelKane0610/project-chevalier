@@ -105,6 +105,7 @@ document.addEventListener('submit', function (e) {
                 .insertAdjacentHTML('beforeend', newRow);
                 
                 document.querySelector('.ticket-form-overlay').classList.remove('active');
+                stopButtonLoading(form);
                 e.target.reset();
 
             } else {
