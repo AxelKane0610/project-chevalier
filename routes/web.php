@@ -83,7 +83,6 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/booking-def-part', [TTEXTicketsController::class, 'Booking_Def_Part']) ->name('booking-def-part');
 
 
-
     });
 
 
