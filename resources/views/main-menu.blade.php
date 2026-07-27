@@ -183,7 +183,7 @@
             </div>
         @endif
 
-
+        @if(auth()->user()->hasRole('ROLE_SUPER_ADMIN'))
         <div class="main-menu col" style="width: 300px">
             <a href="{{ url('/submit-training') }}"
                class="text-decoration-none">
@@ -218,6 +218,7 @@
                 </div>
             </a>
         </div>
+        @endif
 
         @if(auth()->user()->hasRole('ROLE_SUPER_ADMIN'))
             <div class="main-menu col" style="width: 300px">
