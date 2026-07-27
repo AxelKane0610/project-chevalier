@@ -127,6 +127,16 @@
 
                             <div class="bg-white p-3 rounded shadow-sm ticket-table d-none" id="ttex-tickets-booked-today-container">
                                 <h2>Tickets đã book trong hôm nay</h2>
+                                {{-- <div class="common-table-filter">
+                                    <h2>Part Status:</h2>
+                                    <select id="ttex-tickets-booked-today-part-status-filter">
+                                        <option value="">All</option>
+                                        <option value="1">Good part</option>
+                                        <option value="2">Def part</option>
+                                        <option value="3">Good part - Unused</option>
+                                        
+                                    </select>
+                                </div> --}}
                                 <table id="ttex-tickets-booked-today-table" class="common-table" width="100%" >
                                     <tr>
                                         <th width="5%"></th>
@@ -135,7 +145,7 @@
                                         <th width="20%">Người gửi</th>
                                         <th width="20%">Người nhận</th>
                                         <th width="20%">Mô tả hàng hóa</th>
-                                        <th width="15%">Note</th>
+                                        <th width="15%">TTEX Bill</th>
 
                                     </tr>
                                 
@@ -164,7 +174,7 @@
                                                     <td>{{ $ticket->sender_info  }}</td>
                                                     <td>{{ $ticket->receiver_info }}</td>
                                                     <td>{{ $ticket->shipment_description }}</td>
-                                                    <td>{{ $ticket->note }}</td>
+                                                    <td>{{ $ticket->ttex_bill }}</td>
                                                     
                                                     
                                                 </tr>

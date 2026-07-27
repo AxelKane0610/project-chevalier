@@ -82,17 +82,17 @@ class TTEX_Tickets_Model extends Model
         return match ($this->part_status){
              "1" => [
                 'text' => 'Good part',
-                'color' => 'primary'
+                'color' => 'success'
             ],
 
             "2" => [
                 'text' => 'Def part',
-                'color' => 'primary'
+                'color' => 'danger'
             ],
 
             "3" => [
                 'text' => 'Good part - Unused',
-                'color' => 'primary'
+                'color' => 'danger'
             ],
 
 
