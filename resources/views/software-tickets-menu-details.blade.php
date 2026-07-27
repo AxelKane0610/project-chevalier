@@ -257,15 +257,15 @@
 
                 <label>Support Type</label>
                 <select name="support_type" class="ticket-form-body-input">
-                    <option value="1">Thêm mã part/product</option>
-                    <option value="2">Rollback</option>
-                    <option value="3">Hủy số phiếu/Ẩn lịch sử bảo hành</option>
-                    <option value="4">Điều chỉnh thông tin</option>
-                    <option value="5">Unmark Re-Repair</option>
-                    <option value="6">Lỗi hệ thống</option>
-                    <option value="7">Cấp quyền export data</option>
-                    <option value="8">Đề xuất thay đổi/cải tiến</option>
-                    <option value="9">Vấn đề khác</option>
+                    <option value="1" @selected($ticket->support_type == 1)>Thêm mã part/product</option>
+                    <option value="2" @selected($ticket->support_type == 2)>Rollback</option>
+                    <option value="3" @selected($ticket->support_type == 3)>Hủy số phiếu/Ẩn lịch sử bảo hành</option>
+                    <option value="4" @selected($ticket->support_type == 4)>Điều chỉnh thông tin</option>
+                    <option value="5" @selected($ticket->support_type == 5)>Unmark Re-Repair</option>
+                    <option value="6" @selected($ticket->support_type == 6)>Lỗi hệ thống</option>
+                    <option value="7" @selected($ticket->support_type == 7)>Cấp quyền export data</option>
+                    <option value="8" @selected($ticket->support_type == 8)>Đề xuất thay đổi/cải tiến</option>
+                    <option value="9" @selected($ticket->support_type == 9)>Vấn đề khác</option>
                 </select>
 
                 <label>Issue Owner</label>
