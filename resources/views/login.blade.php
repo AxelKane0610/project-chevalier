@@ -10,48 +10,11 @@
     </head>
 
     <body>
-        <!-- <div class="d-flex flex-grow-1 overflow-hidden vh-100">
-            <div class="container-fluid my-5 flex-grow-1 g-5">
-                <div class="row flex-grow-1 h-100">
-                    <div class="col-6">
-                        <div class="sign-in-menu">
-                            <div class="sign-in-box">
-                                <h1>Welcome</h1>
-                                <h2>Sign In</h2>
-
-                                <div class="sign-in-input">
-                                    <form action="{{ route('login') }}" method="post" class="sign-in-input">
-                                        @csrf
-                                        <input type="text" placeholder="Username" class="sign-in-input-field" name="Username" value="{{ old('Username') }}" required>
-                                        <input type="password" placeholder="Password" class="sign-in-input-field" name="Password" required>
-                                        <button id="sign-in-btn">
-                                            Sign In
-                                        </button>
-                                        
-                                    </form>
-                                </div>
-                    
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-6">
-                        <div class="bg-white p-3 rounded shadow-sm h-100">
-                            
-
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div> -->
 
         <div class="d-flex flex-grow-1 overflow-hidden vh-100 align-items-center justify-content-center">
-    <!-- Thêm style max-width để thu gọn khoảng cách giữa 2 khung trên màn hình rộng -->
     <div class="container my-auto p-4" style="max-width: 1100px;">
         <div class="row align-items-stretch g-4">
             
-            <!-- Cột bên trái: Form Đăng Nhập -->
             <div class="col-md-6 d-flex">
                 <div class="bg-white p-4 rounded shadow-sm w-100 d-flex flex-column justify-content-center">
                     <h1 class="h3 mb-2 text-dark">Welcome</h1>
@@ -83,7 +46,6 @@
                 </div>
             </div>
 
-            <!-- Cột bên phải: Thông báo Updates -->
             <div class="col-md-6 d-flex">
                 <div class="bg-white p-4 rounded shadow-sm w-100 d-flex flex-column overflow-hidden" style="min-height: 380px;">
                     <h3 class="h5 border-bottom pb-2 mb-3 text-dark">📢 Update Notice</h3>
