@@ -170,38 +170,38 @@
 
         <x-common-ticket-form title="Laser Engraving Support" action1="/create-laser-engraving-ticket" id="create-laser-engraving-ticket-form"> <!-- action="/create-laser-engraving-ticket" method="POST"> -->
 
-                        <label class="ticket-form-body-input">Receipt</label>
-                        <input type="text" class="ticket-form-body-input" placeholder="Nhập số phiếu tại đây" name="ticket_receipt" required>
+            <label class="ticket-form-body-input">Receipt</label>
+            <input type="text" class="ticket-form-body-input" placeholder="Nhập số phiếu tại đây" name="ticket_receipt" required>
 
 
-                        <label class="ticket-form-body-input">Priority</label>
-                        <select name="priority" class="ticket-form-body-input">
-                            <option value="1">Normal</option>
-                            <option value="2">Critical</option>
-                            <option value="3">High</option>
-                            <option value="4">Low</option>
-                        </select>
+            <label class="ticket-form-body-input">Priority</label>
+            <select name="priority" class="ticket-form-body-input">
+                <option value="1">Normal</option>
+                <option value="2">Critical</option>
+                <option value="3">High</option>
+                <option value="4">Low</option>
+            </select>
 
-                        <label class="ticket-form-body-input">Info Base</label>
-                        <input type="text" class="ticket-form-body-input" placeholder="Nhập thông tin mặt base cần khắc tại đây" name="info_base" required>
+            <label class="ticket-form-body-input">Info Base</label>
+            <input type="text" class="ticket-form-body-input" placeholder="Nhập thông tin mặt base cần khắc tại đây" name="info_base" required>
 
-                        <label class="ticket-form-body-input">Barcode Info</label>
-                        <input type="text" class="ticket-form-body-input" placeholder="Nhập barcode info" name="barcode_info" required>
+            <label class="ticket-form-body-input">Barcode Info</label>
+            <input type="text" class="ticket-form-body-input" placeholder="Nhập barcode info" name="barcode_info" required>
 
-                        <label class="ticket-form-body-input">Description</label>
-                        <textarea name="description" class="ticket-form-body-input multiple-row" placeholder="Nhập mô tả vấn đề bạn cần hỗ trợ" required></textarea>
-                        
-                        <label class="ticket-form-body-input">Attach File:</label>
-                        <div class="upload-group ">
-                            <input class="ticket-form-body-input file-input" type="file" name="attachments[]" multiple>
-                            <ul class="file-list"></ul>
-                        </div>
-                        
-                        <x-slot:footer>
-                            <button class="ticket-form-body-input" type="submit" id="laser-engraving-ticket-submit-btn">Submit</button> 
-                        </x-slot:footer>
-                        
-                        <!-- class="ticket-form-body-input" id="software-ticket-submit-btn"-->
+            <label class="ticket-form-body-input">Description</label>
+            <textarea name="description" class="ticket-form-body-input multiple-row" placeholder="Nhập mô tả vấn đề bạn cần hỗ trợ" required></textarea>
+            
+            <label class="ticket-form-body-input">Attach File:</label>
+            <div class="upload-group ">
+                <input class="ticket-form-body-input file-input" type="file" name="attachments[]" multiple>
+                <ul class="file-list"></ul>
+            </div>
+            
+            <x-slot:footer>
+                <button class="ticket-form-body-input" type="submit" id="laser-engraving-ticket-submit-btn">Submit</button> 
+            </x-slot:footer>
+            
+            <!-- class="ticket-form-body-input" id="software-ticket-submit-btn"-->
 
         </x-common-ticket-form>
             
