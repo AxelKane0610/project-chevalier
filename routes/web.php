@@ -16,6 +16,7 @@ use App\Http\Controllers\ThermalEventExceptionalTicketsController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SpectreCrownWarehouseController;
 use App\Http\Controllers\LoanUnitPartTicketsController;
+use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\TTEXTicketsController;
 
 Route::get('/', function () {
@@ -85,6 +86,13 @@ Route::middleware(['auth'])->group(function () {
 
     });
 
+    Route::middleware(['role:ROLE_SUPER_ADMIN'])->group(function () {
+        Route::get('/submit-training-menu', [TrainingController::class, 'Show_Pending_Tickets']);
+        Route::post('/request-training', [TrainingController::class, 'Request_Training']);
+        Route::get('/training-ticket-details/{id}', [TrainingController::class, 'Show_Training_Ticket_Details']);
+
+
+    });
 
 
     //3. Khắc base

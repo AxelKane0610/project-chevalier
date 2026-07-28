@@ -185,7 +185,7 @@
 
         @if(auth()->user()->hasRole('ROLE_SUPER_ADMIN'))
         <div class="main-menu col" style="width: 300px">
-            <a href="{{ url('/submit-training') }}"
+            <a href="{{ url('/submit-training-menu') }}"
                class="text-decoration-none">
 
                 <div class="card h-100 shadow-lg border-0 rounded-5">

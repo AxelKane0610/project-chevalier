@@ -13,6 +13,7 @@ class Attachments_Model extends Model
     protected $table = 'attachments_table';
 
     protected $fillable = [
+        'user_id',
         'type_of_ticket',
         'ticket_id',
         'id',
@@ -21,21 +22,16 @@ class Attachments_Model extends Model
         'comment_id',
     ];
 
-    // public function attachments()
-    // {
-    //     // Giả sử ticket_id là khóa ngoại ở bảng attachments_table
-    //     return $this->hasMany(Attachments_Model::class, 'ticket_id', 'id');
-    // }
-
-    // public function active_attachments()
-    // {
-    //     return $this->hasMany(Attachments_Model::class, 'ticket_id', 'id')
-    //         ->where('status', '1'); // Chỉ lấy những attachment có status = 1 (còn hiệu lực)
-    // }
 
     public function comment()
     {
         return $this->belongsTo(Comments_Model::class);
+    }
+
+    public function user_owner(): BelongsTo
+    {
+        // Một ticket thì "thuộc về" (belongsTo) một người dùng
+        return $this->belongsTo(User::class, 'user_id'); //Bảo model sang model User để lấy thông tin user của ticket đó, dựa vào "user_id"
     }
 
     
