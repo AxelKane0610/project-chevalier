@@ -143,6 +143,12 @@
                             'type' => 'text'
                         ],
                         [
+                            'icon' => 'ti-layout-column4',
+                            'label' => 'Barcode Info',
+                            'value' => $ticket->barcode_info,
+                            'type' => 'text'
+                        ],
+                        [
                             'icon' => 'ti-align-justify',
                             'label' => 'Description',
                             'value' => $ticket->description,
@@ -189,18 +195,20 @@
             <x-common-ticket-form title="Edit Ticket Khắc Base" id="edit-laser-engraving-ticket-details" action1="{{ route('edit-laser-engraving-ticket', $ticket->id) }}">
                 @method('PATCH')
                 <label>Receipt</label>
-                <input type="text" class="ticket-form-body-input" name="ticket_receipt" value=" {{ $ticket->ticket_receipt }}">
+                <input type="text" class="ticket-form-body-input" name="ticket_receipt" value=" {{ $ticket->ticket_receipt }}" required>
 
                 <label>Priority</label>
                 <select name="priority" class="ticket-form-body-input">
-                    <option value="1" {{ $ticket->priority == 1 ? 'selected' : '' }}>Normal</option> // Nếu priority của ticket đang là 1 thì thêm thuộc tính selected vào option này, ngược lại thì không có
+                    <option value="1" {{ $ticket->priority == 1 ? 'selected' : '' }}>Normal</option>
                     <option value="2" {{ $ticket->priority == 2 ? 'selected' : '' }}>Critical</option>
                     <option value="3" {{ $ticket->priority == 3 ? 'selected' : '' }}>High</option>
                     <option value="4" {{ $ticket->priority == 4 ? 'selected' : '' }}>Low</option>
                 </select>
 
                 <label>Info base</label>
-                <input type="text" class="ticket-form-body-input" name="info_base" value=" {{ $ticket->info_base }}">
+                <input type="text" class="ticket-form-body-input" name="info_base" value=" {{ $ticket->info_base }}" required>
+                <label>Barcode Info</label>
+                <input type="text" class="ticket-form-body-input" name="barcode_info" value=" {{ $ticket->barcode_info }}" required>
                 <label>Description</label>
                 <textarea class="ticket-form-body-input" name="description" rows="5">{{ $ticket->description }}</textarea>
                 

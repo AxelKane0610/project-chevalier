@@ -42,12 +42,14 @@ class LaserEngravingTicketsController extends Controller
                 'ticket_receipt' => 'required|string|max:255',
                 'priority' => 'required|in:1,2,3,4',
                 'info_base' => 'required|string|max:255',
+                'barcode_info' => 'required|string|max:255',
                 'description' => 'required|string',
                 'attachments.*' => 'file|max:20480|mimes:jpg,png,pdf,jpeg,xlsx,gif,cdr'
             ]);
 
             $validatedData['ticket_receipt'] = strip_tags($validatedData['ticket_receipt']);
             $validatedData['info_base'] = strip_tags($validatedData['info_base']);
+            $validatedData['barcode_info'] = strip_tags($validatedData['barcode_info']);
             $validatedData['description'] = strip_tags($validatedData['description']);
 
         // Tạo một ticket mới trong cơ sở dữ liệu
@@ -57,6 +59,7 @@ class LaserEngravingTicketsController extends Controller
                 'ticket_receipt' => $validatedData['ticket_receipt'],
                 'priority' => $validatedData['priority'],
                 'info_base' => $validatedData['info_base'],
+                'barcode_info' => $validatedData['barcode_info'],
                 'description' => $validatedData['description'],
                 // Thêm các trường khác nếu cần thiết
             ]);
@@ -124,6 +127,7 @@ class LaserEngravingTicketsController extends Controller
             'ticket_receipt' => 'required',
             'priority' => 'required',
             'info_base' => 'required',
+            'barcode_info' => 'required',
             'description' => 'required',
             'attachments.*' => 'file|max:20480|mimes:jpg,png,pdf,jpeg,xlsx'
         ]);
@@ -132,6 +136,7 @@ class LaserEngravingTicketsController extends Controller
             if ($ticket->status == 1) {
             $validatedData['ticket_receipt'] = strip_tags($validatedData['ticket_receipt']);
             $validatedData['info_base'] = strip_tags($validatedData['info_base']);
+            $validatedData['barcode_info'] = strip_tags($validatedData['barcode_info']);
             $validatedData['description'] = strip_tags($validatedData['description']);
 
             // Cập nhật thông tin ticket
@@ -139,6 +144,7 @@ class LaserEngravingTicketsController extends Controller
             $ticket->ticket_receipt = $validatedData['ticket_receipt'];
             $ticket->priority = $validatedData['priority'];
             $ticket->info_base = $validatedData['info_base'];
+            $ticket->barcode_info = $validatedData['barcode_info'];
             $ticket->description = $validatedData['description'];
             
             $ticket->save();

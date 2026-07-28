@@ -185,6 +185,9 @@
                         <label class="ticket-form-body-input">Info Base</label>
                         <input type="text" class="ticket-form-body-input" placeholder="Nhập thông tin mặt base cần khắc tại đây" name="info_base" required>
 
+                        <label class="ticket-form-body-input">Barcode Info</label>
+                        <input type="text" class="ticket-form-body-input" placeholder="Nhập barcode info" name="barcode_info" required>
+
                         <label class="ticket-form-body-input">Description</label>
                         <textarea name="description" class="ticket-form-body-input multiple-row" placeholder="Nhập mô tả vấn đề bạn cần hỗ trợ" required></textarea>
                         
