@@ -262,7 +262,13 @@ class TTEXTicketsController extends Controller
     public function Edit_TTEX_Ticket(Request $request, $id){
         $ticket = TTEX_Tickets_Model::with('user_owner')->findOrFail($id);
         try {
-            if ($ticket->status == '1') {
+            if ($ticket->status != '1' && (auth()->user()->hasRole('ROLE_TTEX_TICKET_USER'))) {
+                return response()->json([
+                'success' => false,
+                'message' => 'Chỉ có ticket đang ở trạng thái "Open - Chưa điều tin" mới được phép edit !',
+            ], 400);
+            }
+            else  {
                 $validate_data = $request->validate([
                     'category' => 'required',
                     'shipment_type' => 'required',
@@ -272,6 +278,7 @@ class TTEXTicketsController extends Controller
                     'receiver_info' => 'required',
                     'shipment_description' => 'required',
                     'note' => 'nullable',
+                    'booking_date' => 'nullable',
                     'attachments.*' => 'file|max:20480|mimes:jpg,png,jpeg'
             ]);
 
@@ -295,6 +302,8 @@ class TTEXTicketsController extends Controller
                 $ticket->receiver_info = $validate_data['receiver_info'];
                 $ticket->shipment_description = $validate_data['shipment_description'];
                 $ticket->note = $validate_data['note'];
+                $ticket->booking_date = $validate_data['booking_date'];
+
 
                 tracking_info_service::add(
                     $ticket->id, 
@@ -331,10 +340,7 @@ class TTEXTicketsController extends Controller
                     'success' => true,
                     'message' => 'Ticket edited successfully',
                 ]);
-            } else return response()->json([
-                'success' => false,
-                'message' => 'Chỉ có ticket đang ở trạng thái "Open - Chưa điều tin" mới được phép edit !',
-            ], 400);
+            }
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -350,6 +356,7 @@ class TTEXTicketsController extends Controller
             if ($ticket->status == '1') {
                 $ticket_info_input = $request->validate([
                     'status' => 'required',
+                    'booking_date' => 'nullable',
                     'ttex_bill' => 'nullable',
                     'comment' => 'nullable'
                 ]);
@@ -360,16 +367,19 @@ class TTEXTicketsController extends Controller
                 
                 $ticket->status = $ticket_info_input['status'];
                 $ticket->ttex_bill = $ticket_info_input['ttex_bill'];
-                $ticket->booking_date = now('UTC')->toDateString();
-                $ticket->save();
+                
 
                 switch ($ticket_info_input['status']) {
                     case '2':
                         $action = 'completed booking ticket at';
+                        $ticket->booking_date = $ticket_info_input['booking_date'];
+                        $ticket->save();
                         $status = 'Completed';
                         break;
                     case '3':
                         $action = 'rejected ticket at';
+                        $ticket->booking_date = null;
+                        $ticket->save();
                         $status = 'Rejected';
                         break;
                     default:

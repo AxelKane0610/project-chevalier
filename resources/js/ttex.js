@@ -201,7 +201,7 @@ document.addEventListener('submit', function (e) {
                         confirmButtonText: 'OK',
                         heightAuto: false
                     }).then((result) => {
-                        location.reload();
+                        window.location.href = `/ttex-tickets-menu`;
                     });
 
                 } else {

@@ -262,6 +262,10 @@
             <label>Note</label>
             <input type="text" class="ticket-form-body-input" name="note" value="{{ $ticket->note }}">
 
+            @if((auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_TTEX_TICKET_ADMIN')) )
+                <label>Ngày điều tin</label>
+                <input type="date" class="ticket-form-body-input" name="booking_date" value="{{ $ticket->booking_date }}">
+            @endif
             <label><b>Attachments</b></label>
             
             @if($ticket->active_attachments->count() > 0) 
@@ -301,6 +305,7 @@
             <x-slot:footer>
                 <button class="ticket-form-body-input" type="submit" >Save</button> 
             </x-slot:footer>
+
         </x-common-ticket-form>
 
         <x-common-ticket-form title="Close TTEX Ticket" id="close-ttex-ticket" action1="{{ route('close-ttex-ticket', $ticket->id) }}">
@@ -310,6 +315,9 @@
                 <option value="2">Completed - Đã điều tin</option>
                 <option value="3">Rejected</option>
             </select>
+
+            <label>Ngày điều tin (Default là ngày hiện tại)</label>
+            <input type="date" class="ticket-form-body-input" name="booking_date" value="{{ now()->format('Y-m-d') }}">
 
             <label>Bill TTEX</label>
             <input type="text" class="ticket-form-body-input" name="ttex_bill" value="" placeholder="Điền vào nếu complete">
