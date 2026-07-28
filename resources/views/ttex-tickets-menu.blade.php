@@ -364,10 +364,10 @@
                 <label>Note</label>
                 <input type="text" class="ticket-form-body-input" placeholder="Nhập ghi chú" name="note">
 
-                <label style="color: red; font-weight: 700;">Bạn có muốn những bill này được thu hồi (Chỉ dành cho onsite tỉnh) ?</label>
+                <label style="color: red; font-weight: 700; font-size: 30px">BẠN CÓ MUỐN NHỮNG BILL NÀY ĐƯỢC THU HỒI ? (CHỈ DÀNH CHO ONSITE TỈNH, ĐỌC KỸ TRƯỚC KHI CHỌN)</label>
                 <select name="part_returned_check" class="ticket-form-body-input" id="part_returned_check" required>
-                    <option value="1">Có (Hệ thống sẽ tự tạo ticket điều tin def về)</option>
-                    <option value="2">Không</option>
+                    <option value="2">KHÔNG (HỆ THỐNG SẼ KHÔNG TẠO TICKET THU HỒI)</option>
+                    <option value="1">CÓ (HỆ THỐNG SẼ TỰ TẠO TICKET ĐỂ THU HỒI DEF VỀ)</option>
                 </select>
 
                 
