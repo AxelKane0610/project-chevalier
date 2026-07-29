@@ -86,11 +86,13 @@ Route::middleware(['auth'])->group(function () {
 
     });
 
+
+    //5. Training Ticket
     Route::middleware(['role:ROLE_SUPER_ADMIN'])->group(function () {
         Route::get('/submit-training-menu', [TrainingController::class, 'Show_Pending_Tickets']);
         Route::post('/request-training', [TrainingController::class, 'Request_Training']);
         Route::get('/training-ticket-details/{id}', [TrainingController::class, 'Show_Training_Ticket_Details']);
-
+        Route::post('/add-comment-training-ticket/{id}', [TrainingController::class, 'Add_Comment_Training_Ticket']) ->name('add-comment-training-ticket');
 
     });
 

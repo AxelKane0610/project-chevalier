@@ -63,6 +63,84 @@
             </table>
         </div>
 
+        <div class="container-fluid px-4 py-4">
+            <div class="row g-4" style="min-height: calc(100vh - 90px);">
+
+                <!-- ================= Ticket Detail ================= -->
+                <x-common-ticket-details-card 
+                    :rows="[
+                        [
+                            'icon' => 'ti-receipt',
+                            'label' => 'Training No',
+                            'value' => $ticket_details->training_no,
+                            'type' => 'text'
+                        ],
+                        [
+                            'icon' => 'ti-user',
+                            'label' => 'User Owner',
+                            'value' => $ticket_details->user_owner->fullname,
+                            'type' => 'text'
+                        ],
+                        [
+                            'icon' => 'ti-arrow-circle-right',
+                            'label' => 'Status',
+                            'value' => match ($ticket_details->status) {
+                                '1' => 'Open',
+                                '2' => 'Chưa submit',
+                                '3' => 'Đã submit, chờ verify',
+                                '4' => 'Completed',
+                                '5' => 'Rejected',
+                                default => 'Unknown',
+                            },
+                            'type' => 'badge',
+                            'color' => match ($ticket_details->status) {
+                                '1' => 'primary',
+                                '2' => 'secondary',
+                                '3' => 'secondary',
+                                '4' => 'success',
+                                '5' => 'danger',
+                                default => 'Unknown',
+                            },
+                        ],
+                        
+                    ]"
+
+                    
+                >
+                
+                    <x-common-attachments-table-card
+                        :attachments="$ticket_details->active_attachments"
+                    />
+
+                
+                    <x-slot:footer>
+                        @if((($ticket_details->status == '1') && $ticket_details->user_id == auth()->user()->id))
+                        <button type="button" class="js-input-required-btn" data-target="edit-ticket-details"><i class="ti-pencil"></i> Edit</button>
+                        @endif
+                    </x-slot:footer>
+                
+
+                </x-common-ticket-details-card>
+
+                <!-- ================= Comment ================= -->
+
+                <x-common-ticket-comments-card
+                    :comments="$ticket_details->ticket_comments"
+                    :showAttachments="true"
+                    :actionRoute="route('add-comment-training-ticket', $ticket_details->id)"
+                >
+
+
+                </x-common-ticket-comments-card>
+
+                <!-- ================= Timeline ================= -->
+
+                <x-common-ticket-tracking-info
+                    :trackings="$ticket_details->ticket_tracking_info"
+                />
+            </div>
+        </div>
+
     </body>
 
 </html>

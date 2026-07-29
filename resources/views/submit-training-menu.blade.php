@@ -1,94 +1,200 @@
 <!DOCTYPE html>
 <html>
     <head>
-
         <title>Project Chevalier</title>
         <meta charset="utf-8">
         @vite([ 'resources/js/app.js', 'resources/js/training-management.js', 'resources/css/icons/themify-icons.css'])
-    
+        
     </head>
 
-    <body class="background-enable">
+    <body>
 
-        <x-common-header title="Xin chào, hôm nay bạn cần hỗ trợ gì ?">
-            <li>
-                <div class="search-container">
-                    <form action="">
-                        <button type="button" id="btn-toggle-search" class="nav-btn search-btn">
-                            <i class="ti-search"></i> Search
-                        </button>
+        <div>
 
-                        <div id="search-dropdown" class="search-dropdown-box hidden">
-                            <div class="search-input-group">
-                                
-                                @livewire('quick-search-dropdown')
-                            </div>
-                        </div>
+            <x-common-header title="Training Submit Menu">
+                <li>
+                    <form action="/main-menu">
+                        <button type="submit"><i class="ti-home"></i>Home</button>
                     </form>
-                </div>
-                
-            </li>
+                </li>
+                <li>
+                    <div class="search-container">
+                        <form action="">
+                            <button type="button" id="btn-toggle-search" class="nav-btn search-btn">
+                                <i class="ti-search"></i> Search
+                            </button>
 
-        </x-common-header>
-
-
-        <div class="d-flex flex-grow-1 overflow-hidden vh-100">
-            <div class="container-fluid my-5 flex-grow-1">
-                <div class="row flex-grow-1 h-100">
-                    <div class="col-2 d-flex justify-content-center align-items-center flex-column gap-3">
-                        <form action=""  >
-                            <button type="button" class="js-input-required-btn" data-target="create-training-request"><i class="ti-plus"></i> Request Training</button>
-                        </form>
-
-                    </div>
-
-                    <div class="col-10 h-100 overflow-auto">
-                        <div class="bg-white p-3 rounded shadow-sm ticket-table" id="pending-good-part-ttex-tickets-container">
-
-                            <h2>All tickets</h2>
-                            <table id="pending-ttex-tickets-table" class="common-table mh-100" width="100%" >
-                                <tr>
-                                    <th width="5%"></th>
-                                    <th width="10%">User Owner</th>
-                                    <th width="20%">Training No</th>
-                                    <th width="20%">Status</th>
-                                    <th width="20%">Start Date</th>
-                                    <th width="20%">End Date</th>
-
-                                </tr>
-                            
-                                <tbody>
+                            <div id="search-dropdown" class="search-dropdown-box hidden">
+                                <div class="search-input-group">
                                     
-
-                                    @foreach($all_tickets as $ticket)
-                                        <tr>
-                                            <td>
-                                                <button type="button" 
-                                                    class="btn btn-primary" 
-                                                    onclick="window.location.href='/training-ticket-details/{{ $ticket->id }}'">
-                                                    <i class="ti-arrow-right"></i>
-                                                </button>
-                                            </td>
-                                            <td>{{ $ticket->user_owner->fullname }}</td>
-                                            <td>{{ $ticket->training_no }}</td>
-                                            <td>{{ $ticket->status }}</td>
-                                            <td>{{ $ticket->start_date }}</td>
-                                            <td>{{ $ticket->end_date }}</td>
-                                            
-                                            
-                                        </tr>
+                                    @livewire('quick-search-dropdown')
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    
+                </li>
+                
+            </x-common-header>
 
 
-                                    @endforeach
-                                </tbody>
+            <div class="d-flex flex-grow-1 overflow-hidden vh-100">
+                <div class="container-fluid my-5 flex-grow-1">
+                    <div class="row flex-grow-1 h-100">
+                        <div class="col-2 d-flex justify-content-center align-items-center flex-column gap-3">
+                            <form action=""  >
+                                <button type="button" class="js-input-required-btn" data-target="create-training-request"><i class="ti-plus"></i> Request Training</button>
+                            </form>
 
-                            </table>
+                            <button class="btn btn-primary table-btn w-100 position-relative" id="show-pending-training-tickets-btn" data-target = "pending-training-tickets-container">
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {{$pending_tickets->count()}}
+                                </span>
+                                <i class="ti-timer"></i> Show Pending Training
+                            </button>
+
+                            <button class="btn btn-primary table-btn w-100 position-relative" id="show-all-training-tickets-btn" data-target = "all-training-tickets-container">
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {{$all_tickets->count()}}
+                                </span>
+                                <i class="ti-list-ol"></i> Show All Training Tickets
+                            </button>
+
+                            <button class="btn btn-primary table-btn w-100 position-relative" id="show-all-training-courses-btn" data-target = "all-training-courses-container">
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {{$all_training_courses->count()}}
+                                </span>
+                                <i class="ti-list-ol"></i> Show All Training Courses
+                            </button>
+
                         </div>
 
+                        <div class="col-10 h-100 overflow-auto">
+                            <div class="bg-white p-3 rounded shadow-sm ticket-table" id="pending-training-tickets-container">
+
+                                <h2>Pending Training</h2>
+                                <table id="pending-training-tickets-table" class="common-table mh-100" width="100%" >
+
+                                    <tr>
+                                        <th width="5%"></th>
+                                        <th width="10%">User Owner</th>
+                                        <th width="20%">Training No</th>
+                                        <th width="20%">Status</th>
+                                        <th width="20%">Start Date</th>
+                                        <th width="20%">End Date</th>
+
+                                    </tr>
+                                
+                                    <tbody>
+                                        
+
+                                        @foreach($pending_tickets as $ticket)
+                                            <tr>
+                                                <td>
+                                                    <button type="button" 
+                                                        class="btn btn-primary" 
+                                                        onclick="window.location.href='/training-ticket-details/{{ $ticket->id }}'">
+                                                        <i class="ti-arrow-right"></i>
+                                                    </button>
+                                                </td>
+                                                <td>{{ $ticket->user_owner->fullname }}</td>
+                                                <td>{{ $ticket->training_no }}</td>
+                                                <td>{{ $ticket->status }}</td>
+                                                <td>{{ $ticket->start_date }}</td>
+                                                <td>{{ $ticket->end_date }}</td>
+                                                
+                                                
+                                            </tr>
+
+
+                                        @endforeach
+                                    </tbody>
+
+                                </table>
+                            </div>
+
+                            <div class="bg-white p-3 rounded shadow-sm ticket-table d-none" id="all-training-tickets-container">
+
+                                <h2>All tickets</h2>
+                                <table id="all-training-tickets-table" class="common-table mh-100" width="100%" >
+
+                                    <tr>
+                                        <th width="5%"></th>
+                                        <th width="10%">User Owner</th>
+                                        <th width="20%">Training No</th>
+                                        <th width="20%">Status</th>
+                                        <th width="20%">Start Date</th>
+                                        <th width="20%">End Date</th>
+
+                                    </tr>
+                                
+                                    <tbody>
+                                        
+
+                                        @foreach($all_tickets as $ticket)
+                                            <tr>
+                                                <td>
+                                                    <button type="button" 
+                                                        class="btn btn-primary" 
+                                                        onclick="window.location.href='/training-ticket-details/{{ $ticket->id }}'">
+                                                        <i class="ti-arrow-right"></i>
+                                                    </button>
+                                                </td>
+                                                <td>{{ $ticket->user_owner->fullname }}</td>
+                                                <td>{{ $ticket->training_no }}</td>
+                                                <td>{{ $ticket->status }}</td>
+                                                <td>{{ $ticket->start_date }}</td>
+                                                <td>{{ $ticket->end_date }}</td>
+                                                
+                                                
+                                            </tr>
+
+
+                                        @endforeach
+                                    </tbody>
+
+                                </table>
+                            </div>
+
+                            <div class="bg-white p-3 rounded shadow-sm ticket-table d-none" id="all-training-courses-container">
+
+                                <h2>All Training Courses</h2>
+                                <table id="all-training-courses-table" class="common-table mh-100" width="100%" >
+                                    <tr>
+                                        <th width="10%">Training No</th>
+                                        <th width="20%">Course ID</th>
+                                        <th width="20%">Course Name</th>
+                                        <th width="20%">Start Date</th>
+                                        <th width="20%">End Date</th>
+
+                                    </tr>
+                                
+                                    <tbody>
+                                        @foreach($all_training_courses as $training_course)
+                                            <tr>
+                                                
+                                                <td>{{ $training_course->training_no }}</td>
+                                                <td>{{ $training_course->course_id }}</td>
+                                                <td>{{ $training_course->course_name }}</td>
+                                                <td>{{ $training_course->start_date }}</td>
+                                                <td>{{ $training_course->end_date }}</td>
+                                                
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+
+                                </table>
+                            </div>
+
+                        </div>
+
+                            
+                            
+
+                        
                     </div>
                 </div>
             </div>
-        </div>
 
 
         <x-common-ticket-form title="Request Training" action1="/request-training" id="create-training-request">
