@@ -30,7 +30,6 @@ class TrainingController extends Controller
             return view('submit-training-menu', compact('pending_tickets', 'all_tickets', 'all_training_courses'));
         }
         
-
         
         
     }

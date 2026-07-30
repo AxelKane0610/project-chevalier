@@ -270,6 +270,7 @@ class TTEXTicketsController extends Controller
             }
             else  {
                 $validate_data = $request->validate([
+                    'ttex_bill' => 'nullable',
                     'category' => 'required',
                     'shipment_type' => 'required',
                     'part_status'=> 'required',
@@ -281,7 +282,7 @@ class TTEXTicketsController extends Controller
                     'booking_date' => 'nullable',
                     'attachments.*' => 'file|max:20480|mimes:jpg,png,jpeg'
             ]);
-
+                $validate_data['ttex_bill'] = strip_tags($validate_data['ttex_bill']);
                 $validate_data['category'] = strip_tags($validate_data['category']);
                 $validate_data['shipment_type'] = strip_tags($validate_data['shipment_type']);
                 $validate_data['part_status'] = strip_tags($validate_data['part_status']);
@@ -293,7 +294,7 @@ class TTEXTicketsController extends Controller
                 $validate_data['shipment_description'] = strip_tags($validate_data['shipment_description']);
                 $validate_data['note'] = strip_tags($validate_data['note']);
 
-            
+                $ticket->ttex_bill = $validate_data['ttex_bill'];
                 $ticket->category = $validate_data['category'];
                 $ticket->shipment_type = $validate_data['shipment_type'];
                 $ticket->part_status = $validate_data['part_status'];

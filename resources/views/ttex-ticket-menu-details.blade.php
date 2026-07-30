@@ -187,7 +187,7 @@
 
                 
                     <x-slot:footer>
-                        @if(($ticket->status == '1') && ($ticket->user_id == auth()->user()->id) || auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_TTEX_TICKET_ADMIN'))
+                        @if(($ticket->user_id == auth()->user()->id) || auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_TTEX_TICKET_ADMIN'))
                             <button type="button" class="js-input-required-btn" data-target="edit-ticket-details"><i class="ti-pencil"></i> Edit</button>
                         @endif
                     </x-slot:footer>
@@ -216,6 +216,8 @@
 
         <x-common-ticket-form title="Edit TTEX Ticket" id="edit-ticket-details" action1="{{ route('edit-ttex-ticket', $ticket->id) }}">
             @method('PATCH')
+            <label>TTEX Bill</label>
+            <input type="text" class="ticket-form-body-input" name="ttex_bill" value="{{ $ticket->ttex_bill}}">
 
             <label>Category</label>
             <select name="category" class="ticket-form-body-input">
