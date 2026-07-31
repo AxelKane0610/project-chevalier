@@ -93,7 +93,9 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/request-training', [TrainingController::class, 'Request_Training']);
         Route::get('/training-ticket-details/{id}', [TrainingController::class, 'Show_Training_Ticket_Details']);
         Route::post('/add-comment-training-ticket/{id}', [TrainingController::class, 'Add_Comment_Training_Ticket']) ->name('add-comment-training-ticket');
-
+        Route::patch('/send-verify-training-ticket/{id}', [TrainingController::class, 'Send_Verify_Training_Ticket'])->name('send-verify-training-ticket');
+        Route::patch('/edit-upload-training-ticket/{id}', [TrainingController::class, 'Edit_Upload_Training_Ticket'])->name('edit-upload-training-ticket');
+        
     });
 
 

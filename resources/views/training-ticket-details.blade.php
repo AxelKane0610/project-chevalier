@@ -3,7 +3,7 @@
     <head>
         <title>Project Chevalier</title>
         <meta charset="utf-8">
-        @vite(['resources/js/app.js', 'resources/js/thermal-event.js', 'resources/css/icons/themify-icons.css'])
+        @vite(['resources/js/app.js', 'resources/js/training-management.js', 'resources/css/icons/themify-icons.css'])
         
     </head>
 
@@ -32,6 +32,11 @@
                 </div>
                 
             </li>
+
+            <form id="send-verify-training-ticket" data-target="send-verify-training-ticket" class="js-input-required-btn" action="{{ route('send-verify-training-ticket', $ticket_details->id) }}" method="PATCH">
+                @csrf
+                <button type="button"><i class="ti-angle-double-right"></i>Send verify</button>
+            </form>
         </x-common-header>
 
         <div class="common-table-container">
@@ -114,8 +119,8 @@
 
                 
                     <x-slot:footer>
-                        @if((($ticket_details->status == '1') && $ticket_details->user_id == auth()->user()->id))
-                        <button type="button" class="js-input-required-btn" data-target="edit-ticket-details"><i class="ti-pencil"></i> Edit</button>
+                        @if(( ($ticket_details->status == '1' && $ticket_details->user_id == auth()->user()->id)) || auth()->user()->hasRole('ROLE_SUPER_ADMIN')    )
+                        <button type="button" class="js-input-required-btn" data-target="edit-ticket-details"><i class="ti-pencil"></i> Edit/Upload Certificates</button>
                         @endif
                     </x-slot:footer>
                 
@@ -140,6 +145,47 @@
                 />
             </div>
         </div>
+
+
+        <x-common-ticket-form title="Edit/Upload Certificates" id="edit-ticket-details" action1="{{ route('edit-upload-training-ticket', $ticket_details->id) }}">
+            @method('PATCH')
+            @if($ticket_details->active_attachments->count() > 0) 
+                <x-common-attachments-table>
+                    @foreach($ticket_details->active_attachments as $attachment)
+                        <tr>
+                            <td>
+                                {{ $attachment->name ?? 'File đính kèm' }}
+                            </td>
+                            <td>
+                                <div>
+                                    <a href="{{ asset('attachments/' . $attachment->file_path) }}" target="_blank" class="btn btn-info">
+                                        <i class="ti-eye"></i>
+                                    </a>
+                                    <input type="checkbox" name="delete_files[]" value="{{ $attachment->id }}" id="del_{{ $attachment->id }}">
+                                    <label for="del_{{ $attachment->id }}">
+                                        Xóa
+                                    </label>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                </x-common-attachments-table>
+                        
+                <small class="text-muted">Tích vào ô "Xóa" nếu muốn gỡ bỏ file đính kèm trước đó.</small>
+            @else
+                <p class="text-muted">Không có file nào được đính kèm</p>
+            @endif
+
+            <label class="ticket-form-body-input">Đính kèm thêm files:</label>
+            <div class="upload-group">
+                <input class="ticket-form-body-input file-input" type="file" name="attachments[]" multiple>
+                <ul class="file-list"></ul>
+            </div>
+
+            <x-slot:footer>
+                <button class="ticket-form-body-input" type="submit">Save</button> 
+            </x-slot:footer>
+        </x-common-ticket-form>
 
     </body>
 

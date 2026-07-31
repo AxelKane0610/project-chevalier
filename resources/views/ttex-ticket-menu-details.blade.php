@@ -102,7 +102,7 @@
                                 default => 'Unknown',
                             },
                             'type' => 'badge',
-                            'color' => match ($ticket->category) {
+                            'color' => match ($ticket->shipment_type) {
                                 '1' => 'primary',
                                 '2' => 'secondary',
                                 '3' => 'success',

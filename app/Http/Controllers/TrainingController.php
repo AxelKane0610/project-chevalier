@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+
 use App\Models\Training_Tickets_Model;
 use App\Models\Training_Courses_Model;
 use App\Models\User;
@@ -119,5 +121,45 @@ class TrainingController extends Controller
 
         return back()->with('success');
     }
+
+    public function Send_Verify_Training_Ticket ($id){
+        $ticket = Training_Tickets_Model::with('user_owner', 'active_attachments', 'training_courses')->findOrFail($id);
+
+        
+    }
+
+    public function Edit_Upload_Training_Ticket(Request $request, $id){
+        $ticket = Training_Tickets_Model::with('user_owner')->findOrFail($id);
+
+        $validate_date = $request->validate([
+            'attachments.*' => 'file|max:20480|mimes:pdf'
+        ]);
+
+        if ($request->hasFile('attachments')) { //Kiểm tra xem có file nào được upload lên không
+
+            foreach ($request->file('attachments') as $file) { //Duyệt qua từng file được upload lên
+                $originalName = $file->getClientOriginalName();
+                $folderPath = '5/'.$ticket->user_id.'/'.$ticket->training_no;
+                $filePath = $file->storeAs($folderPath, $originalName, 'attachments'); // Lưu file vào thư mục 'attachments' đã được cấu hình trong config/filesystems.php, với đường dẫn là 'attachments/1/{ticket_id}/{original_file_name}'
+                
+                Attachments_Model::create([
+                    'type_of_ticket' => 5, // Giả sử 1 là mã cho software ticket
+                    'ticket_id' => $ticket->id,
+                    'file_path' => $filePath,
+                    'name' => $originalName,// Lưu tên gốc của file vào cơ sở dữ liệu
+                    'user_id' => $ticket->user_id
+                ]);
+            }
+            
+        }
+
+
+        if ($request->has('delete_files')) {
+        // Cập nhật tất cả các ID được tích chọn thành status = 0 trong 1 câu lệnh duy nhất
+            Attachments_Model::whereIn('id', $request->input('delete_files'))->update(['status' => '0']);
+        }
+    }
+
+    
 
 }
