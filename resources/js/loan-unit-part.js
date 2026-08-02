@@ -565,6 +565,9 @@ document.querySelectorAll('.btn-edit-part').forEach(button => {
         document.getElementById('edit-end-date').value =
             this.dataset.end_date;
 
+        document.getElementById('edit-note').value =
+            this.dataset.note;
+
         document.getElementById('edit-loan-unit-part-details').action =
             '/edit-loan-unit-part-details/' + this.dataset.id;
 

@@ -23,6 +23,7 @@ class Loan_Unit_Ticket_Parts_Details_Model extends Model
         'original',
         'start_date',
         'end_date',
+        'note'
     ];
 
     public function ticket_owner(): BelongsTo
@@ -56,6 +57,11 @@ class Loan_Unit_Ticket_Parts_Details_Model extends Model
 
             "4" => [
                 'text' => 'Canceled',
+                'class' => 'canceled'
+            ],
+
+            "5" => [
+                'text' => 'Will not be returned',
                 'class' => 'canceled'
             ],
 

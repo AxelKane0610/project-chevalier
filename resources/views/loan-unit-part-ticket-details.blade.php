@@ -70,6 +70,8 @@
                 <th width="50px">Original</th>
                 <th width="50px">Start Date</th>
                 <th width="50px">End Date</th>
+                <th width="50px">Note</th>
+
 
                 @foreach($ticket->parts_details as $parts)
                 <tr>
@@ -89,8 +91,7 @@
                                 data-original="{{ $parts->original }}"
                                 data-start_date="{{ $parts->start_date }}"
                                 data-end_date="{{ $parts->end_date }}"
-
-
+                                data-note="{{ $parts->note }}"
                                 
                                 ><i class="ti-pencil"></i></button>
                             </form>
@@ -138,6 +139,7 @@
                     
                     <td>{{$parts->start_date}}</td>
                     <td>{{$parts->end_date}}</td>
+                    <td>{{$parts->note}}</td>
 
 
                 </tr>
@@ -317,6 +319,9 @@
                 <label>End Date</label>
                 <input type="date" class="ticket-form-body-input" name="end_date" value="" id="edit-end-date">
 
+                <label>Note</label>
+                <input type="text" class="ticket-form-body-input" name="note" value="" id="edit-note">
+
                 <x-slot:footer>
                     <button class="ticket-form-body-input" type="submit">Edit</button> 
                 </x-slot:footer>
@@ -347,6 +352,9 @@
 
             <label>Start Date</label>
             <input type="date" class="ticket-form-body-input" name="start_date" value="{{ today()->format('Y-m-d') }}" id="edit-start-date" >
+
+            <label>Note</label>
+            <input type="text" class="ticket-form-body-input" name="note" placeholder="Ghi chú nếu có" required>
 
             <x-slot:footer>
                 <button class="ticket-form-body-input" type="submit">Issue unit/part</button> 

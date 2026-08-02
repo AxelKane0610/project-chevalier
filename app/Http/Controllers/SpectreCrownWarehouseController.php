@@ -12,32 +12,88 @@ use App\Services\tracking_info_service;
 
 class SpectreCrownWarehouseController extends Controller
 {
-    //
-    // public function index(Request $request) {
-    //     $query = Spectre_Crown_Warehouse_Model::query();
+    
+    public function Import_Asset(Request $request) {
+        try {
+            $validate_data = $request->validate([
+                'asset_tag' => 'nullable',
+                'model' => 'required',
+                'serial_number' => 'required',
+                'box_serial_number' => 'required',
+                'product_number' => 'required',
+                'category' => 'required',
+                'asset_type' => 'required',
+                'warehouse' => 'required',
+                'available_status' => 'required',
+                'condition' => 'required',
+                'note' => 'required',
+                'quantity' => 'required',
+                'attachments.*' => 'file|max:20480|mimes:jpg,png,pdf,jpeg,xlsx'
 
-    // // 3. Nếu người dùng nhập ô tìm kiếm (ví dụ tìm theo serial_number hoặc model)
-    //     if ($request->filled('search')) {
-    //         $search = $request->search;
-    //         $query->where(function($q) use ($search) {
-    //             $q->where('serial_number', 'like', "%{$search}%")
-    //             ->orWhere('model', 'like', "%{$search}%")
-    //             ->orWhere('asset_tag', 'like', "%{$search}%");
-    //         });
+            ]);
 
-    //     }
+            $validate_data['asset_tag'] = strip_tags($validate_data['asset_tag']);
+            $validate_data['model'] = strip_tags($validate_data['model']);
+            $validate_data['serial_number'] = strip_tags($validate_data['serial_number']);
+            $validate_data['box_serial_number'] = strip_tags($validate_data['box_serial_number']);
+            $validate_data['product_number'] = strip_tags($validate_data['product_number']);
+            $validate_data['category'] = strip_tags($validate_data['category']);
+            $validate_data['asset_type'] = strip_tags($validate_data['asset_type']);
+            $validate_data['warehouse'] = strip_tags($validate_data['warehouse']);
+            $validate_data['available_status'] = strip_tags($validate_data['available_status']);
+            $validate_data['condition'] = strip_tags($validate_data['condition']);
+            $validate_data['note'] = strip_tags($validate_data['note']);
+            $validate_data['quantity'] = strip_tags($validate_data['quantity']);
 
-    //     // 4. Phân trang
-    //     $items = $query->paginate(10);
+            if (empty($request->asset_tag)) {
 
-    //     // 5. Nếu gửi từ Javascript (AJAX) -> Chỉ trả về partial view chứa bảng dữ liệu
-    //     if ($request->ajax()) {
-    //         return view('tables.spectre-crown-warehouse-items-table', compact('items'))->render();
-    //     }
+                $prefixes = [
+                    1 => 'BUF',
+                    2 => 'CRT',
+                    3 => 'DASS',
+                    4 => 'DEMO',
+                    5 => 'DOA',
+                    6 => 'BU',
+                ];
 
-    //     // 6. Nếu truy cập bình thường -> Trả về full trang giao diện
-    //     return view('spectre-crown-warehouse-menu', compact('items'));
-    // }
+                $prefix = $prefixes[$request->asset_type];
+
+                $lastItem = Spectre_Crown_Warehouse_Model::where('asset_tag', 'like', $prefix.'-%')
+                    ->orderByRaw("
+                        CAST(SUBSTRING_INDEX(asset_tag, '-', -1) AS UNSIGNED) DESC
+                    ")
+                    ->first();
+
+                if ($lastItem) {
+                    $lastNumber = (int) explode('-', $lastItem->asset_tag)[1];
+                    $nextNumber = $lastNumber + 1;
+                } else {
+                    $nextNumber = 1;
+                }
+
+                $assetTag = $prefix . '-' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
+                $validate_data['asset_tag'] = $assetTag;
+
+            } else {
+
+                $assetTag = strtoupper(trim($request->asset_tag));
+                $validate_data['asset_tag'] = $assetTag;
+
+            }
+
+            $new_asset = Spectre_Crown_Warehouse_Model::create($validate_data);
+            return response()->json([
+                'success' => true,
+                'message' => 'Asset Import thành công với tag: ' .$validate_data['asset_tag'],
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Asset Import failed due to ' .$e->getMessage(),
+            ], 500);
+        }
+
+    }
 
     public function index(Request $request)
     {
@@ -86,6 +142,129 @@ class SpectreCrownWarehouseController extends Controller
     public function Item_Details($id){
         $item_details = Spectre_Crown_Warehouse_Model::with(['active_attachments','ticket_tracking_info','ticket_comments.attachments', 'ticket_comments.user', 'loan_unit_part_tickets'])->findOrFail($id);
         return view('spectre-crown-warehouse-item-details', compact('item_details'));
+    }
+
+    public function Add_Comment_Spectre_Crown_Warehouse(Request $request, $id){
+        $comment_info_input = $request->validate([
+            'comment' => 'required_without_all:attachments|string|nullable',
+            'attachments' => 'required_without_all:comment|array|nullable',
+            'attachments.*' => 'file|max:20480|mimes:jpg,jpeg,png,pdf,xlsx,docx',
+        ]);
+
+        $comment_info_input['comment'] = strip_tags($comment_info_input['comment']);
+        $comment_info_input['ticket_id'] = $id;
+        $comment_info_input['type_of_ticket'] = 11; //1 là mã cho software ticket
+        $comment_info_input['user_id'] = auth()->id();
+        
+        
+        $comment = Comments_Model::create($comment_info_input);
+        
+
+        if($request->hasFile('attachments'))
+        {
+            foreach($request->file('attachments') as $file)
+            {
+                $originalName = $file->getClientOriginalName();
+                $folderPath = '11/'.$id;
+                $filePath = $file->storeAs($folderPath, $originalName, 'attachments'); // Lưu file vào thư mục 'attachments' đã được cấu hình trong config/filesystems.php, với đường dẫn là 'attachments/1/{ticket_id}/{original_file_name}'
+                
+                Attachments_Model::create([
+                    'type_of_ticket' => 11,
+                    'ticket_id' => $id,
+                    'comment_id' => $comment->id,
+
+                    'file_path' => $filePath,
+                    'name' => $originalName,
+
+                    'status' => 1
+                ]);
+            }
+        }
+        
+
+        return back()->with('success');
+    }
+
+    public function Edit_Asset_Details(Request $request, $id){
+        $asset_details = Spectre_Crown_Warehouse_Model::findOrFail($id);
+        try {
+            
+                $info_input = $request->validate([
+                    'asset_tag' => 'required',
+                    'model' => 'required',
+                    'serial_number' => 'required',
+                    'box_serial_number' => 'required',
+                    'product_number' => 'required',
+                    'category' => 'required',
+                    'asset_type' => 'required',
+                    'warehouse' => 'required',
+                    'available_status' => 'required',
+                    'condition' => 'required',
+                    'quantity' => 'required',
+                    'note' => 'nullable',
+                    'attachments.*' => 'file|max:5120|mimes:jpg,png,pdf,jpeg,xlsx'
+                ]);
+
+
+                $info_input['asset_tag'] = trim(strip_tags($info_input['asset_tag']));
+                $info_input['model'] = trim(strip_tags($info_input['model']));
+                $info_input['box_serial_number'] = trim(strip_tags($info_input['box_serial_number']));
+                $info_input['product_number'] = trim(strip_tags($info_input['product_number']));
+                $info_input['category'] = trim(strip_tags($info_input['category']));
+                $info_input['asset_type'] = trim(strip_tags($info_input['asset_type']));
+                $info_input['warehouse'] = trim(strip_tags($info_input['warehouse']));
+                $info_input['available_status'] = trim(strip_tags($info_input['available_status']));
+                $info_input['condition'] = trim(strip_tags($info_input['condition']));
+                $info_input['quantity'] = trim(strip_tags($info_input['quantity']));
+                $info_input['note'] = trim(strip_tags($info_input['note']));
+
+
+                if ($request->hasFile('attachments')) { //Kiểm tra xem có file nào được upload lên không
+
+                    foreach ($request->file('attachments') as $file) { //Duyệt qua từng file được upload lên
+                        $originalName = $file->getClientOriginalName();
+                        $folderPath = '11/'.$asset_details->id;
+                        $filePath = $file->storeAs($folderPath, $originalName, 'attachments'); // Lưu file vào thư mục '/'
+                        
+                        Attachments_Model::create([
+                            'type_of_ticket' => 11, // Giả sử 11 là mã cho asset details ticket
+                            'ticket_id' => $asset_details->id,
+                            'file_path' => $filePath,   
+                            'name' => $originalName,// Lưu tên gốc của file vào cơ sở dữ liệu
+                        ]);
+                    }
+                    
+                }
+                
+                $asset_details->update($info_input);
+                tracking_info_service::add(
+                    $asset_details->id, 
+                    auth()->id(), 
+                    11,
+                    'edited asset details at'
+                );
+                
+
+                
+
+                if ($request->has('delete_files')) {
+                // Cập nhật tất cả các ID được tích chọn thành status = 0 trong 1 câu lệnh duy nhất
+                    Attachments_Model::whereIn('id', $request->input('delete_files'))->update(['status' => '0']);
+                }
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Asset details edited successfully',
+                ]);
+            
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to edit asset details due to ' .$e->getMessage(),
+            ], 500);
+        }
+        
+
     }
 
 

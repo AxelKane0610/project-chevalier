@@ -48,7 +48,9 @@ Route::middleware(['auth'])->group(function () {
     ->middleware('auth')
     ->name('user.change-password');
 
-    Route::get('/attachments/{folder}/{id}/{filename}', [AttachmentController::class, 'show']);
+    // Route::get('/attachments/{folder}/{id}/{filename}', [AttachmentController::class, 'show']);
+    Route::get('/attachments/{path}', [AttachmentController::class, 'show'])
+    ->where('path', '.*');
 
     
     //1. EEG Ticket
@@ -93,8 +95,10 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/request-training', [TrainingController::class, 'Request_Training']);
         Route::get('/training-ticket-details/{id}', [TrainingController::class, 'Show_Training_Ticket_Details']);
         Route::post('/add-comment-training-ticket/{id}', [TrainingController::class, 'Add_Comment_Training_Ticket']) ->name('add-comment-training-ticket');
-        Route::patch('/send-verify-training-ticket/{id}', [TrainingController::class, 'Send_Verify_Training_Ticket'])->name('send-verify-training-ticket');
+        Route::post('/send-verify-training-ticket/{id}', [TrainingController::class, 'Send_Verify_Training_Ticket'])->name('send-verify-training-ticket');
         Route::patch('/edit-upload-training-ticket/{id}', [TrainingController::class, 'Edit_Upload_Training_Ticket'])->name('edit-upload-training-ticket');
+        Route::post('/confirm-training-completed/{id}', [TrainingController::class,'Confirm_Training_Completed'])->name('confirm-training-completed');
+        Route::post('/reject-training-completed/{id}', [TrainingController::class,'Reject_Training_Completed'])->name('reject-training-completed');
         
     });
 
@@ -172,8 +176,11 @@ Route::middleware(['auth'])->group(function () {
 
     //11. Quản lý kho Crown - Spectre
     Route::middleware(['role:ROLE_SUPER_ADMIN,ROLE_SPECTRE_CROWN_WAREHOUSE_ADMIN'])->group(function () {
+        Route::post('/import-asset', [SpectreCrownWarehouseController::class, 'Import_Asset']);
         Route::get('/spectre-crown-warehouse-menu', [SpectreCrownWarehouseController::class, 'index']);
         Route::get('/spectre-crown-warehouse-item-details/{id}', [SpectreCrownWarehouseController::class, 'Item_Details']);
+        Route::post('/add-comment-spectre-crown-warehouse/{id}', [SpectreCrownWarehouseController::class, 'Add_Comment_Spectre_Crown_Warehouse']) ->name('add-comment-spectre-crown-warehouse');
+        Route::patch('/edit-asset-details/{id}', [SpectreCrownWarehouseController::class, 'Edit_Asset_Details'])->name('edit-asset-details');
 
 
     });

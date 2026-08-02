@@ -5,15 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-
+use App\Services\tracking_info_service;
 use App\Models\Training_Tickets_Model;
 use App\Models\Training_Courses_Model;
 use App\Models\User;
 use App\Models\Comments_Model;
 use App\Models\Attachments_Model;
-
-
 use Illuminate\Support\Facades\DB;
+use Smalot\PdfParser\Parser;
 
 
 
@@ -43,44 +42,54 @@ class TrainingController extends Controller
     }
 
     public function Request_Training(Request $request){ 
-        $request->validate([
-            'course_id' => 'required|array|min:1',
-            'course_name' => 'required|array|min:1',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
-        ]);
+        try {
+            $request->validate([
+                'course_id' => 'required|array|min:1',
+                'course_name' => 'required|array|min:1',
+                'start_date' => 'required|date',
+                'end_date' => 'required|date|after_or_equal:start_date',
+            ]);
 
-        DB::transaction(function () use ($request) {
+            DB::transaction(function () use ($request) {
 
-            // Lấy Training No lớn nhất
-            $trainingNo = (Training_Courses_Model::max('training_no') ?? 0) + 1;
+                // Lấy Training No lớn nhất
+                $trainingNo = (Training_Courses_Model::max('training_no') ?? 0) + 1;
 
-            // Lưu từng dòng
-            foreach ($request->course_id as $index => $courseId) {
+                // Lưu từng dòng
+                foreach ($request->course_id as $index => $courseId) {
 
-                Training_Courses_Model::create([
-                    'training_no' => $trainingNo,
-                    'course_id' => $courseId,
-                    'course_name' => $request->course_name[$index],
-                    'start_date' => $request->start_date,
-                    'end_date' => $request->end_date,
-                ]);
-            }
+                    Training_Courses_Model::create([
+                        'training_no' => $trainingNo,
+                        'course_id' => $courseId,
+                        'course_name' => $request->course_name[$index],
+                        'start_date' => $request->start_date,
+                        'end_date' => $request->end_date,
+                    ]);
+                }
 
-            $users = User::whereIn('team', ['2', '3'])->get();
-            foreach ($users as $user) {
+                $users = User::whereIn('team', ['2', '3'])->get();
+                foreach ($users as $user) {
 
-                Training_Tickets_Model::create([
-                    'user_id' => $user->id,
-                    'training_no' => $trainingNo,
-                    'status' => '2', // hoặc 'Pending'
-                    'start_date' => $request->start_date,
-                    'end_date' => $request->end_date,
-                ]);
-            }
-        });
+                    Training_Tickets_Model::create([
+                        'user_id' => $user->id,
+                        'training_no' => $trainingNo,
+                        'status' => '2', // hoặc 'Pending'
+                        'start_date' => $request->start_date,
+                        'end_date' => $request->end_date,
+                    ]);
+                }
+            });
 
-        return redirect()->back()->with('success', 'Training Request created successfully.');
+            return response()->json([
+                'success' => true,
+                'message' => 'Training requested successfully ! ',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to request training due to ' .$e->getMessage(),
+            ], 500);
+        }
             
     }
 
@@ -122,41 +131,161 @@ class TrainingController extends Controller
         return back()->with('success');
     }
 
-    public function Send_Verify_Training_Ticket ($id){
-        $ticket = Training_Tickets_Model::with('user_owner', 'active_attachments', 'training_courses')->findOrFail($id);
+    public function Send_Verify_Training_Ticket($id){
+        try {
+            $ticket = Training_Tickets_Model::with(
+                'user_owner',
+                'active_attachments',
+                'training_courses'
+            )->findOrFail($id);
 
-        
+            // $parser = new Parser();
+            // $courseNames = Training_Courses_Model::where('training_no', $ticket->training_no)
+            // ->pluck('course_name')->implode("\n- ");
+
+            // $certificates = $ticket->active_attachments->map(function ($attachment) use ($parser) {
+
+            //     $pdfPath = Storage::disk('attachments')->path($attachment->file_path);
+
+            //     try {
+
+            //         $pdf = $parser->parseFile($pdfPath);
+
+            //         $text = $pdf->getText();
+
+            //     } catch (\Exception $e) {
+
+            //         $text = null;
+
+            //     }
+
+            //     return [
+            //         'name' => $attachment->name,
+            //         'path' => $pdfPath,
+            //         'text' => $text,
+            //     ];
+            // });
+
+            // dd($certificates, $courseNames);
+
+            $ticket->status = '3';
+            $ticket->save();
+            tracking_info_service::add(
+                $ticket->id, 
+                auth()->id(), 
+                5,
+                'sent training verify at'
+            );
+            return response()->json([
+                'success' => true,
+                'message' => 'Send verify success !' ,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to send verify training due to ' .$e->getMessage(),
+            ], 500);
+        }
+
     }
 
     public function Edit_Upload_Training_Ticket(Request $request, $id){
-        $ticket = Training_Tickets_Model::with('user_owner')->findOrFail($id);
+        try {
+            $ticket = Training_Tickets_Model::with('user_owner')->findOrFail($id);
 
-        $validate_date = $request->validate([
-            'attachments.*' => 'file|max:20480|mimes:pdf'
-        ]);
+            $validate_date = $request->validate([
+                'attachments.*' => 'file|max:20480|mimes:pdf'
+            ]);
 
-        if ($request->hasFile('attachments')) { //Kiểm tra xem có file nào được upload lên không
+            if ($request->hasFile('attachments')) { //Kiểm tra xem có file nào được upload lên không
 
-            foreach ($request->file('attachments') as $file) { //Duyệt qua từng file được upload lên
-                $originalName = $file->getClientOriginalName();
-                $folderPath = '5/'.$ticket->user_id.'/'.$ticket->training_no;
-                $filePath = $file->storeAs($folderPath, $originalName, 'attachments'); // Lưu file vào thư mục 'attachments' đã được cấu hình trong config/filesystems.php, với đường dẫn là 'attachments/1/{ticket_id}/{original_file_name}'
+                foreach ($request->file('attachments') as $file) { //Duyệt qua từng file được upload lên
+                    $originalName = $file->getClientOriginalName();
+                    $folderPath = '5/'.$ticket->user_id.'/'.$ticket->training_no;
+                    $filePath = $file->storeAs($folderPath, $originalName, 'attachments'); // Lưu file vào thư mục 'attachments' đã được cấu hình trong config/filesystems.php, với đường dẫn là 'attachments/1/{ticket_id}/{original_file_name}'
+                    
+                    Attachments_Model::create([
+                        'type_of_ticket' => 5, // Giả sử 1 là mã cho software ticket
+                        'ticket_id' => $ticket->id,
+                        'file_path' => $filePath,
+                        'name' => $originalName,// Lưu tên gốc của file vào cơ sở dữ liệu
+                        'user_id' => $ticket->user_id
+                    ]);
+                }
                 
-                Attachments_Model::create([
-                    'type_of_ticket' => 5, // Giả sử 1 là mã cho software ticket
-                    'ticket_id' => $ticket->id,
-                    'file_path' => $filePath,
-                    'name' => $originalName,// Lưu tên gốc của file vào cơ sở dữ liệu
-                    'user_id' => $ticket->user_id
-                ]);
             }
-            
+
+
+            if ($request->has('delete_files')) {
+            // Cập nhật tất cả các ID được tích chọn thành status = 0 trong 1 câu lệnh duy nhất
+                Attachments_Model::whereIn('id', $request->input('delete_files'))->update(['status' => '0']);
+            }
+
+            tracking_info_service::add(
+                $ticket->id, 
+                auth()->id(), 
+                5,
+                'edited/uploaded certificates at'
+            );
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Certificates edit/upload thành công ',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to request training due to ' .$e->getMessage(),
+            ], 500);
         }
+    }
+
+    public function Confirm_Training_Completed ($id){
+        try {
+            $ticket = Training_Tickets_Model::with('user_owner')->findOrFail($id);
+            tracking_info_service::add(
+                $ticket->id, 
+                auth()->id(), 
+                5,
+                'confirmed training completed at'
+            );
+            $ticket->status = '4';
+            $ticket->save();
 
 
-        if ($request->has('delete_files')) {
-        // Cập nhật tất cả các ID được tích chọn thành status = 0 trong 1 câu lệnh duy nhất
-            Attachments_Model::whereIn('id', $request->input('delete_files'))->update(['status' => '0']);
+            return response()->json([
+                'success' => true,
+                'message' => 'Training completed confirmed ! ',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to confirm due to ' .$e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function Reject_Training_Completed ($id){
+        try {
+            $ticket = Training_Tickets_Model::with('user_owner')->findOrFail($id);
+            tracking_info_service::add(
+                $ticket->id, 
+                auth()->id(), 
+                5,
+                'rejected training completed at'
+            );
+            $ticket->status = '5';
+            $ticket->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Training rejected ! ',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to reject due to ' .$e->getMessage(),
+            ], 500);
         }
     }
 

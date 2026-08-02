@@ -9,13 +9,13 @@
         </div>
 
 
-        <div class="card-body p-4">
+        <div class="card-body p-4 overflow-y-auto h-70" style="max-height: 100%">
 
-            <div class="tracking-timeline">
+            <div class="tracking-timeline ">
 
                 @foreach($trackings as $tracking)
 
-                    <div class="timeline-item">
+                    <div class="timeline-item ">
 
                         <div class="timeline-circle {{ $loop->last ? 'completed' : '' }}"></div>
 

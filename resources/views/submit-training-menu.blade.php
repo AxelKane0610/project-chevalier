@@ -99,7 +99,11 @@
                                                 </td>
                                                 <td>{{ $ticket->user_owner->fullname }}</td>
                                                 <td>{{ $ticket->training_no }}</td>
-                                                <td>{{ $ticket->status }}</td>
+                                                <td>
+                                                    <span class="badge rounded-pill bg-{{ $ticket->status_data['color'] ?? 'primary' }} px-3 py-2">
+                                                        {{ $ticket->status_data['text'] }}
+                                                    </span>
+                                                </td>
                                                 <td>{{ $ticket->start_date }}</td>
                                                 <td>{{ $ticket->end_date }}</td>
                                                 

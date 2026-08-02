@@ -236,6 +236,7 @@ class LoanUnitPartTicketsController extends Controller
                     'original' => 'nullable',
                     'start_date' => 'nullable',
                     'end_date' => 'nullable',
+                    'note' => 'nullable|string|max:255',
                 ]);
 
                 $part->part_request = strip_tags($validate_data['part_request']);
@@ -246,6 +247,7 @@ class LoanUnitPartTicketsController extends Controller
                 $part->original = strip_tags($validate_data['original']);
                 $part->start_date = strip_tags($validate_data['start_date']);
                 $part->end_date = strip_tags($validate_data['end_date']);
+                $part->note = strip_tags($validate_data['note']);
 
                 $part->save();
 
@@ -288,6 +290,7 @@ class LoanUnitPartTicketsController extends Controller
                     'ct_loaned' => 'nullable',
                     'original' => 'nullable',
                     'start_date' => 'nullable',
+                    'note' => 'nullable|string|max:255',
                 ]);
 
                 $part->status = '2'; //Cập nhật trạng thái part từ "Requested" sang "Borrowed, not return yet"
@@ -296,6 +299,7 @@ class LoanUnitPartTicketsController extends Controller
                 $part->ct_loaned = strip_tags($validate_data['ct_loaned']);
                 $part->original = strip_tags($validate_data['original']);
                 $part->start_date = strip_tags($validate_data['start_date']);
+                $part->note = strip_tags($validate_data['note']);
 
                 $part->save();
                 $ticket->status = '2';

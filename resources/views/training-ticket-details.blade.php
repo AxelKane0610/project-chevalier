@@ -33,10 +33,35 @@
                 
             </li>
 
-            <form id="send-verify-training-ticket" data-target="send-verify-training-ticket" class="js-input-required-btn" action="{{ route('send-verify-training-ticket', $ticket_details->id) }}" method="PATCH">
-                @csrf
-                <button type="button"><i class="ti-angle-double-right"></i>Send verify</button>
-            </form>
+            <li>
+                <form action="/main-menu">
+                    <button type="submit"><i class="ti-layout-grid2"></i>Quick Navigation</button>
+                </form>
+            </li>
+
+            @if ( (($ticket_details->status == '1' || $ticket_details->status == '2') && $ticket_details->user_id == auth()->user()->id) || auth()->user()->hasRole('ROLE_SUPER_ADMIN') )
+                <form id="send-verify-training-ticket" data-target="send-verify-training-ticket" class="js-input-required-btn" action="{{ route('send-verify-training-ticket', $ticket_details->id) }}" method="POST">
+                    @csrf
+                    @method('POST')
+                    <button type="submit"><i class="ti-angle-double-right"></i>Send verify</button>
+                </form>
+            @endif
+
+            @if( (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_TRAINING_ADMIN')) && $ticket_details->status == '3' )
+                <li>
+                    <form id="approve-ticket-form" class="js-input-required-btn" data-target="approve-ticket-form" action="{{ route('confirm-training-completed', $ticket_details->id) }}" method="POST">
+                        <button type="submit"><i class="ti-thumb-up"></i>Confirm training completed</button>
+                    </form>
+                </li>
+
+                <li>
+                    <form id="reject-ticket-form" class="js-input-required-btn" data-target="reject-ticket-form" action="{{ route('reject-training-completed', $ticket_details->id) }}" method="POST">
+                        @csrf
+                        <button type="submit"><i class="ti-thumb-down"></i>Reject</button>
+                    </form>
+                </li>
+            @endif
+
         </x-common-header>
 
         <div class="common-table-container">
@@ -119,8 +144,8 @@
 
                 
                     <x-slot:footer>
-                        @if(( ($ticket_details->status == '1' && $ticket_details->user_id == auth()->user()->id)) || auth()->user()->hasRole('ROLE_SUPER_ADMIN')    )
-                        <button type="button" class="js-input-required-btn" data-target="edit-ticket-details"><i class="ti-pencil"></i> Edit/Upload Certificates</button>
+                        @if(( (($ticket_details->status == '1' || $ticket_details->status == '2') && $ticket_details->user_id == auth()->user()->id)) || auth()->user()->hasRole('ROLE_SUPER_ADMIN')    )
+                            <button type="button" class="js-input-required-btn" data-target="edit-ticket-details"><i class="ti-pencil"></i> Edit/Upload Certificates</button>
                         @endif
                     </x-slot:footer>
                 

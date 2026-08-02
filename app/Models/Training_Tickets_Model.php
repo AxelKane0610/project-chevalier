@@ -50,6 +50,43 @@ class Training_Tickets_Model extends Model
         return $this->hasMany(Training_Courses_Model::class, 'training_no', 'training_no'); //Bảo model sang model Thermal_Event_Exceptional_Tickets_Model để lấy thông tin ticket của part details đó, dựa vào "ticket_id"
     }
 
+    public function getStatusDataAttribute()
+    {
+        return match ($this->status){
+             "1" => [
+                'text' => 'Open',
+                'color' => 'primary'
+            ],
+
+            "2" => [
+                'text' => 'Chưa submit',
+                'color' => 'secondary'
+            ],
+
+            "3" => [
+                'text' => 'Đã submit, chờ verify',
+                'color' => 'secondary'
+            ],
+
+            "4" => [
+                'text' => 'Completed',
+                'color' => 'success'
+            ],
+
+            "5" => [
+                'text' => 'Rejected',
+                'color' => 'danger'
+            ],
+
+
+
+            default => [
+                'text' => 'Unknown',
+                'color' => 'primary'
+            ]
+        };
+    }
+
 
 
 
