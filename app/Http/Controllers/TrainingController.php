@@ -19,20 +19,63 @@ use Smalot\PdfParser\Parser;
 class TrainingController extends Controller
 {
     //
-    public function Show_Pending_Tickets(){ 
-        $all_training_courses = Training_Courses_Model::all();
+    public function index(){ 
+        $all_training_courses = Training_Courses_Model::query()->paginate(10);
+        $all_your_training_tickets = Training_Tickets_Model::where('user_id', auth()->id())->get();
+        $pending_tickets = Training_Tickets_Model::whereIn('status', ['1', '2', '3'])->where('user_id', auth()->id())->get();
         if (auth()->user()->hasRole('ROLE_SUPER_ADMIN') ) {
-            $pending_tickets = Training_Tickets_Model::whereIn('status', ['1', '2', '3'])->get();
-            $all_tickets = Training_Tickets_Model::all();
-            return view('submit-training-menu', compact('pending_tickets', 'all_tickets', 'all_training_courses'));
+            $all_tickets = Training_Tickets_Model::query()->paginate(10);
+            return view('submit-training-menu', compact('pending_tickets', 'all_your_training_tickets', 'all_tickets', 'all_training_courses'));
         } else {
-            $pending_tickets = Training_Tickets_Model::whereIn('status', ['1', '2', '3'])->where('user_id', auth()->user()->id())->get();
-            $all_tickets = Training_Tickets_Model::where('user_id', auth()->user()->id())->get();
-            return view('submit-training-menu', compact('pending_tickets', 'all_tickets', 'all_training_courses'));
+            
+            $all_tickets = Training_Tickets_Model::whereHas('user_owner', function ($query) { //Lọc ra những ticket có user_owner có leader_id là id của user đang đăng nhập, tức là lọc ra những ticket của những user mà user đang đăng nhập là leader của họ, rồi mới lấy ra những ticket đó để trả về view
+                $query->where('leader_id', auth()->id());
+            })->paginate(10);
+
+            return view('submit-training-menu', compact('pending_tickets', 'all_your_training_tickets', 'all_tickets', 'all_training_courses'));
         }
         
         
         
+    }
+
+    public function Filter_All_Courses_Table(Request $request) {
+        $query = Training_Courses_Model::query();
+
+        // Search
+        if ($request->filled('search')) {
+
+            $search = $request->search;
+
+            $query->where(function ($q) use ($search) {
+
+                $q->where('course_id', 'like', "%{$search}%")
+                ->orWhere('course_name', 'like', "%{$search}%");
+
+            });
+
+        }
+
+        // Training No Filter
+        if ($request->filled('training_no')) {
+
+            $query->where('training_no', $request->training_no);
+
+        }
+
+        $all_training_courses = $query
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
+
+        if ($request->ajax()) {
+
+            return view(
+                'tables.all-training-courses-table',
+                compact('all_training_courses')
+            )->render();
+
+        }
     }
 
     public function Show_Training_Ticket_Details($id){ 

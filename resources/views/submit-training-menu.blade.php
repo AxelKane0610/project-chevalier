@@ -50,14 +50,14 @@
                                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                                     {{$pending_tickets->count()}}
                                 </span>
-                                <i class="ti-timer"></i> Show Pending Training
+                                <i class="ti-timer"></i> Show your pending training
                             </button>
 
                             <button class="btn btn-primary table-btn w-100 position-relative" id="show-all-training-tickets-btn" data-target = "all-training-tickets-container">
                                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                    {{$all_tickets->count()}}
+                                    {{$all_your_training_tickets->count()}}
                                 </span>
-                                <i class="ti-list-ol"></i> Show All Training Tickets
+                                <i class="ti-list-ol"></i> Show all your training tickets
                             </button>
 
                             <button class="btn btn-primary table-btn w-100 position-relative" id="show-all-training-courses-btn" data-target = "all-training-courses-container">
@@ -65,6 +65,13 @@
                                     {{$all_training_courses->count()}}
                                 </span>
                                 <i class="ti-list-ol"></i> Show All Training Courses
+                            </button>
+
+                            <button class="btn btn-primary table-btn w-100 position-relative" id="show-team-country-training-tickets-btn" data-target = "your-team-country-tickets-container">
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {{$all_tickets->count()}}
+                                </span>
+                                <i class="ti-list-ol"></i> Check your teams/country training status
                             </button>
 
                         </div>
@@ -135,7 +142,7 @@
                                     <tbody>
                                         
 
-                                        @foreach($all_tickets as $ticket)
+                                        @foreach($all_your_training_tickets as $ticket)
                                             <tr>
                                                 <td>
                                                     <button type="button" 
@@ -146,7 +153,11 @@
                                                 </td>
                                                 <td>{{ $ticket->user_owner->fullname }}</td>
                                                 <td>{{ $ticket->training_no }}</td>
-                                                <td>{{ $ticket->status }}</td>
+                                                <td>
+                                                    <span class="badge rounded-pill bg-{{ $ticket->status_data['color'] ?? 'primary' }} px-3 py-2">
+                                                        {{ $ticket->status_data['text'] }}
+                                                    </span>
+                                                </td>
                                                 <td>{{ $ticket->start_date }}</td>
                                                 <td>{{ $ticket->end_date }}</td>
                                                 
@@ -160,34 +171,71 @@
                                 </table>
                             </div>
 
-                            <div class="bg-white p-3 rounded shadow-sm ticket-table d-none" id="all-training-courses-container">
+                            <div class="bg-white p-3 rounded shadow-sm ticket-table d-none ajax-table" id="all-training-courses-container">
+                                <div class="common-table-filter">
+                                    <h2>All Training Courses</h2>
+                                    <div class="search-box">
+                                        <i class="ti-search"></i>
+                                        <input class="ajax-search" type="text" placeholder="Search course id, course name" id="search-all-training-course-input">
+                                    </div>
 
-                                <h2>All Training Courses</h2>
-                                <table id="all-training-courses-table" class="common-table mh-100" width="100%" >
-                                    <tr>
-                                        <th width="10%">Training No</th>
-                                        <th width="20%">Course ID</th>
-                                        <th width="20%">Course Name</th>
-                                        <th width="20%">Start Date</th>
-                                        <th width="20%">End Date</th>
-
-                                    </tr>
-                                
-                                    <tbody>
+                                    <h2>Training No</h2>
+                                    <select class="ajax-filter" name="training_no" id="all-training-courses-training-no-filter">
+                                        <option value="">All</option>
                                         @foreach($all_training_courses as $training_course)
-                                            <tr>
-                                                
-                                                <td>{{ $training_course->training_no }}</td>
-                                                <td>{{ $training_course->course_id }}</td>
-                                                <td>{{ $training_course->course_name }}</td>
-                                                <td>{{ $training_course->start_date }}</td>
-                                                <td>{{ $training_course->end_date }}</td>
-                                                
-                                            </tr>
+                                            <option value="{{ $training_course->training_no }}">{{ $training_course->training_no }}</option>
                                         @endforeach
-                                    </tbody>
+                                        
+                                    </select>
 
-                                </table>
+                                    
+
+
+                                </div>
+
+                                <div id="all-training-courses-table-container">
+                                    @include('tables.all-training-courses-table')
+                                </div>
+                            </div>
+
+                            <div class="bg-white p-3 rounded shadow-sm ticket-table d-none" id="your-team-country-tickets-container">
+                                <div class="common-table-filter">
+                                    <h2>Your Team/Country training status</h2>
+                                    <div class="search-box">
+                                        <i class="ti-search"></i>
+                                        <input type="text" placeholder="Search tên user, training no" id="search-all-training-tickets-input">
+                                    </div>
+
+                                    <h2>Status:</h2>
+                                    <select id="all-training-tickets-status-filter">
+                                        <option value="">All</option>
+                                        <option value="1">Open</option>
+                                        <option value="2">Chưa submit</option>
+                                        <option value="3">Đã submit, chờ verify</option>
+                                        <option value="4">Completed</option>
+                                        <option value="5">Rejected</option>
+
+                                        
+                                    </select>
+
+                                    <h2>Training No</h2>
+                                    <select id="all-training-tickets-training-no-filter">
+                                        <option value="">All</option>
+                                        @foreach($all_training_courses as $training_course)
+                                            <option value="{{ $training_course->training_no }}">{{ $training_course->training_no }}</option>
+                                        @endforeach
+                                        
+                                    </select>
+
+                                    
+
+
+                                </div>
+                                
+                                <div id="your-team-country-tickets-table-container">
+                                    @include('tables.all-training-tickets-table')
+                                </div>
+                                
                             </div>
 
                         </div>

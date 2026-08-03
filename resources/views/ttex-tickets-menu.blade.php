@@ -264,39 +264,39 @@
 
                             <div class="bg-white p-3 rounded shadow-sm ticket-table d-none" id="all-ttex-tickets-container">
                                 
-                                    <div class="common-table-filter">
-                                        <h2>All Tickets</h2>
-                                        <div class="search-box">
-                                            <i class="ti-search"></i>
-                                            <input type="text" placeholder="Search Receipt, TTEX Bill" id="search-ttex-bill-input-all-tickets-table">
-                                        </div>
-
-                                        <h2>Status:</h2>
-                                        <select id="all-ttex-tickets-status-filter">
-                                            <option value="">All</option>
-                                            <option value="1">Open - Chưa điều tin</option>
-                                            <option value="2">Completed - Đã điều tin</option>
-                                            <option value="3">Rejected</option>
-                                            
-                                        </select>
-
-                                        <h2>Part Status:</h2>
-                                        <select id="all-ttex-tickets-part-status-filter">
-                                            <option value="">All</option>
-                                            <option value="1">Good part</option>
-                                            <option value="2">Def part</option>
-                                            <option value="3">Good part - Unused</option>
-                                            
-                                        </select>
-
-                                        
-
-
+                                <div class="common-table-filter">
+                                    <h2>All Tickets</h2>
+                                    <div class="search-box">
+                                        <i class="ti-search"></i>
+                                        <input type="text" placeholder="Search Receipt, TTEX Bill" id="search-ttex-bill-input-all-tickets-table">
                                     </div>
-                                    <div id="all-ttex-tickets-table-container">
+
+                                    <h2>Status:</h2>
+                                    <select id="all-ttex-tickets-status-filter">
+                                        <option value="">All</option>
+                                        <option value="1">Open - Chưa điều tin</option>
+                                        <option value="2">Completed - Đã điều tin</option>
+                                        <option value="3">Rejected</option>
                                         
-                                        @include('tables.ttex-all-tickets-table')
-                                    </div>
+                                    </select>
+
+                                    <h2>Part Status:</h2>
+                                    <select id="all-ttex-tickets-part-status-filter">
+                                        <option value="">All</option>
+                                        <option value="1">Good part</option>
+                                        <option value="2">Def part</option>
+                                        <option value="3">Good part - Unused</option>
+                                        
+                                    </select>
+
+                                    
+
+
+                                </div>
+                                <div id="all-ttex-tickets-table-container">
+                                    
+                                    @include('tables.ttex-all-tickets-table')
+                                </div>
                             </div>
 
 

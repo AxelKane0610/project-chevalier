@@ -401,3 +401,132 @@ document.addEventListener('submit', function (e) {
     }
 
 });
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    function initAjaxTable(config) {
+
+        const wrapper = document.getElementById(config.wrapper);
+
+        if (!wrapper) return;
+
+        const container = wrapper.querySelector(config.container);
+        const searchInput = wrapper.querySelector('.ajax-search');
+        const filters = wrapper.querySelectorAll('.ajax-filter');
+
+        function fetchData(page = 1) {
+
+            const params = new URLSearchParams();
+
+            params.append('page', page);
+
+            // Search
+            if (searchInput) {
+                params.append('search', searchInput.value);
+            }
+
+            // Filters
+            filters.forEach(filter => {
+
+                if (filter.value !== '') {
+                    params.append(filter.name, filter.value);
+                }
+
+            });
+
+            fetch(`${config.url}?${params.toString()}`, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.text())
+            .then(html => {
+                container.innerHTML = html;
+            })
+            .catch(error => console.error(error));
+
+        }
+
+        // =========================
+        // SEARCH
+        // =========================
+
+        if (searchInput) {
+
+            let timer;
+
+            searchInput.addEventListener('keyup', function () {
+
+                clearTimeout(timer);
+
+                timer = setTimeout(() => {
+                    fetchData(1);
+                }, 300);
+
+            });
+
+        }
+
+        // =========================
+        // FILTER
+        // =========================
+
+        filters.forEach(filter => {
+
+            filter.addEventListener('change', function () {
+                fetchData(1);
+            });
+
+        });
+
+        // =========================
+        // PAGINATION
+        // =========================
+
+        container.addEventListener('click', function (e) {
+
+            const link = e.target.closest('.pagination a');
+
+            if (!link) return;
+
+            e.preventDefault();
+
+            const page = new URL(link.href).searchParams.get('page') || 1;
+
+            fetchData(page);
+
+        });
+
+    }
+
+    // ==========================================
+    // All Training Courses
+    // ==========================================
+
+    initAjaxTable({
+
+        wrapper: 'all-training-courses-container',
+
+        container: '#all-training-courses-table-container',
+
+        url: '/submit-training-menu/filter-all-courses-table'
+
+    });
+
+    // ==========================================
+    // Team Tickets
+    // ==========================================
+
+    initAjaxTable({
+
+        wrapper: 'your-team-country-tickets-container',
+
+        container: '#your-team-country-tickets-table-container',
+
+        url: '/submit-training-menu/filter-all-training-tickets-table'
+
+    });
+
+});

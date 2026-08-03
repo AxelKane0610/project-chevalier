@@ -24,7 +24,7 @@
                         </a>
                     </td>
                     <td>{{ $ticket->ttex_bill }}</td>
-                    <td>{{ $ticket->user_owner->fullname  }}</td>
+                    <td>{{ $ticket->user_owner->fullname ?? 'N/A' }}</td>
                     <td>{{ $ticket->sender_info }}</td>
                     <td>{{ $ticket->receiver_info }}</td>
                     <td>{{ $ticket->shipment_description }}</td>
