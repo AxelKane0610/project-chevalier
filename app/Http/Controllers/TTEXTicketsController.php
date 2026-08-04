@@ -299,7 +299,6 @@ class TTEXTicketsController extends Controller
                 $ticket->category = $validate_data['category'];
                 $ticket->shipment_type = $validate_data['shipment_type'];
                 $ticket->part_status = $validate_data['part_status'];
-                $ticket->status = $validate_data['status'];
 
                 $ticket->part_return_deadline = $validate_data['part_return_deadline'];
                 $ticket->sender_info = $validate_data['sender_info'];
