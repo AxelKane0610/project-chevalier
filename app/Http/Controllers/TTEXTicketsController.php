@@ -274,6 +274,7 @@ class TTEXTicketsController extends Controller
                     'category' => 'required',
                     'shipment_type' => 'required',
                     'part_status'=> 'required',
+                    'status'=> 'nullable',
                     'part_return_deadline'=> 'nullable',
                     'sender_info' => 'required',
                     'receiver_info' => 'required',
@@ -298,12 +299,19 @@ class TTEXTicketsController extends Controller
                 $ticket->category = $validate_data['category'];
                 $ticket->shipment_type = $validate_data['shipment_type'];
                 $ticket->part_status = $validate_data['part_status'];
+                $ticket->status = $validate_data['status'];
+
                 $ticket->part_return_deadline = $validate_data['part_return_deadline'];
                 $ticket->sender_info = $validate_data['sender_info'];
                 $ticket->receiver_info = $validate_data['receiver_info'];
                 $ticket->shipment_description = $validate_data['shipment_description'];
                 $ticket->note = $validate_data['note'];
-                $ticket->booking_date = $validate_data['booking_date'];
+                if ($request->has('booking_date')) {
+                    $ticket->booking_date = $request->booking_date;
+                }
+                if ($request->has('status')) {
+                    $ticket->status = $request->status;
+                }
 
 
                 tracking_info_service::add(

@@ -249,6 +249,14 @@
                 
             </select>
 
+            @if((auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_TTEX_TICKET_ADMIN')) )
+                <select name="part_status" class="ticket-form-body-input">
+                <option value="1" @selected($ticket->status == '1')>Open - Chưa điều tin</option>
+                <option value="2" @selected($ticket->status == '2')>Completed - Đã điều tin</option>
+                <option value="3" @selected($ticket->status == '3')>Rejected</option>
+                
+            </select>
+            @endif
             <label>Hạn trả def cho kho (Điền vào nếu đổi từ Good part sang Def hoặc Unused)</label>
             <input type="date" class="ticket-form-body-input" name="part_return_deadline" value="{{ $ticket->part_return_deadline}}">
 
