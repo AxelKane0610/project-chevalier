@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-end sticky" >
-    {{ $all_tickets->links('pagination::bootstrap-5') }}
+    {{ $all_country_team_training_tickets->links('pagination::bootstrap-5') }}
 </div>
 
 <table id="your-team-country-tickets-table" class="common-table mh-100" width="100%" >
@@ -17,7 +17,7 @@
     <tbody>
         
 
-        @foreach($all_tickets as $ticket)
+        @foreach($all_country_team_training_tickets as $ticket)
             <tr>
                 <td>
                     <button type="button" 

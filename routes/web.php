@@ -90,7 +90,7 @@ Route::middleware(['auth'])->group(function () {
 
 
     //5. Training Ticket
-    Route::middleware(['role:ROLE_SUPER_ADMIN'])->group(function () {
+    Route::middleware(['role:ROLE_SUPER_ADMIN,ROLE_SUBMIT_TRAINING_USER'])->group(function () {
         Route::get('/submit-training-menu', [TrainingController::class, 'index']);
         Route::post('/request-training', [TrainingController::class, 'Request_Training']);
         Route::get('/training-ticket-details/{id}', [TrainingController::class, 'Show_Training_Ticket_Details']);
@@ -101,6 +101,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/reject-training-completed/{id}', [TrainingController::class,'Reject_Training_Completed'])->name('reject-training-completed');
 
         Route::get('/submit-training-menu/filter-all-courses-table', [TrainingController::class, 'Filter_All_Courses_Table']);
+        Route::get('/submit-training-menu/filter-all-country-team-training-tickets-table', [TrainingController::class, 'Filter_All_Country_Team_Training_Tickets_Table']);
+
 
         
     });

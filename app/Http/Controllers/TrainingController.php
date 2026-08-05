@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Services\tracking_info_service;
+use App\Services\EmbeddingService;
 use App\Models\Training_Tickets_Model;
 use App\Models\Training_Courses_Model;
 use App\Models\User;
@@ -13,33 +14,45 @@ use App\Models\Comments_Model;
 use App\Models\Attachments_Model;
 use Illuminate\Support\Facades\DB;
 use Smalot\PdfParser\Parser;
-
+use Illuminate\Support\Facades\Http;
 
 
 class TrainingController extends Controller
 {
     //
-    public function index(){ 
+    public function index()
+    {
         $all_training_courses = Training_Courses_Model::query()->paginate(10);
         $all_your_training_tickets = Training_Tickets_Model::where('user_id', auth()->id())->get();
         $pending_tickets = Training_Tickets_Model::whereIn('status', ['1', '2', '3'])->where('user_id', auth()->id())->get();
-        if (auth()->user()->hasRole('ROLE_SUPER_ADMIN') ) {
-            $all_tickets = Training_Tickets_Model::query()->paginate(10);
-            return view('submit-training-menu', compact('pending_tickets', 'all_your_training_tickets', 'all_tickets', 'all_training_courses'));
+        if (auth()->user()->hasRole('ROLE_SUPER_ADMIN')) {
+            $all_country_team_training_tickets = Training_Tickets_Model::query()->paginate(10);
+            return view('submit-training-menu', compact('pending_tickets', 'all_your_training_tickets', 'all_country_team_training_tickets', 'all_training_courses'));
         } else {
-            
-            $all_tickets = Training_Tickets_Model::whereHas('user_owner', function ($query) { //Lọc ra những ticket có user_owner có leader_id là id của user đang đăng nhập, tức là lọc ra những ticket của những user mà user đang đăng nhập là leader của họ, rồi mới lấy ra những ticket đó để trả về view
+
+            $all_country_team_training_tickets = Training_Tickets_Model::whereHas('user_owner', function ($query) { //Lọc ra những ticket có user_owner có leader_id là id của user đang đăng nhập, tức là lọc ra những ticket của những user mà user đang đăng nhập là leader của họ, rồi mới lấy ra những ticket đó để trả về view
                 $query->where('leader_id', auth()->id());
             })->paginate(10);
 
-            return view('submit-training-menu', compact('pending_tickets', 'all_your_training_tickets', 'all_tickets', 'all_training_courses'));
+            return view('submit-training-menu', compact('pending_tickets', 'all_your_training_tickets', 'all_country_team_training_tickets', 'all_training_courses'));
         }
-        
-        
-        
     }
 
-    public function Filter_All_Courses_Table(Request $request) {
+    private function trainingTicketQuery()
+    {
+        $query = Training_Tickets_Model::query();
+
+        if (!auth()->user()->hasRole('ROLE_SUPER_ADMIN')) {
+            $query->whereHas('user_owner', function ($q) {
+                $q->where('leader_id', auth()->id());
+            });
+        }
+
+        return $query;
+    }
+
+    public function Filter_All_Courses_Table(Request $request)
+    {
         $query = Training_Courses_Model::query();
 
         // Search
@@ -50,17 +63,14 @@ class TrainingController extends Controller
             $query->where(function ($q) use ($search) {
 
                 $q->where('course_id', 'like', "%{$search}%")
-                ->orWhere('course_name', 'like', "%{$search}%");
-
+                    ->orWhere('course_name', 'like', "%{$search}%");
             });
-
         }
 
         // Training No Filter
         if ($request->filled('training_no')) {
 
             $query->where('training_no', $request->training_no);
-
         }
 
         $all_training_courses = $query
@@ -74,17 +84,59 @@ class TrainingController extends Controller
                 'tables.all-training-courses-table',
                 compact('all_training_courses')
             )->render();
-
         }
     }
 
-    public function Show_Training_Ticket_Details($id){ 
-        $ticket_details = Training_Tickets_Model::with('user_owner', 'active_attachments','ticket_tracking_info','ticket_comments.attachments', 'ticket_comments.user', 'training_courses')->findOrFail($id);
-        return view('training-ticket-details', compact('ticket_details'));
-        
+    public function Filter_All_Country_Team_Training_Tickets_Table(Request $request)
+    {
+        $query = $this->trainingTicketQuery();
+
+        // Search
+        if ($request->filled('search')) {
+
+            $search = $request->search;
+
+            $query->where(function ($q) use ($search) {
+
+                $q->orWhereHas('user_owner', function ($user) use ($search) {
+                    $user->where('fullname', 'like', "%{$search}%");
+                });
+            });
+        }
+
+        // Training No Filter
+        if ($request->filled('training_no')) {
+
+            $query->where('training_no', $request->training_no);
+        }
+
+        if ($request->filled('status')) {
+
+            $query->where('status', $request->status);
+        }
+
+        $all_country_team_training_tickets = $query
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
+
+        if ($request->ajax()) {
+
+            return view(
+                'tables.all-country-team-training-tickets-table',
+                compact('all_country_team_training_tickets')
+            )->render();
+        }
     }
 
-    public function Request_Training(Request $request){ 
+    public function Show_Training_Ticket_Details($id)
+    {
+        $ticket_details = Training_Tickets_Model::with('user_owner', 'active_attachments', 'ticket_tracking_info', 'ticket_comments.attachments', 'ticket_comments.user', 'training_courses')->findOrFail($id);
+        return view('training-ticket-details', compact('ticket_details'));
+    }
+
+    public function Request_Training(Request $request)
+    {
         try {
             $request->validate([
                 'course_id' => 'required|array|min:1',
@@ -130,13 +182,13 @@ class TrainingController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to request training due to ' .$e->getMessage(),
+                'message' => 'Failed to request training due to ' . $e->getMessage(),
             ], 500);
         }
-            
     }
 
-    public function Add_Comment_Training_Ticket(Request $request, $id){
+    public function Add_Comment_Training_Ticket(Request $request, $id)
+    {
         $comment_info_input = $request->validate([
             'comment' => 'required_without_all:attachments|string|nullable',
             'attachments' => 'required_without_all:comment|array|nullable',
@@ -147,18 +199,16 @@ class TrainingController extends Controller
         $comment_info_input['ticket_id'] = $id;
         $comment_info_input['type_of_ticket'] = 5;
         $comment_info_input['user_id'] = auth()->id();
-        
-        $comment = Comments_Model::create($comment_info_input);
-        
 
-        if($request->hasFile('attachments'))
-        {
-            foreach($request->file('attachments') as $file)
-            {
+        $comment = Comments_Model::create($comment_info_input);
+
+
+        if ($request->hasFile('attachments')) {
+            foreach ($request->file('attachments') as $file) {
                 $originalName = $file->getClientOriginalName();
-                $folderPath = '5/'.$id;
+                $folderPath = '5/' . $id;
                 $filePath = $file->storeAs($folderPath, $originalName, 'attachments'); // Lưu file vào thư mục 'attachments' đã được cấu hình trong config/filesystems.php, với đường dẫn là 'attachments/1/{ticket_id}/{original_file_name}'
-                
+
                 Attachments_Model::create([
                     'type_of_ticket' => 5,
                     'ticket_id' => $id,
@@ -169,70 +219,225 @@ class TrainingController extends Controller
                 ]);
             }
         }
-        
+
 
         return back()->with('success');
     }
 
-    public function Send_Verify_Training_Ticket($id){
+    // public function Send_Verify_Training_Ticket($id)
+    // {
+    //     try {
+    //         $ticket = Training_Tickets_Model::with('user_owner', 'active_attachments', 'training_courses')->findOrFail($id);
+    //         $parser = new Parser();
+    //         $courseNames = Training_Courses_Model::where('training_no', $ticket->training_no)
+    //         ->pluck('course_name')->implode("\n- ");
+    //         $certificates = $ticket->active_attachments->map(function ($attachment) use ($parser) {
+    //             $pdfPath = Storage::disk('attachments')->path($attachment->file_path);
+    //             try {
+    //                 $pdf = $parser->parseFile($pdfPath);
+    //                 $text = $pdf->getText();
+    //             } catch (\Exception $e) {
+    //                 $text = null;
+    //             }
+    //             return ['name' => $attachment->name, 'path' => $pdfPath, 'text' => $text,];
+    //         });
+
+    //         dd($courseNames, $certificates);
+    //         $ticket->status = '3';
+    //         $ticket->save();
+    //         tracking_info_service::add($ticket->id, auth()->id(), 5, 'sent training verify at');
+    //         return response()->json(['success' => true, 'message' => 'Send verify success !',]);
+    //     } catch (\Exception $e) {
+    //         return response()->json(['success' => false, 'message' => 'Failed to send verify training due to ' . $e->getMessage(),], 500);
+    //     }
+    // }
+
+    public function Send_Verify_Training_Ticket($id)
+    {
         try {
+
             $ticket = Training_Tickets_Model::with(
                 'user_owner',
                 'active_attachments',
                 'training_courses'
             )->findOrFail($id);
 
-            // $parser = new Parser();
-            // $courseNames = Training_Courses_Model::where('training_no', $ticket->training_no)
-            // ->pluck('course_name')->implode("\n- ");
+            $parser = new Parser();
 
-            // $certificates = $ticket->active_attachments->map(function ($attachment) use ($parser) {
+            $courseList = Training_Courses_Model::where(
+                'training_no',
+                $ticket->training_no
+            )->pluck('course_name');
 
-            //     $pdfPath = Storage::disk('attachments')->path($attachment->file_path);
+            $results = [];
 
-            //     try {
+            foreach ($ticket->active_attachments as $attachment) {
 
-            //         $pdf = $parser->parseFile($pdfPath);
+                $pdfPath = Storage::disk('attachments')->path($attachment->file_path);
 
-            //         $text = $pdf->getText();
+                try {
 
-            //     } catch (\Exception $e) {
+                    $pdf = $parser->parseFile($pdfPath);
+                    $text = $pdf->getText();
 
-            //         $text = null;
+                } catch (\Exception $e) {
 
-            //     }
+                    $results[] = [
+                        'certificate' => $attachment->name,
+                        'matched' => false,
+                        'reason' => 'Cannot extract PDF.'
+                    ];
 
-            //     return [
-            //         'name' => $attachment->name,
-            //         'path' => $pdfPath,
-            //         'text' => $text,
-            //     ];
-            // });
+                    continue;
+                }
 
-            // dd($certificates, $courseNames);
+                $matchedCourse = null;
 
-            $ticket->status = '3';
-            $ticket->save();
-            tracking_info_service::add(
-                $ticket->id, 
-                auth()->id(), 
-                5,
-                'sent training verify at'
-            );
-            return response()->json([
-                'success' => true,
-                'message' => 'Send verify success !' ,
-            ]);
+                foreach ($courseList as $course) {
+
+                    if (
+                        stripos(
+                            $this->normalizeCourse($text),
+                            $this->normalizeCourse($course)
+                        ) !== false
+                    ) {
+
+                        $matchedCourse = $course;
+                        break;
+
+                    }
+
+                }
+
+                if ($matchedCourse) {
+
+                    $results[] = [
+                        'certificate' => $attachment->name,
+                        'matched' => true,
+                        'course' => $matchedCourse,
+                        'method' => 'PHP Exact Match'
+                    ];
+
+                    continue;
+                }
+
+                /*
+                ======================================================
+                Nếu chạy tới đây nghĩa là PHP không tìm thấy.
+                Chút nữa mới gọi Llama ở đây.
+
+                
+                ======================================================
+                */
+                $prompt = "
+                You are an AI that extracts the course name from an HP training certificate.
+
+                Return ONLY valid JSON.
+
+                {
+                    \"course_name\": null
+                }
+
+                Rules:
+
+                - Return ONLY the course name.
+                - Do not explain.
+                - Do not guess.
+                - If no course name exists return null.
+
+                Certificate:
+
+                {$text}
+                ";
+
+                $response = Http::timeout(120)
+                    ->post('http://127.0.0.1:11434/api/generate', [
+                        'model' => 'llama3.1:latest',
+                        'prompt' => $prompt,
+                        'stream' => false
+                    ]);
+
+                if (!$response->successful()) {
+
+                    $results[] = [
+                        'certificate' => $attachment->name,
+                        'matched' => false,
+                        'reason' => 'Cannot connect to Ollama.',
+                        'method' => 'AI'
+                    ];
+
+                    continue;
+
+                    
+                }
+
+                $ollama = $response->json();    
+
+                $answer = json_decode($ollama['response'], true);
+
+                if (!$answer) {
+
+                    $results[] = [
+                        'certificate' => $attachment->name,
+                        'matched' => false,
+                        'reason' => 'Invalid JSON.',
+                        'method' => 'AI'
+                    ];
+
+                    continue;
+                }
+
+                $results[] = [
+                    'certificate' => $attachment->name,
+                    'matched' => false,
+                    'reason' => 'Need AI verification',
+                    'method' => 'Pending Llama'
+                ];
+
+            }
+
+            dd($results);
+
         } catch (\Exception $e) {
+
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to send verify training due to ' .$e->getMessage(),
-            ], 500);
-        }
+                'message' => $e->getMessage()
+            ],500);
 
+        }
     }
 
-    public function Edit_Upload_Training_Ticket(Request $request, $id){
+    private function normalizeCourse($text)
+{
+    $text = strtolower($text);
+
+    $removeWords = [
+        "\r",
+        "\n",
+        "\t"
+    ];
+
+    // Chuẩn hóa khoảng trắng và dấu gạch
+    $text = str_replace(
+        ["\xc2\xa0", "-", "–", "—"],
+        [" ", "-", "-", "-"],
+        $text
+    );
+
+    $text = str_replace($removeWords, '', $text);
+
+    $text = preg_replace('/\s+/', ' ', $text);
+
+    return trim($text);
+}
+
+
+
+
+
+    public function Edit_Upload_Training_Ticket(Request $request, $id)
+    {
         try {
             $ticket = Training_Tickets_Model::with('user_owner')->findOrFail($id);
 
@@ -244,29 +449,28 @@ class TrainingController extends Controller
 
                 foreach ($request->file('attachments') as $file) { //Duyệt qua từng file được upload lên
                     $originalName = $file->getClientOriginalName();
-                    $folderPath = '5/'.$ticket->user_id.'/'.$ticket->training_no;
+                    $folderPath = '5/' . $ticket->user_id . '/' . $ticket->training_no;
                     $filePath = $file->storeAs($folderPath, $originalName, 'attachments'); // Lưu file vào thư mục 'attachments' đã được cấu hình trong config/filesystems.php, với đường dẫn là 'attachments/1/{ticket_id}/{original_file_name}'
-                    
+
                     Attachments_Model::create([
                         'type_of_ticket' => 5, // Giả sử 1 là mã cho software ticket
                         'ticket_id' => $ticket->id,
                         'file_path' => $filePath,
-                        'name' => $originalName,// Lưu tên gốc của file vào cơ sở dữ liệu
+                        'name' => $originalName, // Lưu tên gốc của file vào cơ sở dữ liệu
                         'user_id' => $ticket->user_id
                     ]);
                 }
-                
             }
 
 
             if ($request->has('delete_files')) {
-            // Cập nhật tất cả các ID được tích chọn thành status = 0 trong 1 câu lệnh duy nhất
+                // Cập nhật tất cả các ID được tích chọn thành status = 0 trong 1 câu lệnh duy nhất
                 Attachments_Model::whereIn('id', $request->input('delete_files'))->update(['status' => '0']);
             }
 
             tracking_info_service::add(
-                $ticket->id, 
-                auth()->id(), 
+                $ticket->id,
+                auth()->id(),
                 5,
                 'edited/uploaded certificates at'
             );
@@ -278,17 +482,18 @@ class TrainingController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to request training due to ' .$e->getMessage(),
+                'message' => 'Failed to request training due to ' . $e->getMessage(),
             ], 500);
         }
     }
 
-    public function Confirm_Training_Completed ($id){
+    public function Confirm_Training_Completed($id)
+    {
         try {
             $ticket = Training_Tickets_Model::with('user_owner')->findOrFail($id);
             tracking_info_service::add(
-                $ticket->id, 
-                auth()->id(), 
+                $ticket->id,
+                auth()->id(),
                 5,
                 'confirmed training completed at'
             );
@@ -303,17 +508,18 @@ class TrainingController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to confirm due to ' .$e->getMessage(),
+                'message' => 'Failed to confirm due to ' . $e->getMessage(),
             ], 500);
         }
     }
 
-    public function Reject_Training_Completed ($id){
+    public function Reject_Training_Completed($id)
+    {
         try {
             $ticket = Training_Tickets_Model::with('user_owner')->findOrFail($id);
             tracking_info_service::add(
-                $ticket->id, 
-                auth()->id(), 
+                $ticket->id,
+                auth()->id(),
                 5,
                 'rejected training completed at'
             );
@@ -327,11 +533,8 @@ class TrainingController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to reject due to ' .$e->getMessage(),
+                'message' => 'Failed to reject due to ' . $e->getMessage(),
             ], 500);
         }
     }
-
-    
-
 }

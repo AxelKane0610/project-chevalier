@@ -65,7 +65,7 @@ class Training_Tickets_Model extends Model
 
             "3" => [
                 'text' => 'Đã submit, chờ verify',
-                'color' => 'secondary'
+                'color' => 'warning'
             ],
 
             "4" => [

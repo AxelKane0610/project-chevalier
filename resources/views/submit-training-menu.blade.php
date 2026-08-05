@@ -67,9 +67,9 @@
                                 <i class="ti-list-ol"></i> Show All Training Courses
                             </button>
 
-                            <button class="btn btn-primary table-btn w-100 position-relative" id="show-team-country-training-tickets-btn" data-target = "your-team-country-tickets-container">
+                            <button class="btn btn-primary table-btn w-100 position-relative" id="show-team-country-training-tickets-btn" data-target = "all-country-team-training-tickets-container">
                                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                    {{$all_tickets->count()}}
+                                    {{$all_country_team_training_tickets->count()}}
                                 </span>
                                 <i class="ti-list-ol"></i> Check your teams/country training status
                             </button>
@@ -198,16 +198,16 @@
                                 </div>
                             </div>
 
-                            <div class="bg-white p-3 rounded shadow-sm ticket-table d-none" id="your-team-country-tickets-container">
+                            <div class="bg-white p-3 rounded shadow-sm ticket-table d-none" id="all-country-team-training-tickets-container">
                                 <div class="common-table-filter">
                                     <h2>Your Team/Country training status</h2>
                                     <div class="search-box">
                                         <i class="ti-search"></i>
-                                        <input type="text" placeholder="Search tên user, training no" id="search-all-training-tickets-input">
+                                        <input class="ajax-search" type="text" placeholder="Search tên user, training no" id="search-all-training-tickets-input">
                                     </div>
 
                                     <h2>Status:</h2>
-                                    <select id="all-training-tickets-status-filter">
+                                    <select id="all-training-tickets-status-filter" name="status" class="ajax-filter">
                                         <option value="">All</option>
                                         <option value="1">Open</option>
                                         <option value="2">Chưa submit</option>
@@ -219,7 +219,7 @@
                                     </select>
 
                                     <h2>Training No</h2>
-                                    <select id="all-training-tickets-training-no-filter">
+                                    <select id="all-training-tickets-training-no-filter" name="training_no" class="ajax-filter">
                                         <option value="">All</option>
                                         @foreach($all_training_courses as $training_course)
                                             <option value="{{ $training_course->training_no }}">{{ $training_course->training_no }}</option>
@@ -227,13 +227,11 @@
                                         
                                     </select>
 
-                                    
-
 
                                 </div>
                                 
-                                <div id="your-team-country-tickets-table-container">
-                                    @include('tables.all-training-tickets-table')
+                                <div id="all-country-team-training-tickets-table-container">
+                                    @include('tables.all-country-team-training-tickets-table')
                                 </div>
                                 
                             </div>

@@ -110,6 +110,7 @@ document.addEventListener('submit', function (e) {
                     
                     document.querySelector('.ticket-form-overlay').classList.remove('active');
                     e.target.reset();
+                    stopButtonLoading(form);
                 } else {
                     Swal.fire({
                         title:'Error',
