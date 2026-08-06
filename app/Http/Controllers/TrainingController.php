@@ -252,6 +252,187 @@ class TrainingController extends Controller
     //     }
     // }
 
+    // public function Send_Verify_Training_Ticket($id)
+    // {
+    //     try {
+
+    //         $ticket = Training_Tickets_Model::with(
+    //             'user_owner',
+    //             'active_attachments',
+    //             'training_courses'
+    //         )->findOrFail($id);
+
+    //         $parser = new Parser();
+
+    //         $courseList = Training_Courses_Model::where(
+    //             'training_no',
+    //             $ticket->training_no
+    //         )->pluck('course_name');
+
+    //         $courseText = "";
+    //         foreach ($courseList as $index => $course) {
+    //             $courseText .= ($index + 1) . ". {$course}\n";
+    //         }
+
+    //         $courseStatus = [];
+
+    //         foreach ($courseList as $course) {
+
+    //             $courseStatus[$course] = [
+
+    //                 'matched' => false,
+
+    //                 'certificate' => null,
+
+    //                 'method' => null
+
+    //             ];
+    //         }
+
+    //         $results = [];
+
+    //         foreach ($ticket->active_attachments as $attachment) {
+
+    //             $pdfPath = Storage::disk('attachments')->path($attachment->file_path);
+
+    //             try {
+
+    //                 $pdf = $parser->parseFile($pdfPath);
+    //                 $text = $pdf->getText();
+    //             } catch (\Exception $e) {
+
+    //                 $results[] = [
+    //                     'certificate' => $attachment->name,
+    //                     'matched' => false,
+    //                     'reason' => 'Cannot extract PDF.'
+    //                 ];
+
+    //                 continue;
+    //             }
+
+    //             $matchedCourse = null;
+
+    //             foreach ($courseList as $course) {
+
+    //                 if (
+    //                     stripos(
+    //                         $this->normalizeCourse($text),
+    //                         $this->normalizeCourse($course)
+    //                     ) !== false
+    //                 ) {
+
+    //                     $matchedCourse = $course;
+    //                     break;
+    //                 }
+    //             }
+
+    //             if ($matchedCourse) {
+
+    //                 $courseStatus[$matchedCourse] = [
+    //                     'matched' => true,
+    //                     'certificate' => $attachment->name,
+    //                     'method' => 'PHP'
+    //                 ];
+
+    //                 $results[] = [
+    //                     'certificate' => $attachment->name,
+    //                     'course' => $matchedCourse,
+    //                     'method' => 'PHP'
+
+    //                 ];
+
+    //                 continue;
+    //             }
+
+    //             /*
+    //             ======================================================
+    //             Nếu chạy tới đây nghĩa là PHP không tìm thấy.
+    //             Chút nữa mới gọi Llama ở đây.
+    //             ======================================================
+    //             */
+    //             $prompt = "
+    //             You are an AI that verifies HP training certificates.
+
+    //             Training Courses:
+
+    //             {$courseText}
+
+    //             Certificate:
+
+    //             {$text}
+
+    //             Rules:
+
+    //             - Return ONLY valid JSON.
+    //             - course_name MUST be EXACTLY one value from the Training Courses list.
+    //             - If no course matches, return null.
+
+    //             Example:
+
+    //             {
+    //                 \"course_name\": \"HP Future Ready AI\"
+    //             }
+
+    //             or
+
+    //             {
+    //                 \"course_name\": null
+    //             }
+    //             ";
+
+    //             $response = Http::timeout(120)
+    //                 ->post('http://127.0.0.1:11434/api/generate', [
+    //                     'model' => 'llama3.1:latest',
+    //                     'prompt' => $prompt,
+    //                     'stream' => false
+    //                 ]);
+
+    //             if (!$response->successful()) {
+
+    //                 $results[] = [
+    //                     'certificate' => $attachment->name,
+    //                     'matched' => false,
+    //                     'reason' => 'Cannot connect to Ollama.',
+    //                     'method' => 'AI'
+    //                 ];
+
+    //                 continue;
+    //             }
+
+    //             $ollama = $response->json();
+
+    //             $answer = json_decode($ollama['response'], true);
+
+    //             if (!$answer) {
+
+    //                 $results[] = [
+    //                     'certificate' => $attachment->name,
+    //                     'matched' => false,
+    //                     'reason' => 'Invalid JSON.',
+    //                     'method' => 'AI'
+    //                 ];
+
+    //                 continue;
+    //             }
+
+    //             $results[] = [
+    //                 'certificate' => $attachment->name,
+    //                 'matched' => false,
+    //                 'reason' => 'Need AI verification',
+    //                 'method' => 'Pending Llama'
+    //             ];
+    //         }
+
+    //         dd($results);
+    //     } catch (\Exception $e) {
+
+    //         return response()->json([
+    //             'success' => false,
+    //             'message' => $e->getMessage()
+    //         ], 500);
+    //     }
+    // }
+
     public function Send_Verify_Training_Ticket($id)
     {
         try {
@@ -264,173 +445,412 @@ class TrainingController extends Controller
 
             $parser = new Parser();
 
+            /*
+            |--------------------------------------------------------------------------
+            | 1. Lấy danh sách course thuộc training_no
+            |--------------------------------------------------------------------------
+            */
             $courseList = Training_Courses_Model::where(
                 'training_no',
                 $ticket->training_no
-            )->pluck('course_name');
+            )
+                ->pluck('course_name')
+                ->filter()
+                ->values();
+
+            if ($courseList->isEmpty()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Training number này không có course nào.'
+                ], 422);
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | 2. Khởi tạo trạng thái cho từng course
+            |--------------------------------------------------------------------------
+            */
+            $courseStatus = [];
+
+            foreach ($courseList as $course) {
+                $courseStatus[$course] = [
+                    'matched' => false,
+                    'certificate' => null,
+                    'method' => null
+                ];
+            }
 
             $results = [];
 
+            /*
+            |--------------------------------------------------------------------------
+            | 3. Chuẩn bị danh sách course cho prompt của Llama
+            |--------------------------------------------------------------------------
+            */
+            $courseListForPrompt = $courseList
+                ->map(function ($course, $index) {
+                    return ($index + 1) . '. ' . $course;
+                })
+                ->implode("\n");
+
+            /*
+            |--------------------------------------------------------------------------
+            | 4. Đọc từng certificate
+            |--------------------------------------------------------------------------
+            */
             foreach ($ticket->active_attachments as $attachment) {
 
-                $pdfPath = Storage::disk('attachments')->path($attachment->file_path);
+                $pdfPath = Storage::disk('attachments')
+                    ->path($attachment->file_path);
 
+                /*
+                |--------------------------------------------------------------------------
+                | Đọc nội dung PDF
+                |--------------------------------------------------------------------------
+                */
                 try {
 
                     $pdf = $parser->parseFile($pdfPath);
-                    $text = $pdf->getText();
+                    $text = trim($pdf->getText());
 
                 } catch (\Exception $e) {
 
                     $results[] = [
                         'certificate' => $attachment->name,
                         'matched' => false,
-                        'reason' => 'Cannot extract PDF.'
+                        'course' => null,
+                        'reason' => 'Cannot extract PDF.',
+                        'method' => null
                     ];
 
                     continue;
                 }
 
-                $matchedCourse = null;
-
-                foreach ($courseList as $course) {
-
-                    if (
-                        stripos(
-                            $this->normalizeCourse($text),
-                            $this->normalizeCourse($course)
-                        ) !== false
-                    ) {
-
-                        $matchedCourse = $course;
-                        break;
-
-                    }
-
-                }
-
-                if ($matchedCourse) {
+                if ($text === '') {
 
                     $results[] = [
                         'certificate' => $attachment->name,
-                        'matched' => true,
-                        'course' => $matchedCourse,
-                        'method' => 'PHP Exact Match'
+                        'matched' => false,
+                        'course' => null,
+                        'reason' => 'PDF contains no readable text.',
+                        'method' => null
                     ];
 
                     continue;
                 }
 
                 /*
-                ======================================================
-                Nếu chạy tới đây nghĩa là PHP không tìm thấy.
-                Chút nữa mới gọi Llama ở đây.
-
-                
-                ======================================================
+                |--------------------------------------------------------------------------
+                | 5. PHP exact match trước
+                |--------------------------------------------------------------------------
                 */
-                $prompt = "
-                You are an AI that extracts the course name from an HP training certificate.
+                $matchedCourse = null;
+                $normalizedPdfText = $this->normalizeCourse($text);
 
-                Return ONLY valid JSON.
+                foreach ($courseList as $course) {
+
+                    $normalizedCourse = $this->normalizeCourse($course);
+
+                    if (
+                        $normalizedCourse !== '' &&
+                        stripos($normalizedPdfText, $normalizedCourse) !== false
+                    ) {
+                        $matchedCourse = $course;
+                        break;
+                    }
+                }
+
+                /*
+                |--------------------------------------------------------------------------
+                | Nếu PHP tìm thấy course
+                |--------------------------------------------------------------------------
+                */
+                if ($matchedCourse !== null) {
+
+                    $courseStatus[$matchedCourse] = [
+                        'matched' => true,
+                        'certificate' => $attachment->name,
+                        'method' => 'PHP'
+                    ];
+
+                    $results[] = [
+                        'certificate' => $attachment->name,
+                        'matched' => true,
+                        'course' => $matchedCourse,
+                        'reason' => null,
+                        'method' => 'PHP'
+                    ];
+
+                    continue;
+                }
+
+                /*
+                |--------------------------------------------------------------------------
+                | 6. PHP không tìm thấy thì gọi Llama
+                |--------------------------------------------------------------------------
+                */
+                $prompt = <<<PROMPT
+                You verify HP training certificates.
+
+                Choose the course name that appears in the certificate from the allowed course list below.
+
+                ALLOWED COURSES:
+                {$courseListForPrompt}
+
+                Return ONLY valid JSON in this exact format:
 
                 {
-                    \"course_name\": null
+                    "course_name": null
                 }
 
                 Rules:
-
-                - Return ONLY the course name.
+                - course_name must exactly match one value from ALLOWED COURSES.
+                - Do not create a new course name.
                 - Do not explain.
                 - Do not guess.
-                - If no course name exists return null.
+                - If the certificate does not clearly match any allowed course, return null.
 
-                Certificate:
-
+                CERTIFICATE CONTENT:
                 {$text}
-                ";
+                PROMPT;
 
-                $response = Http::timeout(120)
-                    ->post('http://127.0.0.1:11434/api/generate', [
-                        'model' => 'llama3.1:latest',
-                        'prompt' => $prompt,
-                        'stream' => false
-                    ]);
+                try {
+
+                    $response = Http::timeout(120)
+                        ->post('http://127.0.0.1:11434/api/generate', [
+                            'model' => 'llama3.1:latest',
+                            'prompt' => $prompt,
+                            'stream' => false,
+                            'format' => 'json'
+                        ]);
+
+                } catch (\Exception $e) {
+
+                    $results[] = [
+                        'certificate' => $attachment->name,
+                        'matched' => false,
+                        'course' => null,
+                        'reason' => 'Cannot connect to Ollama.',
+                        'method' => 'AI'
+                    ];
+
+                    continue;
+                }
 
                 if (!$response->successful()) {
 
                     $results[] = [
                         'certificate' => $attachment->name,
                         'matched' => false,
-                        'reason' => 'Cannot connect to Ollama.',
+                        'course' => null,
+                        'reason' => 'Ollama returned HTTP error.',
                         'method' => 'AI'
                     ];
 
                     continue;
-
-                    
                 }
 
-                $ollama = $response->json();    
+                /*
+                |--------------------------------------------------------------------------
+                | 7. Đọc JSON Llama trả về
+                |--------------------------------------------------------------------------
+                */
+                $ollama = $response->json();
 
-                $answer = json_decode($ollama['response'], true);
+                $rawAnswer = $ollama['response'] ?? null;
 
-                if (!$answer) {
+                if (!$rawAnswer) {
 
                     $results[] = [
                         'certificate' => $attachment->name,
                         'matched' => false,
-                        'reason' => 'Invalid JSON.',
+                        'course' => null,
+                        'reason' => 'Ollama returned an empty response.',
                         'method' => 'AI'
                     ];
 
                     continue;
                 }
 
-                $results[] = [
+                $answer = json_decode($rawAnswer, true);
+
+                if (
+                    !is_array($answer) ||
+                    !array_key_exists('course_name', $answer)
+                ) {
+
+                    $results[] = [
+                        'certificate' => $attachment->name,
+                        'matched' => false,
+                        'course' => null,
+                        'reason' => 'Ollama returned invalid JSON.',
+                        'method' => 'AI',
+                        'raw_response' => $rawAnswer
+                    ];
+
+                    continue;
+                }
+
+                $aiCourseName = $answer['course_name'];
+
+                /*
+                |--------------------------------------------------------------------------
+                | 8. Llama không tìm thấy course
+                |--------------------------------------------------------------------------
+                */
+                if (
+                    $aiCourseName === null ||
+                    trim((string) $aiCourseName) === ''
+                ) {
+
+                    $results[] = [
+                        'certificate' => $attachment->name,
+                        'matched' => false,
+                        'course' => null,
+                        'reason' => 'No matching course found in certificate.',
+                        'method' => 'AI'
+                    ];
+
+                    continue;
+                }
+
+                /*
+                |--------------------------------------------------------------------------
+                | 9. Kiểm tra course Llama trả về có nằm trong DB không
+                |--------------------------------------------------------------------------
+                */
+                $validatedCourse = null;
+
+                foreach ($courseList as $course) {
+
+                    if (
+                        $this->normalizeCourse($course) ===
+                        $this->normalizeCourse($aiCourseName)
+                    ) {
+                        $validatedCourse = $course;
+                        break;
+                    }
+                }
+
+                if ($validatedCourse === null) {
+
+                    $results[] = [
+                        'certificate' => $attachment->name,
+                        'matched' => false,
+                        'course' => $aiCourseName,
+                        'reason' => 'AI returned a course that is not in the allowed course list.',
+                        'method' => 'AI'
+                    ];
+
+                    continue;
+                }
+
+                /*
+                |--------------------------------------------------------------------------
+                | 10. Llama tìm thấy course hợp lệ
+                |--------------------------------------------------------------------------
+                */
+                $courseStatus[$validatedCourse] = [
+                    'matched' => true,
                     'certificate' => $attachment->name,
-                    'matched' => false,
-                    'reason' => 'Need AI verification',
-                    'method' => 'Pending Llama'
+                    'method' => 'AI'
                 ];
 
+                $results[] = [
+                    'certificate' => $attachment->name,
+                    'matched' => true,
+                    'course' => $validatedCourse,
+                    'reason' => null,
+                    'method' => 'AI'
+                ];
             }
 
-            dd($results);
+            /*
+            |--------------------------------------------------------------------------
+            | 11. Tìm những course còn thiếu certificate
+            |--------------------------------------------------------------------------
+            */
+            $missingCourses = [];
+
+            foreach ($courseStatus as $course => $status) {
+
+                if ($status['matched'] === false) {
+                    $missingCourses[] = $course;
+                }
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | 12. Nếu không thiếu course nào thì mark Completed
+            |--------------------------------------------------------------------------
+            */
+            $completed = count($missingCourses) === 0;
+            
+            if ($completed) {
+
+                /*
+                * Nếu status của bạn là enum số, ví dụ 3 = Completed,
+                * hãy đổi 'Completed' thành giá trị enum thực tế.
+                */
+                Training_Tickets_Model::where(
+                    'training_no',
+                    $ticket->training_no
+                )->update([
+                    'status' => '4'
+                ]);
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | 13. Trả kết quả
+            |--------------------------------------------------------------------------
+            */
+            return response()->json([
+                'success' => true,
+                'training_no' => $ticket->training_no,
+                'completed' => $completed,
+                'message' => $completed
+                    ? 'All required certificates were found. Training marked as Completed.'
+                    : 'Some required certificates are missing.',
+                'certificate_results' => $results,
+                'course_status' => $courseStatus,
+                'missing_courses' => $missingCourses
+            ]);
 
         } catch (\Exception $e) {
 
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage()
-            ],500);
-
+                'message' => $e->getMessage(),
+                'line' => $e->getLine(),
+                'file' => $e->getFile()
+            ], 500);
         }
     }
 
     private function normalizeCourse($text)
-{
-    $text = strtolower($text);
+    {
+        $text = strtolower($text);
 
-    $removeWords = [
-        "\r",
-        "\n",
-        "\t"
-    ];
+        $removeWords = [
+            "\r",
+            "\n",
+            "\t"
+        ];
 
-    // Chuẩn hóa khoảng trắng và dấu gạch
-    $text = str_replace(
-        ["\xc2\xa0", "-", "–", "—"],
-        [" ", "-", "-", "-"],
-        $text
-    );
+        // Chuẩn hóa khoảng trắng và dấu gạch
+        $text = str_replace(
+            ["\xc2\xa0", "-", "–", "—"],
+            [" ", "-", "-", "-"],
+            $text
+        );
 
-    $text = str_replace($removeWords, '', $text);
+        $text = str_replace($removeWords, '', $text);
 
-    $text = preg_replace('/\s+/', ' ', $text);
+        $text = preg_replace('/\s+/', ' ', $text);
 
-    return trim($text);
-}
+        return trim($text);
+    }
 
 
 
