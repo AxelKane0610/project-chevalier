@@ -26,6 +26,14 @@
                     <button type="submit"><i class="ti-layout-grid2"></i>Quick Navigation</button>
                 </form>
             </li>
+
+            @if(auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_LOAN_UNIT_ADMIN'))
+                <li>
+                    <form class="js-input-required-btn" data-target="asset-export" action="" method="POST">
+                        <button type="button"><i class="ti-angle-double-right"></i>Export</button>
+                    </form>
+                </li>
+            @endif
         </x-common-header>
 
         <div class="common-table-container">
@@ -39,6 +47,8 @@
                 <th width="25%">Status</th> 
                 <th width="25%">Start Date</th> 
                 <th width="25%">End Date</th> 
+                <th width="25%">Note</th> 
+
 
 
 
@@ -47,13 +57,15 @@
                     <td>
                         
                         <button type="submit"><i class="ti-na"></i></button>
+                        @if($ticket->ticket_id != null)
                         <a href="/loan-unit-part-ticket-details/{{ $ticket->ticket_id }}">
                             <button><i class="ti-arrow-right" ></i></button>
                         </a>
+                        @endif
 
                     </td>
                     
-                    <td>{{$ticket->user_owner->fullname}}</td>
+                    <td>{{$ticket->user_owner->fullname ?? 'N/A'}}</td>
                     <td>{{$ticket->ticket_receipt}}</td>
                     <td>{{$ticket->part_request}}</td>
                     <td>{{$ticket->ct_loaned}}</td>
@@ -83,6 +95,8 @@
                     </td>
                     <td>{{$ticket->start_date}}</td>
                     <td>{{$ticket->end_date}}</td>
+                    <td>{{$ticket->note}}</td>
+
                     
                 </tr>
                 @endforeach
@@ -370,6 +384,61 @@
                 <button class="ticket-form-body-input" type="submit">Edit</button> 
             </x-slot:footer>
         </x-common-ticket-form>
+
+        <x-common-ticket-form title="Asset Export" id="asset-export" action1="{{ route('asset-export', $item_details->id) }}" method="POST" enctype="multipart/form-data">
+            @method('POST')
+            <label>Asset Tag</label>
+            <input type="text" class="ticket-form-body-input" name="loan_unit_asset_tag" value="{{$item_details->asset_tag}}" readonly>
+
+            <label>User Owner (Nếu user không thuộc SC, để trống)</label>
+            <livewire:common-search-dropdown
+                model-class="App\Models\User"
+                :search-fields="['fullname']"
+                display-field="fullname"
+                value-field="id"
+                name="user_id"
+            />
+
+            <label>Receipt (Nếu không có để N/A)</label>
+            <input type="text" class="ticket-form-body-input" name="ticket_receipt" placeholder="" required>
+
+            <label>Part Request</label>
+            <input type="text" class="ticket-form-body-input" name="part_request" placeholder="" required>
+
+            <label>CT Loaned</label>
+            <input type="text" class="ticket-form-body-input" name="ct_loaned" placeholder="Điền CT của part cho mượn (Nếu có)">
+
+            <label>Status</label>
+            <select name="status" class="ticket-form-body-input" required>
+                <option value="2" >Borrowed, not returned yet</option>
+                <option value="3" >Returned</option>
+                <option value="4" >Canceled</option>
+                <option value="5" >Will not be returned</option>
+                
+            </select>
+
+            <label>Original</label>
+            <select name="original" class="ticket-form-body-input">
+                <option value="1" @selected($item_details->original == 1)>Crown</option>
+                <option value="2" @selected($item_details->original == 2)>Spectre</option>
+                <option value="3" @selected($item_details->original == 3)>T1 (FPT, DGW, Elite)</option>
+                
+            </select>
+
+            <label>Start Date</label>
+            <input type="date" class="ticket-form-body-input" name="start_date" value="{{ today()->format('Y-m-d') }}">
+
+            <label>Note</label>
+            <input type="text" class="ticket-form-body-input" name="note" placeholder="Ghi chú">
+
+            
+
+            <x-slot:footer>
+                <button class="ticket-form-body-input" type="submit">Export</button> 
+            </x-slot:footer>
+
+        </x-common-ticket-form>
+
 
         
     </body>

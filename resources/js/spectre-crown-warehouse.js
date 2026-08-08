@@ -99,3 +99,67 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 });
+
+document.addEventListener('submit', function (e) {
+    // Kiểm tra xem form nào đang được submit dựa vào ID
+    const formData = new FormData(e.target);
+    const url = e.target.getAttribute('action');
+
+    if (e.target && e.target.id === 'create-spectre-crown-warehouse-item-form') {
+        e.preventDefault();
+
+        const form = e.target;
+
+        Swal.fire({
+            title: 'Bạn có chắc muốn nhập kho item này ?',
+            icon: 'warning',
+            showCancelButton: true,
+            heightAuto: false
+        })
+        .then((result) => {
+            if (!result.isConfirmed) {
+                return;
+            }
+
+            // Confirm mới loading
+            startButtonLoading(form);
+            fetch('/import-asset', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                }
+            })
+            .then(response => response.json())
+            .then(new_asset => {
+
+                if (new_asset.success === true) {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: new_asset.message,
+                        icon: 'success',
+                        confirmButtonText: 'OK',
+                        heightAuto: false
+                    }).then((result) => {
+                        document.querySelector('.ticket-form-overlay').classList.remove('active');
+                        e.target.reset();
+                        location.reload();
+                    });
+                    
+                } else {
+                    Swal.fire({
+                        title:'Error',
+                        text:new_asset.message,
+                        icon:'error',
+                        heightAuto: false
+                    });
+                    stopButtonLoading(form);
+                }
+                
+            })
+            .catch(error => console.error(error));
+        });
+        
+
+    }
+});

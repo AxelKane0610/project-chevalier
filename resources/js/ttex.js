@@ -1,24 +1,6 @@
 console.log("JS LOADED");
 
 
-// const searchInput = document.getElementById('search-ttex-bill-input');
-
-// if (searchInput) {
-//     searchInput.addEventListener('keyup', function () {
-
-//         let keyword = this.value.toLowerCase();
-//         let rows = document.querySelectorAll('#all-ttex-tickets-table tbody tr');
-
-//         rows.forEach(row => {
-//             let text = row.textContent.toLowerCase();
-
-//             row.style.display = text.includes(keyword) ? '' : 'none';
-//         });
-
-//     });
-    
-// }
-
 document.addEventListener('DOMContentLoaded', function () {
 
     const buttons = document.querySelectorAll('.table-btn');

@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Spectre_Crown_Warehouse_Model;
 use App\Models\Loan_Unit_Part_Tickets_Model;
+use App\Models\Loan_Unit_Ticket_Parts_Details_Model;
+
 use App\Models\Attachments_Model;
 use App\Models\Comments_Model;
 use App\Services\tracking_info_service;
@@ -26,7 +28,7 @@ class SpectreCrownWarehouseController extends Controller
                 'warehouse' => 'required',
                 'available_status' => 'required',
                 'condition' => 'required',
-                'note' => 'required',
+                'note' => 'nullable',
                 'quantity' => 'required',
                 'attachments.*' => 'file|max:20480|mimes:jpg,png,pdf,jpeg,xlsx'
 
@@ -265,6 +267,54 @@ class SpectreCrownWarehouseController extends Controller
         }
         
 
+    }
+
+    public function Asset_Export (Request $request, $id) {
+        $item_details = Spectre_Crown_Warehouse_Model::findOrFail($id);
+        try {
+            $ticket_info_input = $request->validate([
+                'loan_unit_asset_tag' => 'required',
+                'user_id' => 'nullable',
+                'ticket_receipt' => 'required',
+                'part_request' => 'required',
+                'ct_loaned' => 'required',
+                'status' => 'required',
+                'original' => 'required',
+                'start_date' => 'required',
+                'note' => 'nullable'
+                
+            ]);
+
+            $ticket_info_input['loan_unit_asset_tag'] = strip_tags($ticket_info_input['loan_unit_asset_tag']);
+            $ticket_info_input['user_id'] = $ticket_info_input['user_id'] ?: null;
+            $ticket_info_input['ticket_receipt'] = strip_tags($ticket_info_input['ticket_receipt']);
+            $ticket_info_input['part_request'] = strip_tags($ticket_info_input['part_request']);
+            $ticket_info_input['ct_loaned'] = strip_tags($ticket_info_input['ct_loaned']);
+            $ticket_info_input['status'] = strip_tags($ticket_info_input['status']);
+            $ticket_info_input['original'] = strip_tags($ticket_info_input['original']);
+            $ticket_info_input['start_date'] = strip_tags($ticket_info_input['start_date']);
+            $ticket_info_input['note'] = strip_tags($ticket_info_input['note']);
+
+            $part_details = Loan_Unit_Ticket_Parts_Details_Model::create($ticket_info_input);
+
+            tracking_info_service::add(
+                $item_details->id, 
+                auth()->id(), 
+                '11',
+                'exported asset at'
+            );
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Asset exported successfully',
+            ]);
+            
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to export asset due to ' .$e->getMessage(),
+            ], 500);
+        }
     }
 
 
