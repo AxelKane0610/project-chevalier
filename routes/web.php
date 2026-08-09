@@ -77,6 +77,8 @@ Route::middleware(['auth'])->group(function () {
     
         Route::get('/ttex-tickets-menu', [TTEXTicketsController::class, 'index']);
         Route::get('/ttex-tickets-menu/filter-all-tickets-table', [TTEXTicketsController::class, 'Filter_All_Tickets_Table']);
+        Route::get('/ttex-tickets-menu/filter-tickets-booked-today-table', [TTEXTicketsController::class, 'Filter_Tickets_Booked_Today_Table']);
+        Route::get('/ttex-tickets-menu/filter-pending-def-part-tickets-table', [TTEXTicketsController::class, 'Filter_Def_Part_Tickets_Table']);
 
         Route::post('/create-ttex-ticket', [TTEXTicketsController::class, 'Create_TTEX_Ticket']);
         Route::get('/ttex-tickets-menu-details/{id}', [TTEXTicketsController::class, 'Show_TTEX_Ticket_Details']);

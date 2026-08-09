@@ -67,7 +67,7 @@
                         [
                             'icon' => 'ti-user',
                             'label' => 'Người request',
-                            'value' => $ticket->user_owner->fullname,
+                            'value' => $ticket->user_owner->fullname ?? 'N/A',
                             'type' => 'text'
                         ],
                         [

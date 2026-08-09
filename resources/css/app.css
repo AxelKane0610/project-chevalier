@@ -1,5 +1,7 @@
 
 @import 'tailwindcss';
+@import './table.css';
+@import './header.css';
 @layer base {
     h1 {
         @apply text-4xl font-bold;
@@ -75,7 +77,18 @@ html, body{
     /* #EEEEF5 */
 }
 
-*::-webkit-scrollbar {
+/* *::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+} */
+
+html,
+body {
+    scrollbar-width: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
     display: none;
 }
 
@@ -133,56 +146,14 @@ button {
     color: var(--button-text-color);
 }
 
-table {
-    width: 100%;
-    empty-cells: show;
-    border-collapse: collapse;
-    table-layout: fixed;
-}
 
-
-
-table tr th {
-    background-color: var(--table-header-background-color);
-    padding: 10px;
-}
-
-th, td {
-    border: 1px solid #e5e7eb;
-    padding: 10px;
-    word-break: break-word;
-    overflow-wrap: break-word;
-    text-align: center;
-    align-items: center;
-    justify-content: center;
-}
 
 td > form {
     display: inline-block;
     margin: 0;
 }
 
-.common-table {
-    width: 100%;
-    border-collapse: collapse;
-}
 
-.common-table th,
-.common-table td {
-    border: 1px solid #dee2e6;
-    padding: 12px 16px;
-    text-align: center;
-    vertical-align: middle;
-}
-
-.common-table thead th {
-    background: #f8f9fa;
-    font-weight: 600;
-}
-
-.common-table tbody tr:hover {
-    background: #f8f9fa;
-}
 
 .attachments-name-header {
     width: 70%;
@@ -312,49 +283,6 @@ h1, h2, h3 {
     flex-direction: column;
 }
 
-.common-header-navigation {
-    background: linear-gradient(to right, #1e3a8a, #3b82f6);
-    height: 60px;
-    display: flex;
-    align-items: center;
-    padding: 0 24px;
-    color: white;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-}
-
-.common-header-navigation ul {
-    display: flex;
-    gap: 20px;
-    justify-content: space-between;
-}
-
-.common-header-navigation h1 {
-    flex-shrink: 0;      /* QUAN TRỌNG: Ngăn H1 bị bóp nghẹt gây rớt dòng */
-    margin-right: 10px;           /* Bỏ margin mặc định để không bị lệch */
-    white-space: nowrap; /* Đảm bảo chữ luôn nằm trên 1 hàng */
-    font-size: 24px;     /* Điều chỉnh lại size nếu cần */
-
-}
-
-.common-header-navigation-item-container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    width: 100%;
-    gap: 10px;
-    list-style: none;
-    margin: 0;
-}
-
-.common-header-navigation-item-container li form {
-    display: flex;
-    /* align-items: center; */
-    justify-content: center;
-}
 
 
 .user-account-menu {
@@ -573,30 +501,7 @@ h1, h2, h3 {
 
 /* CSS CHO TABLE TICKET PENDING */
 
-.common-table-container {
-    padding: 10px;
-    width: 100%;
-    height: auto;
-    max-height: 70vh;
-    background-color: white;
-    border-radius: 10px;
-    overflow-y: scroll;
-    
 
-    
-}
-
-.common-table-filter {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 10px;
-    
-    position: sticky;
-    top: 0;
-    z-index: 10;
-}
 
 
 

@@ -37,276 +37,203 @@
                 
             </x-common-header>
 
-            <div class="d-flex flex-grow-1 overflow-hidden vh-100">
-                <div class="container-fluid my-5 flex-grow-1">
-                    <div class="row flex-grow-1 h-100">
-                        <div class="col-2 d-flex justify-content-center align-items-center flex-column gap-3">
-                            <form action=""  >
-                                <button type="button" class="js-input-required-btn" data-target="create-ttex-ticket-form"><i class="ti-plus"></i> Create Ticket</button>
-                            </form>
+            <div class="page-content">
+                <div class="d-flex flex-grow-1 overflow-hidden h-100">
+                    <div class="container-fluid h-100 ">
+                        <div class="row h-100 p-3 ">
+                            <div class="col-2 d-flex justify-content-center align-items-center flex-column gap-3 my-3 ">
+                                <form action=""  >
+                                    <button type="button" class="js-input-required-btn" data-target="create-ttex-ticket-form"><i class="ti-plus"></i> Create Ticket</button>
+                                </form>
 
-                            <button class="btn btn-primary table-btn w-100 position-relative" id="show-pending-good-part-tickets-btn" data-target = "pending-good-part-ttex-tickets-container">
-                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                    {{$tickets_good_part_pending->count()}}
-                                </span>
-                                <i class="ti-timer"></i> Show Pending Good Part Tickets
-                            </button>
-                            <button class="btn btn-primary table-btn w-100 position-relative" id="show-waiting-def-part-tickets-btn" data-target = "pending-def-part-ttex-tickets-container">
-                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                    {{$tickets_def_part_pending->flatten()->count()}}
-                                </span>
-                                <i class="ti-timer"></i> 
-                                Show Pending Def Part Tickets
-                            </button>
-                            <button class="btn btn-primary table-btn w-100 position-relative" id="show-ttex-tickets-booked-today-btn" data-target = "ttex-tickets-booked-today-container">
-                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                    {{$tickets_booked_today->count()}}
-                                </span>
-                                <i class="ti-check"></i> 
-                                Show Tickets Booked Today
-                            </button>
-                            <button class="btn btn-primary table-btn w-100 position-relative" id="show-all-ttex-tickets-btn" data-target = "all-ttex-tickets-container">
-                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                    {{$tickets->total()}}
-                                </span><i class="ti-list-ol"></i> 
-                                Show All Tickets
-                            </button>
-
-                        </div>
-
-                        <div class="col-10 h-100 overflow-auto">
-                            <div class="bg-white p-3 rounded shadow-sm ticket-table" id="pending-good-part-ttex-tickets-container">
-                                <h2>Pending Good Part Tickets</h2>
-                                <table id="pending-ttex-tickets-table" class="common-table" width="100%" >
-                                    <tr>
-                                        <th width="5%"></th>
-                                        <th width="10%">Shipment Type</th>
-                                        <th width="20%">Người gửi</th>
-                                        <th width="20%">Người nhận</th>
-                                        <th width="20%">Mô tả hàng hóa</th>
-                                        <th width="15%">Note</th>
-                                        <th width="10%">Status</th>
-
-                                    </tr>
-                                
-                                    <tbody>
-                                        @foreach ($tickets_good_part_pending as $ticket)
-                                            
-                                                <tr>
-                                                    <td>
-
-                                                        <button type="button" 
-                                                            class="btn btn-primary" 
-                                                            onclick="window.location.href='/ttex-tickets-menu-details/{{ $ticket->id }}'">
-                                                            <i class="ti-arrow-right"></i>
-                                                        </button>
-                                                    </td>
-                                                    <td>
-                                                        <span class="badge rounded-pill bg-{{ $ticket->shipment_type_data['color'] ?? 'primary' }} px-3 py-2">
-                                                            {{ $ticket->shipment_type_data['text'] }}
-                                                        </span>
-                                                    </td>
-                                                    <td>{{ $ticket->sender_info  }}</td>
-                                                    <td>{{ $ticket->receiver_info }}</td>
-                                                    <td>{{ $ticket->shipment_description }}</td>
-                                                    <td>{{ $ticket->note }}</td>
-                                                    
-                                                    <td>
-                                                        <span class="badge rounded-pill bg-{{ $ticket->status_data['color'] ?? 'primary' }} px-3 py-2">
-                                                            {{ $ticket->status_data['text'] }}
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                                
-                                        @endforeach
-                                    </tbody>
-
-                                </table>
+                                <button class="btn btn-primary table-btn w-100 position-relative" id="show-pending-good-part-tickets-btn" data-target = "pending-good-part-ttex-tickets-container">
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                        {{$tickets_good_part_pending->count()}}
+                                    </span>
+                                    <i class="ti-timer"></i> Show Pending Good Part Tickets
+                                </button>
+                                <button class="btn btn-primary table-btn w-100 position-relative" id="show-waiting-def-part-tickets-btn" data-target = "pending-def-part-ttex-tickets-container">
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                        {{$tickets_def_part_pending->total()}}
+                                    </span>
+                                    <i class="ti-timer"></i> 
+                                    Show Pending Def Part Tickets
+                                </button>
+                                <button class="btn btn-primary table-btn w-100 position-relative" id="show-ttex-tickets-booked-today-btn" data-target = "ttex-tickets-booked-today-container">
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                        {{$tickets_booked_today->total()}}
+                                    </span>
+                                    <i class="ti-check"></i> 
+                                    Show Tickets Booked Today
+                                </button>
+                                <button class="btn btn-primary table-btn w-100 position-relative" id="show-all-ttex-tickets-btn" data-target = "all-ttex-tickets-container">
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                        {{$tickets->total()}}
+                                    </span><i class="ti-list-ol"></i> 
+                                    Show All Tickets
+                                </button>
 
                             </div>
 
-                            <div class="bg-white p-3 rounded shadow-sm ticket-table d-none" id="ttex-tickets-booked-today-container">
-                                <h2>Tickets đã book trong hôm nay</h2>
-                                {{-- <div class="common-table-filter">
-                                    <h2>Part Status:</h2>
-                                    <select id="ttex-tickets-booked-today-part-status-filter">
-                                        <option value="">All</option>
-                                        <option value="1">Good part</option>
-                                        <option value="2">Def part</option>
-                                        <option value="3">Good part - Unused</option>
-                                        
-                                    </select>
-                                </div> --}}
-                                <table id="ttex-tickets-booked-today-table" class="common-table" width="100%" >
-                                    <tr>
-                                        <th width="5%"></th>
-                                        <th width="10%">Shipment Type</th>
-                                        <th width="10%">Part Status</th>
-                                        <th width="20%">Người gửi</th>
-                                        <th width="20%">Người nhận</th>
-                                        <th width="20%">Mô tả hàng hóa</th>
-                                        <th width="15%">TTEX Bill</th>
-
-                                    </tr>
-                                
-                                    <tbody>
-                                        @foreach ($tickets_booked_today as $ticket)
-                                            
-                                                <tr>
-                                                    <td>
-
-                                                        <button type="button" 
-                                                            class="btn btn-primary" 
-                                                            onclick="window.location.href='/ttex-tickets-menu-details/{{ $ticket->id }}'">
-                                                            <i class="ti-arrow-right"></i>
-                                                        </button>
-                                                    </td>
-                                                    <td>
-                                                        <span class="badge rounded-pill bg-{{ $ticket->shipment_type_data['color'] ?? 'primary' }} px-3 py-2">
-                                                            {{ $ticket->shipment_type_data['text'] }}
-                                                        </span>
-                                                    </td>
-                                                    <td>
-                                                        <span class="badge rounded-pill bg-{{ $ticket->part_status_data['color'] ?? 'primary' }} px-3 py-2">
-                                                            {{ $ticket->part_status_data['text'] }}
-                                                        </span>
-                                                    </td>
-                                                    <td>{{ $ticket->sender_info  }}</td>
-                                                    <td>{{ $ticket->receiver_info }}</td>
-                                                    <td>{{ $ticket->shipment_description }}</td>
-                                                    <td>{{ $ticket->ttex_bill }}</td>
-                                                    
-                                                    
-                                                </tr>
-                                                
-                                        @endforeach
-                                    </tbody>
-
-                                </table>
-
-                            </div>
-
-
-                            <div class="bg-white p-3 rounded shadow-sm ticket-table d-none" id="pending-def-part-ttex-tickets-container">
-                                <h2>Pending Def Part Tickets</h2>
-                                    @if( (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_TTEX_TICKET_ADMIN')))
-
-                                        <form class="js-input-required-btn" data-target="booking-def-part" id="booking-def-part" action="{{ route('booking-def-part') }}" method="POST">
-                                            @csrf
-                                            <button type="submit"><i class="ti-check"></i></button>
-                                        </form>
-                                    @endif
-                                    <table id="pending-ttex-tickets-table" class="common-table mh-100" width="100%" >
-                                        <tr>
+                            <div class="col-10 d-flex justify-content-center align-items-center flex-column gap-3 my-4 h-100">
+                                <div class="bg-white p-3 rounded shadow-sm ticket-table" id="pending-good-part-ttex-tickets-container">
+                                    <h2>Pending Good Part Tickets</h2>
+                                    <table id="pending-ttex-tickets-table" class="common-table" width="100%" >
+                                        <thead>
                                             <th width="5%"></th>
                                             <th width="10%">Shipment Type</th>
                                             <th width="20%">Người gửi</th>
                                             <th width="20%">Người nhận</th>
                                             <th width="20%">Mô tả hàng hóa</th>
                                             <th width="15%">Note</th>
-                                            <th width="10%">Hạn trả def cho kho</th>
                                             <th width="10%">Status</th>
 
-                                        </tr>
+                                        </thead>
                                     
                                         <tbody>
-                                            
+                                            @foreach ($tickets_good_part_pending as $ticket)
+                                                
+                                                    <tr>
+                                                        <td>
 
-                                            @foreach($tickets_def_part_pending as $date => $group)
-
-                                                <tr class="table-secondary">
-                                                    <td colspan="10">
-                                                        ▼ Hạn trả def cho kho:
-                                                        {{ \Carbon\Carbon::parse($date)->format('d/m/Y') }}
-                                                        ({{ count($group) }})
-                                                    </td>
-                                                </tr>
-
-                                                @foreach($group as $ticket)
-
-                                                <tr>
-                                                    <td>
-                                                        <button type="button" 
-                                                            class="btn btn-primary" 
-                                                            onclick="window.location.href='/ttex-tickets-menu-details/{{ $ticket->id }}'">
-                                                            <i class="ti-arrow-right"></i>
-                                                        </button>
-                                                        @if( (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_TTEX_TICKET_ADMIN')))
-
-                                                            <input type="checkbox" name="booking_def[]" value="{{ $ticket->id }}" form="booking-def-part">
-                                                        @endif
-                                                    </td>
-                                                    <td>
-                                                        <span class="badge rounded-pill bg-{{ $ticket->shipment_type_data['color'] ?? 'primary' }} px-3 py-2">
-                                                            {{ $ticket->shipment_type_data['text'] }}
-                                                        </span>
-                                                    </td>
-                                                    <td>{{ $ticket->sender_info  }}</td>
-                                                    <td>{{ $ticket->receiver_info }}</td>
-                                                    <td>{{ $ticket->shipment_description }}</td>
-                                                    <td>{{ $ticket->note }}</td>
-                                                    <td>{{ $ticket->part_return_deadline }}</td>
+                                                            <button type="button" 
+                                                                class="btn btn-primary" 
+                                                                onclick="window.location.href='/ttex-tickets-menu-details/{{ $ticket->id }}'">
+                                                                <i class="ti-arrow-right"></i>
+                                                            </button>
+                                                        </td>
+                                                        <td>
+                                                            <span class="badge rounded-pill bg-{{ $ticket->shipment_type_data['color'] ?? 'primary' }} px-3 py-2">
+                                                                {{ $ticket->shipment_type_data['text'] }}
+                                                            </span>
+                                                        </td>
+                                                        <td>{{ $ticket->sender_info  }}</td>
+                                                        <td>{{ $ticket->receiver_info }}</td>
+                                                        <td>{{ $ticket->shipment_description }}</td>
+                                                        <td>{{ $ticket->note }}</td>
+                                                        
+                                                        <td>
+                                                            <span class="badge rounded-pill bg-{{ $ticket->status_data['color'] ?? 'primary' }} px-3 py-2">
+                                                                {{ $ticket->status_data['text'] }}
+                                                            </span>
+                                                        </td>
+                                                    </tr>
                                                     
-                                                    <td>
-                                                        <span class="badge rounded-pill bg-{{ $ticket->status_data['color'] ?? 'primary' }} px-3 py-2">
-                                                            {{ $ticket->status_data['text'] }}
-                                                        </span>
-                                                    </td>
-                                                </tr>
-
-                                                @endforeach
-
                                             @endforeach
                                         </tbody>
 
                                     </table>
-                            </div>
 
-                            <div class="bg-white p-3 rounded shadow-sm ticket-table d-none" id="all-ttex-tickets-container">
-                                
-                                <div class="common-table-filter">
-                                    <h2>All Tickets</h2>
-                                    <div class="search-box">
-                                        <i class="ti-search"></i>
-                                        <input type="text" placeholder="Search Receipt, TTEX Bill" id="search-ttex-bill-input-all-tickets-table">
+                                </div>
+
+                                <div class="bg-white p-3 rounded shadow-sm ticket-table d-none" id="ttex-tickets-booked-today-container">
+                                    
+                                    <div class="common-table-filter">
+                                        <h2>Tickets đã book trong hôm nay</h2>
+                                        <div class="search-box">
+                                            <i class="ti-search"></i>
+                                            <input class="ajax-search" type="text" placeholder="Search Receipt, Bill, Người gửi & người nhận" id="search-ttex-tickets-booked-today-table">
+                                        </div>
+                                        <h2>Part Status:</h2>
+                                        <select id="ttex-tickets-booked-today-part-status-filter" class="ajax-filter" name="part_status">
+                                            <option value="">All</option>
+                                            <option value="1">Good part</option>
+                                            <option value="2">Def part</option>
+                                            <option value="3">Good part - Unused</option>
+                                            
+                                        </select>
                                     </div>
 
-                                    <h2>Status:</h2>
-                                    <select id="all-ttex-tickets-status-filter">
-                                        <option value="">All</option>
-                                        <option value="1">Open - Chưa điều tin</option>
-                                        <option value="2">Completed - Đã điều tin</option>
-                                        <option value="3">Rejected</option>
+                                    <div id="ttex-tickets-booked-today-table-container">
                                         
-                                    </select>
-
-                                    <h2>Part Status:</h2>
-                                    <select id="all-ttex-tickets-part-status-filter">
-                                        <option value="">All</option>
-                                        <option value="1">Good part</option>
-                                        <option value="2">Def part</option>
-                                        <option value="3">Good part - Unused</option>
-                                        
-                                    </select>
-
+                                        @include('tables.ttex-tickets-booked-today')
+                                    </div>
                                     
 
+                                </div>
 
+
+                                <div class="bg-white p-3 rounded shadow-sm ticket-table d-none" id="pending-def-part-ttex-tickets-container">
+                                    <div class="common-table-filter">
+                                        <h2>Pending Def Part Tickets</h2>
+                                        <div class="search-box">
+                                            <i class="ti-search"></i>
+                                            <input class="ajax-search" type="text" placeholder="Search Receipt, Bill, Người gửi & người nhận" id="search-pending-def-part-ttex-tickets-table">
+                                        </div>
+                                        <h2>Part Status:</h2>
+                                        <select id="pending-def-part-ttex-tickets-part-status-filter" class="ajax-filter" name="part_status">
+                                            <option value="">All</option>
+                                            <option value="2">Def part</option>
+                                            <option value="3">Good part - Unused</option>
+                                            
+                                        </select>
+
+                                        
+                                    </div>
+                                        @if( (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_TTEX_TICKET_ADMIN')))
+
+                                            <form class="js-input-required-btn" data-target="booking-def-part" id="booking-def-part" action="{{ route('booking-def-part') }}" method="POST">
+                                                @csrf
+                                                <button type="submit"><i class="ti-check"></i></button>
+                                            </form>
+                                        @endif
+
+                                        <div id="pending-def-part-ttex-tickets-table-container">
+                                        
+                                            @include('tables.ttex-def-part-tickets-table')
+                                        </div>
+                                        
                                 </div>
-                                <div id="all-ttex-tickets-table-container">
+
+                                <div class="bg-white p-3 rounded shadow-sm ticket-table d-none" id="all-ttex-tickets-container" >
                                     
-                                    @include('tables.ttex-all-tickets-table')
+                                    <div class="common-table-filter">
+                                        <h2>All Tickets</h2>
+                                        <div class="search-box">
+                                            <i class="ti-search"></i>
+                                            <input class="ajax-search" type="text" placeholder="Search Receipt, Bill, Người gửi & người nhận" id="search-ttex-bill-input-all-tickets-table">
+                                        </div>
+
+                                        <h2>Status:</h2>
+                                        <select class="ajax-filter" id="all-ttex-tickets-status-filter" name="status">
+                                            <option value="">All</option>
+                                            <option value="1">Open - Chưa điều tin</option>
+                                            <option value="2">Completed - Đã điều tin</option>
+                                            <option value="3">Rejected</option>
+                                            
+                                        </select>
+
+                                        <h2>Part Status:</h2>
+                                        <select class="ajax-filter" id="all-ttex-tickets-part-status-filter" name="part_status">
+                                            <option value="">All</option>
+                                            <option value="1">Good part</option>
+                                            <option value="2">Def part</option>
+                                            <option value="3">Good part - Unused</option>
+                                            
+                                        </select>
+
+                                            
+
+                                        
+
+
+                                    </div>
+                                    <div id="all-ttex-tickets-table-container">
+                                        
+                                        @include('tables.ttex-all-tickets-table')
+                                    </div>
                                 </div>
+
+
+
+
                             </div>
-
-
-
-
                         </div>
+                        
                     </div>
                     
                 </div>
-                
+
             </div>
 
                 

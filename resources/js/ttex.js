@@ -301,93 +301,316 @@ if (checkDefUnusedPartReturn && DefUnusedPartReturnContainer) {
 }
 
 
+
+
+
+// document.addEventListener('DOMContentLoaded', function () {
+
+//     function initAjaxTable(config) {
+
+//         const wrapper = document.getElementById(config.wrapper);
+
+//         if (!wrapper) return;
+
+//         const container = wrapper.querySelector(config.container);
+//         const searchInput = wrapper.querySelector('.ajax-search');
+//         const filters = wrapper.querySelectorAll('.ajax-filter');
+
+//         function fetchData(page = 1) {
+
+//             const params = new URLSearchParams();
+
+//             params.append('page', page);
+
+//             // Search
+//             if (searchInput) {
+//                 params.append('search', searchInput.value);
+//             }
+
+//             // Filters
+//             filters.forEach(filter => {
+
+//                 if (filter.value !== '') {
+//                     params.append(filter.name, filter.value);
+//                 }
+
+//             });
+
+//             fetch(`${config.url}?${params.toString()}`, {
+//                 headers: {
+//                     'X-Requested-With': 'XMLHttpRequest'
+//                 }
+//             })
+//             .then(response => response.text())
+//             .then(html => {
+//                 container.innerHTML = html;
+//             })
+//             .catch(error => console.error(error));
+
+//         }
+
+//         // =========================
+//         // SEARCH
+//         // =========================
+
+//         if (searchInput) {
+
+//             let timer;
+
+//             searchInput.addEventListener('keyup', function () {
+
+//                 clearTimeout(timer);
+
+//                 timer = setTimeout(() => {
+//                     fetchData(1);
+//                 }, 300);
+
+//             });
+
+//         }
+
+//         // =========================
+//         // FILTER
+//         // =========================
+
+//         filters.forEach(filter => {
+
+//             filter.addEventListener('change', function () {
+//                 fetchData(1);
+//             });
+
+//         });
+
+//         // =========================
+//         // PAGINATION
+//         // =========================
+
+//         container.addEventListener('click', function (e) {
+
+//             const link = e.target.closest('.pagination a');
+
+//             if (!link) return;
+
+//             e.preventDefault();
+
+//             const page = new URL(link.href).searchParams.get('page') || 1;
+
+//             fetchData(page);
+
+//         });
+
+//     }
+
+//     // ==========================================
+//     // All TTEX Tickets
+//     // ==========================================
+
+//     initAjaxTable({
+
+//         wrapper: 'all-ttex-tickets-container',
+
+//         container: '#all-ttex-tickets-table-container',
+
+//         url: '/ttex-tickets-menu/filter-all-tickets-table'
+
+//     });
+
+//     // ==========================================
+//     // Team Tickets
+//     // ==========================================
+
+//     initAjaxTable({
+
+//         wrapper: 'ttex-tickets-booked-today-container',
+
+//         container: '#ttex-tickets-booked-today-table-container',
+
+//         url: '/ttex-tickets-menu/filter-tickets-booked-today-table'
+
+//     });
+
+//     initAjaxTable({
+
+//         wrapper: 'pending-def-part-ttex-tickets-container',
+
+//         container: '#pending-def-part-ttex-tickets-table-container',
+
+//         url: '/ttex-tickets-menu/filter-pending-def-part-tickets-table'
+
+//     });
+
+// });
+
 document.addEventListener('DOMContentLoaded', function () {
 
-    const container = document.getElementById('all-ttex-tickets-table-container');
-    const searchInput = document.getElementById('search-ttex-bill-input-all-tickets-table');
+    // ==========================================
+    // CẤU HÌNH & HÀM QUẢN LÝ CHECKBOX STATE
+    // ==========================================
+    const STORAGE_KEY = 'selected_booking_def_ids';
 
-    const statusFilter = document.getElementById('all-ttex-tickets-status-filter');
-    const partstatusFilter = document.getElementById('all-ttex-tickets-part-status-filter');
-    // Lấy tất cả giá trị filter hiện tại
-    function getFilters() {
-        return {
-            search: searchInput.value,
-            status: statusFilter.value,
-            partStatus: partstatusFilter.value
-        };
+    function getSavedIds() {
+        return JSON.parse(sessionStorage.getItem(STORAGE_KEY)) || [];
     }
 
-    // Hàm gọi AJAX
-    function fetchData(page = 1) {
+    function saveIds(ids) {
+        sessionStorage.setItem(STORAGE_KEY, JSON.stringify(ids));
+    }
 
-        const filters = getFilters();
-
-        const params = new URLSearchParams({
-            page: page,
-            search: filters.search,
-            status: filters.status,
-            partStatus: filters.partStatus
+    // Hàm khôi phục trạng thái tích chọn trên giao diện
+    function restoreCheckedBoxes() {
+        const savedIds = getSavedIds();
+        document.querySelectorAll('.booking-def-checkbox').forEach(cb => {
+            cb.checked = savedIds.includes(cb.value);
         });
+    }
 
-        fetch(`/ttex-tickets-menu/filter-all-tickets-table?${params.toString()}`, {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest'
+    // 1. Lắng nghe sự kiện tick/untick trên toàn bộ Document (Event Delegation)
+    document.addEventListener('change', function (e) {
+        if (e.target && e.target.classList.contains('booking-def-checkbox')) {
+            let savedIds = getSavedIds();
+            const value = e.target.value;
+
+            if (e.target.checked) {
+                if (!savedIds.includes(value)) savedIds.push(value);
+            } else {
+                savedIds = savedIds.filter(id => id !== value);
             }
-        })
-        .then(response => response.text())
-        .then(html => {
-            container.innerHTML = html;
-        })
-        .catch(error => console.error('Lỗi AJAX:', error));
+            saveIds(savedIds);
+        }
+    });
+
+    // 2. Chèn toàn bộ ID đã lưu vào Form khi Submit
+    const bookingForm = document.getElementById('booking-def-part');
+    if (bookingForm) {
+        bookingForm.addEventListener('submit', function () {
+            const allSelectedIds = getSavedIds();
+
+            // Xóa các input hidden cũ nếu có
+            bookingForm.querySelectorAll('input[name="booking_def[]"]').forEach(el => el.remove());
+
+            // Chèn input hidden cho tất cả ID đã chọn ở mọi trang
+            allSelectedIds.forEach(id => {
+                const hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.name = 'booking_def[]';
+                hiddenInput.value = id;
+                bookingForm.appendChild(hiddenInput);
+            });
+
+            // Xóa bộ nhớ sau khi submit thành công
+            sessionStorage.removeItem(STORAGE_KEY);
+        });
     }
 
-    // ===========================
-    // SEARCH (Debounce)
-    // ===========================
-    let timer;
 
-    searchInput.addEventListener('keyup', function () {
+    // ==========================================
+    // CORE AJAX TABLE ENGINE
+    // ==========================================
+    function initAjaxTable(config) {
 
-        clearTimeout(timer);
+        const wrapper = document.getElementById(config.wrapper);
 
-        timer = setTimeout(() => {
-            fetchData(1);
-        }, 300);
+        if (!wrapper) return;
 
-    });
+        const container = wrapper.querySelector(config.container);
+        const searchInput = wrapper.querySelector('.ajax-search');
+        const filters = wrapper.querySelectorAll('.ajax-filter');
 
-    // ===========================
-    // FILTERS
-    // ===========================
-    [
-        statusFilter,
-        partstatusFilter
-        
-    ].forEach(filter => {
+        function fetchData(page = 1) {
 
-        filter.addEventListener('change', function () {
-            fetchData(1);
+            const params = new URLSearchParams();
+
+            params.append('page', page);
+
+            // Search
+            if (searchInput) {
+                params.append('search', searchInput.value);
+            }
+
+            // Filters
+            filters.forEach(filter => {
+                if (filter.value !== '') {
+                    params.append(filter.name, filter.value);
+                }
+            });
+
+            fetch(`${config.url}?${params.toString()}`, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.text())
+            .then(html => {
+                container.innerHTML = html;
+
+                // === BỔ SUNG: TỰ ĐỘNG TICK LẠI CHECKBOX SAU KHI RENDER HTML MỚI ===
+                restoreCheckedBoxes();
+            })
+            .catch(error => console.error(error));
+
+        }
+
+        // =========================
+        // SEARCH
+        // =========================
+        if (searchInput) {
+            let timer;
+            searchInput.addEventListener('keyup', function () {
+                clearTimeout(timer);
+                timer = setTimeout(() => {
+                    fetchData(1);
+                }, 300);
+            });
+        }
+
+        // =========================
+        // FILTER
+        // =========================
+        filters.forEach(filter => {
+            filter.addEventListener('change', function () {
+                fetchData(1);
+            });
         });
 
+        // =========================
+        // PAGINATION
+        // =========================
+        container.addEventListener('click', function (e) {
+            const link = e.target.closest('.pagination a');
+            if (!link) return;
+
+            e.preventDefault();
+            const page = new URL(link.href).searchParams.get('page') || 1;
+            fetchData(page);
+        });
+
+    }
+
+    // Khôi phục tick chọn cho lần tải trang ban đầu (F5)
+    restoreCheckedBoxes();
+
+    // ==========================================
+    // All TTEX Tickets
+    // ==========================================
+    initAjaxTable({
+        wrapper: 'all-ttex-tickets-container',
+        container: '#all-ttex-tickets-table-container',
+        url: '/ttex-tickets-menu/filter-all-tickets-table'
     });
 
-    // ===========================
-    // PAGINATION
-    // ===========================
-    container.addEventListener('click', function (e) {
+    // ==========================================
+    // Team Tickets
+    // ==========================================
+    initAjaxTable({
+        wrapper: 'ttex-tickets-booked-today-container',
+        container: '#ttex-tickets-booked-today-table-container',
+        url: '/ttex-tickets-menu/filter-tickets-booked-today-table'
+    });
 
-        const link = e.target.closest('.pagination a');
-
-        if (!link) return;
-
-        e.preventDefault();
-
-        const url = new URL(link.href);
-
-        const page = url.searchParams.get('page') || 1;
-
-        fetchData(page);
-
+    initAjaxTable({
+        wrapper: 'pending-def-part-ttex-tickets-container',
+        container: '#pending-def-part-ttex-tickets-table-container',
+        url: '/ttex-tickets-menu/filter-pending-def-part-tickets-table'
     });
 
 });

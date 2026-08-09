@@ -37,70 +37,98 @@
         </x-common-header>
 
         <div class="common-table-container">
-            <table class="common-table" width="100%">
-                <th width="5%"></th>
-                <th width="25%">User Owner</th>
-                <th width="25%">Receipt</th>   
-                <th width="25%">Part Request</th>
-                <th width="25%">CT Loaned</th> 
-                <th width="25%">New CT Return</th> 
-                <th width="25%">Status</th> 
-                <th width="25%">Start Date</th> 
-                <th width="25%">End Date</th> 
-                <th width="25%">Note</th> 
-
-
-
-
-                @foreach($item_details->loan_unit_part_tickets as $ticket)
-                <tr>
-                    <td>
-                        
-                        <button type="submit"><i class="ti-na"></i></button>
-                        @if($ticket->ticket_id != null)
-                        <a href="/loan-unit-part-ticket-details/{{ $ticket->ticket_id }}">
-                            <button><i class="ti-arrow-right" ></i></button>
-                        </a>
-                        @endif
-
-                    </td>
+            <div class="table-responsive">
+                <table class="common-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 7%"></th>
+                            <th style="width: 10%">User Owner</th>
+                            <th style="width: 10%">Receipt</th>
+                            <th style="width: 10%">Part Request</th>
+                            <th style="width: 10%">CT Loaned</th>
+                            <th style="width: 12%">New CT Return</th>
+                            <th style="width: 10%">Status</th>
+                            <th style="width: 7%">Start Date</th>
+                            <th style="width: 7%">End Date</th>
+                            <th style="width: 19%">Note</th>
+                        </tr>
+                    </thead>
                     
-                    <td>{{$ticket->user_owner->fullname ?? 'N/A'}}</td>
-                    <td>{{$ticket->ticket_receipt}}</td>
-                    <td>{{$ticket->part_request}}</td>
-                    <td>{{$ticket->ct_loaned}}</td>
-                    <td>{{$ticket->new_ct_return}}</td>
-                    <td>
-                        @switch($ticket->status)
-                            @case('1')
-                                Requested
-                                @break
 
-                            @case('2')
-                                Borrowed, not returned yet
-                                @break
 
-                            @case('3')
-                                Returned
-                                @break
 
-                            @case('4')
-                                Returned
-                                @break
-
-                            @default
-                                Unknown
-                        @endswitch
-
-                    </td>
-                    <td>{{$ticket->start_date}}</td>
-                    <td>{{$ticket->end_date}}</td>
-                    <td>{{$ticket->note}}</td>
+                    <tbody>
 
                     
-                </tr>
-                @endforeach
-            </table>
+                        @foreach($item_details->loan_unit_part_tickets as $ticket)
+                        <tr>
+                            <!-- <td>
+                                
+                                <button type="submit"><i class="ti-na"></i></button>
+                                @if($ticket->ticket_id != null)
+                                <a href="/loan-unit-part-ticket-details/{{ $ticket->ticket_id }}">
+                                    <button><i class="ti-arrow-right" ></i></button>
+                                </a>
+                                @endif
+
+                            </td> -->
+                            <td class="action-cell">
+                                <div class="action-buttons">
+
+                                    <button type="button" class="action-btn">
+                                        <i class="ti-na"></i>
+                                    </button>
+
+                                    @if($ticket->ticket_id != null)
+                                        <a
+                                            href="/loan-unit-part-ticket-details/{{ $ticket->ticket_id }}"
+                                            class="action-btn"
+                                        >
+                                            <i class="ti-arrow-right"></i>
+                                        </a>
+                                    @endif
+
+                                </div>
+                            </td>
+                            
+                            <td>{{$ticket->user_owner->fullname ?? 'N/A'}}</td>
+                            <td>{{$ticket->ticket_receipt}}</td>
+                            <td>{{$ticket->part_request}}</td>
+                            <td>{{$ticket->ct_loaned}}</td>
+                            <td>{{$ticket->new_ct_return}}</td>
+                            <td>
+                                @switch($ticket->status)
+                                    @case('1')
+                                        Requested
+                                        @break
+
+                                    @case('2')
+                                        Borrowed, not returned yet
+                                        @break
+
+                                    @case('3')
+                                        Returned
+                                        @break
+
+                                    @case('4')
+                                        Returned
+                                        @break
+
+                                    @default
+                                        Unknown
+                                @endswitch
+
+                            </td>
+                            <td>{{$ticket->start_date}}</td>
+                            <td>{{$ticket->end_date}}</td>
+                            <td>{{$ticket->note}}</td>
+
+                            
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <div class="container-fluid px-4 py-4">

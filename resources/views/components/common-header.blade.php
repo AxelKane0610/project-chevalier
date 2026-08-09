@@ -1,4 +1,4 @@
-<div class="common-header-navigation">
+<div class="common-header-navigation vh-10">
     <h1>{{ $title }}</h1>
     <ul class="common-header-navigation-item-container">
         {{ $slot }}

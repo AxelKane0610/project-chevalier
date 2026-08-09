@@ -24,15 +24,27 @@ class TTEXTicketsController extends Controller
             ])
             ->get();
 
-            $tickets_booked_today = TTEX_Tickets_Model::where('booking_date', now('UTC')->toDateString())->get();
+            $tickets_booked_today = TTEX_Tickets_Model::where('booking_date', now('UTC')->toDateString())->paginate(10);
+            // $tickets_def_part_pending = TTEX_Tickets_Model::where('status', '1')
+            // ->whereIn('part_status', ['2', '3'])
+            // ->orderBy('part_return_deadline', 'asc')
+            // ->paginate(10)
+            // ->groupBy(function ($ticket) {
+            //     return \Carbon\Carbon::parse($ticket->part_return_deadline)
+            //         ->format('Y-m-d');
+            // });
+
             $tickets_def_part_pending = TTEX_Tickets_Model::where('status', '1')
-            ->whereIn('part_status', ['2', '3'])
-            ->orderBy('part_return_deadline', 'asc')
-            ->get()
-            ->groupBy(function ($ticket) {
-                return \Carbon\Carbon::parse($ticket->part_return_deadline)
-                    ->format('Y-m-d');
-            });
+                ->whereIn('part_status', ['2', '3'])
+                ->orderBy('part_return_deadline', 'asc')
+                ->paginate(10);
+
+            // Nhóm dữ liệu và cập nhật lại tập hợp items bên trong Paginator
+            $tickets_def_part_pending->setCollection(
+                $tickets_def_part_pending->getCollection()->groupBy(function ($ticket) {
+                    return \Carbon\Carbon::parse($ticket->part_return_deadline)->format('Y-m-d');
+                })
+            );
             return view('ttex-tickets-menu', compact('tickets', 'tickets_booked_today', 'tickets_good_part_pending', 'tickets_def_part_pending'));
         } 
         else {
@@ -46,7 +58,7 @@ class TTEXTicketsController extends Controller
             $tickets_booked_today = TTEX_Tickets_Model::where([
                 ['booking_date', now('UTC')->toDateString()],
                 ['user_id', auth()->id()],
-            ])->get();
+            ])->paginate(10);
 
             $tickets_def_part_pending = TTEX_Tickets_Model::where([
                 ['status', '1'],
@@ -54,7 +66,7 @@ class TTEXTicketsController extends Controller
             ])
             ->whereIn('part_status', ['2', '3'])
             ->orderBy('part_return_deadline', 'asc')
-            ->get()
+            ->paginate(10)
             ->groupBy(function ($ticket) {
                 return \Carbon\Carbon::parse($ticket->part_return_deadline)
                     ->format('Y-m-d');
@@ -64,6 +76,48 @@ class TTEXTicketsController extends Controller
 
         }
         
+    }
+
+    public function Filter_Tickets_Booked_Today_Table(Request $request)
+    {
+        if (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_TTEX_TICKET_ADMIN')) {
+            $query = TTEX_Tickets_Model::with('user_owner')->where('booking_date', now('UTC')->toDateString());
+        } else {
+            $query = TTEX_Tickets_Model::with('user_owner')
+                ->where('user_id', auth()->id())
+                ->where('booking_date', now('UTC')->toDateString());
+        }
+
+        
+        if ($request->filled('search')) {
+            $search = $request->search;
+
+            $query->where(function ($q) use ($search) {
+                $q->where('ttex_bill', 'like', "%{$search}%")
+                    ->orWhere('shipment_description', 'like', "%{$search}%")
+                    ->orWhere('sender_info', 'like', "%{$search}%")
+                    ->orWhere('receiver_info', 'like', "%{$search}%")
+                    ;
+                    
+            });
+        }
+
+
+        if ($request->filled('part_status')) {
+            $query->where('part_status', $request->part_status);
+        }
+
+
+        $tickets_booked_today = $query
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
+
+        // AJAX Search
+        if ($request->ajax()) {
+            return view('tables.ttex-tickets-booked-today', compact('tickets_booked_today'))->render();
+        }
+
     }
 
     public function Filter_All_Tickets_Table(Request $request)
@@ -77,7 +131,9 @@ class TTEXTicketsController extends Controller
 
             $query->where(function ($q) use ($search) {
                 $q->where('ttex_bill', 'like', "%{$search}%")
-                    ->orWhere('shipment_description', 'like', "%{$search}%");
+                    ->orWhere('shipment_description', 'like', "%{$search}%")
+                    ->orWhere('sender_info', 'like', "%{$search}%")
+                    ->orWhere('receiver_info', 'like', "%{$search}%");
             });
         }
 
@@ -86,8 +142,8 @@ class TTEXTicketsController extends Controller
             $query->where('status', $request->status);
         }
 
-        if ($request->filled('partStatus')) {
-            $query->where('part_status', $request->partStatus);
+        if ($request->filled('part_status')) {
+            $query->where('part_status', $request->part_status);
         }
 
 
@@ -101,6 +157,45 @@ class TTEXTicketsController extends Controller
             return view('tables.ttex-all-tickets-table', compact('tickets'))->render();
         }
 
+    }
+
+    public function Filter_Def_Part_Tickets_Table(Request $request) {
+        
+        $query = TTEX_Tickets_Model::with('user_owner')
+            ->where('status', '1')
+            ->whereIn('part_status', ['2', '3']);
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+
+            $query->where(function ($q) use ($search) {
+                $q->where('ttex_bill', 'like', "%{$search}%")
+                    ->orWhere('shipment_description', 'like', "%{$search}%")
+                    ->orWhere('sender_info', 'like', "%{$search}%")
+                    ->orWhere('receiver_info', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('part_status')) {
+            $query->whereIn('part_status', (array)$request->part_status);
+        }
+
+        $tickets_def_part_pending = $query
+            ->orderBy('part_return_deadline', 'asc')
+            ->paginate(10)
+            ->withQueryString();
+
+        // Nhóm dữ liệu và cập nhật lại tập hợp items bên trong Paginator
+        $tickets_def_part_pending->setCollection(
+            $tickets_def_part_pending->getCollection()->groupBy(function ($ticket) {
+                return \Carbon\Carbon::parse($ticket->part_return_deadline)->format('Y-m-d');
+            })
+        );
+
+        // AJAX Search
+        if ($request->ajax()) {
+            return view('tables.ttex-def-part-tickets-table', compact('tickets_def_part_pending'))->render();
+        }
     }
 
     public function Create_TTEX_Ticket(Request $request){
@@ -538,12 +633,14 @@ class TTEXTicketsController extends Controller
                     'booking_date' => today(),
                     'status' => '2',
                 ]);
-                tracking_info_service::add(
-                    $def_part_tickets->first()->id,
-                    auth()->id(),
-                    2, //1 là mã cho software ticket
-                    'completed booking ticket at',
-                );
+                foreach ($def_part_tickets as $ticket) {
+                    tracking_info_service::add(
+                        $ticket->id,
+                        auth()->id(),
+                        2, // 1 là mã cho software ticket, 2 là mã cho def part ticket
+                        'completed booking ticket at'
+                    );
+                }
                 return response()->json([
                     'success' => true,
                     'message' => 'Selected tickets booked successfully.',
