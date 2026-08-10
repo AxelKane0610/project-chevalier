@@ -66,11 +66,13 @@ class TTEXTicketsController extends Controller
             ])
             ->whereIn('part_status', ['2', '3'])
             ->orderBy('part_return_deadline', 'asc')
-            ->paginate(10)
-            ->groupBy(function ($ticket) {
-                return \Carbon\Carbon::parse($ticket->part_return_deadline)
-                    ->format('Y-m-d');
-            });
+            ->paginate(10);
+
+            $tickets_def_part_pending->setCollection(
+                $tickets_def_part_pending->getCollection()->groupBy(function ($ticket) {
+                    return \Carbon\Carbon::parse($ticket->part_return_deadline)->format('Y-m-d');
+                })
+            );
 
             return view('ttex-tickets-menu', compact('tickets', 'tickets_booked_today', 'tickets_good_part_pending', 'tickets_def_part_pending'));
 
