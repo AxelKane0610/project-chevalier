@@ -62,14 +62,14 @@
 
                             <button class="btn btn-primary table-btn w-100 position-relative" id="show-all-training-courses-btn" data-target = "all-training-courses-container">
                                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                    {{$all_training_courses->count()}}
+                                    {{$all_training_courses->total()}}
                                 </span>
                                 <i class="ti-list-ol"></i> Show All Training Courses
                             </button>
 
                             <button class="btn btn-primary table-btn w-100 position-relative" id="show-team-country-training-tickets-btn" data-target = "all-country-team-training-tickets-container">
                                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                    {{$all_country_team_training_tickets->count()}}
+                                    {{$all_country_team_training_tickets->total()}}
                                 </span>
                                 <i class="ti-list-ol"></i> Check your teams/country training status
                             </button>
@@ -182,7 +182,7 @@
                                     <h2>Training No</h2>
                                     <select class="ajax-filter" name="training_no" id="all-training-courses-training-no-filter">
                                         <option value="">All</option>
-                                        @foreach($all_training_courses as $training_course)
+                                        @foreach($all_training_courses->unique('training_no') as $training_course)
                                             <option value="{{ $training_course->training_no }}">{{ $training_course->training_no }}</option>
                                         @endforeach
                                         
@@ -221,7 +221,7 @@
                                     <h2>Training No</h2>
                                     <select id="all-training-tickets-training-no-filter" name="training_no" class="ajax-filter">
                                         <option value="">All</option>
-                                        @foreach($all_training_courses as $training_course)
+                                        @foreach($all_training_courses->unique('training_no') as $training_course)
                                             <option value="{{ $training_course->training_no }}">{{ $training_course->training_no }}</option>
                                         @endforeach
                                         

@@ -436,18 +436,29 @@ class TrainingController extends Controller
     public function Send_Verify_Training_Ticket($id)
     {
         try {
-            $ticket = Training_Tickets_Model::with('user_owner')->findOrFail($id);
-            VerifyTrainingTicketJob::dispatch($id);
-            tracking_info_service::add(
-                $ticket->id,
-                auth()->id(),
-                5,
-                'sent verify training at'
-            );
-            return response()->json([
-                'success' => true,
-                'message' => 'Hệ thống đã tiếp nhận chứng chỉ và đang kiểm tra ngầm. Vui lòng tải lại trang sau ít phút để xem kết quả.'
-            ], 200);
+            $ticket = Training_Tickets_Model::with('user_owner', 'active_attachments')->findOrFail($id);
+            $training_courses = Training_Courses_Model::where('training_no', $ticket->training_no);
+
+            if($ticket->active_attachments()->count() == $training_courses->count() )
+            {
+                VerifyTrainingTicketJob::dispatch($id);
+                tracking_info_service::add(
+                    $ticket->id,
+                    auth()->id(),
+                    5,
+                    'sent verify training at'
+                );
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Hệ thống đã tiếp nhận chứng chỉ và đang kiểm tra ngầm. Vui lòng tải lại trang sau ít phút để xem kết quả.'
+                ], 200);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Vui lòng kiểm tra lại certificate do số lượng nộp không trùng khớp với số lượng course.'
+                ], 500);
+            }
+            
         }
         catch (\Exception $e) {
             return response()->json([
