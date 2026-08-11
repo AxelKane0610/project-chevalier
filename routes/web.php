@@ -48,6 +48,8 @@ Route::middleware(['auth'])->group(function () {
     ->middleware('auth')
     ->name('user.change-password');
 
+    Route::post('/user/edit-upload-certificates/{id}', [UserController::class, 'Edit_Upload_Training_Ticket_Profile_Page'])->name('user.edit-upload-certificates');
+
     // Route::get('/attachments/{folder}/{id}/{filename}', [AttachmentController::class, 'show']);
     Route::get('/attachments/{path}', [AttachmentController::class, 'show'])
     ->where('path', '.*');
@@ -104,7 +106,7 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/submit-training-menu/filter-all-courses-table', [TrainingController::class, 'Filter_All_Courses_Table']);
         Route::get('/submit-training-menu/filter-all-country-team-training-tickets-table', [TrainingController::class, 'Filter_All_Country_Team_Training_Tickets_Table']);
-
+        
 
         
     });

@@ -2,6 +2,7 @@
 @import 'tailwindcss';
 @import './table.css';
 @import './header.css';
+@import './card.css';
 @layer base {
     h1 {
         @apply text-4xl font-bold;
@@ -566,24 +567,7 @@ h1, h2, h3 {
     justify-content: center;
 }
 
-.card {
-    background-color: white;
-    height: 600px;
-    border-radius: 25px;
-    box-shadow: 0 4px 10px 10px rgba(0,0,0,0.1);
-    display: flex;
-    flex-direction: column;
-    /* align-items: center; */
-    /* justify-content: center; */
-    gap: 10px;
 
-}
-
-.card-button-container {
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-}
 
 
 
@@ -595,11 +579,11 @@ h1, h2, h3 {
     padding:24px;
 }
 
-.info-grid{
+/* .info-grid{
     display:grid;
     grid-template-columns:repeat(2,1fr);
     gap:24px;
-}
+} */
 
 .info-item{
     display:flex;
@@ -760,15 +744,7 @@ select#role-select {
 }
 
 
-.card{
-    
-    transition:.3s;
-}
 
-.card:hover{
-    transform:translateY(-8px);
-    box-shadow:0 .8rem 2rem rgba(0,0,0,.18)!important;
-}
 
 .ticket-img-description{
     height:240px;
@@ -784,13 +760,7 @@ select#role-select {
     object-fit:contain;
 }
 
-.card h4{
-    min-height:70px;
-}
 
-.card p{
-    min-height:60px;
-}
 
 .main-menu col {
     width: 300px;

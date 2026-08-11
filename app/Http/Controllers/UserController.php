@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Attachments_Model;
+
 
 use function Laravel\Prompts\alert;
 
@@ -162,9 +164,12 @@ class UserController extends Controller
 
     public function User_Profile()
     {
-        $user = User::with('leader')->findOrFail(auth()->id());
-        
-        return view('user-profile', compact('user'));
+        $user = User::with('leader')
+        ->findOrFail(auth()->id());
+
+        $attachments = $user->active_attachments()
+        ->paginate(10);
+        return view('user-profile', compact('user', 'attachments'));
     }
 
     public function Reset_Password ($id){
@@ -215,6 +220,53 @@ class UserController extends Controller
             ], 500);
         }
     }
+
+    public function Edit_Upload_Training_Ticket_Profile_Page(Request $request, $id)
+    {
+        try {
+            
+
+            $validate_data = $request->validate([
+                'attachments.*' => 'file|max:20480|mimes:pdf'
+            ]);
+
+            if ($request->hasFile('attachments')) { //Kiểm tra xem có file nào được upload lên không
+
+                foreach ($request->file('attachments') as $file) { //Duyệt qua từng file được upload lên
+                    $originalName = $file->getClientOriginalName();
+                    $folderPath = '5/' . $id . '/independent_certificates';
+                    $filePath = $file->storeAs($folderPath, $originalName, 'attachments'); // Lưu file vào thư mục 'attachments' đã được cấu hình trong config/filesystems.php, với đường dẫn là 'attachments/1/{ticket_id}/{original_file_name}'
+
+                    Attachments_Model::create([
+                        'type_of_ticket' => 5, // Giả sử 1 là mã cho software ticket
+                        'file_path' => $filePath,
+                        'name' => $originalName, // Lưu tên gốc của file vào cơ sở dữ liệu
+                        'user_id' => $id
+                    ]);
+
+                }
+            }
+
+
+            if ($request->has('delete_files')) {
+                // Cập nhật tất cả các ID được tích chọn thành status = 0 trong 1 câu lệnh duy nhất
+                Attachments_Model::whereIn('id', $request->input('delete_files'))->update(['status' => '0']);
+            }
+
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Certificates edit/upload thành công ',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to edit/upload certificates due to ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+
 
     
 

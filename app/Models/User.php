@@ -49,6 +49,14 @@ class User extends Authenticatable
         return $this->belongsTo(User::class, 'leader_id');
     }
 
+    public function active_attachments()
+    {
+        return $this->hasMany(Attachments_Model::class, 'user_id')
+            ->where('type_of_ticket', 5)
+            ->where('status', '1')
+            ->whereNull('comment_id');
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *
