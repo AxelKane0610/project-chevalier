@@ -2,6 +2,14 @@
     'attachments'
 ])
 
+@if(method_exists($attachments, 'links'))
+
+    <div class="d-flex justify-content-center mt-3">
+        {{ $attachments->links() }}
+    </div>
+
+@endif
+<div id="attachments-container">
 @if($attachments->isEmpty())
 
     <div class="border rounded-4 p-5 bg-light text-center mt-4">
@@ -64,4 +72,5 @@
     </table>
 
 @endif
+</div>
 
