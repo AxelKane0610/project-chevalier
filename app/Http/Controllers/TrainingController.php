@@ -23,18 +23,23 @@ class TrainingController extends Controller
     public function index()
     {
         $all_training_courses = Training_Courses_Model::query()->paginate(10);
-        $all_your_training_tickets = Training_Tickets_Model::where('user_id', auth()->id())->get();
+        $all_training_no_numbers = Training_Courses_Model::query()
+        ->select('training_no')
+        ->distinct()
+        ->orderBy('training_no')
+        ->pluck('training_no');
+        $all_your_training_tickets = Training_Tickets_Model::where('user_id', auth()->id())->paginate(10);
         $pending_tickets = Training_Tickets_Model::whereIn('status', ['1', '2', '3'])->where('user_id', auth()->id())->get();
         if (auth()->user()->hasRole('ROLE_SUPER_ADMIN')) {
             $all_country_team_training_tickets = Training_Tickets_Model::query()->paginate(10);
-            return view('submit-training-menu', compact('pending_tickets', 'all_your_training_tickets', 'all_country_team_training_tickets', 'all_training_courses'));
+            return view('submit-training-menu', compact('pending_tickets', 'all_your_training_tickets', 'all_country_team_training_tickets', 'all_training_courses', 'all_training_no_numbers'));
         } else {
 
             $all_country_team_training_tickets = Training_Tickets_Model::whereHas('user_owner', function ($query) { //Lọc ra những ticket có user_owner có leader_id là id của user đang đăng nhập, tức là lọc ra những ticket của những user mà user đang đăng nhập là leader của họ, rồi mới lấy ra những ticket đó để trả về view
                 $query->where('leader_id', auth()->id());
             })->paginate(10);
 
-            return view('submit-training-menu', compact('pending_tickets', 'all_your_training_tickets', 'all_country_team_training_tickets', 'all_training_courses'));
+            return view('submit-training-menu', compact('pending_tickets', 'all_your_training_tickets', 'all_country_team_training_tickets', 'all_training_courses', 'all_training_no_numbers'));
         }
     }
 
@@ -83,6 +88,35 @@ class TrainingController extends Controller
             return view(
                 'tables.all-training-courses-table',
                 compact('all_training_courses')
+            )->render();
+        }
+    }
+
+    public function Filter_Your_Training_Tickets_Table(Request $request)
+    {
+        $query = Training_Tickets_Model::query()->where('user_id', auth()->id());;
+
+
+        // Training No Filter
+        if ($request->filled('training_no')) {
+            $query->where('training_no', $request->training_no);
+        }
+
+        if ($request->filled('status')) {
+
+            $query->where('status', $request->status);
+        }
+
+        $all_your_training_tickets = $query
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
+
+        if ($request->ajax()) {
+
+            return view(
+                'tables.all-individual-training-tickets',
+                compact('all_your_training_tickets')
             )->render();
         }
     }
@@ -144,25 +178,34 @@ class TrainingController extends Controller
                 'start_date' => 'required|date',
                 'end_date' => 'required|date|after_or_equal:start_date',
             ]);
+            
 
             DB::transaction(function () use ($request) {
 
                 // Lấy Training No lớn nhất
                 $trainingNo = (Training_Courses_Model::max('training_no') ?? 0) + 1;
+                $courses = [];
+
 
                 // Lưu từng dòng
                 foreach ($request->course_id as $index => $courseId) {
-
+                    $courseName = $request->course_name[$index];
                     Training_Courses_Model::create([
                         'training_no' => $trainingNo,
                         'course_id' => $courseId,
-                        'course_name' => $request->course_name[$index],
+                        'course_name' => $courseName,
                         'start_date' => $request->start_date,
                         'end_date' => $request->end_date,
                     ]);
+
+                    $courses[] = [
+                        'course_id' => $courseId,
+                        'course_name' => $courseName,
+                    ];
                 }
 
                 $users = User::whereIn('team', ['2', '3'])->get();
+
                 foreach ($users as $user) {
 
                     Training_Tickets_Model::create([
@@ -173,7 +216,29 @@ class TrainingController extends Controller
                         'end_date' => $request->end_date,
                     ]);
                 }
+
+                $emails = $users
+                ->pluck('email')
+                ->filter()
+                ->unique()
+                ->values()
+                ->toArray();
+
+                $payload = [
+                    'training_no' => $trainingNo,
+                    'start_date' => $request->start_date,
+                    'end_date' => $request->end_date,
+                    'emails' => $emails,
+                    'courses' => $courses,
+                ];
+
+                Http::post(
+                    config('services.api_service.request_training_url'),
+                    $payload
+                );
             });
+
+            
 
             return response()->json([
                 'success' => true,
@@ -259,31 +324,6 @@ class TrainingController extends Controller
             ], 500);
         }
     }
-
-    private function normalizeCourse($text)
-    {
-        $text = strtolower($text);
-
-        $removeWords = [
-            "\r",
-            "\n",
-            "\t"
-        ];
-
-        // Chuẩn hóa khoảng trắng và dấu gạch
-        $text = str_replace(
-            ["\xc2\xa0", "-", "–", "—"],
-            [" ", "-", "-", "-"],
-            $text
-        );
-
-        $text = str_replace($removeWords, '', $text);
-
-        $text = preg_replace('/\s+/', ' ', $text);
-
-        return trim($text);
-    }
-
 
 
 

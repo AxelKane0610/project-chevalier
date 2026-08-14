@@ -106,6 +106,7 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/submit-training-menu/filter-all-courses-table', [TrainingController::class, 'Filter_All_Courses_Table']);
         Route::get('/submit-training-menu/filter-all-country-team-training-tickets-table', [TrainingController::class, 'Filter_All_Country_Team_Training_Tickets_Table']);
+        Route::get('/submit-training-menu/filter-all-your-training-tickets-table', [TrainingController::class, 'Filter_Your_Training_Tickets_Table']);
         
 
         

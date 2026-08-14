@@ -4,14 +4,16 @@
 
 
 <table id="all-training-courses-table" class="common-table mh-100" width="100%" >
-    <tr>
-        <th width="10%">Training No</th>
-        <th width="20%">Course ID</th>
-        <th width="20%">Course Name</th>
-        <th width="20%">Start Date</th>
-        <th width="20%">End Date</th>
+    <thead>
+        <tr>
+            <th width="10%">Training No</th>
+            <th width="20%">Course ID</th>
+            <th width="20%">Course Name</th>
+            <th width="20%">Start Date</th>
+            <th width="20%">End Date</th>
 
-    </tr>
+        </tr>
+    </thead>
 
     <tbody>
         @foreach($all_training_courses as $training_course)

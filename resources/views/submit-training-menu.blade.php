@@ -42,9 +42,11 @@
                 <div class="container-fluid my-5 flex-grow-1">
                     <div class="row flex-grow-1 h-100">
                         <div class="col-2 d-flex justify-content-center align-items-center flex-column gap-3">
+                            @if (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_TRAINING_ADMIN'))
                             <form action=""  >
                                 <button type="button" class="js-input-required-btn" data-target="create-training-request"><i class="ti-plus"></i> Request Training</button>
                             </form>
+                            @endif
 
                             <button class="btn btn-primary table-btn w-100 position-relative" id="show-pending-training-tickets-btn" data-target = "pending-training-tickets-container">
                                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
@@ -125,50 +127,36 @@
                             </div>
 
                             <div class="bg-white p-3 rounded shadow-sm ticket-table d-none" id="all-training-tickets-container">
-
-                                <h2>All tickets</h2>
-                                <table id="all-training-tickets-table" class="common-table mh-100" width="100%" >
-
-                                    <tr>
-                                        <th width="5%"></th>
-                                        <th width="10%">User Owner</th>
-                                        <th width="20%">Training No</th>
-                                        <th width="20%">Status</th>
-                                        <th width="20%">Start Date</th>
-                                        <th width="20%">End Date</th>
-
-                                    </tr>
-                                
-                                    <tbody>
-                                        
-
-                                        @foreach($all_your_training_tickets as $ticket)
-                                            <tr>
-                                                <td>
-                                                    <button type="button" 
-                                                        class="btn btn-primary" 
-                                                        onclick="window.location.href='/training-ticket-details/{{ $ticket->id }}'">
-                                                        <i class="ti-arrow-right"></i>
-                                                    </button>
-                                                </td>
-                                                <td>{{ $ticket->user_owner->fullname }}</td>
-                                                <td>{{ $ticket->training_no }}</td>
-                                                <td>
-                                                    <span class="badge rounded-pill bg-{{ $ticket->status_data['color'] ?? 'primary' }} px-3 py-2">
-                                                        {{ $ticket->status_data['text'] }}
-                                                    </span>
-                                                </td>
-                                                <td>{{ $ticket->start_date }}</td>
-                                                <td>{{ $ticket->end_date }}</td>
-                                                
-                                                
-                                            </tr>
-
-
+                                <div class="common-table-filter">
+                                    <h2>All your tickets</h2>
+                                    <h2>Training No</h2>
+                                    <select class="ajax-filter" name="training_no" id="all-training-tickets-training-no-filter">
+                                        <option value="">All</option>
+                                        @foreach($all_training_no_numbers as $training_no_numbers)
+                                            <option value="{{ $training_no_numbers }}">{{ $training_no_numbers }}</option>
                                         @endforeach
-                                    </tbody>
+                                        
+                                    </select>
 
-                                </table>
+                                    <h2>Status</h2>
+                                    <select class="ajax-filter" name="status" id="all-training-tickets-status-filter">
+
+                                        <option value="">All</option>
+                                        <option value="1">Open</option>
+                                        <option value="2">Chưa submit</option>
+                                        <option value="3">Đã submit, chờ verify</option>
+                                        <option value="4">Completed</option>
+                                        <option value="5">Rejected</option>
+                                        
+                                    </select>
+
+                                    
+                                </div>
+
+                                <div id="all-your-training-tickets-table-container">
+                                    @include('tables.all-individual-training-tickets')
+                                </div>
+
                             </div>
 
                             <div class="bg-white p-3 rounded shadow-sm ticket-table d-none ajax-table" id="all-training-courses-container">
@@ -182,8 +170,8 @@
                                     <h2>Training No</h2>
                                     <select class="ajax-filter" name="training_no" id="all-training-courses-training-no-filter">
                                         <option value="">All</option>
-                                        @foreach($all_training_courses->unique('training_no') as $training_course)
-                                            <option value="{{ $training_course->training_no }}">{{ $training_course->training_no }}</option>
+                                        @foreach($all_training_no_numbers as $training_no_numbers)
+                                            <option value="{{ $training_no_numbers }}">{{ $training_no_numbers }}</option>
                                         @endforeach
                                         
                                     </select>
@@ -214,15 +202,14 @@
                                         <option value="3">Đã submit, chờ verify</option>
                                         <option value="4">Completed</option>
                                         <option value="5">Rejected</option>
-
                                         
                                     </select>
 
                                     <h2>Training No</h2>
                                     <select id="all-training-tickets-training-no-filter" name="training_no" class="ajax-filter">
                                         <option value="">All</option>
-                                        @foreach($all_training_courses->unique('training_no') as $training_course)
-                                            <option value="{{ $training_course->training_no }}">{{ $training_course->training_no }}</option>
+                                        @foreach($all_training_no_numbers as $training_no_numbers)
+                                            <option value="{{ $training_no_numbers }}">{{ $training_no_numbers }}</option>
                                         @endforeach
                                         
                                     </select>

@@ -39,7 +39,7 @@
                 </form>
             </li>
 
-            @if ( (($ticket_details->status == '1' || $ticket_details->status == '2') && $ticket_details->user_id == auth()->user()->id) || auth()->user()->hasRole('ROLE_SUPER_ADMIN') )
+            @if ( (($ticket_details->status == '1' || $ticket_details->status == '2') && $ticket_details->user_id == auth()->user()->id) || auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_TRAINING_ADMIN') )
                 <form id="send-verify-training-ticket" data-target="send-verify-training-ticket" class="js-input-required-btn" action="{{ route('send-verify-training-ticket', $ticket_details->id) }}" method="POST">
                     @csrf
                     @method('POST')

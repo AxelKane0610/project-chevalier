@@ -438,6 +438,20 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // ==========================================
+    // Individual Tickets
+    // ==========================================
+
+    initAjaxTable({
+
+        wrapper: 'all-training-tickets-container',
+
+        container: '#all-training-tickets-table',
+
+        url: '/submit-training-menu/filter-all-your-training-tickets-table'
+
+    });
+
+    // ==========================================
     // All Training Courses
     // ==========================================
 
