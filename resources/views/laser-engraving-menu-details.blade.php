@@ -11,9 +11,12 @@
     <body class="background-enable">
         <x-common-header title="Laser Engraving Ticket Details">
             <li>
-                <form action="/laser-engraving-menu">
-                    <button type="submit"><i class="ti-home"></i>Home</button>
-                </form>
+
+                <a href="{{ url('/laser-engraving-menu') }}" class="button">
+                    <button><i class="ti-home"></i>
+                    Home
+                    </button>
+                </a>
             </li>
 
             <li>
@@ -34,9 +37,12 @@
                 
             </li>
             <li>
-                <form action="/main-menu">
-                    <button type="submit"><i class="ti-layout-grid2"></i>Quick Navigation</button>
-                </form>
+                <a href="{{ url('/main-menu') }}" class="button">
+                    <button><i class="ti-layout-grid2"></i>
+                    Quick Navigation
+                    </button>
+                </a>
+                
             </li>
             @switch($ticket->status)
                 @case(1)
@@ -50,10 +56,8 @@
                         </li>
                         
                         <li>
-                            <form id="complete-laser-engraving-ticket" data-target="close-laser-engraving-ticket-form" class="js-input-required-btn">
-                                @csrf
-                                <button type="button"><i class="ti-check"></i>Close Ticket</button>
-                            </form>
+                            <button type="button" data-target="close-laser-engraving-ticket-form" class="js-input-required-btn"><i class="ti-check"></i>Close Ticket</button>
+                            
                         </li>
                     @endif
                 @break
@@ -165,7 +169,7 @@
 
                     <x-slot:footer>
                         @if((($ticket->status == '1') && $ticket->user_id == auth()->user()->id) || (auth()->user()->hasRole('ROLE_SUPER_ADMIN')))
-                        <button type="button" class="js-input-required-btn" data-target="edit-laser-engraving-ticket-details"><i class="ti-pencil"></i> Edit</button>
+                            <button type="button" class="js-input-required-btn" data-target="edit-laser-engraving-ticket-details"><i class="ti-pencil"></i> Edit</button>
                         @endif
                     </x-slot:footer>
 

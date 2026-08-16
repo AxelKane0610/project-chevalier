@@ -10,9 +10,11 @@
     <body class="background-enable">
         <x-common-header title="Loan Units & Parts Ticket Details">
             <li>
-                <form action="/loan-unit-part-menu">
-                    <button type="submit"><i class="ti-home"></i>Home</button>
-                </form>
+                <a href="{{ url('/loan-unit-part-menu') }}" class="button">
+                    <button><i class="ti-home"></i>
+                    Home
+                    </button>
+                </a>
             </li>
 
             <li>
@@ -34,23 +36,23 @@
             </li>
             
             <li>
-                <form action="/main-menu">
-                    <button type="submit"><i class="ti-layout-grid2"></i>Quick Navigation</button>
-                </form>
+                <a href="{{ url('/main-menu') }}" class="button">
+                    <button><i class="ti-layout-grid2"></i>
+                    Quick Navigation
+                    </button>
+                </a>
             </li>
             @if( ($ticket->status == '1' || $ticket->status == '2') && $ticket->user_id == auth()->user()->id)
                 <li>
-                    <form class="js-input-required-btn" data-target="add-loan-unit-part">
-                        <button type="button"><i class="ti-plus"></i> Add part</button>
-                    </form>
+                    <button type="button" class="js-input-required-btn" data-target="add-loan-unit-part"><i class="ti-plus"></i> Add part</button>
+                    
                 </li>
             @endif
 
             @if((auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_LOAN_UNIT_ADMIN')) && ($ticket->status == '1' || $ticket->status == '2'))
                 <li>
-                    <form class="js-input-required-btn" data-target="close-loan-unit-part-ticket" action="" method="PATCH">
-                        <button type="button" ><i class="ti-check"></i>Close Ticket</button>
-                    </form>
+                    <button type="button" class="js-input-required-btn" data-target="close-loan-unit-part-ticket" ><i class="ti-check"></i>Close Ticket</button>
+                    
                 </li>
             
             @endif
@@ -76,10 +78,11 @@
                 @foreach($ticket->parts_details as $parts)
                 <tr>
                     <td>
-                        @if($parts->status == '1' && $ticket->user_id == auth()->user()->id && ($ticket->status == '1' || $ticket->status == '2'))
-                            <form class="js-input-required-btn" data-target="edit-loan-unit-part-details" action="" method="PATCH">
+                        <div class="d-flex justify-content-center align-items-center gap-2 flex-row">
+                            @if($parts->status == '1' && $ticket->user_id == auth()->user()->id && ($ticket->status == '1' || $ticket->status == '2'))
+                                
                                 <button type="button" 
-                                class="btn-edit-part"
+                                class="btn-edit-part js-input-required-btn"
                                 data-id="{{ $parts->id }}"
                                 data-receipt = "{{$parts->ticket_receipt}}"
                                 data-status ="{{ $parts->status }}"
@@ -92,28 +95,29 @@
                                 data-start_date="{{ $parts->start_date }}"
                                 data-end_date="{{ $parts->end_date }}"
                                 data-note="{{ $parts->note }}"
-                                
+                                data-target="edit-loan-unit-part-details"
                                 ><i class="ti-pencil"></i></button>
-                            </form>
-                        @endif
+                                
+                            @endif
 
-                        @if((auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_LOAN_UNIT_ADMIN')) && $parts->status == '1' && ($ticket->status == '1' || $ticket->status == '2'))
-                            <form class="js-input-required-btn" data-target="issue-loan-unit-part" action="" method="PATCH">
-                                <button type="button" class="issue-loan-unit-part-btn" data-id="{{ $parts->id }}"><i class="ti-hand-point-right"></i></button>
-                            </form>
-                        @endif
+                            @if((auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_LOAN_UNIT_ADMIN')) && $parts->status == '1' && ($ticket->status == '1' || $ticket->status == '2'))
+                                
+                                <button type="button" class="issue-loan-unit-part-btn js-input-required-btn" data-target="issue-loan-unit-part" data-id="{{ $parts->id }}"><i class="ti-hand-point-right"></i></button>
+                                
+                            @endif
 
-                        @if((auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_LOAN_UNIT_ADMIN')) && $parts->status == '2' && ($ticket->status == '1' || $ticket->status == '2'))
-                            <form class="js-input-required-btn" data-target="return-loan-unit-part" action="" method="PATCH">
-                                <button type="button" class="return-loan-unit-part-btn" data-id="{{ $parts->id }}"><i class="ti-check"></i></button>
-                            </form>
-                        @endif
+                            @if((auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_LOAN_UNIT_ADMIN')) && $parts->status == '2' && ($ticket->status == '1' || $ticket->status == '2'))
+                                
+                                <button type="button" class="return-loan-unit-part-btn js-input-required-btn" data-target="return-loan-unit-part" data-id="{{ $parts->id }}"><i class="ti-check"></i></button>
+                                
+                            @endif
 
-                        @if((auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_LOAN_UNIT_ADMIN')) && ($parts->status == '1'))
-                            <form class="js-input-required-btn" data-target="cancel-loan-unit-part" id="cancel-loan-unit-part" method="PATCH" action="{{ route('cancel-loan-unit-part', $parts->id ) }}">
-                                <button type="submit" class="cancel-loan-unit-part-btn" "><i class="ti-close"></i></button>
-                            </form>
-                        @endif
+                            @if((auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_LOAN_UNIT_ADMIN')) && ($parts->status == '1'))
+                                <form class="js-input-required-btn" data-target="cancel-loan-unit-part" id="cancel-loan-unit-part" method="PATCH" action="{{ route('cancel-loan-unit-part', $parts->id ) }}">
+                                    <button type="submit" class="cancel-loan-unit-part-btn" ><i class="ti-close"></i></button>
+                                </form>
+                            @endif
+                        </div>
 
                         
                         

@@ -13,9 +13,11 @@
 
             <x-common-header title="Thermal Event Exceptional">
                 <li>
-                    <form action="/main-menu">
-                        <button type="submit"><i class="ti-home"></i>Home</button>
-                    </form>
+                    <a href="{{ url('/main-menu') }}" class="button">
+                        <button><i class="ti-home"></i>
+                        Home
+                        </button>
+                    </a>
                 </li>
                 <li>
                     <div class="search-container">
@@ -41,9 +43,8 @@
                 <div class="container-fluid my-5 flex-grow-1">
                     <div class="row flex-grow-1 h-100">
                         <div class="col-2 d-flex justify-content-center align-items-center flex-column gap-3">
-                            <form action=""  >
-                                <button type="button" class="js-input-required-btn" data-target="create-thermal-event-ticket-form"><i class="ti-plus"></i> Create Ticket</button>
-                            </form>
+                            <button type="button" class="js-input-required-btn" data-target="create-thermal-event-ticket-form"><i class="ti-plus"></i> Create Ticket</button>
+                            
 
                             <button class="btn btn-primary table-btn w-100 position-relative" id="show-pending-thermal-event-tickets-btn" data-target = "pending-thermal-event-tickets-container">
                                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">

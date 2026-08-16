@@ -11,9 +11,11 @@
 
         <x-common-header title="Laser Engraving Support">
             <li>
-                <form action="/main-menu">
-                    <button type="submit"><i class="ti-home"></i>Home</button>
-                </form>
+                <a href="{{ url('/main-menu') }}" class="button">
+                    <button><i class="ti-home"></i>
+                    Home
+                    </button>
+                </a>
             </li>
             <li>
                 <div class="search-container">
@@ -40,9 +42,7 @@
                 <div class="row flex-grow-1 h-100">
 
                     <div class="col-2 d-flex justify-content-center align-items-center flex-column gap-3">
-                    <form action=""  >
                         <button type="button" class="js-input-required-btn" id="create-laser-engraving-ticket-btn" data-target="create-laser-engraving-ticket-form"><i class="ti-plus"></i> Create Ticket</button>
-                    </form>
 
                     <button class="btn btn-primary table-btn w-100 position-relative" id="show-pending-laser-engraving-tickets-btn" data-target = "pending-laser-engraving-tickets-container">
                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
@@ -67,14 +67,16 @@
                         <h2>Pending Tickets</h2>
 
                         <table id="pending-laser-engraving-tickets-table" class="common-table" width="100%" >
-                            <tr>
-                                <th width="5%"></th>
-                                <th width="14%">Receipt</th>
-                                <th width="20%">Info Base</th>
-                                <th width="39%">Description</th>
-                                <th width="11%">Priority</th>
-                                <th width="11%">Status</th>
-                            </tr>
+                            <thead>
+                                <tr>
+                                    <th width="5%"></th>
+                                    <th width="14%">Receipt</th>
+                                    <th width="20%">Info Base</th>
+                                    <th width="39%">Description</th>
+                                    <th width="11%">Priority</th>
+                                    <th width="11%">Status</th>
+                                </tr>
+                            </thead>
                         
                             <tbody>
                                 @foreach ($tickets as $ticket)

@@ -162,14 +162,36 @@ class UserController extends Controller
         }
     }
 
-    public function User_Profile()
+    public function User_Profile($id)
     {
         $user = User::with('leader')
-        ->findOrFail(auth()->id());
+        ->findOrFail($id);
 
-        $attachments = $user->active_attachments()
+        $certificates = $user->active_attachments()
         ->paginate(10);
-        return view('user-profile', compact('user', 'attachments'));
+        return view('user-profile', compact('user', 'certificates'));
+    }
+
+    public function Filter_All_Certificates(Request $request, $id)
+    {
+        
+        $query = Attachments_Model::where('user_id', $id);
+
+        if ($request->filled('search')) {
+            $search = trim($request->input('search'));
+            $query->where('name', 'like', "%{$search}%");
+        }
+
+        $certificates = $query
+            ->paginate(10)
+            ->withQueryString(); // ⚡ QUAN TRỌNG: Giữ Query String trong Pagination
+
+        if ($request->ajax()) {
+            return view(
+                'tables.all-certificates-tables',
+                compact('certificates')
+            )->render();
+        }
     }
 
     public function Reset_Password ($id){

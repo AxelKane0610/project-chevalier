@@ -3,7 +3,7 @@
 </div>
 
 
-<div class="common-table-container">
+<div class="common-table-container" style="overflow-y: scroll; height: 400px;">
     <table id="all-ttex-tickets-table" class="common-table " width="100%" >
         <thead>
             <tr>

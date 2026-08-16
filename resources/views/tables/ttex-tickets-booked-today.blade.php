@@ -2,7 +2,7 @@
     {{ $tickets_booked_today->withQueryString()->links('pagination::bootstrap-5') }}
 </div>
 
-<div class="common-table-container">
+<div class="common-table-container" style="overflow-y: scroll; height: 400px;">
     <table id="ttex-tickets-booked-today-table" class="common-table" width="100%" >
         <thead>
             <tr>
@@ -23,11 +23,9 @@
                     <tr>
                         <td>
 
-                            <button type="button" 
-                                class="btn btn-primary" 
-                                onclick="window.location.href='/ttex-tickets-menu-details/{{ $ticket->id }}'">
-                                <i class="ti-arrow-right"></i>
-                            </button>
+                            <a href="/ttex-tickets-menu-details/{{ $ticket->id }}">
+                                <button><i class="ti-arrow-right" ></i></button>
+                            </a>
                         </td>
                         <td>
                             <span class="badge rounded-pill bg-{{ $ticket->shipment_type_data['color'] ?? 'primary' }} px-3 py-2">

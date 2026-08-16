@@ -10,9 +10,12 @@
     <body class="background-enable">
         <x-common-header title="Thermal Event Exceptional">
             <li>
-                <form action="/thermal-event-tickets-menu">
-                    <button type="submit"><i class="ti-home"></i>Home</button>
-                </form>
+
+                <a href="{{ url('/thermal-event-tickets-menu') }}" class="button">
+                    <button><i class="ti-home"></i>
+                    Home
+                    </button>
+                </a>
             </li>
 
             <li>
@@ -33,9 +36,11 @@
                 
             </li>
             <li>
-                <form action="/main-menu">
-                    <button type="submit"><i class="ti-layout-grid2"></i>Quick Navigation</button>
-                </form>
+                <a href="{{ url('/main-menu') }}" class="button">
+                    <button><i class="ti-layout-grid2"></i>
+                    Quick Navigation
+                    </button>
+                </a>
             </li>
 
             @switch($ticket->status)
@@ -48,9 +53,8 @@
                             </form>
                         </li>
                         <li>
-                            <form class="js-input-required-btn" data-target="add-thermal-event-parts">
-                                <button type="button"><i class="ti-plus"></i> Add part</button>
-                            </form>
+                            <button type="button" class="js-input-required-btn" data-target="add-thermal-event-parts"><i class="ti-plus"></i> Add part</button>
+                            
                         </li>
 
                     @endif
@@ -122,21 +126,24 @@
                 @foreach($ticket->parts_details as $parts)
                 <tr>
                     <td>
-                        @if($ticket->status == '1' && $ticket->user_id == auth()->user()->id)
-                            <form class="js-input-required-btn" data-target="edit-thermal-event-part-details" action="" method="PATCH">
+                        <div class="d-flex justify-content-center align-items-center gap-2 flex-row">
+                            @if($ticket->status == '1' && $ticket->user_id == auth()->user()->id)
+                                
                                 <button type="button" 
-                                class="btn-edit-part"
+                                class="btn-edit-part js-input-required-btn"
                                 data-id="{{ $parts->id }}"
                                 data-mo="{{ $parts->part_mo_number }}"
                                 data-number="{{ $parts->part_number }}"
                                 data-description="{{ $parts->part_description }}"
-                                data-ct="{{ $parts->part_ct_number }}"><i class="ti-pencil"></i></button>
-                            </form>
+                                data-ct="{{ $parts->part_ct_number }}"
+                                data-target="edit-thermal-event-part-details"><i class="ti-pencil"></i></button>
+                                
 
-                            <form class="js-input-required-btn" data-target="delete-thermal-event-part-details" id="delete-thermal-event-part-details" action="{{ route('delete-thermal-event-part-details', $parts->id) }}" method="PATCH">
-                                <button type="submit"><i class="ti-na"></i></button>
-                            </form>
-                        @endif
+                                <form class="js-input-required-btn" data-target="delete-thermal-event-part-details" id="delete-thermal-event-part-details" action="{{ route('delete-thermal-event-part-details', $parts->id) }}" method="PATCH">
+                                    <button type="submit"><i class="ti-na"></i></button>
+                                </form>
+                            @endif
+                        </div>
                     </td>
                     
                     <td>{{$parts->part_mo_number}}</td>

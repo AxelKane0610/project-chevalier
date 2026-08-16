@@ -7,12 +7,15 @@
         
     </head>
 
+
     <body class="background-enable">
         <x-common-header title="User Profile">   
             <li>
-                <form action="/main-menu">
-                    <button type="submit"><i class="ti-home"></i>Home</button>
-                </form>
+                <a href="{{ url('/main-menu') }}" class="button">
+                    <button><i class="ti-home"></i>
+                    Home
+                    </button>
+                </a>
             </li>
             <li>
                 <div class="search-container">
@@ -144,37 +147,47 @@
 
 
                 {{-- Training Certificate --}}
-                <div class="col-12 col-lg-6">
-                    <div class="card h-100 shadow-sm border-0">
-
-                        <div class="card-header bg-white border-0 text-center py-3">
-                            <h2 class="mb-0">Training Certificate</h2>
-                        </div>
-
-                        <div class="card-body p-4">
-
-                            {{-- Training certificate content --}}
-                            <x-common-attachments-table-card
-                                :attachments="$attachments"
-                            />
-                            
-                        </div>
-
-                        <div class="card-footer bg-white border-0 pb-4">
-                            <div class="d-flex justify-content-center align-items-center gap-3">
-                                
-                                <form action="" class="js-input-required-btn" data-target="edit-upload-certificates">
-                                    <button type="button" >
-                                        <i class="ti-upload"></i>
-                                        Upload Certificates
-                                    </button>
-                                </form>
-
+                
+                <div class="col-12 col-lg-6" >
+                    <div id="all-certificates-table-container" data-url="/user-profile/filter-all-certificates/{{ $user->id }}">
+                        <div class="card h-100 shadow-sm border-0">
+                        
+                            <div class="card-header bg-white border-0 text-center py-3">
+                                <h2 class="mb-0">Training Certificate</h2>
                             </div>
-                        </div>
 
+                            <div class="card-body p-4">
+                                <div class="common-table-filter">
+                                    <div class="search-box">
+                                        <i class="ti-search"></i>
+                                        <input class="ajax-search" type="text" placeholder="Search course ID of certificates" id="search-all-certificates-table">
+                                    </div>
+                                </div>
+
+                                {{-- Training certificate content --}}
+                                <div class="certificates-data-container">
+                                    @include('tables.all-certificates-tables')
+                                </div>
+                                
+                            </div>
+
+                            <div class="card-footer bg-white border-0 pb-4">
+                                <div class="d-flex justify-content-center align-items-center gap-3">
+                                    
+                                    <form action="" class="js-input-required-btn" data-target="edit-upload-certificates">
+                                        <button type="button" >
+                                            <i class="ti-upload"></i>
+                                            Upload Certificates
+                                        </button>
+                                    </form>
+
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
+                
 
             </div>
         </div>
@@ -196,22 +209,22 @@
         <x-common-ticket-form title="Edit/Upload Certificates" action1="{{route('user.edit-upload-certificates', auth()->user()->id)}}" id="edit-upload-certificates">
             <label><b>Attachments</b></label>
             
-            @if($attachments->count() > 0) 
+            @if($certificates->count() > 0) 
                 <x-common-attachments-table>
-                    @foreach($attachments as $attachment)
+                    @foreach($certificates as $certificate)
                         <tr>
                             <td>
-                                {{ $attachment->name ?? 'File đính kèm' }}
+                                {{ $certificate->name ?? 'File đính kèm' }}
                             </td>
                             <td>
 
                                 <div>
                                     
-                                    <a href="{{ asset('attachments/' . $attachment->file_path) }}" target="_blank" class="btn btn-info">
+                                    <a href="{{ asset('attachments/' . $certificate->file_path) }}" target="_blank" class="btn btn-info">
                                         <i class="ti-eye"></i>
                                     </a>
-                                    <input type="checkbox" name="delete_files[]" value="{{ $attachment->id }}" id="del_{{ $attachment->id }}">
-                                    <label for="del_{{ $attachment->id }}">
+                                    <input type="checkbox" name="delete_files[]" value="{{ $certificate->id }}" id="del_{{ $certificate->id }}">
+                                    <label for="del_{{ $certificate->id }}">
                                         Xóa
                                     </label>
                                 </div>

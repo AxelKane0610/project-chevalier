@@ -4,7 +4,7 @@ console.log("JS LOADED");
 document.addEventListener('DOMContentLoaded', function () {
 
     const buttons = document.querySelectorAll('.table-btn');
-    const tables = document.querySelectorAll('.ticket-table');
+    const tables = document.querySelectorAll('.ticket-table:not(.always-visible)');
 
     buttons.forEach(button => {
 

@@ -10,28 +10,52 @@
     <body class="background-enable">
         <x-common-header title="Spectre - Crown Item Details">
             <li>
-                <form action="/spectre-crown-warehouse-menu">
-                    <button type="submit"><i class="ti-home"></i>Home</button>
-                </form>
+                
+                <a href="{{ url('/spectre-crown-warehouse-menu') }}" class="button">
+                    <button><i class="ti-home"></i>
+                    Home
+                    </button>
+                </a>
             </li>
 
             <li>
-                <form>
-                    <button type="submit"><i class="ti-search test-js"></i>Search</button>
-                </form>
+                <div class="search-container">
+                    <form action="">
+                        <button type="button" id="btn-toggle-search" class="nav-btn search-btn">
+                            <i class="ti-search"></i> Search
+                        </button>
+
+                        <div id="search-dropdown" class="search-dropdown-box hidden">
+                            <div class="search-input-group">
+                                
+                                @livewire('quick-search-dropdown')
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                
 
             </li>
             <li>
-                <form action="/main-menu">
-                    <button type="submit"><i class="ti-layout-grid2"></i>Quick Navigation</button>
-                </form>
+
+                <a href="{{ url('/main-menu') }}" class="button">
+                    <button><i class="ti-layout-grid2"></i>
+                    Quick Navigation
+                    </button>
+                </a>
             </li>
 
             @if(auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_LOAN_UNIT_ADMIN'))
                 <li>
-                    <form class="js-input-required-btn" data-target="asset-export" action="" method="POST">
-                        <button type="button"><i class="ti-angle-double-right"></i>Export</button>
-                    </form>
+                    <button
+                        type="button"
+                        class="js-input-required-btn"
+                        data-target="asset-export"
+                    >
+                        <i class="ti-angle-double-right"></i>
+                        Export
+                    </button>
                 </li>
             @endif
         </x-common-header>
@@ -53,25 +77,13 @@
                             <th style="width: 19%">Note</th>
                         </tr>
                     </thead>
-                    
-
-
 
                     <tbody>
 
                     
                         @foreach($item_details->loan_unit_part_tickets as $ticket)
                         <tr>
-                            <!-- <td>
-                                
-                                <button type="submit"><i class="ti-na"></i></button>
-                                @if($ticket->ticket_id != null)
-                                <a href="/loan-unit-part-ticket-details/{{ $ticket->ticket_id }}">
-                                    <button><i class="ti-arrow-right" ></i></button>
-                                </a>
-                                @endif
-
-                            </td> -->
+                            
                             <td class="action-cell">
                                 <div class="action-buttons">
 
@@ -80,11 +92,8 @@
                                     </button>
 
                                     @if($ticket->ticket_id != null)
-                                        <a
-                                            href="/loan-unit-part-ticket-details/{{ $ticket->ticket_id }}"
-                                            class="action-btn"
-                                        >
-                                            <i class="ti-arrow-right"></i>
+                                        <a href="/loan-unit-part-ticket-details/{{ $ticket->ticket_id }}">
+                                            <button><i class="ti-arrow-right"></i></button>
                                         </a>
                                     @endif
 

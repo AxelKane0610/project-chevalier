@@ -13,13 +13,15 @@
 
             <x-common-header title="TTEX Tickets Menu">
                 <li>
-                    <form action="/main-menu">
-                        <button type="submit"><i class="ti-home"></i>Home</button>
-                    </form>
+                    <a href="{{ url('/main-menu') }}" class="button">
+                        <button><i class="ti-home"></i>
+                        Home
+                        </button>
+                    </a>
                 </li>
                 <li>
                     <div class="search-container">
-                        <form action="">
+                        
                             <button type="button" id="btn-toggle-search" class="nav-btn search-btn">
                                 <i class="ti-search"></i> Search
                             </button>
@@ -30,21 +32,19 @@
                                     @livewire('quick-search-dropdown')
                                 </div>
                             </div>
-                        </form>
                     </div>
                     
                 </li>
                 
             </x-common-header>
 
-            <div class="page-content">
-                <div class="d-flex flex-grow-1 overflow-hidden h-100">
+            
+                
                     <div class="container-fluid h-100 ">
-                        <div class="row h-100 p-3 ">
-                            <div class="col-2 d-flex justify-content-center align-items-center flex-column gap-3 my-3 ">
-                                <form action=""  >
-                                    <button type="button" class="js-input-required-btn" data-target="create-ttex-ticket-form"><i class="ti-plus"></i> Create Ticket</button>
-                                </form>
+                        <div class="row p-3 overflow-hidden" style="height: 900px;">
+                            <div class="col-2 d-flex flex-column align-items-center justify-content-center gap-3 my-3 " >
+                                <button type="button" class="js-input-required-btn" data-target="create-ttex-ticket-form"><i class="ti-plus"></i> Create Ticket</button>
+                                
 
                                 <button class="btn btn-primary table-btn w-100 position-relative" id="show-pending-good-part-tickets-btn" data-target = "pending-good-part-ttex-tickets-container">
                                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
@@ -75,58 +75,10 @@
 
                             </div>
 
-                            <div class="col-10 d-flex justify-content-center align-items-center flex-column gap-3 my-4 h-100">
-                                <div class="bg-white p-3 rounded shadow-sm ticket-table" id="pending-good-part-ttex-tickets-container">
-                                    <h2>Pending Good Part Tickets</h2>
-                                    <table id="pending-ttex-tickets-table" class="common-table" width="100%" >
-                                        <thead>
-                                            <th width="5%"></th>
-                                            <th width="10%">Shipment Type</th>
-                                            <th width="20%">Người gửi</th>
-                                            <th width="20%">Người nhận</th>
-                                            <th width="20%">Mô tả hàng hóa</th>
-                                            <th width="15%">Note</th>
-                                            <th width="10%">Status</th>
+                            
 
-                                        </thead>
-                                    
-                                        <tbody>
-                                            @foreach ($tickets_good_part_pending as $ticket)
-                                                
-                                                    <tr>
-                                                        <td>
-
-                                                            <button type="button" 
-                                                                class="btn btn-primary" 
-                                                                onclick="window.location.href='/ttex-tickets-menu-details/{{ $ticket->id }}'">
-                                                                <i class="ti-arrow-right"></i>
-                                                            </button>
-                                                        </td>
-                                                        <td>
-                                                            <span class="badge rounded-pill bg-{{ $ticket->shipment_type_data['color'] ?? 'primary' }} px-3 py-2">
-                                                                {{ $ticket->shipment_type_data['text'] }}
-                                                            </span>
-                                                        </td>
-                                                        <td>{{ $ticket->sender_info  }}</td>
-                                                        <td>{{ $ticket->receiver_info }}</td>
-                                                        <td>{{ $ticket->shipment_description }}</td>
-                                                        <td>{{ $ticket->note }}</td>
-                                                        
-                                                        <td>
-                                                            <span class="badge rounded-pill bg-{{ $ticket->status_data['color'] ?? 'primary' }} px-3 py-2">
-                                                                {{ $ticket->status_data['text'] }}
-                                                            </span>
-                                                        </td>
-                                                    </tr>
-                                                    
-                                            @endforeach
-                                        </tbody>
-
-                                    </table>
-
-                                </div>
-
-                                <div class="bg-white p-3 rounded shadow-sm ticket-table d-none" id="ttex-tickets-booked-today-container">
+                            <div class="col-10 d-flex  flex-column gap-3 my-4 overflow-y-auto h-100">
+                                <div class="bg-white p-3 rounded shadow-sm ticket-table always-visible d-flex flex-column" >
                                     
                                     <div class="common-table-filter">
                                         <h2>Tickets đã book trong hôm nay</h2>
@@ -151,6 +103,60 @@
                                     
 
                                 </div>
+
+                                
+                                <div class="bg-white p-3 rounded shadow-sm ticket-table" style="overflow-y: scroll; height: 400px;" id="pending-good-part-ttex-tickets-container">
+                                    <h2>Pending Good Part Tickets</h2>
+                                    <div class="common-table-container">
+                                    <table id="pending-ttex-tickets-table" class="common-table" width="100%" style="height: 400px;">
+                                        <thead>
+                                            <th width="5%"></th>
+                                            <th width="10%">Shipment Type</th>
+                                            <th width="20%">Người gửi</th>
+                                            <th width="20%">Người nhận</th>
+                                            <th width="20%">Mô tả hàng hóa</th>
+                                            <th width="15%">Note</th>
+                                            <th width="10%">Status</th>
+
+                                        </thead>
+                                    
+                                        <tbody>
+                                            @foreach ($tickets_good_part_pending as $ticket)
+                                                
+                                                    <tr>
+                                                        <td>
+
+                                                            
+                                                            <a href="/ttex-tickets-menu-details/{{ $ticket->id }}">
+                                                                <button><i class="ti-arrow-right" ></i></button>
+                                                            </a>
+                                                        </td>
+                                                        <td>
+                                                            <span class="badge rounded-pill bg-{{ $ticket->shipment_type_data['color'] ?? 'primary' }} px-3 py-2">
+                                                                {{ $ticket->shipment_type_data['text'] }}
+                                                            </span>
+                                                        </td>
+                                                        <td>{{ $ticket->sender_info  }}</td>
+                                                        <td>{{ $ticket->receiver_info }}</td>
+                                                        <td>{{ $ticket->shipment_description }}</td>
+                                                        <td>{{ $ticket->note }}</td>
+                                                        
+                                                        <td>
+                                                            <span class="badge rounded-pill bg-{{ $ticket->status_data['color'] ?? 'primary' }} px-3 py-2">
+                                                                {{ $ticket->status_data['text'] }}
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                    
+                                            @endforeach
+                                        </tbody>
+
+                                    </table>
+                                    </div>
+
+                                </div>
+
+                                
 
 
                                 <div class="bg-white p-3 rounded shadow-sm ticket-table d-none" id="pending-def-part-ttex-tickets-container">
@@ -232,9 +238,9 @@
                         
                     </div>
                     
-                </div>
+                
 
-            </div>
+            
 
                 
 

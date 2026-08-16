@@ -11,9 +11,11 @@
     <body>
         <x-common-header title="Out of Office Ticket Details">
             <li>
-                <form action="/out-of-office-tickets-menu">
-                    <button type="submit"><i class="ti-home"></i>Home</button>
-                </form>
+                <a href="{{ url('/out-of-office-tickets-menu') }}" class="button">
+                    <button><i class="ti-home"></i>
+                    Home
+                    </button>
+                </a>
             </li>
             <li>
                 <div class="search-container">
@@ -32,6 +34,16 @@
                 </div>
                 
             </li>
+
+            <li>
+
+                <a href="{{ url('/main-menu') }}" class="button">
+                    <button><i class="ti-layout-grid2"></i>
+                    Quick Navigation
+                    </button>
+                </a>
+            </li>
+            
             @if ($ticket->status == '1' && $ticket->user_id == auth()->user()->id)
                 <li>
                     <form id="send-approve-out-of-office-ticket" data-target="send-approve-out-of-office-ticket" action="{{route('send-approve-out-of-office-ticket', $ticket->id) }}">

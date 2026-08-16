@@ -10,9 +10,11 @@
     <body class="background-enable">
         <x-common-header title="Invoice Exceptional Menu">
             <li>
-                <form action="/invoice-exceptional-menu">
-                    <button type="submit"><i class="ti-home"></i>Home</button>
-                </form>
+                <a href="{{ url('/invoice-exceptional-menu') }}" class="button">
+                    <button><i class="ti-home"></i>
+                    Home
+                    </button>
+                </a>
             </li>
 
             <li>
@@ -34,9 +36,11 @@
             </li>
 
             <li>
-                <form action="/main-menu">
-                    <button type="submit"><i class="ti-layout-grid2"></i>Quick Navigation</button>
-                </form>
+                <a href="{{ url('/main-menu') }}" class="button">
+                    <button><i class="ti-layout-grid2"></i>
+                    Quick Navigation
+                    </button>
+                </a>
             </li>
 
             @switch($ticket->status)
@@ -99,9 +103,8 @@
                         </li>
 
                         <li>
-                            <form >
-                                <button type="button" class="js-input-required-btn" data-target="request-sale-support-invoice-exceptional-ticket"><i class="ti-angle-double-right"></i> Request Sale Support</button>
-                            </form>
+                            <button type="button" class="js-input-required-btn" data-target="request-sale-support-invoice-exceptional-ticket"><i class="ti-angle-double-right"></i> Request Sale Support</button>
+                            
                         </li>
 
 

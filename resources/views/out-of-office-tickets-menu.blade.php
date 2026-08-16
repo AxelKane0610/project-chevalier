@@ -13,9 +13,11 @@
     <body>
         <x-common-header title="Out of Office">
             <li>
-                <form action="/main-menu">
-                    <button type="submit"><i class="ti-home"></i>Home</button>
-                </form>
+                <a href="{{ url('/main-menu') }}" class="button">
+                    <button><i class="ti-home"></i>
+                    Home
+                    </button>
+                </a>
             </li>
             <li>
                 <div class="search-container">
@@ -41,9 +43,8 @@
             <div class="container-fluid my-5 flex-grow-1">
                 <div class="row flex-grow-1 h-100">
                     <div class="col-2 d-flex justify-content-center align-items-center flex-column gap-3">
-                        <form action="" >
-                            <button type="button" class="js-input-required-btn" id="create-out-of-office-ticket-btn" data-target="create-out-of-office-ticket-form"><i class="ti-plus"></i> Create Ticket</button>
-                        </form>
+                        <button type="button" class="js-input-required-btn" id="create-out-of-office-ticket-btn" data-target="create-out-of-office-ticket-form"><i class="ti-plus"></i> Create Ticket</button>
+                        
 
                         <button class="btn btn-primary table-btn w-100 position-relative" id="show-pending-out-of-office-tickets-btn" data-target = "pending-out-of-office-tickets-container">
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
@@ -168,15 +169,17 @@
                             <h2>All Tickets</h2>
 
                             <table class="common-table pending-out-of-office-tickets-table" width="100%" >
-                                <tr>
-                                    <th width="5%"></th>
-                                    <th width="10%">User Owner</th>
-                                    <th width="10%">Type of Leave</th>
-                                    <th width="10%">Start Date</th>
-                                    <th width="10%">End Date</th>
-                                    <th width="25%">Reasons for leave</th>
-                                    <th width="10%">Status</th>
-                                </tr>
+                                <thead>
+                                    <tr>
+                                        <th width="5%"></th>
+                                        <th width="10%">User Owner</th>
+                                        <th width="10%">Type of Leave</th>
+                                        <th width="10%">Start Date</th>
+                                        <th width="10%">End Date</th>
+                                        <th width="25%">Reasons for leave</th>
+                                        <th width="10%">Status</th>
+                                    </tr>
+                                </thead>
                             
                                 <tbody>
                                     @foreach ($all_tickets as $ticket)

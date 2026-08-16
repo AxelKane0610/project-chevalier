@@ -9,26 +9,38 @@
 
     <body class="background-enable">
 
-            <x-common-header title="Quản lý kho Crown - Spectre">
-                <li>
-                    <form action="/main-menu">
-                        <button type="submit"><i class="ti-home"></i>Home</button>
+        <x-common-header title="Quản lý kho Crown - Spectre">
+            <li>
+                <a href="{{ url('/main-menu') }}" class="button">
+                    <button><i class="ti-home"></i>
+                    Home
+                    </button>
+                </a>
+            </li>
+            <li>
+                <div class="search-container">
+                    <form action="">
+                        <button type="button" id="btn-toggle-search" class="nav-btn search-btn">
+                            <i class="ti-search"></i> Search
+                        </button>
+
+                        <div id="search-dropdown" class="search-dropdown-box hidden">
+                            <div class="search-input-group">
+                                
+                                @livewire('quick-search-dropdown')
+                            </div>
+                        </div>
                     </form>
-                </li>
-                <li>
-                    <form action="#">
-                        <button type="submit"><i class="ti-search"></i>Search</button>
-                    </form>
-                </li>
-            </x-common-header>
+                </div>
+            </li>
+        </x-common-header>
 
         <div class="d-flex flex-grow-1 overflow-hidden vh-100">
             <div class="container-fluid my-5 flex-grow-1">
                 <div class="row flex-grow-1 h-100">
                     <div class="col-2 d-flex justify-content-center align-items-center flex-column gap-3">
-                        <form action=""  >
-                            <button type="button" class="js-input-required-btn" data-target="create-spectre-crown-warehouse-item-form"><i class="ti-plus"></i> Nhập kho</button>
-                        </form>
+                        <button type="button" class="js-input-required-btn" data-target="create-spectre-crown-warehouse-item-form"><i class="ti-plus"></i> Nhập kho</button>
+                        
 
 
                     </div>

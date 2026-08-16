@@ -1,0 +1,90 @@
+button {
+    display: flex;
+    background-color: var(--button-background-color);
+    color: var(--button-text-color);
+    border-radius: 10px;
+    width: auto;
+    height: auto;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+button:hover {
+    background-color: white;
+    color: black;
+    cursor: pointer;
+}
+
+button {
+    padding: 10px;
+    border-radius: 10px;
+    background-color: var(--button-background-color);
+    color: var(--button-text-color);
+}
+
+.ticket-form-footer > button {
+    color: var(--button-text-color);
+    padding: 10px;
+    background-color: var(--button-background-color);
+    border-radius: 5px;
+}
+
+.ticket-form-footer > button:hover {
+    cursor: pointer;
+    background-color: #f1f1f1;
+    color: black;
+    
+}
+
+#fileList > li > button > i {
+    color: red;
+    /* margin-left: 10px; */
+    /* padding: 5px; */
+}
+
+#fileList > li > button > i:hover {
+    cursor: pointer;
+}
+
+.user-dropdown button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background: none;
+    text-align: left;
+    cursor: pointer;
+    color: black;
+}
+
+.user-dropdown button:hover {
+    background: #f5f5f5;
+}
+
+
+
+
+
+
+.btn-primary:hover {
+    background-color: white !important;
+    color: black !important;
+    cursor: pointer !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+
+
+.btn-primary {
+    padding: 10px;
+    border-radius: 10px;
+    background-color: var(--button-background-color) !important;
+    color: var(--button-text-color) !important;
+    height: auto !important;
+}
+
+
+
+
+

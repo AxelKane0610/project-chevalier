@@ -10,9 +10,11 @@
     <body class="background-enable">
         <x-common-header title="Training Ticket Details">
             <li>
-                <form action="/submit-training-menu">
-                    <button type="submit"><i class="ti-home"></i>Home</button>
-                </form>
+                <a href="{{ url('/submit-training-menu') }}" class="button">
+                    <button><i class="ti-home"></i>
+                    Home
+                    </button>
+                </a>
             </li>
 
             <li>
@@ -34,9 +36,11 @@
             </li>
 
             <li>
-                <form action="/main-menu">
-                    <button type="submit"><i class="ti-layout-grid2"></i>Quick Navigation</button>
-                </form>
+                <a href="{{ url('/main-menu') }}" class="button">
+                    <button><i class="ti-layout-grid2"></i>
+                    Quick Navigation
+                    </button>
+                </a>
             </li>
 
             @if ( (($ticket_details->status == '1' || $ticket_details->status == '2') && $ticket_details->user_id == auth()->user()->id) || auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_TRAINING_ADMIN') )
@@ -47,7 +51,7 @@
                 </form>
             @endif
 
-            @if( (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_TRAINING_ADMIN')) && $ticket_details->status == '3' )
+            @if( (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_TRAINING_ADMIN')) && $ticket_details->status == '5' )
                 <li>
                     <form id="approve-ticket-form" class="js-input-required-btn" data-target="approve-ticket-form" action="{{ route('confirm-training-completed', $ticket_details->id) }}" method="POST">
                         <button type="submit"><i class="ti-thumb-up"></i>Confirm training completed</button>

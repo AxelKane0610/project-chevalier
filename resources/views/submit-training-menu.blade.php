@@ -13,9 +13,11 @@
 
             <x-common-header title="Training Submit Menu">
                 <li>
-                    <form action="/main-menu">
-                        <button type="submit"><i class="ti-home"></i>Home</button>
-                    </form>
+                    <a href="{{ url('/main-menu') }}" class="button">
+                        <button><i class="ti-home"></i>
+                        Home
+                        </button>
+                    </a>
                 </li>
                 <li>
                     <div class="search-container">
@@ -43,9 +45,8 @@
                     <div class="row flex-grow-1 h-100">
                         <div class="col-2 d-flex justify-content-center align-items-center flex-column gap-3">
                             @if (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_TRAINING_ADMIN'))
-                            <form action=""  >
                                 <button type="button" class="js-input-required-btn" data-target="create-training-request"><i class="ti-plus"></i> Request Training</button>
-                            </form>
+                            
                             @endif
 
                             <button class="btn btn-primary table-btn w-100 position-relative" id="show-pending-training-tickets-btn" data-target = "pending-training-tickets-container">
@@ -100,11 +101,14 @@
                                         @foreach($pending_tickets as $ticket)
                                             <tr>
                                                 <td>
-                                                    <button type="button" 
-                                                        class="btn btn-primary" 
-                                                        onclick="window.location.href='/training-ticket-details/{{ $ticket->id }}'">
-                                                        <i class="ti-arrow-right"></i>
-                                                    </button>
+                                                    <a href= "/training-ticket-details/{{ $ticket->id }}" class="button">
+                                                        <button><i class="ti-arrow-right"></i>
+                                                        </button>
+                                                    </a>
+
+                                                    <a href="/training-ticket-details/{{ $ticket->id }}">
+                                                        <button><i class="ti-arrow-right" ></i></button>
+                                                    </a>
                                                 </td>
                                                 <td>{{ $ticket->user_owner->fullname }}</td>
                                                 <td>{{ $ticket->training_no }}</td>

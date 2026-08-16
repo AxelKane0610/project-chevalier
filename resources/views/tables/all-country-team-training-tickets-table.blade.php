@@ -20,11 +20,10 @@
         @foreach($all_country_team_training_tickets as $ticket)
             <tr>
                 <td>
-                    <button type="button" 
-                        class="btn btn-primary" 
-                        onclick="window.location.href='/training-ticket-details/{{ $ticket->id }}'">
-                        <i class="ti-arrow-right"></i>
-                    </button>
+                    <a href= "/training-ticket-details/{{ $ticket->id }}" class="button">
+                        <button><i class="ti-arrow-right"></i>
+                        </button>
+                    </a>
                 </td>
                 <td>{{ $ticket->user_owner->fullname }}</td>
                 <td>{{ $ticket->training_no }}</td>

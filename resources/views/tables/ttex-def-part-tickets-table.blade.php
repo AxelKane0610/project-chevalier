@@ -35,21 +35,21 @@
                 @foreach($group as $ticket)
 
                 <tr>
-                    <td>
-                        <button type="button" 
-                            class="btn btn-primary" 
-                            onclick="window.location.href='/ttex-tickets-menu-details/{{ $ticket->id }}'">
-                            <i class="ti-arrow-right"></i>
-                        </button>
-                        @if( (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_TTEX_TICKET_ADMIN')))
+                    <td >
+                        <div class="d-flex justify-content-center align-items-center gap-2 flex-row">
+                            <a href="/ttex-tickets-menu-details/{{ $ticket->id }}">
+                                <button><i class="ti-arrow-right" ></i></button>
+                            </a>
+                            @if( (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_TTEX_TICKET_ADMIN')))
 
-                            <!-- <input type="checkbox" name="booking_def[]" value="{{ $ticket->id }}" form="booking-def-part"> -->
-                             <input type="checkbox" 
-                                    name="booking_def[]" 
-                                    value="{{ $ticket->id }}" 
-                                    class="booking-def-checkbox" 
-                                    form="booking-def-part">
-                        @endif
+                                <!-- <input type="checkbox" name="booking_def[]" value="{{ $ticket->id }}" form="booking-def-part"> -->
+                                <input type="checkbox" 
+                                        name="booking_def[]" 
+                                        value="{{ $ticket->id }}" 
+                                        class="booking-def-checkbox" 
+                                        form="booking-def-part">
+                            @endif
+                        </div>
                     </td>
                     <td>
                         <span class="badge rounded-pill bg-{{ $ticket->shipment_type_data['color'] ?? 'primary' }} px-3 py-2">

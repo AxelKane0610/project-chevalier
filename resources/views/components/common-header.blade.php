@@ -11,13 +11,18 @@
                 
             <div class="user-dropdown">
 
-                <form action="{{ route('user-profile') }}" method="GET">
+                <!-- <form action="{{ route('user-profile', auth()->user()->id) }}" method="GET">
                     <button type="submit">Profile</button>
-                </form>
+                </form> -->
+                <a href="{{ route('user-profile', auth()->user()->id) }}" class="button">
+                    <button><i class="ti-user"></i>
+                    Profile
+                    </button>
+                </a>
 
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
-                    <button type="submit">Logout</button>
+                    <button type="submit"><i class="ti-power-off"></i>Logout</button>
                 </form>
 
             </div>

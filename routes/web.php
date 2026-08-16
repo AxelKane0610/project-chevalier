@@ -40,9 +40,12 @@ Route::middleware(['auth'])->group(function () {
     });
 
     // Route::get('/user-profile', [UserController::class,'User_Profile'])->name('user-profile');
-    Route::get('/user-profile', [UserController::class, 'User_Profile'])
+    Route::get('/user-profile/{id}', [UserController::class, 'User_Profile'])
     ->middleware('auth')
     ->name('user-profile');
+
+    Route::get('/user-profile/filter-all-certificates/{id}', [UserController::class, 'Filter_All_Certificates'])
+    ->middleware('auth');
 
     Route::post('/user/change-password', [UserController::class, 'Change_Password'])
     ->middleware('auth')

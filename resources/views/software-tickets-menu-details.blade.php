@@ -12,9 +12,11 @@
         
         <x-common-header title="EEG Software Support">
             <li>
-                <form action="/software-tickets-menu">
-                    <button type="submit"><i class="ti-home"></i>Home</button>
-                </form>
+                <a href="{{ url('/software-tickets-menu') }}" class="button">
+                    <button><i class="ti-home"></i>
+                    Home
+                    </button>
+                </a>
             </li>
 
             <li>
@@ -36,9 +38,11 @@
             </li>
 
             <li>
-                <form action="/main-menu">
-                    <button type="submit"><i class="ti-layout-grid2"></i>Quick Navigation</button>
-                </form>
+                <a href="{{ url('/main-menu') }}" class="button">
+                    <button><i class="ti-layout-grid2"></i>
+                    Quick Navigation
+                    </button>
+                </a>
             </li>
 
             
@@ -54,16 +58,14 @@
                                 </li>
 
                                 <li>
-                                    <form data-target="send-approval-form" class="js-input-required-btn">
-                                        <button type="button"><i class="ti-angle-double-right"></i>Send Approval </button>
-                                    </form>
+                                    
+                                    <button type="button" data-target="send-approval-form" class="js-input-required-btn"><i class="ti-angle-double-right"></i>Send Approval </button>
+                                    
                                 </li>
 
                                 <li>
-                                    <form action="" id="complete-sw-ticket" data-target="close-ticket-form" class="js-input-required-btn">
-                                        @csrf
-                                        <button type="button"><i class="ti-check"></i>Close Ticket</button>
-                                    </form>
+                                    <button type="button" id="complete-sw-ticket" data-target="close-ticket-form" class="js-input-required-btn"><i class="ti-check"></i>Close Ticket</button>
+                                    
                                 </li>
                             @endif
                         @break

@@ -13,9 +13,11 @@
 
         <x-common-header title="TTEX Ticket Details">
             <li>
-                <form action="/ttex-tickets-menu">
-                    <button type="submit"><i class="ti-home"></i>Home</button>
-                </form>
+                <a href="{{ url('/ttex-tickets-menu') }}" class="button">
+                    <button><i class="ti-home"></i>
+                    Home
+                    </button>
+                </a>
             </li>
             <li>
                 <div class="search-container">
@@ -35,17 +37,18 @@
                 
             </li>
             <li>
-                <form action="/main-menu">
-                    <button type="submit"><i class="ti-layout-grid2"></i>Quick Navigation</button>
-                </form>
+                <a href="{{ url('/main-menu') }}" class="button">
+                    <button><i class="ti-layout-grid2"></i>
+                    Quick Navigation
+                    </button>
+                </a>
             </li>
 
             @if( (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_TTEX_TICKET_ADMIN')) && $ticket->status == '1')
                 
                 <li>
-                    <form class="js-input-required-btn" data-target="close-ttex-ticket">
-                        <button type="button"><i class="ti-check"></i> Close ticket</button>
-                    </form>
+                    <button type="button" class="js-input-required-btn" data-target="close-ttex-ticket"><i class="ti-check"></i> Close ticket</button>
+                    
                 </li>
 
             @endif
