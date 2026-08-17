@@ -30,7 +30,7 @@ class TrainingController extends Controller
         ->pluck('training_no');
         $all_your_training_tickets = Training_Tickets_Model::where('user_id', auth()->id())->paginate(10);
         $pending_tickets = Training_Tickets_Model::whereIn('status', ['1', '2', '3'])->where('user_id', auth()->id())->get();
-        if (auth()->user()->hasRole('ROLE_SUPER_ADMIN')) {
+        if (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_TRAINING_ADMIN')) {
             $all_country_team_training_tickets = Training_Tickets_Model::query()->paginate(10);
             return view('submit-training-menu', compact('pending_tickets', 'all_your_training_tickets', 'all_country_team_training_tickets', 'all_training_courses', 'all_training_no_numbers'));
         } else {
