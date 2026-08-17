@@ -94,7 +94,7 @@ class TrainingController extends Controller
 
     public function Filter_Your_Training_Tickets_Table(Request $request)
     {
-        $query = Training_Tickets_Model::query()->where('user_id', auth()->id());;
+        $query = Training_Tickets_Model::query()->where('user_id', auth()->id());
 
 
         // Training No Filter
