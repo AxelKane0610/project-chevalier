@@ -47,7 +47,7 @@ class TrainingController extends Controller
     {
         $query = Training_Tickets_Model::query();
 
-        if (!auth()->user()->hasRole('ROLE_SUPER_ADMIN')) {
+        if (!auth()->user()->hasRole('ROLE_SUPER_ADMIN') || !auth()->user()->hasRole('ROLE_TRAINING_ADMIN')) {
             $query->whereHas('user_owner', function ($q) {
                 $q->where('leader_id', auth()->id());
             });

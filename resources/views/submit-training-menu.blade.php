@@ -101,10 +101,6 @@
                                         @foreach($pending_tickets as $ticket)
                                             <tr>
                                                 <td>
-                                                    <a href= "/training-ticket-details/{{ $ticket->id }}" class="button">
-                                                        <button><i class="ti-arrow-right"></i>
-                                                        </button>
-                                                    </a>
 
                                                     <a href="/training-ticket-details/{{ $ticket->id }}">
                                                         <button><i class="ti-arrow-right" ></i></button>
