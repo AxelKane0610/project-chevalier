@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('spectre_crown_table', function (Blueprint $table) {
+        Schema::table('spectre_crown_warehouse', function (Blueprint $table) {
             $table->text('note')->nullable()->change();
         });
     }
@@ -23,7 +23,7 @@ return new class extends Migration
     {
         Schema::table('spectre_crown', function (Blueprint $table) {
             //
-            Schema::table('spectre_crown_table', function (Blueprint $table) {
+            Schema::table('spectre_crown_warehouse', function (Blueprint $table) {
                 $table->string('note', 255)->nullable()->change();
             });
         });
