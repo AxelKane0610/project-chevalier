@@ -627,18 +627,35 @@ class InvoiceExceptionalTicketsController extends Controller
     }
 
     public function Request_Sale_Support(Request $request, $id){
+        try {
         $request_info = $request->validate([
-            'email_request' => 'required|email',
+            'email_request' => 'required|string',
             'deadline_date' => 'required',
         ]);
 
-        $request_info['email_request'] = strip_tags($request_info['email_request']);
+        // Tách danh sách email bằng dấu ;
+        $emails = array_filter(
+            array_map('trim', explode(';', $request_info['email_request']))
+        );
+
+        // Validate từng email
+        foreach ($emails as $email) {
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => "Email không hợp lệ: {$email}",
+                ], 422);
+            }
+        }
+
+        // Chuẩn hóa lại danh sách email
+        $request_info['email_request'] = strip_tags(implode(';', $emails));
         // $request_info['deadline_date'] = $request_info['deadline_date']->format('Y-m-d H:i:s');
         $date = new DateTime($request_info['deadline_date']); 
         $request_info['deadline_date'] = $date->format('Y-m-d H:i:s');
 
         $ticket = Invoice_Exceptional_Tickets_Model::with('user_owner', 'active_attachments')->findOrFail($id);
-        try {
+        
             if ($ticket->status == '5' && ($ticket->support_type == '1' || $ticket->support_type == '2')) {
                 $attachments = $ticket->active_attachments->map(function ($file) {
                     return [

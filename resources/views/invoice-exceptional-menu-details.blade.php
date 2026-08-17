@@ -353,7 +353,7 @@
         <x-common-ticket-form title="Request Sale Support" id="request-sale-support-invoice-exceptional-ticket" action1="{{ route('request-sale-support-invoice-exceptional-ticket', $ticket->id) }}">
             @method('POST')
             <label>Email team sale cần request hỗ trợ</label>
-            <input type="text" class="ticket-form-body-input" name="email_request" value="" required>
+            <input type="text" class="ticket-form-body-input" name="email_request" value="" required placeholder="Nếu có nhiều email, mỗi email hãy cách nhau bằng dấu ;">
 
             <label>Hạn chót trả lời</label>
             <input type="datetime-local" class="ticket-form-body-input" name="deadline_date" value="" required>
