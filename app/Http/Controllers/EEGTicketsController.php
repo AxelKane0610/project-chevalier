@@ -287,6 +287,27 @@ class EEGTicketsController extends Controller
                 $ticket = EEG_Software_Ticket::with('user_owner','completed_by')->findOrFail($id);
 
                 $send_ticket_complete_notification = Http::post(config('services.api_service.sw_ticket_complete_url'), [
+                    'created_at' => $ticket->created_at,
+                    'support_type' => match($ticket->support_type)
+                    {
+                        '1' => 'Thêm mã part/product',
+                        '2' => 'Rollback',
+                        '3' => 'Hủy số phiếu/Ẩn lịch sử bảo hành',
+                        '4' => 'Điều chỉnh thông tin',
+                        '5' => 'Unmark Re-Repair',
+                        '6' => 'Lỗi hệ thống',
+                        '7' => 'Cấp quyền export data',
+                        '8' => 'Đề xuất thay đổi/cải tiến',
+                        '9' => 'Vấn đề khác'
+                    },
+                    'issue_owner' => match($ticket->issue_owner)
+                    {
+                        1 => 'System Matters',
+                        2 => 'Human Matters',
+                        3 => 'Customer Matters',
+                        4 => 'Others',
+                        5 => 'Parts Matters'
+                    },
                     'ticket_id' => $ticket->id,
                     'ticket_owner_name'   => $ticket->user_owner->fullname,
                     'ticket_owner_email' => $ticket->user_owner->email,
