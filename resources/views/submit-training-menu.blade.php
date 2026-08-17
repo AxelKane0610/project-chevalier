@@ -58,7 +58,7 @@
 
                             <button class="btn btn-primary table-btn w-100 position-relative" id="show-all-training-tickets-btn" data-target = "all-training-tickets-container">
                                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                    {{$all_your_training_tickets->count()}}
+                                    {{$all_your_training_tickets->total()}}
                                 </span>
                                 <i class="ti-list-ol"></i> Show all your training tickets
                             </button>
