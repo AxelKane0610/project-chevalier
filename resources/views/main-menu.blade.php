@@ -183,7 +183,7 @@
             </div>
         @endif
 
-        @if(auth()->user()->hasRole('ROLE_SUPER_ADMIN'))
+        @if(auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_TRAINING_ADMIN') || auth()->user()->hasRole('ROLE_SUBMIT_TRAINING_USER'))
         <div class="main-menu col" style="width: 300px">
             <a href="{{ url('/submit-training-menu') }}"
                class="text-decoration-none">
