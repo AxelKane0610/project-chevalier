@@ -445,7 +445,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         wrapper: 'all-training-tickets-container',
 
-        container: '#all-training-tickets-table',
+        container: '#all-your-training-tickets-table-container',
 
         url: '/submit-training-menu/filter-all-your-training-tickets-table'
 
