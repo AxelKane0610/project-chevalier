@@ -146,9 +146,9 @@
                         :attachments="$ticket_details->active_attachments"
                     />
 
-                    {{-- ($ticket_details->status == '1' || $ticket_details->status == '2') && --}}
+                    
                     <x-slot:footer>
-                        @if( $ticket_details->user_id == auth()->user()->id) || auth()->user()->hasRole('ROLE_SUPER_ADMIN')    )
+                        @if( $ticket_details->user_id == auth()->user()->id || auth()->user()->hasRole('ROLE_SUPER_ADMIN') )
                             <button type="button" class="js-input-required-btn" data-target="edit-ticket-details"><i class="ti-pencil"></i> Edit/Upload Certificates</button>
                         @endif
                     </x-slot:footer>
