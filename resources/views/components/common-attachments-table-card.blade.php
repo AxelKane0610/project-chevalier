@@ -28,7 +28,7 @@
 
 @else
 
-    <table class="table table-hover align-middle mt-4">
+    <table class="table table-hover align-middle mt-4" style="table-layout: fixed; width: 100%;">
         <i class="ti-link me-2" ></i> Attachments
         <tbody>
 

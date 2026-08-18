@@ -195,6 +195,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/add-comment-spectre-crown-warehouse/{id}', [SpectreCrownWarehouseController::class, 'Add_Comment_Spectre_Crown_Warehouse']) ->name('add-comment-spectre-crown-warehouse');
         Route::patch('/edit-asset-details/{id}', [SpectreCrownWarehouseController::class, 'Edit_Asset_Details'])->name('edit-asset-details');
         Route::post('/asset-export/{id}', [SpectreCrownWarehouseController::class, 'Asset_Export'])->name('asset-export');
+        Route::patch('/edit-asset-export/{id}', [SpectreCrownWarehouseController::class, 'Edit_Asset_Export'])->name('edit-asset-export');
 
     });
 

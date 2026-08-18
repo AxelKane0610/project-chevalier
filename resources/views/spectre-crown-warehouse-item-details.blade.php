@@ -3,7 +3,7 @@
     <head>
         <title>Project Chevalier</title>
         <meta charset="utf-8">
-        @vite([ 'resources/js/app.js', 'resources/js/thermal-event.js', 'resources/css/icons/themify-icons.css'])
+        @vite([ 'resources/js/app.js', 'resources/js/spectre-crown-warehouse.js', 'resources/css/icons/themify-icons.css'])
         
     </head>
 
@@ -87,8 +87,23 @@
                             <td class="action-cell">
                                 <div class="action-buttons">
 
-                                    <button type="button" class="action-btn">
-                                        <i class="ti-na"></i>
+                                    <button type="button"
+                                        class="btn-edit-asset-export js-input-required-btn"
+                                        data-id = "{{ $ticket->id }}"
+                                        data-target="edit-asset-export"
+                                        data-asset-tag="{{ $ticket->loan_unit_asset_tag }}"
+                                        data-user-id="{{ $ticket->user_id }}"
+                                        data-ticket-receipt="{{ $ticket->ticket_receipt }}"
+                                        data-part-request="{{ $ticket->part_request }}"
+                                        data-ct-loaned="{{ $ticket->ct_loaned }}"
+                                        data-new-ct-return="{{ $ticket->new_ct_return }}"
+                                        data-status="{{ $ticket->status }}"
+                                        data-original="{{ $ticket->original }}"
+                                        data-start-date="{{ $ticket->start_date }}"
+                                        data-end-date="{{ $ticket->end_date }}"
+                                        data-note="{{ $ticket->note }}"
+                                    >
+                                        <i class="ti-pencil"></i>
                                     </button>
 
                                     @if($ticket->ticket_id != null)
@@ -472,6 +487,67 @@
 
             <x-slot:footer>
                 <button class="ticket-form-body-input" type="submit">Export</button> 
+            </x-slot:footer>
+
+        </x-common-ticket-form>
+
+        <x-common-ticket-form title="Edit Asset Export" id="edit-asset-export" action1="" enctype="multipart/form-data">
+            @method('PATCH')
+            <label>Asset Tag</label>
+            <input type="text" class="ticket-form-body-input" id="edit-loan-unit-asset-tag" name="loan_unit_asset_tag"  readonly>
+
+            <label>User Owner (Nếu user không thuộc SC, để trống)</label>
+            <livewire:common-search-dropdown
+                model-class="App\Models\User"
+                :search-fields="['fullname']"
+                display-field="fullname"
+                value-field="id"
+                name="user_id"
+            />
+
+            <label>Receipt (Nếu không có để N/A)</label>
+            <input type="text" class="ticket-form-body-input" id="edit-ticket-receipt" placeholder="" required>
+
+            <label>Part Request</label>
+            <input type="text" class="ticket-form-body-input" id="edit-part-request" placeholder="" required>
+
+            <label>CT Loaned</label>
+            <input type="text" class="ticket-form-body-input" id="edit-ct-loaned" placeholder="Điền CT của part cho mượn (Nếu có)">
+
+            <label>New CT Returned</label>
+            <input type="text" class="ticket-form-body-input" id="edit-new-ct-return" placeholder="Điền CT của part cho trả (Nếu có)">
+
+            <label>Status</label>
+            <select id="edit-status" class="ticket-form-body-input" required>
+                <option value="1" >Requested</option>
+                <option value="2" >Borrowed, not returned yet</option>
+                <option value="3" >Returned</option>
+                <option value="4" >Canceled</option>
+                <option value="5" >Will not be returned</option>
+                
+            </select>
+
+            <label>Original</label>
+            <select id="edit-original" class="ticket-form-body-input">
+                <option value="1" >Crown</option>
+                <option value="2" >Spectre</option>
+                <option value="3" >T1 (FPT, DGW, Elite)</option>
+                
+            </select>
+
+            <label>Start Date</label>
+            <input type="date" class="ticket-form-body-input" id="edit-start-date">
+
+            <label>End Date</label>
+            <input type="date" class="ticket-form-body-input" id="edit-end-date">
+
+            <label>Note</label>
+            <input type="text" class="ticket-form-body-input" id="edit-note" placeholder="Ghi chú">
+
+            
+
+            <x-slot:footer>
+                <button class="ticket-form-body-input" type="submit">Edit</button> 
             </x-slot:footer>
 
         </x-common-ticket-form>

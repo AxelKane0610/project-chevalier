@@ -1,6 +1,7 @@
 <?php
 
 use Livewire\Component;
+use Livewire\Attributes\On;
 
 new class extends Component
 {
@@ -101,6 +102,45 @@ new class extends Component
         $this->results = [];
 
         $this->showDropdown = false;
+    }
+
+    #[On('set-user-owner')]
+    public function setUserOwner($userId)
+    {
+        // Không có User Owner
+        if (!$userId) {
+            $this->search = '';
+            $this->selectedValue = '';
+            $this->hasSelected = false;
+            $this->showDropdown = false;
+            $this->results = [];
+
+            return;
+        }
+
+        // Tìm user
+        $item = $this->modelClass::query()
+            ->where($this->valueField, $userId)
+            ->first();
+
+        if (!$item) {
+            $this->search = '';
+            $this->selectedValue = '';
+            $this->hasSelected = false;
+
+            return;
+        }
+
+        // Text hiển thị
+        $this->search = $item->{$this->displayField};
+
+        // ID thực tế submit
+        $this->selectedValue = (string) $item->{$this->valueField};
+
+        $this->hasSelected = true;
+
+        $this->showDropdown = false;
+        $this->results = [];
     }
 };
 ?>

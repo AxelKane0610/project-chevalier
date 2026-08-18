@@ -109,7 +109,7 @@ class EEG_Software_Ticket extends Model
 
             "5" => [
                 'text' => 'Rejected',
-                'color' => 'light'
+                'color' => 'danger'
             ],
 
             "6" => [
