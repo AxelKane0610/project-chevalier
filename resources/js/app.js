@@ -68,49 +68,55 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-// const fileInput = document.getElementById('fileInput');
-// const fileListUI = document.getElementById('fileList');
+// class FileUploader {
+//     constructor(container) {
+//         this.container = container;
+//         this.fileInput = container.querySelector('.file-input');
+//         this.fileListUI = container.querySelector('.file-list');
+//         this.selectedFiles = [];
 
-// let selectedFiles = [];
-// if (fileInput) {
-//     fileInput.addEventListener('change', function () {
-//         selectedFiles = Array.from(this.files);
-//         renderFileList();
-//     });
-// }
+//         if (this.fileInput) {
+//             this.initEvents();
+//         }
+//     }
 
-// function renderFileList() {
-//     fileListUI.innerHTML = ''; //Clear UI cũ (re-render lại từ đầu)
+//     initEvents() {
+//         this.fileInput.addEventListener('change', (e) => {
+//             // Thay vì ghi đè, bạn có thể gộp file mới chọn vào file cũ (tuỳ nhu cầu)
+//             this.selectedFiles = Array.from(e.target.files);
+//             this.renderFileList();
+//         });
+//     }
 
-//     selectedFiles.forEach((file, index) => {
-//         const li = document.createElement('li');
+//     renderFileList() {
+//         this.fileListUI.innerHTML = '';
 
-//         li.textContent = file.name;
+//         this.selectedFiles.forEach((file, index) => {
+//             const li = document.createElement('li');
+//             li.textContent = file.name;
 
-//         const removeBtn = document.createElement('button');
-//         // removeBtn.textContent = 'X';
-//         removeBtn.innerHTML = '<i class="ti-close"></i>';
-//         removeBtn.onclick = () => removeFile(index);
- 
-//         li.appendChild(removeBtn);
-//         fileListUI.appendChild(li);
-//     });
-// }
+//             const removeBtn = document.createElement('button');
+//             removeBtn.innerHTML = '<i class="ti-close"></i>';
+//             removeBtn.onclick = () => this.removeFile(index);
 
-// function removeFile(index) {
-//     selectedFiles.splice(index, 1);
-//     updateInputFiles();
-//     renderFileList();
-// }
+//             li.appendChild(removeBtn);
+//             this.fileListUI.appendChild(li);
+//         });
+//     }
 
-// function updateInputFiles() {
-//     const dataTransfer = new DataTransfer();
+//     removeFile(index) {
+//         this.selectedFiles.splice(index, 1);
+//         this.updateInputFiles();
+//         this.renderFileList();
+//     }
 
-//     selectedFiles.forEach(file => {
-//         dataTransfer.items.add(file);
-//     });
-
-//     fileInput.files = dataTransfer.files;
+//     updateInputFiles() {
+//         const dataTransfer = new DataTransfer();
+//         this.selectedFiles.forEach(file => {
+//             dataTransfer.items.add(file);
+//         });
+//         this.fileInput.files = dataTransfer.files;
+//     }
 // }
 
 class FileUploader {
@@ -118,6 +124,8 @@ class FileUploader {
         this.container = container;
         this.fileInput = container.querySelector('.file-input');
         this.fileListUI = container.querySelector('.file-list');
+
+        // Đây mới là state chính của toàn bộ file
         this.selectedFiles = [];
 
         if (this.fileInput) {
@@ -127,8 +135,29 @@ class FileUploader {
 
     initEvents() {
         this.fileInput.addEventListener('change', (e) => {
-            // Thay vì ghi đè, bạn có thể gộp file mới chọn vào file cũ (tuỳ nhu cầu)
-            this.selectedFiles = Array.from(e.target.files);
+
+            // File mới user vừa chọn
+            const newFiles = Array.from(e.target.files);
+
+            newFiles.forEach(file => {
+
+                // Kiểm tra duplicate
+                const isDuplicate = this.selectedFiles.some(existingFile =>
+                    existingFile.name === file.name &&
+                    existingFile.size === file.size &&
+                    existingFile.lastModified === file.lastModified
+                );
+
+                // Chỉ thêm nếu chưa tồn tại
+                if (!isDuplicate) {
+                    this.selectedFiles.push(file);
+                }
+            });
+
+            // Đồng bộ lại input
+            this.updateInputFiles();
+
+            // Render UI
             this.renderFileList();
         });
     }
@@ -137,32 +166,47 @@ class FileUploader {
         this.fileListUI.innerHTML = '';
 
         this.selectedFiles.forEach((file, index) => {
+
             const li = document.createElement('li');
+
             li.textContent = file.name;
 
             const removeBtn = document.createElement('button');
+
+            removeBtn.type = 'button';
             removeBtn.innerHTML = '<i class="ti-close"></i>';
-            removeBtn.onclick = () => this.removeFile(index);
+
+            removeBtn.onclick = () => {
+                this.removeFile(index);
+            };
 
             li.appendChild(removeBtn);
+
             this.fileListUI.appendChild(li);
         });
     }
 
     removeFile(index) {
         this.selectedFiles.splice(index, 1);
+
+        // Cập nhật lại input
         this.updateInputFiles();
+
+        // Cập nhật UI
         this.renderFileList();
     }
 
     updateInputFiles() {
         const dataTransfer = new DataTransfer();
+
         this.selectedFiles.forEach(file => {
             dataTransfer.items.add(file);
         });
+
         this.fileInput.files = dataTransfer.files;
     }
 }
+
 
 // Tự động tìm tất cả các cụm upload trên trang và kích hoạt chúng
 document.addEventListener('DOMContentLoaded', () => {
