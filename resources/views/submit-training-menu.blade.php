@@ -69,13 +69,14 @@
                                 </span>
                                 <i class="ti-list-ol"></i> Show All Training Courses
                             </button>
-
-                            <button class="btn btn-primary table-btn w-100 position-relative" id="show-team-country-training-tickets-btn" data-target = "all-country-team-training-tickets-container">
-                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                    {{$all_country_team_training_tickets->total()}}
-                                </span>
-                                <i class="ti-list-ol"></i> Check your teams/country training status
-                            </button>
+                            @if($all_country_team_training_tickets->total() > 0)
+                                <button class="btn btn-primary table-btn w-100 position-relative" id="show-team-country-training-tickets-btn" data-target = "all-country-team-training-tickets-container">
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                        {{$all_country_team_training_tickets->total()}}
+                                    </span>
+                                    <i class="ti-list-ol"></i> Check your teams/country training status
+                                </button>
+                            @endif
 
                         </div>
 
