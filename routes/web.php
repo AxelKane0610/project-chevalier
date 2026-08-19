@@ -196,7 +196,7 @@ Route::middleware(['auth'])->group(function () {
         Route::patch('/edit-asset-details/{id}', [SpectreCrownWarehouseController::class, 'Edit_Asset_Details'])->name('edit-asset-details');
         Route::post('/asset-export/{id}', [SpectreCrownWarehouseController::class, 'Asset_Export'])->name('asset-export');
         Route::patch('/edit-asset-export/{id}', [SpectreCrownWarehouseController::class, 'Edit_Asset_Export'])->name('edit-asset-export');
-
+        
     });
 
     //4. Ticket mượn máy & mượn part

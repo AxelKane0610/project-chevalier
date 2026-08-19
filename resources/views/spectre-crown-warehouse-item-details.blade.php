@@ -494,7 +494,7 @@
         <x-common-ticket-form title="Edit Asset Export" id="edit-asset-export" action1="" enctype="multipart/form-data">
             @method('PATCH')
             <label>Asset Tag</label>
-            <input type="text" class="ticket-form-body-input" id="edit-loan-unit-asset-tag" name="loan_unit_asset_tag"  readonly>
+            <input type="text" class="ticket-form-body-input" id="edit-loan-unit-asset-tag" name="loan_unit_asset_tag" readonly>
 
             <label>User Owner (Nếu user không thuộc SC, để trống)</label>
             <livewire:common-search-dropdown
@@ -506,19 +506,19 @@
             />
 
             <label>Receipt (Nếu không có để N/A)</label>
-            <input type="text" class="ticket-form-body-input" id="edit-ticket-receipt" placeholder="" required>
+            <input type="text" class="ticket-form-body-input" id="edit-ticket-receipt" placeholder="Điền số phiếu nếu có" name="ticket_receipt">
 
             <label>Part Request</label>
-            <input type="text" class="ticket-form-body-input" id="edit-part-request" placeholder="" required>
+            <input type="text" class="ticket-form-body-input" id="edit-part-request" placeholder="" name="part_request" required>
 
             <label>CT Loaned</label>
-            <input type="text" class="ticket-form-body-input" id="edit-ct-loaned" placeholder="Điền CT của part cho mượn (Nếu có)">
+            <input type="text" class="ticket-form-body-input" id="edit-ct-loaned" placeholder="Điền CT của part cho mượn (Nếu có)" name="ct_loaned">
 
             <label>New CT Returned</label>
-            <input type="text" class="ticket-form-body-input" id="edit-new-ct-return" placeholder="Điền CT của part cho trả (Nếu có)">
+            <input type="text" class="ticket-form-body-input" id="edit-new-ct-return" placeholder="Điền CT của part cho trả (Nếu có)" name="new_ct_return">
 
             <label>Status</label>
-            <select id="edit-status" class="ticket-form-body-input" required>
+            <select id="edit-status" class="ticket-form-body-input" name="status">
                 <option value="1" >Requested</option>
                 <option value="2" >Borrowed, not returned yet</option>
                 <option value="3" >Returned</option>
@@ -528,7 +528,7 @@
             </select>
 
             <label>Original</label>
-            <select id="edit-original" class="ticket-form-body-input">
+            <select id="edit-original" class="ticket-form-body-input" name="original">
                 <option value="1" >Crown</option>
                 <option value="2" >Spectre</option>
                 <option value="3" >T1 (FPT, DGW, Elite)</option>
@@ -536,13 +536,13 @@
             </select>
 
             <label>Start Date</label>
-            <input type="date" class="ticket-form-body-input" id="edit-start-date">
+            <input type="date" class="ticket-form-body-input" id="edit-start-date" name="start_date">
 
             <label>End Date</label>
-            <input type="date" class="ticket-form-body-input" id="edit-end-date">
+            <input type="date" class="ticket-form-body-input" id="edit-end-date" name="end_date">
 
             <label>Note</label>
-            <input type="text" class="ticket-form-body-input" id="edit-note" placeholder="Ghi chú">
+            <input type="text" class="ticket-form-body-input" id="edit-note" placeholder="Ghi chú" name="note">
 
             
 

@@ -79,7 +79,7 @@
                 <tr>
                     <td>
                         <div class="d-flex justify-content-center align-items-center gap-2 flex-row">
-                            @if($parts->status == '1' && $ticket->user_id == auth()->user()->id && ($ticket->status == '1' || $ticket->status == '2'))
+                            @if(($parts->status == '1' && $ticket->user_id == auth()->user()->id && ($ticket->status == '1' || $ticket->status == '2')) || (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_LOAN_UNIT_ADMIN')))
                                 
                                 <button type="button" 
                                 class="btn-edit-part js-input-required-btn"
@@ -296,7 +296,19 @@
             <label>Part Request</label>
             <input type="text" class="ticket-form-body-input" name="part_request" value="" id="edit-part-request-part-details">
 
+            
+
             @if((auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_LOAN_UNIT_ADMIN')))
+                <label>Status</label>
+                <select id="edit-status" class="ticket-form-body-input" name="status">
+                    <option value="1" >Requested</option>
+                    <option value="2" >Borrowed, not returned yet</option>
+                    <option value="3" >Returned</option>
+                    <option value="4" >Canceled</option>
+                    <option value="5" >Will not be returned</option>
+                    
+                </select>
+                
                 <label>Loan Unit Asset Tag</label>
                 <input type="text" class="ticket-form-body-input" name="loan_unit_asset_tag" value="" id="edit-loan-unit-asset-tag">
 
@@ -392,7 +404,7 @@
 
         <x-common-ticket-form title="Close ticket" id="close-loan-unit-part-ticket" action1="{{ route('close-loan-unit-part-ticket', $ticket->id) }}">
             @method('PATCH')
-            <label>Status</label>
+            <label>Status (Chọn Completed nếu có cho mượn part)</label>
             <select name="status" class="ticket-form-body-input" required>
                 <option value="3">Completed</option>
                 <option value="4">Canceled</option>

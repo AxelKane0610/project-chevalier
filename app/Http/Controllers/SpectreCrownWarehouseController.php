@@ -317,5 +317,50 @@ class SpectreCrownWarehouseController extends Controller
         }
     }
 
+    public function Edit_Asset_Export (Request $request, $id ){
+        try {
+            $validate_data = $request->validate([
+                'user_id' => 'nullable',
+                'ticket_receipt' => 'nullable',
+                'part_request' => 'nullable',
+                'ct_loaned' => 'nullable',
+                'new_ct_return' => 'nullable',
+                'status' => 'nullable',
+                'original' => 'nullable',
+                'start_date' => 'nullable',
+                'end_date' => 'nullable',
+                'note' => 'nullable',
+            ]);
+
+            $validate_data['user_id'] = strip_tags($validate_data['user_id']);
+            $validate_data['ticket_receipt'] = strip_tags($validate_data['ticket_receipt']);
+            $validate_data['part_request'] = strip_tags($validate_data['part_request']);
+            $validate_data['ct_loaned'] = strip_tags($validate_data['ct_loaned']);
+            $validate_data['new_ct_return'] = strip_tags($validate_data['new_ct_return']);
+            $validate_data['status'] = strip_tags($validate_data['status']);
+            $validate_data['original'] = strip_tags($validate_data['original']);
+            $validate_data['start_date'] = $validate_data['start_date'] ?: null;
+            $validate_data['end_date'] = $validate_data['end_date'] ?: null;
+            $validate_data['note'] = strip_tags($validate_data['note']);
+
+            $ticket = Loan_Unit_Ticket_Parts_Details_Model::with('user_owner')->findOrFail($id);
+
+            $ticket->update($validate_data);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Edited successfully',
+            ]);
+
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Fail to edit due to ' .$e->getMessage(),
+            ], 500);
+        }
+
+    }
+
 
 }

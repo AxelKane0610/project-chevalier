@@ -556,6 +556,9 @@ document.querySelectorAll('.btn-edit-part').forEach(button => {
         document.getElementById('edit-new-ct-return').value =
             this.dataset.new_ct_return;
 
+        document.getElementById('edit-status').value =
+            this.dataset.status;
+
         document.getElementById('edit-original').value =
             this.dataset.original;    
         

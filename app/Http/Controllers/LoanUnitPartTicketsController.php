@@ -221,7 +221,7 @@ class LoanUnitPartTicketsController extends Controller
             $part = Loan_Unit_Ticket_Parts_Details_Model::findOrFail($id);
             $ticket = Loan_Unit_Part_Tickets_Model::with('user_owner')->findOrFail($part->ticket_id);
 
-            if ($part->status != '1') {
+            if ($part->status != '1' && auth()->user()->hasRole('ROLE_LOAN_UNIT_USER') ) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Chỉ có part đang ở trạng thái "Requested" mới được phép edit part details !',
@@ -236,6 +236,7 @@ class LoanUnitPartTicketsController extends Controller
                     'original' => 'nullable',
                     'start_date' => 'nullable',
                     'end_date' => 'nullable',
+                    'status' => 'nullable',
                     'note' => 'nullable|string|max:255',
                 ]);
 
@@ -245,9 +246,10 @@ class LoanUnitPartTicketsController extends Controller
                 $part->ct_loaned = strip_tags($validate_data['ct_loaned']);
                 $part->new_ct_return = strip_tags($validate_data['new_ct_return']);
                 $part->original = strip_tags($validate_data['original']);
-                $part->start_date = strip_tags($validate_data['start_date']);
-                $part->end_date = strip_tags($validate_data['end_date']);
+                $part->start_date = $validate_data['start_date'] ?: null;
+                $part->end_date = $validate_data['end_date'] ?: null;
                 $part->note = strip_tags($validate_data['note']);
+                $part->status = strip_tags($validate_data['status']);
 
                 $part->save();
 
@@ -417,7 +419,13 @@ class LoanUnitPartTicketsController extends Controller
     public function Close_Loan_Unit_Part_Ticket (Request $request, $id){
         try {
             $ticket = Loan_Unit_Part_Tickets_Model::with('user_owner')->findOrFail($id);
-            $parts_not_returned = Loan_Unit_Ticket_Parts_Details_Model::where('ticket_id', $id)->whereNotIn('status', ['3', '4'])->exists(); //
+            // Nếu part đang status 1 thì chuyển sang status 5
+            Loan_Unit_Ticket_Parts_Details_Model::where('ticket_id', $id)
+                ->where('status', '1')
+                ->update([
+                    'status' => '4',
+                ]);
+            $parts_not_returned = Loan_Unit_Ticket_Parts_Details_Model::where('ticket_id', $id)->whereNotIn('status', ['3', '4', '5'])->exists(); //
             if (in_array($ticket->status, ['3', '4'])) {
                 return response()->json([
                     'success' => false,
