@@ -460,19 +460,19 @@ class VerifyTrainingTicketJob implements ShouldQueue
             */
             $completed = count($missingCourses) === 0;
             
-            if ($completed) {
+            // if ($completed) {
 
-                /*
-                * Nếu status của bạn là enum số, ví dụ 3 = Completed,
-                * hãy đổi 'Completed' thành giá trị enum thực tế.
-                */
-                Training_Tickets_Model::where(
-                    'training_no',
-                    $ticket->training_no
-                )->update([
-                    'status' => '4'
-                ]);
-            }
+            //     /*
+            //     * Nếu status của bạn là enum số, ví dụ 3 = Completed,
+            //     * hãy đổi 'Completed' thành giá trị enum thực tế.
+            //     */
+            //     Training_Tickets_Model::where(
+            //         'training_no',
+            //         $ticket->training_no
+            //     )->update([
+            //         'status' => '4'
+            //     ]);
+            // }
 
             /*
             |--------------------------------------------------------------------------
@@ -492,9 +492,11 @@ class VerifyTrainingTicketJob implements ShouldQueue
             // ]);
 
             if ($completed) {
-                Training_Tickets_Model::where('training_no', $ticket->training_no)->update([
-                    'status' => '4'
-                ]);
+                // Training_Tickets_Model::where('training_no', $ticket->training_no)->update([
+                //     'status' => '4'
+                // ]);
+                $ticket->status = '4';
+                $ticket->save();
                 Comments_Model::create([
                     'ticket_id' => $this->ticketId,
                     'type_of_ticket' => 5,
