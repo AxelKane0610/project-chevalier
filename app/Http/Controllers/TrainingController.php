@@ -305,6 +305,9 @@ class TrainingController extends Controller
                     5,
                     'sent verify training at'
                 );
+
+                $ticket->status = '3';
+                $ticket->save();
                 return response()->json([
                     'success' => true,
                     'message' => 'Hệ thống đã tiếp nhận chứng chỉ và đang kiểm tra ngầm. Vui lòng tải lại trang sau ít phút để xem kết quả.'
