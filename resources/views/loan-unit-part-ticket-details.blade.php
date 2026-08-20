@@ -323,9 +323,9 @@
 
                 <label>Original</label>
                 <select name="original" class="ticket-form-body-input" id="edit-original">
-                    <option value="1" @selected($parts->original == '1')>Crown</option>
-                    <option value="2" @selected($parts->original == '2')>Spectre</option>
-                    <option value="3" @selected($parts->original == '3')>T1 (FPT, DGW, Elite)</option>
+                    <option value="1">Crown</option>
+                    <option value="2">Spectre</option>
+                    <option value="3">T1 (FPT, DGW, Elite)</option>
                     
                 </select>
 
@@ -361,16 +361,16 @@
 
             <label>Original</label>
             <select name="original" class="ticket-form-body-input" id="edit-original" required>
-                <option value="1" @selected($parts->original == '1')>Crown</option>
-                <option value="2" @selected($parts->original == '2')>Spectre</option>
-                <option value="3" @selected($parts->original == '3')>T1 (FPT, DGW, Elite)</option>
+                <option value="1" >Crown</option>
+                <option value="2" >Spectre</option>
+                <option value="3" >T1 (FPT, DGW, Elite)</option>
             </select>
 
             <label>Start Date</label>
             <input type="date" class="ticket-form-body-input" name="start_date" value="{{ today()->format('Y-m-d') }}" id="edit-start-date" >
 
             <label>Note</label>
-            <input type="text" class="ticket-form-body-input" name="note" placeholder="Ghi chú nếu có" required>
+            <input type="text" class="ticket-form-body-input" name="note" placeholder="Ghi chú nếu có">
 
             <x-slot:footer>
                 <button class="ticket-form-body-input" type="submit">Issue unit/part</button> 
