@@ -512,9 +512,12 @@ class VerifyTrainingTicketJob implements ShouldQueue
                 );
                 \Log::info("Ticket ID {$this->ticketId} đã verify thành công.");
             } else {
-                Training_Tickets_Model::where('training_no', $ticket->training_no)->update([
-                    'status' => '5', // Mã status Báo thiếu chứng chỉ
-                ]);
+                // Training_Tickets_Model::where('training_no', $ticket->training_no)->update([
+                //     'status' => '5', // Mã status Báo thiếu chứng chỉ
+                // ]);
+
+                $ticket->status = '5';
+                $ticket->save();
                 Comments_Model::create([
                     'ticket_id' => $this->ticketId,
                     'type_of_ticket' => 5,
