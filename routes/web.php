@@ -20,9 +20,11 @@ use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\TTEXTicketsController;
 
 Route::get('/', function () {
-    // Auth::logout();
-    // session()->flush();
-    return view('/login');
+    if (auth()->check()) {
+        return redirect('/main-menu');
+    }
+
+    return redirect('/login');
 });
 
 // 1. Trang hiển thị Form Login
@@ -95,6 +97,38 @@ Route::middleware(['auth'])->group(function () {
 
     });
 
+    //3. Khắc base
+    Route::middleware(['role:ROLE_LASER_ENGRAVING_USER,ROLE_LASER_ENGRAVING_ADMIN,ROLE_SUPER_ADMIN'])->group(function () {
+        Route::get('/laser-engraving-menu', [LaserEngravingTicketsController::class, 'Show_Pending_Tickets']);
+        Route::get('/laser-engraving-menu-details/{id}', [LaserEngravingTicketsController::class, 'Show_Laser_Engraving_Ticket_Details']);
+        Route::post('/create-laser-engraving-ticket', [LaserEngravingTicketsController::class, 'Create_Laser_Engraving_Ticket']);
+        Route::patch('/edit-laser-engraving-ticket/{id}', [LaserEngravingTicketsController::class, 'Edit_Laser_Engraving_Ticket'])->name('edit-laser-engraving-ticket');
+        Route::patch('/re-open-laser-engraving-ticket/{id}', [LaserEngravingTicketsController::class,'Re_Open_Laser_Engraving_Ticket'])->name('re-open-laser-engraving-ticket');
+        Route::post('/add-comment-laser-engraving-ticket/{id}', [LaserEngravingTicketsController::class, 'Add_Comment_Laser_Engraving_Ticket']) ->name('add-comment-laser-engraving-ticket');
+        Route::patch('/change-laser-engraving-status-to-in-progress/{id}', [LaserEngravingTicketsController::class, 'Change_Laser_Engraving_Status_To_In_Progress'])->name('change-laser-engraving-status-to-in-progress');
+        Route::patch('/close-laser-engraving-ticket/{id}', [LaserEngravingTicketsController::class, 'Close_Laser_Engraving_Ticket'])->name('close-laser-engraving-ticket');
+    });
+
+
+    //4. Ticket mượn máy & mượn part
+    Route::middleware(['role:ROLE_SUPER_ADMIN,ROLE_LOAN_UNIT_ADMIN,ROLE_LOAN_UNIT_USER'])->group(function () {
+        Route::get('/loan-unit-part-menu',[LoanUnitPartTicketsController::class, 'index']);
+        Route::get('/loan-unit-part-ticket-details/{id}', [LoanUnitPartTicketsController::class, 'Show_Loan_Unit_Part_Ticket_Details']) ->name('loan-unit-part-ticket-details');
+        Route::post('/create-loan-unit-part-ticket', [LoanUnitPartTicketsController::class, 'Create_Loan_Unit_Part_Ticket']);
+        Route::post('/add-comment-loan-unit-part-ticket/{id}', [LoanUnitPartTicketsController::class, 'Add_Comment_Loan_Unit_Part_Ticket']) ->name('add-comment-loan-unit-part-ticket');
+        Route::patch('/edit-loan-unit-part-ticket/{id}', [LoanUnitPartTicketsController::class, 'Edit_Loan_Unit_Part_Ticket'])->name('edit-loan-unit-part-ticket');
+        Route::patch('/edit-loan-unit-part-details/{id}', [LoanUnitPartTicketsController::class, 'Edit_Loan_Unit_Part_Details'])->name('edit-loan-unit-part-details');
+        Route::patch('/issue-loan-unit-part/{id}', [LoanUnitPartTicketsController::class, 'Issue_Loan_Unit_Part'])->name('issue-loan-unit-part');
+        Route::post('/add-loan-unit-part/{id}', [LoanUnitPartTicketsController::class, 'Add_Loan_Unit_Part'])->name('add-loan-unit-part');
+        Route::patch('/return-loan-unit-part/{id}', [LoanUnitPartTicketsController::class, 'Return_Loan_Unit_Part'])->name('return-loan-unit-part');
+        Route::patch('/close-loan-unit-part-ticket/{id}', [LoanUnitPartTicketsController::class, 'Close_Loan_Unit_Part_Ticket'])->name('close-loan-unit-part-ticket');
+        Route::patch('/cancel-loan-unit-part/{id}', [LoanUnitPartTicketsController::class, 'Cancel_Loan_Unit_Part'])->name('cancel-loan-unit-part');
+
+        Route::get('/loan-unit-part-menu/filter-all-loan-unit-part-tickets-table', [LoanUnitPartTicketsController::class, 'Filter_All_Loan_Unit_Part_Tickets']);
+        Route::get('/loan-unit-part-menu/filter-pending-loan-unit-part-tickets-table', [LoanUnitPartTicketsController::class, 'Filter_Pending_Loan_Unit_Part_Tickets']);
+
+    });
+
 
     //5. Training Ticket
     Route::middleware(['role:ROLE_SUPER_ADMIN,ROLE_SUBMIT_TRAINING_USER,ROLE_TRAINING_ADMIN'])->group(function () {
@@ -116,16 +150,45 @@ Route::middleware(['auth'])->group(function () {
     });
 
 
-    //3. Khắc base
-    Route::middleware(['role:ROLE_LASER_ENGRAVING_USER,ROLE_LASER_ENGRAVING_ADMIN,ROLE_SUPER_ADMIN'])->group(function () {
-        Route::get('/laser-engraving-menu', [LaserEngravingTicketsController::class, 'Show_Pending_Tickets']);
-        Route::get('/laser-engraving-menu-details/{id}', [LaserEngravingTicketsController::class, 'Show_Laser_Engraving_Ticket_Details']);
-        Route::post('/create-laser-engraving-ticket', [LaserEngravingTicketsController::class, 'Create_Laser_Engraving_Ticket']);
-        Route::patch('/edit-laser-engraving-ticket/{id}', [LaserEngravingTicketsController::class, 'Edit_Laser_Engraving_Ticket'])->name('edit-laser-engraving-ticket');
-        Route::patch('/re-open-laser-engraving-ticket/{id}', [LaserEngravingTicketsController::class,'Re_Open_Laser_Engraving_Ticket'])->name('re-open-laser-engraving-ticket');
-        Route::post('/add-comment-laser-engraving-ticket/{id}', [LaserEngravingTicketsController::class, 'Add_Comment_Laser_Engraving_Ticket']) ->name('add-comment-laser-engraving-ticket');
-        Route::patch('/change-laser-engraving-status-to-in-progress/{id}', [LaserEngravingTicketsController::class, 'Change_Laser_Engraving_Status_To_In_Progress'])->name('change-laser-engraving-status-to-in-progress');
-        Route::patch('/close-laser-engraving-ticket/{id}', [LaserEngravingTicketsController::class, 'Close_Laser_Engraving_Ticket'])->name('close-laser-engraving-ticket');
+    //6. Quản lý SubK
+    Route::middleware(['role:ROLE_SUPER_ADMIN'])->group(function () {
+        // Các route chỉ dành cho ROLE_SUPER_ADMIN
+        Route::get('/subk-management', [UserController::class, 'index']);
+        
+        Route::post('/create-new-user', [UserController::class,'Create_New_User']) ->name('create-new-user');
+        Route::patch('/edit-user-info/{id}', [UserController::class,'Edit_User_Info'])->name('edit-user-info');
+        Route::post('/reset-password-user/{id}', [UserController::class, 'Reset_Password'])->name('reset-password-user');
+    });
+
+
+    //7. Invoice Exceptional
+    Route::middleware(['role:ROLE_INVOICE_EXCEPTIONAL_USER,ROLE_SUPER_ADMIN,ROLE_INVOICE_EXCEPTIONAL_L1_APPROVER,ROLE_INVOICE_EXCEPTIONAL_L2_APPROVER'])->group(function () {
+        Route::get('/invoice-exceptional-menu', [InvoiceExceptionalTicketsController::class, 'Show_Pending_Tickets']);
+        Route::get('/invoice-exceptional-menu-details/{id}', [InvoiceExceptionalTicketsController::class, 'Show_Invoice_Exceptional_Ticket_Details']);
+        Route::post('/create-invoice-exceptional-ticket', [InvoiceExceptionalTicketsController::class, 'Create_Invoice_Exceptional_Tickets']);
+        Route::post('/add-comment-invoice-exceptional-ticket/{id}', [InvoiceExceptionalTicketsController::class, 'Add_Comment_Invoice_Exceptional_Ticket']) ->name('add-comment-invoice-exceptional-ticket');
+        Route::patch('/edit-invoice-exceptional-ticket/{id}', [InvoiceExceptionalTicketsController::class, 'Edit_Invoice_Exceptional_Ticket'])->name('edit-invoice-exceptional-ticket');
+        Route::post('/send-approve-invoice-exceptional/{id}', [InvoiceExceptionalTicketsController::class, 'Send_Approve_Invoice_Exceptional']) ->name('send-approve-invoice-exceptional');
+        Route::post('/invoice-exceptional-approve-lv1/{id}', [InvoiceExceptionalTicketsController::class,'Invoice_Exceptional_Approve_Lv1'])->name('invoice-exceptional-approve-lv1');
+        Route::post('/invoice-exceptional-approve-lv2/{id}', [InvoiceExceptionalTicketsController::class,'Invoice_Exceptional_Approve_Lv2'])->name('invoice-exceptional-approve-lv2');
+        Route::post('/invoice-exceptional-reject/{id}', [InvoiceExceptionalTicketsController::class,'Invoice_Exceptional_Reject'])->name('invoice-exceptional-reject');
+        Route::patch('/re-open-invoice-exceptional-ticket/{id}', [InvoiceExceptionalTicketsController::class,'Re_Open_Invoice_Exceptional_Ticket'])->name('re-open-invoice-exceptional-ticket');
+        Route::post('/request-sale-support-invoice-exceptional-ticket/{id}', [InvoiceExceptionalTicketsController::class, 'Request_Sale_Support'])->name('request-sale-support-invoice-exceptional-ticket');
+    });
+
+
+    //9. Nghỉ phép
+    Route::middleware(['role:ROLE_SUPER_ADMIN,ROLE_OUT_OF_OFFICE_USER,ROLE_OUT_OF_OFFICE_ADMIN'])->group(function () {
+        Route::get('/out-of-office-tickets-menu', [OutOfOfficeTicketsController::class, 'Show_Pending_Tickets']);
+        Route::post('/create-out-of-office-ticket', [OutOfOfficeTicketsController::class, 'Create_Out_Of_Office_Ticket']);
+        Route::get('/out-of-office-tickets-menu-details/{id}', [OutOfOfficeTicketsController::class, 'Show_Out_Of_Office_Ticket_Details']);
+        Route::patch('/edit-out-of-office-ticket/{id}', [OutOfOfficeTicketsController::class, 'Edit_Out_Of_Office_Ticket'])->name('edit-out-of-office-ticket');
+        Route::post('/add-comment-out-of-office-ticket/{id}', [OutOfOfficeTicketsController::class, 'Add_Comment_Out_Of_Office_Ticket']) ->name('add-comment-out-of-office-ticket');
+        Route::post('/send-approve-out-of-office-ticket/{id}', [OutOfOfficeTicketsController::class, 'Send_Approve_Out_Of_Office_Ticket']) ->name('send-approve-out-of-office-ticket');
+        Route::post('/approve-out-of-office-ticket/{id}', [OutOfOfficeTicketsController::class, 'Approve_Out_Of_Office_Ticket']) ->name('approve-out-of-office-ticket');
+        Route::post('/reject-out-of-office-ticket/{id}', [OutOfOfficeTicketsController::class, 'Reject_Out_Of_Office_Ticket']) ->name('reject-out-of-office-ticket');
+        Route::post('/re-open-out-of-office-ticket/{id}', [OutOfOfficeTicketsController::class,'Out_Of_Office_Re_Open'])->name('re-open-out-of-office-ticket');
+
     });
 
     //10. Thermal Event
@@ -148,44 +211,9 @@ Route::middleware(['auth'])->group(function () {
         Route::patch('/delete-thermal-event-part-details/{id}', [ThermalEventExceptionalTicketsController::class, 'Delete_Thermal_Event_Part_Details'])->name('delete-thermal-event-part-details');
     });
 
-    //7. Invoice Exceptional
-    Route::middleware(['role:ROLE_INVOICE_EXCEPTIONAL_USER,ROLE_SUPER_ADMIN,ROLE_INVOICE_EXCEPTIONAL_L1_APPROVER,ROLE_INVOICE_EXCEPTIONAL_L2_APPROVER'])->group(function () {
-        Route::get('/invoice-exceptional-menu', [InvoiceExceptionalTicketsController::class, 'Show_Pending_Tickets']);
-        Route::get('/invoice-exceptional-menu-details/{id}', [InvoiceExceptionalTicketsController::class, 'Show_Invoice_Exceptional_Ticket_Details']);
-        Route::post('/create-invoice-exceptional-ticket', [InvoiceExceptionalTicketsController::class, 'Create_Invoice_Exceptional_Tickets']);
-        Route::post('/add-comment-invoice-exceptional-ticket/{id}', [InvoiceExceptionalTicketsController::class, 'Add_Comment_Invoice_Exceptional_Ticket']) ->name('add-comment-invoice-exceptional-ticket');
-        Route::patch('/edit-invoice-exceptional-ticket/{id}', [InvoiceExceptionalTicketsController::class, 'Edit_Invoice_Exceptional_Ticket'])->name('edit-invoice-exceptional-ticket');
-        Route::post('/send-approve-invoice-exceptional/{id}', [InvoiceExceptionalTicketsController::class, 'Send_Approve_Invoice_Exceptional']) ->name('send-approve-invoice-exceptional');
-        Route::post('/invoice-exceptional-approve-lv1/{id}', [InvoiceExceptionalTicketsController::class,'Invoice_Exceptional_Approve_Lv1'])->name('invoice-exceptional-approve-lv1');
-        Route::post('/invoice-exceptional-approve-lv2/{id}', [InvoiceExceptionalTicketsController::class,'Invoice_Exceptional_Approve_Lv2'])->name('invoice-exceptional-approve-lv2');
-        Route::post('/invoice-exceptional-reject/{id}', [InvoiceExceptionalTicketsController::class,'Invoice_Exceptional_Reject'])->name('invoice-exceptional-reject');
-        Route::patch('/re-open-invoice-exceptional-ticket/{id}', [InvoiceExceptionalTicketsController::class,'Re_Open_Invoice_Exceptional_Ticket'])->name('re-open-invoice-exceptional-ticket');
-        Route::post('/request-sale-support-invoice-exceptional-ticket/{id}', [InvoiceExceptionalTicketsController::class, 'Request_Sale_Support'])->name('request-sale-support-invoice-exceptional-ticket');
-    });
+    
 
-    //6. Quản lý SubK
-    Route::middleware(['role:ROLE_SUPER_ADMIN'])->group(function () {
-        // Các route chỉ dành cho ROLE_SUPER_ADMIN
-        Route::get('/subk-management', [UserController::class, 'index']);
-        
-        Route::post('/create-new-user', [UserController::class,'Create_New_User']) ->name('create-new-user');
-        Route::patch('/edit-user-info/{id}', [UserController::class,'Edit_User_Info'])->name('edit-user-info');
-        Route::post('/reset-password-user/{id}', [UserController::class, 'Reset_Password'])->name('reset-password-user');
-    });
-
-    //9. Nghỉ phép
-    Route::middleware(['role:ROLE_SUPER_ADMIN,ROLE_OUT_OF_OFFICE_USER,ROLE_OUT_OF_OFFICE_ADMIN'])->group(function () {
-        Route::get('/out-of-office-tickets-menu', [OutOfOfficeTicketsController::class, 'Show_Pending_Tickets']);
-        Route::post('/create-out-of-office-ticket', [OutOfOfficeTicketsController::class, 'Create_Out_Of_Office_Ticket']);
-        Route::get('/out-of-office-tickets-menu-details/{id}', [OutOfOfficeTicketsController::class, 'Show_Out_Of_Office_Ticket_Details']);
-        Route::patch('/edit-out-of-office-ticket/{id}', [OutOfOfficeTicketsController::class, 'Edit_Out_Of_Office_Ticket'])->name('edit-out-of-office-ticket');
-        Route::post('/add-comment-out-of-office-ticket/{id}', [OutOfOfficeTicketsController::class, 'Add_Comment_Out_Of_Office_Ticket']) ->name('add-comment-out-of-office-ticket');
-        Route::post('/send-approve-out-of-office-ticket/{id}', [OutOfOfficeTicketsController::class, 'Send_Approve_Out_Of_Office_Ticket']) ->name('send-approve-out-of-office-ticket');
-        Route::post('/approve-out-of-office-ticket/{id}', [OutOfOfficeTicketsController::class, 'Approve_Out_Of_Office_Ticket']) ->name('approve-out-of-office-ticket');
-        Route::post('/reject-out-of-office-ticket/{id}', [OutOfOfficeTicketsController::class, 'Reject_Out_Of_Office_Ticket']) ->name('reject-out-of-office-ticket');
-        Route::post('/re-open-out-of-office-ticket/{id}', [OutOfOfficeTicketsController::class,'Out_Of_Office_Re_Open'])->name('re-open-out-of-office-ticket');
-
-    });
+    
 
     //11. Quản lý kho Crown - Spectre
     Route::middleware(['role:ROLE_SUPER_ADMIN,ROLE_SPECTRE_CROWN_WAREHOUSE_ADMIN'])->group(function () {
@@ -199,22 +227,7 @@ Route::middleware(['auth'])->group(function () {
         
     });
 
-    //4. Ticket mượn máy & mượn part
-    Route::middleware(['role:ROLE_SUPER_ADMIN,ROLE_LOAN_UNIT_ADMIN,ROLE_LOAN_UNIT_USER'])->group(function () {
-        Route::get('/loan-unit-part-menu',[LoanUnitPartTicketsController::class, 'Show_Pending_Tickets']);
-        Route::get('/loan-unit-part-ticket-details/{id}', [LoanUnitPartTicketsController::class, 'Show_Loan_Unit_Part_Ticket_Details']) ->name('loan-unit-part-ticket-details');
-        Route::post('/create-loan-unit-part-ticket', [LoanUnitPartTicketsController::class, 'Create_Loan_Unit_Part_Ticket']);
-        Route::post('/add-comment-loan-unit-part-ticket/{id}', [LoanUnitPartTicketsController::class, 'Add_Comment_Loan_Unit_Part_Ticket']) ->name('add-comment-loan-unit-part-ticket');
-        Route::patch('/edit-loan-unit-part-ticket/{id}', [LoanUnitPartTicketsController::class, 'Edit_Loan_Unit_Part_Ticket'])->name('edit-loan-unit-part-ticket');
-        Route::patch('/edit-loan-unit-part-details/{id}', [LoanUnitPartTicketsController::class, 'Edit_Loan_Unit_Part_Details'])->name('edit-loan-unit-part-details');
-        Route::patch('/issue-loan-unit-part/{id}', [LoanUnitPartTicketsController::class, 'Issue_Loan_Unit_Part'])->name('issue-loan-unit-part');
-        Route::post('/add-loan-unit-part/{id}', [LoanUnitPartTicketsController::class, 'Add_Loan_Unit_Part'])->name('add-loan-unit-part');
-        Route::patch('/return-loan-unit-part/{id}', [LoanUnitPartTicketsController::class, 'Return_Loan_Unit_Part'])->name('return-loan-unit-part');
-        Route::patch('/close-loan-unit-part-ticket/{id}', [LoanUnitPartTicketsController::class, 'Close_Loan_Unit_Part_Ticket'])->name('close-loan-unit-part-ticket');
-        Route::patch('/cancel-loan-unit-part/{id}', [LoanUnitPartTicketsController::class, 'Cancel_Loan_Unit_Part'])->name('cancel-loan-unit-part');
-
-
-    });
+    
 
     Route::post('/logout', [UserController::class, 'logout'])->name('logout');
     

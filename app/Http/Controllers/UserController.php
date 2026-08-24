@@ -16,7 +16,12 @@ use function Laravel\Prompts\alert;
 class UserController extends Controller
 {
     //
-    public function login(){
+    public function login()
+    {
+        if (auth()->check()) {
+            return redirect('/main-menu');
+        }
+
         return view('login');
     }
 

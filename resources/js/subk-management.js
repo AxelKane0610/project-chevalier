@@ -165,7 +165,7 @@ document.addEventListener('submit', function (e) {
                         icon: 'success',
                         confirmButtonText: 'OK'
                     }).then(()=>{
-                        location.reload();
+                        stopButtonLoading(form);
                     });
                 } else {
                     Swal.fire({
@@ -173,7 +173,7 @@ document.addEventListener('submit', function (e) {
                             text:new_ticket.message,
                             icon:'error'
                         }).then(()=>{
-                        location.reload();
+                        stopButtonLoading(form);
                     });
                 }
                 

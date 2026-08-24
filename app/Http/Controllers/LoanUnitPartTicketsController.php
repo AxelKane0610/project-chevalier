@@ -35,6 +35,108 @@ class LoanUnitPartTicketsController extends Controller
         
     }
 
+    public function index()
+    {
+        if (
+            auth()->user()->hasRole('ROLE_SUPER_ADMIN') ||
+            auth()->user()->hasRole('ROLE_LOAN_UNIT_ADMIN')
+        ) {
+            $tickets = Loan_Unit_Part_Tickets_Model::whereIn('status', ['1', '2'])
+                ->paginate(10);
+
+            $all_tickets = Loan_Unit_Part_Tickets_Model::paginate(10);
+
+        } else {
+
+            $tickets = Loan_Unit_Part_Tickets_Model::where('user_id', auth()->id())
+                ->whereIn('status', ['1', '2'])
+                ->paginate(10);
+
+            $all_tickets = Loan_Unit_Part_Tickets_Model::where('user_id', auth()->id())
+                ->paginate(10);
+        }
+
+        return view('loan-unit-part-menu', compact('tickets', 'all_tickets'));
+    }
+
+    public function Filter_Pending_Loan_Unit_Part_Tickets(Request $request){
+        $query = Loan_Unit_Part_Tickets_Model::query()->whereIn('status', ['1', '2']);
+
+        // Search
+        if ($request->filled('search')) {
+
+            $search = $request->search;
+
+            $query->where(function ($q) use ($search) {
+
+                $q->orWhereHas('user_owner', function ($user) use ($search) {
+                    $user->where('fullname', 'like', "%{$search}%");
+                })
+                    ->orWhere('ticket_receipt', 'like', "%{$search}%")
+                    ->orWhere('customer_unit_info', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('status')) {
+
+            $query->where('status', $request->status);
+        }
+
+        $tickets = $query
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
+
+        if ($request->ajax()) {
+
+            return view(
+                'tables.pending-loan-unit-part-tickets-table',
+                compact('tickets')
+            )->render();
+        }
+    }
+
+
+
+    public function Filter_All_Loan_Unit_Part_Tickets(Request $request){
+        $query = Loan_Unit_Part_Tickets_Model::query();
+
+        // Search
+        if ($request->filled('search')) {
+
+            $search = $request->search;
+
+            $query->where(function ($q) use ($search) {
+
+                $q->orWhereHas('user_owner', function ($user) use ($search) {
+                    $user->where('fullname', 'like', "%{$search}%");
+                })
+                    ->orWhere('ticket_receipt', 'like', "%{$search}%")
+                    ->orWhere('customer_unit_info', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('status')) {
+
+            $query->where('status', $request->status);
+        }
+
+        $all_tickets = $query
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
+
+        if ($request->ajax()) {
+
+            return view(
+                'tables.all-loan-unit-part-tickets-table',
+                compact('all_tickets')
+            )->render();
+        }
+    }
+
+    
+
     public function Create_Loan_Unit_Part_Ticket(Request $request){
         try {
             $validate_data = $request->validate([

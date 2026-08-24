@@ -1,22 +1,22 @@
 console.log("JS LOADEDD");
 
 
-const searchInput = document.getElementById('search-loan-unit-part-receipt-input');
+// const searchInput = document.getElementById('search-loan-unit-part-receipt-input');
 
-if (searchInput) {
-    searchInput.addEventListener('keyup', function () {
+// if (searchInput) {
+//     searchInput.addEventListener('keyup', function () {
 
-        let keyword = this.value.toLowerCase();
-        let rows = document.querySelectorAll('#all-loan-unit-part-tickets-table tbody tr');
+//         let keyword = this.value.toLowerCase();
+//         let rows = document.querySelectorAll('#all-loan-unit-part-tickets-table tbody tr');
 
-        rows.forEach(row => {
-            let text = row.textContent.toLowerCase();
+//         rows.forEach(row => {
+//             let text = row.textContent.toLowerCase();
 
-            row.style.display = text.includes(keyword) ? '' : 'none';
-        });
+//             row.style.display = text.includes(keyword) ? '' : 'none';
+//         });
 
-    });
-}
+//     });
+// }
 
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -593,6 +593,130 @@ document.querySelectorAll('.return-loan-unit-part-btn').forEach(button => {
         document.getElementById('return-loan-unit-part').action =
             '/return-loan-unit-part/' + this.dataset.id;
     });
+
+});
+
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    function initAjaxTable(config) {
+
+        const wrapper = document.getElementById(config.wrapper);
+
+        if (!wrapper) return;
+
+        const container = wrapper.querySelector(config.container);
+        const searchInput = wrapper.querySelector('.ajax-search');
+        const filters = wrapper.querySelectorAll('.ajax-filter');
+
+        function fetchData(page = 1) {
+
+            const params = new URLSearchParams();
+
+            params.append('page', page);
+
+            // Search
+            if (searchInput) {
+                params.append('search', searchInput.value);
+            }
+
+            // Filters
+            filters.forEach(filter => {
+
+                if (filter.value !== '') {
+                    params.append(filter.name, filter.value);
+                }
+
+            });
+
+            fetch(`${config.url}?${params.toString()}`, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.text())
+            .then(html => {
+                container.innerHTML = html;
+            })
+            .catch(error => console.error(error));
+
+        }
+
+        // =========================
+        // SEARCH
+        // =========================
+
+        if (searchInput) {
+
+            let timer;
+
+            searchInput.addEventListener('keyup', function () {
+
+                clearTimeout(timer);
+
+                timer = setTimeout(() => {
+                    fetchData(1);
+                }, 300);
+
+            });
+
+        }
+
+        // =========================
+        // FILTER
+        // =========================
+
+        filters.forEach(filter => {
+
+            filter.addEventListener('change', function () {
+                fetchData(1);
+            });
+
+        });
+
+        // =========================
+        // PAGINATION
+        // =========================
+
+        container.addEventListener('click', function (e) {
+
+            const link = e.target.closest('.pagination a');
+
+            if (!link) return;
+
+            e.preventDefault();
+
+            const page = new URL(link.href).searchParams.get('page') || 1;
+
+            fetchData(page);
+
+        });
+
+    }
+
+
+    initAjaxTable({
+
+        wrapper: 'all-loan-unit-part-tickets-container',
+
+        container: '#all-loan-unit-part-tickets-table-container',
+
+        url: '/loan-unit-part-menu/filter-all-loan-unit-part-tickets-table'
+
+    });
+
+
+    initAjaxTable({
+
+        wrapper: 'pending-loan-unit-part-tickets-container',
+
+        container: '#pending-loan-unit-part-tickets-table-container',
+
+        url: '/loan-unit-part-menu/filter-pending-loan-unit-part-tickets-table'
+
+    });
+
+    
 
 });
 

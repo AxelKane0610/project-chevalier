@@ -64,85 +64,58 @@
                     <div class="col-10 h-100 overflow-auto">
                         <div class="bg-white p-3 rounded shadow-sm ticket-table" id="pending-loan-unit-part-tickets-container">
                             <h2>Pending Tickets</h2>
-                            <table id="pending-loan-unit-part-tickets-table" class="common-table" width="100%" >
-                                <thead>
-                                    <th width="5%"></th>
-                                    <th width="15%">Receipt</th>
-                                    <th width="15%">User Owner</th>
-                                    <th width="15%">Status</th>
-                                    <th width="15%">Customer Unit Info</th>
-                                    
-
-                                </thead>
-                            
-                                <tbody>
-                                    @foreach ($tickets as $ticket)
-                                        <tr>
-                                            <td>
-                                                
-                                                <a href="/loan-unit-part-ticket-details/{{ $ticket->id }}">
-                                                    <button><i class="ti-arrow-right" ></i></button>
-                                                </a>
-                                                
-                                            </td>
-                                            <td>{{ $ticket->ticket_receipt }}</td>
-                                            <td>{{ $ticket->user_owner->fullname }}</td>
-                                            <td>
-                                                <span class="badge rounded-pill bg-{{ $ticket->status_data['color'] ?? 'primary' }} px-3 py-2">
-                                                    {{ $ticket->status_data['text'] }}
-                                                </span>
-                                            </td>
-                                            <td>{{ $ticket->customer_unit_info }}</td>
-
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <div class="bg-white p-3 rounded shadow-sm ticket-table d-none" id="all-loan-unit-part-tickets-container">
-                            <h2>All Tickets</h2>
                             <div class="common-table-filter">
                                 <div class="search-box">
                                     <i class="ti-search"></i>
-                                    <input type="text" placeholder="Search Receipt" id="search-loan-unit-part-receipt-input">
+                                    <input type="text" placeholder="Search Receipt" id="search-pending-loan-unit-part-tickets" class="ajax-search">
                                 </div>
 
-                            </div>
-                            <table id="all-loan-unit-part-tickets-table" class="common-table" width="100%" >
-                                <thead>
-                                    <th width="5%"></th>
-                                    <th width="15%">Receipt</th>
-                                    <th width="15%">User Owner</th>
-                                    <th width="15%">Status</th>
-                                    <th width="15%">Customer Unit Info</th>
+                                <h2>Status</h2>
+                                <select class="ajax-filter" name="status" id="all-loan-unit-part-tickets-status-filter">
+
+                                    <option value="">All</option>
+                                    <option value="1">Open</option>
+                                    <option value="2">In progress</option>
+                                    <option value="3">Completed</option>
+                                    <option value="4">Canceled</option>
                                     
+                                </select>
 
-                                </thead>
+                            </div>
+
+
+                            <div id="pending-loan-unit-part-tickets-table-container">
+                                @include('tables.pending-loan-unit-part-tickets-table')
+                            </div>
+                        </div>
+
+
+
+                        <div class="bg-white p-3 rounded shadow-sm ticket-table d-none" id="all-loan-unit-part-tickets-container">
                             
-                                <tbody>
-                                    @foreach ($all_tickets as $ticket)
-                                        <tr>
-                                            <td>
-                                                
-                                                <a href="/loan-unit-part-ticket-details/{{ $ticket->id }}">
-                                                    <button><i class="ti-arrow-right" ></i></button>
-                                                </a>
-                                                
-                                            </td>
-                                            <td>{{ $ticket->ticket_receipt }}</td>
-                                            <td>{{ $ticket->user_owner->fullname }}</td>
-                                            <td>
-                                                <span class="badge rounded-pill bg-{{ $ticket->status_data['color'] ?? 'primary' }} px-3 py-2">
-                                                    {{ $ticket->status_data['text'] }}
-                                                </span>
-                                            </td>
-                                            <td>{{ $ticket->customer_unit_info }}</td>
+                            <div class="common-table-filter">
+                                <h2>All Tickets</h2>
+                                <div class="search-box">
+                                    <i class="ti-search"></i>
+                                    <input type="text" placeholder="Search Receipt" id="search-loan-unit-part-all-tickets" class="ajax-search">
+                                </div>
 
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                                <h2>Status</h2>
+                                <select class="ajax-filter" name="status" id="all-loan-unit-part-tickets-status-filter">
+
+                                    <option value="">All</option>
+                                    <option value="1">Open</option>
+                                    <option value="2">In progress</option>
+                                    <option value="3">Completed</option>
+                                    <option value="4">Canceled</option>
+                                    
+                                </select>
+
+                            </div>
+                            
+                            <div id="all-loan-unit-part-tickets-table-container">
+                                @include('tables.all-loan-unit-part-tickets-table')
+                            </div>
                         </div>
 
                     </div>
