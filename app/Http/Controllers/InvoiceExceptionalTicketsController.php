@@ -352,6 +352,7 @@ class InvoiceExceptionalTicketsController extends Controller
                 try {
                     $send_approval = Http::post(config('services.api_service.invoice_exceptional_create_ticket_request_url'), [
                         'ticket_id' => $ticket->id,
+                        'team' => $ticket->user_owner->team,
                         'ticket_status' => '2',
                         'ticket_owner' => $ticket->user_owner->fullname,
                         'ticket_owner_email' => $ticket->user_owner->email,
