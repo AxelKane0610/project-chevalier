@@ -45,7 +45,7 @@
 
             @switch($ticket->status)
                 @case(1)
-                    @if( (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_INVOICE_EXCEPTIONAL_USER')) && $ticket->user_id == auth()->user()->id)
+                    @if( auth()->user()->hasRole('ROLE_SUPER_ADMIN') || (auth()->user()->hasRole('ROLE_INVOICE_EXCEPTIONAL_USER') && $ticket->user_id == auth()->user()->id))
                         <li>
                             <form id="send-approve-invoice-exceptional" data-target="send-approve-invoice-exceptional" action="{{ route('send-approve-invoice-exceptional', $ticket->id) }}" method="POST" class="js-input-required-btn">
                                 <button type="submit"><i class="ti-angle-double-right"></i>Send Approval </button>
