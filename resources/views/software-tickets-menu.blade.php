@@ -75,14 +75,16 @@
                                 <h2>Pending Tickets</h2>
 
                                 <table id="pending-software-tickets-table" class="common-table" width="100%" >
-                                    <tr>
-                                        <th width="5%"></th>
-                                        <th width="14%">Receipt</th>
-                                        <th width="20%">Type of request</th>
-                                        <th width="39%">Issue Description</th>
-                                        <th width="11%">Priority</th>
-                                        <th width="11%">Status</th>
-                                    </tr>
+                                    <thead>
+                                        <tr>
+                                            <th width="5%"></th>
+                                            <th width="14%">Receipt</th>
+                                            <th width="20%">Type of request</th>
+                                            <th width="39%">Issue Description</th>
+                                            <th width="11%">Priority</th>
+                                            <th width="11%">Status</th>
+                                        </tr>
+                                    </thead>
                                 
                                     <tbody>
                                         @foreach ($tickets as $ticket)
@@ -125,49 +127,53 @@
                                     <div class="bg-white p-3 rounded shadow-sm ticket-table d-none" id="pending-approval-tickets-container">
                                         <h2>Waiting Approval</h2>
                                         <table class="common-table" id="pending-approval-software-tickets-table" width="100%" >
-                                            <tr>
-                                                <th width="5%"></th>
-                                                <th width="14%">Receipt</th>
-                                                <th width="20%">Type of request</th>
-                                                <th width="39%">Issue Description</th>
-                                                <th width="11%">Priority</th>
-                                                <th width="11%">Status</th>
-                                            </tr>
-                                            <tr>
-                                                @foreach ($tickets_waiting_approval as $ticket)
-                                                
-                                                    <tr>
-                                                        <td>
-                                                            <a href="/software-tickets-menu-details/{{ $ticket->id }}">
-                                                                <button>
-                                                                    <i class="ti-arrow-right"></i>
-                                                                </button>
-                                                            </a>
-                                                        </td>
-                                                        <td>{{ $ticket->ticket_receipt }}</td>
-                                                        <td>
-
-                                                            <span class="badge rounded-pill bg-{{ $ticket->support_type_data['color'] ?? 'primary' }} px-3 py-2">
-                                                                {{ $ticket->support_type_data['text'] }}
-                                                            </span>
-
-                                                        </td>
-                                                        <td>{{ $ticket->description }}</td>
-                                                        <td>
-                                                            <span class="badge rounded-pill bg-{{ $ticket->priority_data['color'] ?? 'primary' }} px-3 py-2">
-                                                                {{ $ticket->priority_data['text'] }}
-                                                            </span>
-                                                        </td>
-                                                        <td>
-                                                            <span class="badge rounded-pill bg-{{ $ticket->status_data['color'] ?? 'primary' }} px-3 py-2">
-                                                                {{ $ticket->status_data['text'] }}
-                                                            </span>
-                                                        </td>
-                                                    </tr>
+                                            <thead>
+                                                <tr>
+                                                    <th width="5%"></th>
+                                                    <th width="14%">Receipt</th>
+                                                    <th width="20%">Type of request</th>
+                                                    <th width="39%">Issue Description</th>
+                                                    <th width="11%">Priority</th>
+                                                    <th width="11%">Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    @foreach ($tickets_waiting_approval as $ticket)
                                                     
-                                                @endforeach
-                                                
-                                            </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <a href="/software-tickets-menu-details/{{ $ticket->id }}">
+                                                                    <button>
+                                                                        <i class="ti-arrow-right"></i>
+                                                                    </button>
+                                                                </a>
+                                                            </td>
+                                                            <td>{{ $ticket->ticket_receipt }}</td>
+                                                            <td>
+
+                                                                <span class="badge rounded-pill bg-{{ $ticket->support_type_data['color'] ?? 'primary' }} px-3 py-2">
+                                                                    {{ $ticket->support_type_data['text'] }}
+                                                                </span>
+
+                                                            </td>
+                                                            <td>{{ $ticket->description }}</td>
+                                                            <td>
+                                                                <span class="badge rounded-pill bg-{{ $ticket->priority_data['color'] ?? 'primary' }} px-3 py-2">
+                                                                    {{ $ticket->priority_data['text'] }}
+                                                                </span>
+                                                            </td>
+                                                            <td>
+                                                                <span class="badge rounded-pill bg-{{ $ticket->status_data['color'] ?? 'primary' }} px-3 py-2">
+                                                                    {{ $ticket->status_data['text'] }}
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                        
+                                                    @endforeach
+                                                    
+                                                </tr>
+                                            </tbody>
                                             
                                         </table>
                                     </div>
@@ -175,60 +181,50 @@
                             @endif
 
                             <div class="bg-white p-3 rounded shadow-sm ticket-table d-none" id="all-tickets-container">
-                                <h2>All Tickets</h2>
+                                
                                 <div class="common-table-filter">
+                                    <h2>All Tickets</h2>
                                     <div class="search-box">
                                         <i class="ti-search"></i>
-                                        <input type="text" placeholder="Search Your Receipt or issue" id="search-software-ticket-input">
+                                        <input class="ajax-search" type="text" placeholder="Search Your Receipt or issue" id="search-software-ticket-input">
                                     </div>
 
+                                    <h2>Support Type</h2>
+                                    <select class="ajax-filter" name="support_type">
+                                        <option value="">All</option>
+                                        <option value="1">Thêm mã part/product</option>
+                                        <option value="2">Rollback</option>
+                                        <option value="3">Hủy số phiếu/Ẩn lịch sử bảo hành</option>
+                                        <option value="4">Điều chỉnh thông tin</option>
+                                        <option value="5">Unmark Re-Repair</option>
+                                        <option value="6">Lỗi hệ thống</option>
+                                        <option value="7">Cấp quyền export data</option>
+                                        <option value="8">Đề xuất thay đổi/cải tiến</option>
+                                        <option value="9">Vấn đề khác</option>
+
+
+                                        
+                                    </select>
+
+                                    <h2>Ticket Status</h2>
+                                    <select class="ajax-filter" name="status">
+                                        <option value="">All</option>
+                                        <option value="1">Open</option>
+                                        <option value="2">In Progress</option>
+                                        <option value="3">Waiting Approval</option>
+                                        <option value="4">Completed</option>
+                                        <option value="5">Rejected</option>
+                                        <option value="6">Canceled</option>
+
+                                        
+                                    </select>
+
                                 </div>
-                                <table id="all-software-tickets-table" class="common-table" width="100%" >
-                                    <thead>
-                                        <th width="5%"></th>
-                                        <th width="14%">Receipt</th>
-                                        <th width="20%">Type of request</th>
-                                        <th width="39%">Issue Description</th>
-                                        <th width="11%">Priority</th>
-                                        <th width="11%">Status</th>
-                                    </thead>
+
+                                <div id="all-software-tickets-table-container">
+                                    @include('tables.all-software-tickets-table')
+                                </div>
                                 
-                                    <tbody>
-                                        @foreach ($all_tickets as $ticket)
-                                            
-                                            <tr>
-                                                <td>
-                                                    <a href="/software-tickets-menu-details/{{ $ticket->id }}">
-                                                        <button>
-                                                            <i class="ti-arrow-right"></i>
-                                                        </button>
-                                                    </a>
-                                                </td>
-                                                <td>{{ $ticket->ticket_receipt }}</td>
-                                                <td>
-                                                    
-                                                    <span class="badge rounded-pill bg-{{ $ticket->support_type_data['color'] ?? 'primary' }} px-3 py-2">
-                                                        {{ $ticket->support_type_data['text'] }}
-                                                    </span>
-                                                </td>
-                                                <td>{{ $ticket->description }}</td>
-                                                <td>
-
-                                                    <span class="badge rounded-pill bg-{{ $ticket->priority_data['color'] ?? 'primary' }} px-3 py-2">
-                                                        {{ $ticket->priority_data['text'] }}
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    <span class="badge rounded-pill bg-{{ $ticket->status_data['color'] ?? 'primary' }} px-3 py-2">
-                                                        {{ $ticket->status_data['text'] }}
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                                
-                                        @endforeach
-                                    </tbody>
-
-                                </table>
 
                             </div>
 

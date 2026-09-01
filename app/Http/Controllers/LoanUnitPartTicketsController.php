@@ -12,28 +12,13 @@ use App\Services\tracking_info_service;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Http;
+use Carbon\Carbon;
 
 
 class LoanUnitPartTicketsController extends Controller
 {
     //
-    public function Show_Pending_Tickets(){ 
-        if (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_LOAN_UNIT_ADMIN')) {
-            $tickets = Loan_Unit_Part_Tickets_Model::whereIn('status', ['1', '2'])->get();
-            $all_tickets = Loan_Unit_Part_Tickets_Model::all();
-            return view('loan-unit-part-menu', compact('tickets', 'all_tickets'));
-        } 
-        else {
-            $tickets = Loan_Unit_Part_Tickets_Model::where('user_id', auth()->id()) //lọc ra ticket của user đó
-                ->whereIn('status', ['1', '2']) // lọc ra ticket đang pending
-                ->get();
-            $all_tickets = Loan_Unit_Part_Tickets_Model::where('user_id', auth()->id())->get(); //lọc ra tất cả ticket của user đó
-            
-            return view('loan-unit-part-menu', compact('tickets', 'all_tickets'));
-            
-        }
-        
-    }
+
 
     public function index()
     {
@@ -672,6 +657,48 @@ class LoanUnitPartTicketsController extends Controller
                 'success' => false,
                 'message' => 'Failed to cancel part due to ' .$e->getMessage(),
             ], 500);
+        }
+    }
+
+    public function Power_Automate_Cancel_Loan_Unit_Part_Tickets (Request $request){
+        if ($request->header('api-key') !== config('services.api_service.power_automate_api_key')) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized access. Invalid API key.',
+            ], 401);
+        } else {
+            $expiredDate = now()->subDays(21);
+
+            $tickets = Loan_Unit_Part_Tickets_Model::where('status', '1')
+                ->where('updated_at', '<=', $expiredDate)
+                ->get();
+
+            foreach ($tickets as $ticket) {
+
+                // Cancel ticket
+                $ticket->status = '4';
+                $ticket->save();
+
+                // Update tất cả part details của ticket
+                Loan_Unit_Ticket_Parts_Details_Model::where('ticket_id', $ticket->id)
+                    ->update([
+                        'status' => '4',
+                    ]);
+
+                tracking_info_service::add(
+                    $ticket->id,
+                    10,
+                    4,
+                    'auto canceled ticket at'
+                );
+            }
+
+            if (count($tickets) > 0){
+                return response()->json([
+                    'success' => true,
+                    'tickets' => $tickets
+                ]);
+            }
         }
     }
 

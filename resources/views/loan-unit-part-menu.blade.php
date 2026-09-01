@@ -63,8 +63,9 @@
 
                     <div class="col-10 h-100 overflow-auto">
                         <div class="bg-white p-3 rounded shadow-sm ticket-table" id="pending-loan-unit-part-tickets-container">
-                            <h2>Pending Tickets</h2>
+                            
                             <div class="common-table-filter">
+                                <h2>Pending Tickets</h2>
                                 <div class="search-box">
                                     <i class="ti-search"></i>
                                     <input type="text" placeholder="Search Receipt" id="search-pending-loan-unit-part-tickets" class="ajax-search">

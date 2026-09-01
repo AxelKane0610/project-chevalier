@@ -63,11 +63,10 @@ Route::middleware(['auth'])->group(function () {
     //1. EEG Ticket
     Route::middleware(['role:ROLE_SUPER_ADMIN,ROLE_SW_TICKET_USER,ROLE_SW_TICKET_ADMIN,ROLE_APPROVE_ROLLBACK,ROLE_APPROVE_EXPORT_DATA'])->group(function () {
     
-        Route::get('/software-tickets-menu', [EEGTicketsController::class, 'Show_Pending_Tickets']);
+        Route::get('/software-tickets-menu', [EEGTicketsController::class, 'index']);
         
         Route::get('/software-tickets-menu-details/{id}', [EEGTicketsController::class, 'Show_Software_Ticket_Details']);
         
-        // Thêm các route khác vào đây...
         Route::post('/create-software-ticket', [EEGTicketsController::class, 'Create_Software_Ticket']);
         Route::post('/send-approval-request/{id}', [EEGTicketsController::class, 'Send_Approval_Request']) ->name('send-approval-request');
         Route::post('/add-comment-software-ticket/{id}', [EEGTicketsController::class, 'Add_Comment_Software_Ticket']) ->name('add-comment-software-ticket');
@@ -77,6 +76,8 @@ Route::middleware(['auth'])->group(function () {
         Route::patch('/change-ticket-software-status-to-in-progress/{id}', [EEGTicketsController::class, 'Change_Ticket_Software_Status_To_In_Progress'])->name('change-ticket-software-status-to-in-progress');
         Route::post('/approve-ticket/{id}', [EEGTicketsController::class, 'Approve_Ticket'])->name('approve-ticket');
         Route::post('/reject-ticket/{id}', [EEGTicketsController::class, 'Reject_Ticket'])->name('reject-ticket');
+
+        Route::get('/software-tickets-menu/filter-all-tickets', [EEGTicketsController::class, 'Filter_All_Tickets']);
     });
 
     //2. TTEX Ticket
@@ -99,7 +100,7 @@ Route::middleware(['auth'])->group(function () {
 
     //3. Khắc base
     Route::middleware(['role:ROLE_LASER_ENGRAVING_USER,ROLE_LASER_ENGRAVING_ADMIN,ROLE_SUPER_ADMIN'])->group(function () {
-        Route::get('/laser-engraving-menu', [LaserEngravingTicketsController::class, 'Show_Pending_Tickets']);
+        Route::get('/laser-engraving-menu', [LaserEngravingTicketsController::class, 'index']);
         Route::get('/laser-engraving-menu-details/{id}', [LaserEngravingTicketsController::class, 'Show_Laser_Engraving_Ticket_Details']);
         Route::post('/create-laser-engraving-ticket', [LaserEngravingTicketsController::class, 'Create_Laser_Engraving_Ticket']);
         Route::patch('/edit-laser-engraving-ticket/{id}', [LaserEngravingTicketsController::class, 'Edit_Laser_Engraving_Ticket'])->name('edit-laser-engraving-ticket');
@@ -107,6 +108,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/add-comment-laser-engraving-ticket/{id}', [LaserEngravingTicketsController::class, 'Add_Comment_Laser_Engraving_Ticket']) ->name('add-comment-laser-engraving-ticket');
         Route::patch('/change-laser-engraving-status-to-in-progress/{id}', [LaserEngravingTicketsController::class, 'Change_Laser_Engraving_Status_To_In_Progress'])->name('change-laser-engraving-status-to-in-progress');
         Route::patch('/close-laser-engraving-ticket/{id}', [LaserEngravingTicketsController::class, 'Close_Laser_Engraving_Ticket'])->name('close-laser-engraving-ticket');
+
+        Route::get('/laser-engraving-menu/filter-all-tickets', [LaserEngravingTicketsController::class, 'Filter_All_Tickets']);
     });
 
 

@@ -97,18 +97,17 @@ class EEGTicketsController extends Controller
         
     }
 
-    public function Show_Pending_Tickets(){ 
+    public function index(){ 
         if (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_SW_TICKET_ADMIN')) {
             $tickets = EEG_Software_Ticket::whereIn('status', ['1', '2', '3'])->get();
             $tickets_waiting_approval = EEG_Software_Ticket::where('status', 3)->get();
-            $all_tickets = EEG_Software_Ticket::all();
+            $all_tickets = EEG_Software_Ticket::query()->orderByDesc('created_at')->paginate(10);
             return view('software-tickets-menu', compact('tickets', 'tickets_waiting_approval', 'all_tickets'));
         } 
         else {
             $tickets = EEG_Software_Ticket::where('user_id', auth()->id()) //lọc ra ticket của user đó
                 ->whereIn('status', ['1', '2', '3']) // lọc ra ticket đang pending
                 ->get();
-
             
 
             $tickets_waiting_approval = EEG_Software_Ticket::where('status', 3)
@@ -117,12 +116,52 @@ class EEGTicketsController extends Controller
                 })
                 ->get();
             
-            $all_tickets = EEG_Software_Ticket::where('user_id', auth()->id())->get();
+            $all_tickets = EEG_Software_Ticket::where('user_id', auth()->id())->query()->orderByDesc('created_at')->paginate(10);
             return view('software-tickets-menu', compact('tickets', 'tickets_waiting_approval', 'all_tickets'));
 
             
         }
         
+    }
+
+    public function Filter_All_Tickets(Request $request){
+        if (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_SW_TICKET_ADMIN')) {
+            $query = EEG_Software_Ticket::query();
+        } else {
+            $query = EEG_Software_Ticket::with('user_owner')
+                ->where('user_id', auth()->id());
+        }
+
+        
+        if ($request->filled('search')) {
+            $search = $request->search;
+
+            $query->where(function ($q) use ($search) {
+                $q->where('ticket_receipt', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
+                    
+            });
+        }
+
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->filled('support_type')) {
+            $query->where('support_type', $request->support_type);
+        }
+
+
+        $all_tickets = $query
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
+
+        // AJAX Search
+        if ($request->ajax()) {
+            return view('tables.all-software-tickets-table', compact('all_tickets'))->render();
+        }
     }
 
     public function Show_Software_Ticket_Details($id, $type_of_ticket = 1){

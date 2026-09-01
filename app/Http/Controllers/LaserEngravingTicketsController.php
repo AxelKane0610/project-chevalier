@@ -17,11 +17,10 @@ use Illuminate\Support\Facades\Http;
 class LaserEngravingTicketsController extends Controller
 {
     //
-    public function Show_Pending_Tickets()
-    {
+    public function index(){
         if (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_LASER_ENGRAVING_ADMIN')) {
             $tickets = Laser_Engraving_Tickets_Model::whereIn('status', ['1', '2'])->get();
-            $all_tickets = Laser_Engraving_Tickets_Model::all();
+            $all_tickets = Laser_Engraving_Tickets_Model::query()->orderByDesc('created_at')->paginate(10);
             return view('laser-engraving-menu', compact('tickets', 'all_tickets'));
         } 
         else {
@@ -29,13 +28,48 @@ class LaserEngravingTicketsController extends Controller
                 ->whereIn('status', ['1', '2']) // lọc ra ticket đang pending
                 ->get();
             
-            $all_tickets = Laser_Engraving_Tickets_Model::where('user_id',auth()->id())->get();
+            $all_tickets = Laser_Engraving_Tickets_Model::where('user_id',auth()->id())->query()->orderByDesc('created_at')->paginate(10);
             return view('laser-engraving-menu', compact('tickets', 'all_tickets'));
         }
     }
 
-    public function Create_Laser_Engraving_Ticket(Request $request)
-    {
+    public function Filter_All_Tickets(Request $request){
+        if (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_SW_TICKET_ADMIN')) {
+            $query = Laser_Engraving_Tickets_Model::query();
+        } else {
+            $query = Laser_Engraving_Tickets_Model::with('user_owner')
+                ->where('user_id', auth()->id());
+        }
+
+        
+        if ($request->filled('search')) {
+            $search = $request->search;
+
+            $query->where(function ($q) use ($search) {
+                $q->where('ticket_receipt', 'like', "%{$search}%")
+                    ->orWhere('info_base', 'like', "%{$search}%");
+                    
+            });
+        }
+
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+
+        $all_tickets = $query
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
+
+        // AJAX Search
+        if ($request->ajax()) {
+            return view('tables.all-laser-engraving-tickets-table', compact('all_tickets'))->render();
+        }
+    }
+
+    public function Create_Laser_Engraving_Ticket(Request $request){
         try {
         // Validate dữ liệu đầu vào
             $validatedData = $request->validate([
@@ -114,14 +148,12 @@ class LaserEngravingTicketsController extends Controller
 
     }
 
-    public function Show_Laser_Engraving_Ticket_Details($id)
-    {
+    public function Show_Laser_Engraving_Ticket_Details($id){
         $ticket = Laser_Engraving_Tickets_Model::with('user_owner', 'active_attachments')->findOrFail($id);
         return view('laser-engraving-menu-details', compact('ticket'));
     }
 
-    public function Edit_Laser_Engraving_Ticket(Request $request, $id)
-    {
+    public function Edit_Laser_Engraving_Ticket(Request $request, $id){
         // Validate dữ liệu đầu vào
         $validatedData = $request->validate([
             'ticket_receipt' => 'required',
@@ -194,8 +226,7 @@ class LaserEngravingTicketsController extends Controller
         }
     }
 
-    public function Add_Comment_Laser_Engraving_Ticket(Request $request, $id)
-    {
+    public function Add_Comment_Laser_Engraving_Ticket(Request $request, $id){
         $validatedData = $request->validate([
             'comment' => 'required_without_all:attachments|string|nullable',
             'attachments' => 'required_without_all:comment|array|nullable',
@@ -232,8 +263,7 @@ class LaserEngravingTicketsController extends Controller
         return back()->with('success');
     }
 
-    public function Change_Laser_Engraving_Status_To_In_Progress($id)
-    {
+    public function Change_Laser_Engraving_Status_To_In_Progress($id){
         $ticket = Laser_Engraving_Tickets_Model::findOrFail($id);
         $ticket->status = 2; // Giả sử 2 là mã cho trạng thái "In Progress"
         $ticket->save();
@@ -252,8 +282,7 @@ class LaserEngravingTicketsController extends Controller
     }
 
     
-    public function Close_Laser_Engraving_Ticket(Request $request, $id)
-    {
+    public function Close_Laser_Engraving_Ticket(Request $request, $id){
         try {
             $ticket = Laser_Engraving_Tickets_Model::with('user_owner')->findOrFail($id);
             $validatedData = $request->validate([

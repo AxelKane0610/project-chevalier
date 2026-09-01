@@ -109,53 +109,31 @@
                         </div>
 
                         <div class="bg-white p-3 rounded shadow-sm ticket-table d-none" id="all-laser-engraving-tickets-container">
-                        <h2>All Tickets</h2>
-                        <div class="common-table-filter">
-                            <div class="search-box">
-                                <i class="ti-search"></i>
-                                <input type="text" placeholder="Search Receipt, info base" id="search-laser-engraving-input">
-                            </div>
-
-
-                        </div>
-                        <table id="all-laser-engraving-tickets-table" class="common-table" width="100%" >
-                            <thead>
-                                <th width="5%"></th>
-                                <th width="14%">Receipt</th>
-                                <th width="20%">Info Base</th>
-                                <th width="39%">Description</th>
-                                <th width="11%">Priority</th>
-                                <th width="11%">Status</th>
-                            </thead>
                         
-                            <tbody>
-                                @foreach ($all_tickets as $ticket)
-                                    
-                                        <tr>
-                                            <td>
-                                                <a href="/laser-engraving-menu-details/{{ $ticket->id }}">
-                                                    <button><i class="ti-arrow-right" ></i></button>
-                                                </a>
-                                            </td>
-                                            <td>{{ $ticket->ticket_receipt }}</td>
-                                            <td>{{ $ticket->info_base }}</td>
-                                            <td>{{ $ticket->description }}</td>
-                                            <td>
-                                                <span class="badge rounded-pill bg-{{ $ticket->priority_data['color'] ?? 'primary' }} px-3 py-2">
-                                                    {{ $ticket->priority_data['text'] }}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <span class="badge rounded-pill bg-{{ $ticket->status_data['color'] ?? 'primary' }} px-3 py-2">
-                                                    {{ $ticket->status_data['text'] }}
-                                                </span>
-                                            </td>
-                                        </tr>
-                                    
-                                @endforeach
-                            </tbody>
+                            <div class="common-table-filter">
+                                <h2>All Tickets</h2>
+                                <div class="search-box">
+                                    <i class="ti-search"></i>
+                                    <input type="text" placeholder="Search Receipt, info base" id="search-laser-engraving-input">
+                                </div>
 
-                        </table>
+                                <h2>Ticket Status</h2>
+                                <select class="ajax-filter" name="status">
+                                    <option value="">All</option>
+                                    <option value="1">Not started</option>
+                                    <option value="2">In Progress</option>
+                                    <option value="3">Completed</option>
+                                    <option value="4">Rejected</option>
+
+                                    
+                                </select>
+
+
+                            </div>
+                        
+                            <div id="all-laser-engraving-tickets-table-container">
+                                @include('tables.all-laser-engraving-tickets-table')
+                            </div>
 
                     
                         </div>
