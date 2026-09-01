@@ -54,7 +54,7 @@
                             </button>
                             <button class="btn btn-primary table-btn w-100 position-relative" id="show-all-invoice-exceptional-tickets-btn" data-target = "all-invoice-exceptional-tickets-container">
                                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                    {{$all_tickets->count()}}
+                                    {{$all_tickets->total()}}
                                 </span>
                                 <i class="ti-check"></i> 
                                 Show All Tickets
@@ -107,53 +107,45 @@
                             </div>
 
                             <div class="bg-white p-3 rounded shadow-sm ticket-table d-none" id="all-invoice-exceptional-tickets-container">
-                                <h2>All Tickets</h2>
+                                
                                 <div class="common-table-filter">
+                                    <h2>All Tickets</h2>
                                     <div class="search-box">
                                         <i class="ti-search"></i>
-                                        <input type="text" placeholder="Search Receipt" id="search-invoice-exceptional-receipt-input">
+                                        <input class="ajax-search" type="text" placeholder="Search Receipt, số Invoice, SN & PN" id="search-invoice-exceptional-receipt-input">
                                     </div>
+
+                                    <h2>Support Type</h2>
+                                    <select class="ajax-filter" name="support_type">
+                                        <option value="">All</option>
+                                        <option value="1">Hóa đơn xuất sau (1 máy)</option>
+                                        <option value="2">Hóa đơn xuất sau (Nhiều máy)</option>
+                                        <option value="3">Kích hoạt bảo hành (1 máy)</option>
+                                        <option value="4">Kích hoạt bảo hành (Nhiều máy)</option>
+
+
+                                        
+                                    </select>
+
+                                    <h2>Ticket Status</h2>
+                                    <select class="ajax-filter" name="status">
+                                        <option value="">All</option>
+                                        <option value="1">Open</option>
+                                        <option value="2">Waiting approve invoice</option>
+                                        <option value="3">Waiting re-activate warranty</option>
+                                        <option value="4">Completed</option>
+                                        <option value="5">Rejected</option>
+
+                                        
+                                    </select>
 
                                 </div>
 
-                                <table class="common-table" id="all-invoice-exceptional-tickets-table" width="100%" >
-                                    <thead>
-                                        <th width="5%"></th>
-                                        <th width="14%">Receipt</th>
-                                        <th width="20%">Support Type</th>
-                                        <th width="39%">Issue Description</th>
-                                        <th width="11%">Product Model</th>
-                                        <th width="11%">Status</th>
-                                    </thead>
+                                <div id="all-invoice-exception-tickets-table-container">
+                                    @include('tables.all-invoice-exceptional-tickets-table')
+                                </div>
+
                                 
-                                    <tbody>
-                                        @foreach ($all_tickets as $ticket)
-                                            
-                                            <tr>
-                                                <td>
-                                                    <a href="/invoice-exceptional-menu-details/{{ $ticket->id }}">
-                                                        <button><i class="ti-arrow-right" ></i></button>
-                                                    </a>
-                                                </td>
-                                                <td>{{ $ticket->ticket_receipt }}</td>
-                                                <td>
-                                                    
-                                                    <span class="badge rounded-pill bg-{{ $ticket->support_type_data['color'] ?? 'primary' }} px-3 py-2">
-                                                        {{ $ticket->support_type_data['text'] }}
-                                                    </span>
-                                                </td>
-                                                <td>{{ $ticket->description }}</td>
-                                                <td>{{ $ticket->product_model }}</td>
-                                                <td>
-                                                    <span class="badge rounded-pill bg-{{ $ticket->status_data['color'] ?? 'primary' }} px-3 py-2">
-                                                        {{ $ticket->status_data['text'] }}
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                                
-                                        @endforeach
-                                    </tbody>
-                                </table>
                             </div>
 
                         </div>

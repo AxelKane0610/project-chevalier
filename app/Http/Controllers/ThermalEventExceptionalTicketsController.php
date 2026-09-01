@@ -18,11 +18,11 @@ use Illuminate\Support\Facades\Http;
 class ThermalEventExceptionalTicketsController extends Controller
 {
     //
-    public function Show_Pending_Tickets(){ 
+    public function index(){ 
         if (auth()->user()->hasRole('ROLE_SUPER_ADMIN')) {
             $tickets = Thermal_Event_Exceptional_Tickets_Model::whereIn('status', ['1', '2', '3'])->get();
             $tickets_waiting_approval = Thermal_Event_Exceptional_Tickets_Model::whereIn('status', ['2', '3'])->get();
-            $all_tickets = Thermal_Event_Exceptional_Tickets_Model::all();
+            $all_tickets = Thermal_Event_Exceptional_Tickets_Model::query()->orderByDesc('created_at')->paginate(10);
             return view('thermal-event-tickets-menu', compact('tickets', 'tickets_waiting_approval', 'all_tickets'));
         } 
         else {
@@ -36,13 +36,55 @@ class ThermalEventExceptionalTicketsController extends Controller
                 ->where('user_id', auth()->id())
                 ->get();
 
-            $all_tickets = Thermal_Event_Exceptional_Tickets_Model::where('user_id', auth()->id())->get();
+            $all_tickets = Thermal_Event_Exceptional_Tickets_Model::where('user_id', auth()->id())->orderByDesc('created_at')->paginate(10);
             
             return view('thermal-event-tickets-menu', compact('tickets', 'tickets_waiting_approval', 'all_tickets'));
 
             
         }
         
+    }
+
+    public function Filter_All_Tickets(Request $request){
+        if (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_THERMAL_EVENT_LV1_APPROVER') || auth()->user()->hasRole('ROLE_THERMAL_EVENT_LV2_APPROVER')) {
+            $query = Thermal_Event_Exceptional_Tickets_Model::query();
+        } else {
+            $query = Thermal_Event_Exceptional_Tickets_Model::with('user_owner')
+                ->where('user_id', auth()->id());
+        }
+
+        
+        if ($request->filled('search')) {
+            $search = $request->search;
+
+            $query->where(function ($q) use ($search) {
+                $q->where('ticket_receipt', 'like', "%{$search}%")
+                    ->orWhere('serial_number', 'like', "%{$search}%")
+                    ->orWhere('product_number', 'like', "%{$search}%")
+                    ->orWhere('product_model', 'like', "%{$search}%")
+                    ->orWhere('cdax_id', 'like', "%{$search}%");
+
+
+                    
+            });
+        }
+
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+
+
+        $all_tickets = $query
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
+
+        // AJAX Search
+        if ($request->ajax()) {
+            return view('tables.all-thermal-event-tickets-table', compact('all_tickets'))->render();
+        }
     }
 
     public function Create_Thermal_Event_Ticket(Request $request){

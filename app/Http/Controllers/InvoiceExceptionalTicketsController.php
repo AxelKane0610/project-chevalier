@@ -16,11 +16,11 @@ use Illuminate\Support\Facades\Http;
 class InvoiceExceptionalTicketsController extends Controller
 {
     //
-    public function Show_Pending_Tickets(){ 
+    public function index(){ 
         if (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_INVOICE_EXCEPTIONAL_L1_APPROVER') || auth()->user()->hasRole('ROLE_INVOICE_EXCEPTIONAL_L2_APPROVER')) {
             $tickets = Invoice_Exceptional_Tickets_Model::whereIn('status', ['1', '2', '3'])->get();
             $tickets_waiting_approval = Invoice_Exceptional_Tickets_Model::where('status', '3')->get();
-            $all_tickets = Invoice_Exceptional_Tickets_Model::all();
+            $all_tickets = Invoice_Exceptional_Tickets_Model::query()->orderByDesc('created_at')->paginate(10);
             return view('invoice-exceptional-menu', compact('tickets', 'tickets_waiting_approval', 'all_tickets'));
         } 
         else {
@@ -33,13 +33,56 @@ class InvoiceExceptionalTicketsController extends Controller
             $tickets_waiting_approval = Invoice_Exceptional_Tickets_Model::where('user_id', auth()->id())->whereIn('status', [ '2', '3'])
                 ->get();
             
-            $all_tickets = Invoice_Exceptional_Tickets_Model::where('user_id', auth()->id())->get();
+            $all_tickets = Invoice_Exceptional_Tickets_Model::where('user_id', auth()->id())::query()->orderByDesc('created_at')->paginate(10);
 
             return view('invoice-exceptional-menu', compact('tickets', 'tickets_waiting_approval', 'all_tickets'));
 
             
         }
         
+    }
+
+    public function Filter_All_Tickets(Request $request){
+        if (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_INVOICE_EXCEPTIONAL_L1_APPROVER') || auth()->user()->hasRole('ROLE_INVOICE_EXCEPTIONAL_L2_APPROVER')) {
+            $query = Invoice_Exceptional_Tickets_Model::query();
+        } else {
+            $query = Invoice_Exceptional_Tickets_Model::with('user_owner')
+                ->where('user_id', auth()->id());
+        }
+
+        
+        if ($request->filled('search')) {
+            $search = $request->search;
+
+            $query->where(function ($q) use ($search) {
+                $q->where('ticket_receipt', 'like', "%{$search}%")
+                    ->orWhere('invoice_number', 'like', "%{$search}%")
+                    ->orWhere('serial_number', 'like', "%{$search}%")
+                    ->orWhere('product_number', 'like', "%{$search}%");
+
+                    
+            });
+        }
+
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->filled('support_type')) {
+            $query->where('support_type', $request->support_type);
+        }
+
+
+        $all_tickets = $query
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
+
+        // AJAX Search
+        if ($request->ajax()) {
+            return view('tables.all-invoice-exceptional-tickets-table', compact('all_tickets'))->render();
+        }
     }
 
     public function Create_Invoice_Exceptional_Tickets(Request $request){

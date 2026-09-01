@@ -34,7 +34,7 @@ class LaserEngravingTicketsController extends Controller
     }
 
     public function Filter_All_Tickets(Request $request){
-        if (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_SW_TICKET_ADMIN')) {
+        if (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_OUT_OF_OFFICE_ADMIN')) {
             $query = Laser_Engraving_Tickets_Model::query();
         } else {
             $query = Laser_Engraving_Tickets_Model::with('user_owner')

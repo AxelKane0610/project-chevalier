@@ -62,7 +62,7 @@
                         </button>
                         <button class="btn btn-primary table-btn w-100 position-relative" id="show-all-out-of-office-tickets-btn" data-target = "all-out-of-office-tickets-container">
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                {{$all_tickets->count()}}
+                                {{$all_tickets->total()}}
                             </span>
                             <i class="ti-list-ol"></i> 
                             Show All Tickets
@@ -122,15 +122,17 @@
                                     <h2>Pending Approval Tickets</h2>
 
                                     <table class="common-table pending-out-of-office-tickets-table" width="100%" >
-                                        <tr>
-                                            <th width="5%"></th>
-                                            <th width="10%">User Owner</th>
-                                            <th width="10%">Type of Leave</th>
-                                            <th width="10%">Start Date</th>
-                                            <th width="10%">End Date</th>
-                                            <th width="25%">Reasons for leave</th>
-                                            <th width="10%">Status</th>
-                                        </tr>
+                                        <thead>
+                                            <tr>
+                                                <th width="5%"></th>
+                                                <th width="10%">User Owner</th>
+                                                <th width="10%">Type of Leave</th>
+                                                <th width="10%">Start Date</th>
+                                                <th width="10%">End Date</th>
+                                                <th width="25%">Reasons for leave</th>
+                                                <th width="10%">Status</th>
+                                            </tr>
+                                        </thead>
                                     
                                         <tbody>
                                             @foreach ($tickets_waiting_approval as $ticket)
@@ -166,49 +168,73 @@
                         @endif
 
                         <div class="bg-white p-3 rounded shadow-sm ticket-table d-none" id="all-out-of-office-tickets-container">
-                            <h2>All Tickets</h2>
+                            <div class="common-table-filter">
+                                <h2>All Tickets</h2>
+                                <div class="search-box">
+                                    <i class="ti-search"></i>
+                                    <input class="ajax-search" type="text" placeholder="Search Name">
+                                </div>
 
-                            <table class="common-table pending-out-of-office-tickets-table" width="100%" >
-                                <thead>
-                                    <tr>
-                                        <th width="5%"></th>
-                                        <th width="10%">User Owner</th>
-                                        <th width="10%">Type of Leave</th>
-                                        <th width="10%">Start Date</th>
-                                        <th width="10%">End Date</th>
-                                        <th width="25%">Reasons for leave</th>
-                                        <th width="10%">Status</th>
-                                    </tr>
-                                </thead>
+                                <h2>Ticket Status</h2>
+                                <select class="ajax-filter" name="status">
+                                    <option value="">All</option>
+                                    <option value="1">Open</option>
+                                    <option value="2">Waiting Approval</option>
+                                    <option value="3">Completed</option>
+                                    <option value="4">Rejected</option>
+
+                                    
+                                </select>
+
+                                <h2>Type of Leave</h2>
+                                <select class="ajax-filter" name="type_of_leave">
+                                    <option value="">All</option>
+                                    <option value="1">Xin nghỉ phép</option>
+                                    <option value="2">Xin đi trễ</option>
+                                    <option value="3">Xin về sớm</option>
+                                    <option value="4">Xin không chấm công vào</option>
+                                    <option value="5">Xin không chấm công ra</option>
+                                    <option value="6">Quên chấm công vào/ra</option>
+                                    
+                                </select>
+
+                                <h2>Month</h2>
+                                <select class="ajax-filter" name="month">
+                                    <option value="">All Months</option>
+                                    <option value="1">January</option>
+                                    <option value="2">February</option>
+                                    <option value="3">March</option>
+                                    <option value="4">April</option>
+                                    <option value="5">May</option>
+                                    <option value="6">June</option>
+                                    <option value="7">July</option>
+                                    <option value="8">August</option>
+                                    <option value="9">September</option>
+                                    <option value="10">October</option>
+                                    <option value="11">November</option>
+                                    <option value="12">December</option>
+                                    
+                                </select>
+
+                                <h2>Year</h2>
+                                <select class="ajax-filter" name="year">
+                                    <option value="">All Years</option>
+                                    @for ($year = now()->year; $year >= 2026; $year--)
+                                        <option value="{{ $year }}"
+                                            {{ request('year') == $year ? 'selected' : '' }}>
+                                            {{ $year }}
+                                        </option>
+                                    @endfor
+                                    
+                                </select>
+
+                            </div>
+
                             
-                                <tbody>
-                                    @foreach ($all_tickets as $ticket)
-                                        
-                                        <tr>
-                                            <td>
-                                                <a href="/out-of-office-tickets-menu-details/{{ $ticket->id }}">
-                                                    <button><i class="ti-arrow-right" ></i></button>
-                                                </a>
-                                            </td>
-                                            <td>{{ $ticket->user_owner->fullname }}</td>
-                                            <td>
-                                                <span class="badge rounded-pill bg-{{ $ticket->type_of_leave_data['color'] ?? 'primary' }} px-3 py-2">
-                                                    {{ $ticket->type_of_leave_data['text'] }}
-                                                </span>
-                                            </td>
-                                            <td>{{ $ticket->start_date }}</td>
-                                            <td>{{ $ticket->end_date }}</td>
-                                            <td>{{ $ticket->reasons_for_leave }}</td>
-                                            <td>
-                                                <span class="badge rounded-pill bg-{{ $ticket->status_data['color'] ?? 'primary' }} px-3 py-2">
-                                                    {{ $ticket->status_data['text'] }}
-                                                </span>
-                                            </td>
-                                        </tr>
-                                            
-                                    @endforeach
-                                </tbody>
-                            </table>
+                            <div id="all-out-of-office-tickets-table-container">
+                                @include('tables.all-out-of-office-tickets-table')
+                            </div>
+
                         </div>
 
                     </div>

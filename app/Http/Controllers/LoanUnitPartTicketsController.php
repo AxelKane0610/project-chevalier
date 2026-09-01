@@ -106,6 +106,20 @@ class LoanUnitPartTicketsController extends Controller
             $query->where('status', $request->status);
         }
 
+        if ($request->filled('type_of_leave')) {
+
+            $query->where('type_of_leave', $request->type_of_leave);
+        }
+
+        if ($request->filled('month')) {
+            $query->whereMonth('created_at', $request->month);
+        }
+
+        if ($request->filled('year')) {
+            $query->whereYear('created_at', $request->year);
+        }
+
+
         $all_tickets = $query
             ->latest()
             ->paginate(10)

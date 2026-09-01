@@ -17,12 +17,12 @@ use Illuminate\Support\Facades\Storage;
 class OutOfOfficeTicketsController extends Controller
 {
     //
-    public function Show_Pending_Tickets(){ 
+    public function index(){ 
         if (auth()->user()->hasRole('ROLE_SUPER_ADMIN') ) {
             $tickets = Out_Of_Office_Tickets_Model::whereIn('status', ['1', '2'])->get();
             $tickets_waiting_approval = Out_Of_Office_Tickets_Model::where('status', '2')->get();
             
-            $all_tickets = Out_Of_Office_Tickets_Model::all();
+            $all_tickets = Out_Of_Office_Tickets_Model::query()->orderByDesc('created_at')->paginate(10);
             return view('out-of-office-tickets-menu', compact('tickets', 'tickets_waiting_approval', 'all_tickets'));
         } 
         else if (auth()->user()->hasRole('ROLE_OUT_OF_OFFICE_ADMIN')){
@@ -43,7 +43,7 @@ class OutOfOfficeTicketsController extends Controller
             ->whereHas('user_owner', function ($query) {
                 $query->where('leader_id', auth()->id());
             })
-            ->get();
+            ->orderByDesc('created_at')->paginate(10);
 
             
 
@@ -67,6 +67,54 @@ class OutOfOfficeTicketsController extends Controller
 
         }
         
+    }
+
+
+    public function Filter_All_Tickets(Request $request){
+        if (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_OUT_OF_OFFICE_ADMIN')) {
+            $query = Out_Of_Office_Tickets_Model::query();
+        } else {
+            $query = Out_Of_Office_Tickets_Model::with('user_owner')
+                ->where('user_id', auth()->id());
+        }
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+
+            $query->where(function ($q) use ($search) {
+                $q->orWhereHas('user_owner', function ($user) use ($search) {
+                    $user->where('fullname', 'like', "%{$search}%");
+                });
+                    
+            });
+        }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->filled('type_of_leave')) {
+            $query->where('type_of_leave', $request->type_of_leave);
+        }
+
+        if ($request->filled('month')) {
+            $query->whereMonth('created_at', $request->month);
+        }
+
+        if ($request->filled('year')) {
+            $query->whereYear('created_at', $request->year);
+        }
+
+
+        $all_tickets = $query
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
+
+        // AJAX Search
+        if ($request->ajax()) {
+            return view('tables.all-out-of-office-tickets-table', compact('all_tickets'))->render();
+        }
     }
 
     public function Create_Out_Of_Office_Ticket(Request $request){

@@ -52,7 +52,7 @@
                         </button>
                         <button class="btn btn-primary table-btn w-100 position-relative" id="show-all-loan-unit-part-tickets-btn" data-target = "all-loan-unit-part-tickets-container">
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                {{$all_tickets->count()}}
+                                {{$all_tickets->total()}}
                             </span>
                             <i class="ti-list-ol"></i> 
                             Show All Tickets

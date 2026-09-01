@@ -166,7 +166,7 @@ Route::middleware(['auth'])->group(function () {
 
     //7. Invoice Exceptional
     Route::middleware(['role:ROLE_INVOICE_EXCEPTIONAL_USER,ROLE_SUPER_ADMIN,ROLE_INVOICE_EXCEPTIONAL_L1_APPROVER,ROLE_INVOICE_EXCEPTIONAL_L2_APPROVER'])->group(function () {
-        Route::get('/invoice-exceptional-menu', [InvoiceExceptionalTicketsController::class, 'Show_Pending_Tickets']);
+        Route::get('/invoice-exceptional-menu', [InvoiceExceptionalTicketsController::class, 'index']);
         Route::get('/invoice-exceptional-menu-details/{id}', [InvoiceExceptionalTicketsController::class, 'Show_Invoice_Exceptional_Ticket_Details']);
         Route::post('/create-invoice-exceptional-ticket', [InvoiceExceptionalTicketsController::class, 'Create_Invoice_Exceptional_Tickets']);
         Route::post('/add-comment-invoice-exceptional-ticket/{id}', [InvoiceExceptionalTicketsController::class, 'Add_Comment_Invoice_Exceptional_Ticket']) ->name('add-comment-invoice-exceptional-ticket');
@@ -177,12 +177,15 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/invoice-exceptional-reject/{id}', [InvoiceExceptionalTicketsController::class,'Invoice_Exceptional_Reject'])->name('invoice-exceptional-reject');
         Route::patch('/re-open-invoice-exceptional-ticket/{id}', [InvoiceExceptionalTicketsController::class,'Re_Open_Invoice_Exceptional_Ticket'])->name('re-open-invoice-exceptional-ticket');
         Route::post('/request-sale-support-invoice-exceptional-ticket/{id}', [InvoiceExceptionalTicketsController::class, 'Request_Sale_Support'])->name('request-sale-support-invoice-exceptional-ticket');
+
+        Route::get('/invoice-exceptional-menu/filter-all-tickets', [InvoiceExceptionalTicketsController::class, 'Filter_All_Tickets']);
+
     });
 
 
     //9. Nghỉ phép
     Route::middleware(['role:ROLE_SUPER_ADMIN,ROLE_OUT_OF_OFFICE_USER,ROLE_OUT_OF_OFFICE_ADMIN'])->group(function () {
-        Route::get('/out-of-office-tickets-menu', [OutOfOfficeTicketsController::class, 'Show_Pending_Tickets']);
+        Route::get('/out-of-office-tickets-menu', [OutOfOfficeTicketsController::class, 'index']);
         Route::post('/create-out-of-office-ticket', [OutOfOfficeTicketsController::class, 'Create_Out_Of_Office_Ticket']);
         Route::get('/out-of-office-tickets-menu-details/{id}', [OutOfOfficeTicketsController::class, 'Show_Out_Of_Office_Ticket_Details']);
         Route::patch('/edit-out-of-office-ticket/{id}', [OutOfOfficeTicketsController::class, 'Edit_Out_Of_Office_Ticket'])->name('edit-out-of-office-ticket');
@@ -192,11 +195,13 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/reject-out-of-office-ticket/{id}', [OutOfOfficeTicketsController::class, 'Reject_Out_Of_Office_Ticket']) ->name('reject-out-of-office-ticket');
         Route::post('/re-open-out-of-office-ticket/{id}', [OutOfOfficeTicketsController::class,'Out_Of_Office_Re_Open'])->name('re-open-out-of-office-ticket');
 
+        Route::get('/out-of-office-tickets-menu/filter-all-tickets', [OutOfOfficeTicketsController::class, 'Filter_All_Tickets']);
+
     });
 
     //10. Thermal Event
     Route::middleware(['role:ROLE_THERMAL_EVENT_USER,ROLE_THERMAL_EVENT_LV1_APPROVER,ROLE_THERMAL_EVENT_LV2_APPROVER,ROLE_SUPER_ADMIN'])->group(function () {
-        Route::get('/thermal-event-tickets-menu', [ThermalEventExceptionalTicketsController::class, 'Show_Pending_Tickets']);
+        Route::get('/thermal-event-tickets-menu', [ThermalEventExceptionalTicketsController::class, 'index']);
         Route::get('/thermal-event-tickets-menu-details/{id}', [ThermalEventExceptionalTicketsController::class, 'Show_Thermal_Event_Ticket_Details']);
         Route::post('/create-thermal-event-ticket', [ThermalEventExceptionalTicketsController::class, 'Create_Thermal_Event_Ticket']);
         Route::patch('/edit-thermal-event-ticket/{id}', [ThermalEventExceptionalTicketsController::class, 'Edit_Thermal_Event_Ticket'])->name('edit-thermal-event-ticket');
@@ -212,6 +217,9 @@ Route::middleware(['auth'])->group(function () {
 
         Route::patch('/edit-thermal-event-part-details/{id}', [ThermalEventExceptionalTicketsController::class, 'Edit_Thermal_Event_Part_Details'])->name('edit-thermal-event-part-details');
         Route::patch('/delete-thermal-event-part-details/{id}', [ThermalEventExceptionalTicketsController::class, 'Delete_Thermal_Event_Part_Details'])->name('delete-thermal-event-part-details');
+
+        Route::get('/thermal-event-tickets-menu/filter-all-tickets', [ThermalEventExceptionalTicketsController::class, 'Filter_All_Tickets']);
+
     });
 
     

@@ -74,33 +74,35 @@
                             <div class="bg-white p-3 rounded shadow-sm ticket-table" id="pending-thermal-event-tickets-container">
                                 <h2>Pending Tickets</h2>
                                 <table id="pending-thermal-event-tickets-table" class="common-table" width="100%" >
-                                    <tr>
-                                        <th width="5%"></th>
-                                        <th width="14%">Receipt</th>
-                                        <th width="15%">User Owner</th>
-                                        <th width="39%">Issue Description</th>
-                                        <th width="11%">Status</th>
-                                    </tr>
+                                    <thead>
+                                        <tr>
+                                            <th width="5%"></th>
+                                            <th width="14%">Receipt</th>
+                                            <th width="15%">User Owner</th>
+                                            <th width="39%">Issue Description</th>
+                                            <th width="11%">Status</th>
+                                        </tr>
+                                    </thead>
                                 
                                     <tbody>
                                         @foreach ($tickets as $ticket)
                                             
-                                                <tr>
-                                                    <td>
-                                                        <a href="/thermal-event-tickets-menu-details/{{ $ticket->id }}">
-                                                            <button><i class="ti-arrow-right" ></i></button>
-                                                        </a>
-                                                    </td>
-                                                    <td>{{ $ticket->ticket_receipt }}</td>
-                                                    <td>{{ $ticket->user_owner->fullname ?? 'N/A' }}</td>
-                                                    <td>{{ $ticket->description }}</td>
-                                                    
-                                                    <td>
-                                                        <span class="badge rounded-pill bg-{{ $ticket->status_data['color'] ?? 'primary' }} px-3 py-2">
-                                                            {{ $ticket->status_data['text'] }}
-                                                        </span>
-                                                    </td>
-                                                </tr>
+                                            <tr>
+                                                <td>
+                                                    <a href="/thermal-event-tickets-menu-details/{{ $ticket->id }}">
+                                                        <button><i class="ti-arrow-right" ></i></button>
+                                                    </a>
+                                                </td>
+                                                <td>{{ $ticket->ticket_receipt }}</td>
+                                                <td>{{ $ticket->user_owner->fullname ?? 'N/A' }}</td>
+                                                <td>{{ $ticket->description }}</td>
+                                                
+                                                <td>
+                                                    <span class="badge rounded-pill bg-{{ $ticket->status_data['color'] ?? 'primary' }} px-3 py-2">
+                                                        {{ $ticket->status_data['text'] }}
+                                                    </span>
+                                                </td>
+                                            </tr>
                                                 
                                         @endforeach
                                     </tbody>
@@ -146,47 +148,31 @@
                             </div>
 
                             <div class="bg-white p-3 rounded shadow-sm ticket-table d-none" id="all-thermal-event-tickets-container">
-                                <h2>All Tickets</h2>
+                                
                                 <div class="common-table-filter">
+                                    <h2>All Tickets</h2>
                                     <div class="search-box">
                                         <i class="ti-search"></i>
-                                        <input type="text" placeholder="Search Receipt" id="search-thermal-event-receipt-input">
+                                        <input class="ajax-search "type="text" placeholder="Search Receipt, SN, PN, Model, CDAX ID" id="search-thermal-event-receipt-input">
                                     </div>
 
-                                </div>
-                                <table id="all-thermal-event-tickets-table" class="common-table" width="100%" >
-                                    <thead>
-                                        <th width="5%"></th>
-                                        <th width="14%">Receipt</th>
-                                        <th width="15%">User Owner</th>
-                                        <th width="39%">Issue Description</th>
-                                        <th width="11%">Status</th>
-                                    </thead>
-                                
-                                    <tbody>
-                                        @foreach ($all_tickets as $ticket)
-                                            
-                                                <tr>
-                                                    <td>
-                                                        <a href="/thermal-event-tickets-menu-details/{{ $ticket->id }}">
-                                                            <button><i class="ti-arrow-right" ></i></button>
-                                                        </a>
-                                                    </td>
-                                                    <td>{{ $ticket->ticket_receipt }}</td>
-                                                    <td>{{ $ticket->user_owner->fullname ?? 'N/A' }}</td>
-                                                    <td>{{ $ticket->description }}</td>
-                                                    
-                                                    <td>
-                                                        <span class="badge rounded-pill bg-{{ $ticket->status_data['color'] ?? 'primary' }} px-3 py-2">
-                                                            {{ $ticket->status_data['text'] }}
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                                
-                                        @endforeach
-                                    </tbody>
+                                    <h2>Ticket Status</h2>
+                                    <select class="ajax-filter" name="status">
+                                        <option value="">All</option>
+                                        <option value="1">Open</option>
+                                        <option value="2">Waiting for verifier</option>
+                                        <option value="3">Waiting for approver</option>
+                                        <option value="4">Completed</option>
+                                        <option value="5">Rejected</option>
 
-                                </table>
+                                        
+                                    </select>
+
+                                </div>
+                                
+                                <div id="all-thermal-event-tickets-table-container">
+                                    @include('tables.all-thermal-event-tickets-table')
+                                </div>
                             </div>
 
                         </div>
