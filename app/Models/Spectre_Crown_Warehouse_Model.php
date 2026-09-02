@@ -21,7 +21,8 @@ class Spectre_Crown_Warehouse_Model extends Model
         'warehouse',
         'available_status',
         'condition',
-        'note'
+        'note',
+        'import_date',
     ];
 
     public function active_attachments()

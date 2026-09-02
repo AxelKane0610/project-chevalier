@@ -181,6 +181,12 @@
                         ],
                         [
                             'icon' => 'ti-align-justify',
+                            'label' => 'Box Serial Number',
+                            'value' => $item_details->box_serial_number,
+                            'type' => 'text'
+                        ],
+                        [
+                            'icon' => 'ti-align-justify',
                             'label' => 'Product Number',
                             'value' => $item_details->product_number,
                             'type' => 'text'
@@ -338,6 +344,9 @@
 
             <label>Serial Number</label>
             <input type="text" class="ticket-form-body-input" placeholder="Nhập Serial Number" name="serial_number" value="{{$item_details->serial_number}}" required>
+
+            <label>Box Serial Number</label>
+            <input type="text" class="ticket-form-body-input" placeholder="Nhập Box Serial Number" name="box_serial_number" value="{{$item_details->box_serial_number}}" required>
 
             <label>Product Number</label>
             <input type="text" class="ticket-form-body-input" placeholder="Nhập Product Number" name="product_number" value="{{$item_details->product_number}}" required>

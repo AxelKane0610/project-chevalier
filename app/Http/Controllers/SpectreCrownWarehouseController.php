@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Spectre_Crown_Warehouse_Model;
 use App\Models\Loan_Unit_Part_Tickets_Model;
 use App\Models\Loan_Unit_Ticket_Parts_Details_Model;
+use Illuminate\Support\Facades\Http;
 
 use App\Models\Attachments_Model;
 use App\Models\Comments_Model;
@@ -46,6 +47,8 @@ class SpectreCrownWarehouseController extends Controller
             $validate_data['condition'] = strip_tags($validate_data['condition']);
             $validate_data['note'] = strip_tags($validate_data['note']);
             $validate_data['quantity'] = strip_tags($validate_data['quantity']);
+            $validate_data['import_date'] = now()->toDateString();
+            
 
             if (empty($request->asset_tag)) {
 
@@ -84,6 +87,75 @@ class SpectreCrownWarehouseController extends Controller
             }
 
             $new_asset = Spectre_Crown_Warehouse_Model::create($validate_data);
+            try {
+                $update_new_asset_to_excel = Http::post(config('services.api_service.spectre_crown_warehouse_update_to_excel_url'), [
+                    'id' => $new_asset->id,
+                    'update_type' => 1,
+                    'asset_tag' => $new_asset->asset_tag,
+                    'model' => $new_asset->model,
+                    'serial_number' => $new_asset->serial_number,
+                    'box_serial_number' => $new_asset->box_serial_number,
+                    'product_number' => $new_asset->product_number,
+                    'category' => match($new_asset->category)
+                    {
+                        '1' => 'Laptop',
+                        '2' => 'Accessory (Chuột, phím,...)',
+                        '3' => 'Màn hình',
+                        '4' => 'Máy scan',
+                        '5' => 'PC (Máy tính để bàn)',
+                        '6' => 'Máy in khổ lớn',
+                        '7' => 'Máy in khổ nhỏ',
+                        '8' => 'Others',
+
+                        default => 'Unknown',
+                    },
+                    'asset_type' => match($new_asset->asset_type)
+                    {
+                        '1' => 'BUFFER',
+                        '2' => 'CRT Unit',
+                        '3' => 'DASS Unit',
+                        '4' => 'DEMO Unit',
+                        '5' => 'DOA',
+                        '6' => 'Support Unit',
+
+                        default => 'Unknown',
+                    },
+                    'warehouse' => match($new_asset->warehouse)
+                    {
+                        '1' => 'SPECTRE',
+                        '2' => 'CROWN HCM',
+                        '3' => 'CROWN HN',
+
+                        default => 'Unknown',
+                    },
+                    'import_date' => $new_asset->import_date,
+                    'available_status' => match($new_asset->available_status)
+                    {
+                        '1' => 'Available',
+                        '2' => 'Not available',
+                        '3' => 'In use',
+
+                        default => 'Unknown',
+                    },
+                    'condition' => match($new_asset->condition)
+                    {
+                        '1' => 'Good working',
+                        '2' => 'Chưa test',
+                        '3' => 'Can\'t use',
+
+                        default => 'Unknown',
+                    },
+                    'note' => $new_asset->note,
+                    'quantity' => (int) $new_asset->quantity
+                ]);
+                
+                
+            } catch (\Exception $e) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Asset Import thành công, nhưng không tới được file excel do: ' .$e->getMessage(),
+                ], 500);
+            }
             return response()->json([
                 'success' => true,
                 'message' => 'Asset Import thành công với tag: ' .$validate_data['asset_tag'],

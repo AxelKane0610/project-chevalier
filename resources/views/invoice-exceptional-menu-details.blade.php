@@ -125,6 +125,12 @@
                 <x-common-ticket-details-card 
                     :rows="[
                         [
+                            'icon' => 'ti-target',
+                            'label' => 'ID',
+                            'value' => $ticket->id,
+                            'type' => 'text'
+                        ],
+                        [
                             'icon' => 'ti-receipt',
                             'label' => 'Receipt',
                             'value' => $ticket->ticket_receipt,
