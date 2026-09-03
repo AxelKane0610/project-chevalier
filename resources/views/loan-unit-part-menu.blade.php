@@ -45,7 +45,7 @@
 
                         <button class="btn btn-primary table-btn w-100 position-relative" id="show-pending-loan-unit-part-tickets-btn" data-target = "pending-loan-unit-part-tickets-container">
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                {{$tickets->count()}}
+                                {{$tickets->total()}}
                             </span>
                             <i class="ti-timer"></i> 
                             Show Pending Loan Unit Part Tickets

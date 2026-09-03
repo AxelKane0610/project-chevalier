@@ -116,7 +116,7 @@ class EEGTicketsController extends Controller
                 })
                 ->get();
             
-            $all_tickets = EEG_Software_Ticket::where('user_id', auth()->id())->query()->orderByDesc('created_at')->paginate(10);
+            $all_tickets = EEG_Software_Ticket::where('user_id', auth()->id())->orderByDesc('created_at')->paginate(10);
             return view('software-tickets-menu', compact('tickets', 'tickets_waiting_approval', 'all_tickets'));
 
             
