@@ -33,7 +33,7 @@ class InvoiceExceptionalTicketsController extends Controller
             $tickets_waiting_approval = Invoice_Exceptional_Tickets_Model::where('user_id', auth()->id())->whereIn('status', [ '2', '3'])
                 ->get();
             
-            $all_tickets = Invoice_Exceptional_Tickets_Model::where('user_id', auth()->id())::query()->orderByDesc('created_at')->paginate(10);
+            $all_tickets = Invoice_Exceptional_Tickets_Model::where('user_id', auth()->id())->orderByDesc('created_at')->paginate(10);
 
             return view('invoice-exceptional-menu', compact('tickets', 'tickets_waiting_approval', 'all_tickets'));
 
