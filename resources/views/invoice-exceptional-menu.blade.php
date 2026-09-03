@@ -109,35 +109,41 @@
                             <div class="bg-white p-3 rounded shadow-sm ticket-table d-none" id="all-invoice-exceptional-tickets-container">
                                 
                                 <div class="common-table-filter">
-                                    <h2>All Tickets</h2>
-                                    <div class="search-box">
-                                        <i class="ti-search"></i>
-                                        <input class="ajax-search" type="text" placeholder="Search Receipt, số Invoice, SN & PN" id="search-invoice-exceptional-receipt-input">
+                                    <div class="filter-group">
+                                        <h2>All Tickets</h2>
+                                        <div class="search-box">
+                                            <i class="ti-search"></i>
+                                            <input class="ajax-search" type="text" placeholder="Search Receipt, số Invoice, SN & PN" id="search-invoice-exceptional-receipt-input">
+                                        </div>
                                     </div>
 
-                                    <h2>Support Type</h2>
-                                    <select class="ajax-filter" name="support_type">
-                                        <option value="">All</option>
-                                        <option value="1">Hóa đơn xuất sau (1 máy)</option>
-                                        <option value="2">Hóa đơn xuất sau (Nhiều máy)</option>
-                                        <option value="3">Kích hoạt bảo hành (1 máy)</option>
-                                        <option value="4">Kích hoạt bảo hành (Nhiều máy)</option>
+                                    <div class="filter-group">
+                                        <h2>Support Type</h2>
+                                        <select class="ajax-filter" name="support_type">
+                                            <option value="">All</option>
+                                            <option value="1">Hóa đơn xuất sau (1 máy)</option>
+                                            <option value="2">Hóa đơn xuất sau (Nhiều máy)</option>
+                                            <option value="3">Kích hoạt bảo hành (1 máy)</option>
+                                            <option value="4">Kích hoạt bảo hành (Nhiều máy)</option>
 
 
-                                        
-                                    </select>
+                                            
+                                        </select>
+                                    </div>
 
-                                    <h2>Ticket Status</h2>
-                                    <select class="ajax-filter" name="status">
-                                        <option value="">All</option>
-                                        <option value="1">Open</option>
-                                        <option value="2">Waiting approve invoice</option>
-                                        <option value="3">Waiting re-activate warranty</option>
-                                        <option value="4">Completed</option>
-                                        <option value="5">Rejected</option>
+                                    <div class="filter-group">
+                                        <h2>Ticket Status</h2>
+                                        <select class="ajax-filter" name="status">
+                                            <option value="">All</option>
+                                            <option value="1">Open</option>
+                                            <option value="2">Waiting approve invoice</option>
+                                            <option value="3">Waiting re-activate warranty</option>
+                                            <option value="4">Completed</option>
+                                            <option value="5">Rejected</option>
 
-                                        
-                                    </select>
+                                            
+                                        </select>
+                                    </div>
 
                                 </div>
 

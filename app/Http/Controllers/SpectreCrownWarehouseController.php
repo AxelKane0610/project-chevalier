@@ -262,7 +262,6 @@ class SpectreCrownWarehouseController extends Controller
     public function Edit_Asset_Details(Request $request, $id){
         $asset_details = Spectre_Crown_Warehouse_Model::findOrFail($id);
         try {
-            
                 $info_input = $request->validate([
                     'asset_tag' => 'required',
                     'model' => 'required',
@@ -276,6 +275,7 @@ class SpectreCrownWarehouseController extends Controller
                     'condition' => 'required',
                     'quantity' => 'required',
                     'note' => 'nullable',
+                    'import_date' => 'required',
                     'attachments.*' => 'file|max:5120|mimes:jpg,png,pdf,jpeg,xlsx'
                 ]);
 
@@ -291,6 +291,8 @@ class SpectreCrownWarehouseController extends Controller
                 $info_input['condition'] = trim(strip_tags($info_input['condition']));
                 $info_input['quantity'] = trim(strip_tags($info_input['quantity']));
                 $info_input['note'] = trim(strip_tags($info_input['note']));
+                $info_input['import_date'] = trim(strip_tags($info_input['import_date']));
+
 
 
                 if ($request->hasFile('attachments')) { //Kiểm tra xem có file nào được upload lên không
@@ -300,7 +302,7 @@ class SpectreCrownWarehouseController extends Controller
                         $folderPath = '11/'.$asset_details->id;
                         $filePath = $file->storeAs($folderPath, $originalName, 'attachments'); // Lưu file vào thư mục '/'
                         
-                        Attachments_Model::create([
+                        Attachments_Model::create([ 
                             'type_of_ticket' => 11, // Giả sử 11 là mã cho asset details ticket
                             'ticket_id' => $asset_details->id,
                             'file_path' => $filePath,   
@@ -324,6 +326,74 @@ class SpectreCrownWarehouseController extends Controller
                 if ($request->has('delete_files')) {
                 // Cập nhật tất cả các ID được tích chọn thành status = 0 trong 1 câu lệnh duy nhất
                     Attachments_Model::whereIn('id', $request->input('delete_files'))->update(['status' => '0']);
+                }
+
+                try {
+                    $update_new_asset_to_excel = Http::post(config('services.api_service.spectre_crown_warehouse_update_to_excel_url'), [
+                        'id' => $asset_details->id,
+                        'update_type' => 2,
+                        'asset_tag' => $asset_details->asset_tag,
+                        'model' => $asset_details->model,
+                        'serial_number' => $asset_details->serial_number,
+                        'box_serial_number' => $asset_details->box_serial_number,
+                        'product_number' => $asset_details->product_number,
+                        'category' => match($asset_details->category)
+                        {
+                            '1' => 'Laptop',
+                            '2' => 'Accessory (Chuột, phím,...)',
+                            '3' => 'Màn hình',
+                            '4' => 'Máy scan',
+                            '5' => 'PC (Máy tính để bàn)',
+                            '6' => 'Máy in khổ lớn',
+                            '7' => 'Máy in khổ nhỏ',
+                            '8' => 'Others',
+
+                            default => 'Unknown',
+                        },
+                        'asset_type' => match($asset_details->asset_type)
+                        {
+                            '1' => 'BUFFER',
+                            '2' => 'CRT Unit',
+                            '3' => 'DASS Unit',
+                            '4' => 'DEMO Unit',
+                            '5' => 'DOA',
+                            '6' => 'Support Unit',
+
+                            default => 'Unknown',
+                        },
+                        'warehouse' => match($asset_details->warehouse)
+                        {
+                            '1' => 'SPECTRE',
+                            '2' => 'CROWN HCM',
+                            '3' => 'CROWN HN',
+
+                            default => 'Unknown',
+                        },
+                        'import_date' => $asset_details->import_date,
+                        'available_status' => match($asset_details->available_status)
+                        {
+                            '1' => 'Available',
+                            '2' => 'Not available',
+                            '3' => 'In use',
+
+                            default => 'Unknown',
+                        },
+                        'condition' => match($asset_details->condition)
+                        {
+                            '1' => 'Good working',
+                            '2' => 'Chưa test',
+                            '3' => 'Can\'t use',
+
+                            default => 'Unknown',
+                        },
+                        'note' => $asset_details->note,
+                        'quantity' => (int) $asset_details->quantity
+                    ]);
+                } catch (\Exception $e) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Asset details edit thành công nhưng chưa ăn vào excel do ' .$e->getMessage(),
+                    ], 500);
                 }
 
                 return response()->json([

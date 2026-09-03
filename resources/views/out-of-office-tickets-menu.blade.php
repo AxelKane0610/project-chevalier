@@ -168,65 +168,76 @@
                         @endif
 
                         <div class="bg-white p-3 rounded shadow-sm ticket-table d-none" id="all-out-of-office-tickets-container">
+                            
                             <div class="common-table-filter">
-                                <h2>All Tickets</h2>
-                                <div class="search-box">
-                                    <i class="ti-search"></i>
-                                    <input class="ajax-search" type="text" placeholder="Search Name">
+                                <div class="filter-group">
+                                    <h2>All Tickets</h2>
+                                    <div class="search-box">
+                                        <i class="ti-search"></i>
+                                        <input class="ajax-search" type="text" placeholder="Search Name">
+                                    </div>
                                 </div>
 
-                                <h2>Ticket Status</h2>
-                                <select class="ajax-filter" name="status">
-                                    <option value="">All</option>
-                                    <option value="1">Open</option>
-                                    <option value="2">Waiting Approval</option>
-                                    <option value="3">Completed</option>
-                                    <option value="4">Rejected</option>
+                                <div class="filter-group">
+                                    <h2>Ticket Status</h2>
+                                    <select class="ajax-filter" name="status">
+                                        <option value="">All</option>
+                                        <option value="1">Open</option>
+                                        <option value="2">Waiting Approval</option>
+                                        <option value="3">Completed</option>
+                                        <option value="4">Rejected</option>
 
-                                    
-                                </select>
+                                        
+                                    </select>
+                                </div>
 
-                                <h2>Type of Leave</h2>
-                                <select class="ajax-filter" name="type_of_leave">
-                                    <option value="">All</option>
-                                    <option value="1">Xin nghỉ phép</option>
-                                    <option value="2">Xin đi trễ</option>
-                                    <option value="3">Xin về sớm</option>
-                                    <option value="4">Xin không chấm công vào</option>
-                                    <option value="5">Xin không chấm công ra</option>
-                                    <option value="6">Quên chấm công vào/ra</option>
-                                    
-                                </select>
+                                <div class="filter-group">
+                                    <h2>Type of Leave</h2>
+                                    <select class="ajax-filter" name="type_of_leave">
+                                        <option value="">All</option>
+                                        <option value="1">Xin nghỉ phép</option>
+                                        <option value="2">Xin đi trễ</option>
+                                        <option value="3">Xin về sớm</option>
+                                        <option value="4">Xin không chấm công vào</option>
+                                        <option value="5">Xin không chấm công ra</option>
+                                        <option value="6">Quên chấm công vào/ra</option>
+                                        
+                                    </select>
+                                </div>
 
-                                <h2>Month</h2>
-                                <select class="ajax-filter" name="month">
-                                    <option value="">All Months</option>
-                                    <option value="1">January</option>
-                                    <option value="2">February</option>
-                                    <option value="3">March</option>
-                                    <option value="4">April</option>
-                                    <option value="5">May</option>
-                                    <option value="6">June</option>
-                                    <option value="7">July</option>
-                                    <option value="8">August</option>
-                                    <option value="9">September</option>
-                                    <option value="10">October</option>
-                                    <option value="11">November</option>
-                                    <option value="12">December</option>
-                                    
-                                </select>
+                                <div class="filter-group">
+                                    <h2>Month</h2>
+                                    <select class="ajax-filter" name="month">
+                                        <option value="">All Months</option>
+                                        <option value="1">January</option>
+                                        <option value="2">February</option>
+                                        <option value="3">March</option>
+                                        <option value="4">April</option>
+                                        <option value="5">May</option>
+                                        <option value="6">June</option>
+                                        <option value="7">July</option>
+                                        <option value="8">August</option>
+                                        <option value="9">September</option>
+                                        <option value="10">October</option>
+                                        <option value="11">November</option>
+                                        <option value="12">December</option>
+                                        
+                                    </select>
+                                </div>
 
-                                <h2>Year</h2>
-                                <select class="ajax-filter" name="year">
-                                    <option value="">All Years</option>
-                                    @for ($year = now()->year; $year >= 2026; $year--)
-                                        <option value="{{ $year }}"
-                                            {{ request('year') == $year ? 'selected' : '' }}>
-                                            {{ $year }}
-                                        </option>
-                                    @endfor
-                                    
-                                </select>
+                                <div class="filter-group">
+                                    <h2>Year</h2>
+                                    <select class="ajax-filter" name="year">
+                                        <option value="">All Years</option>
+                                        @for ($year = now()->year; $year >= 2026; $year--)
+                                            <option value="{{ $year }}"
+                                                {{ request('year') == $year ? 'selected' : '' }}>
+                                                {{ $year }}
+                                            </option>
+                                        @endfor
+                                        
+                                    </select>
+                                </div>
 
                             </div>
 

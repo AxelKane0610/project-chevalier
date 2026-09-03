@@ -183,41 +183,47 @@
                             <div class="bg-white p-3 rounded shadow-sm ticket-table d-none" id="all-tickets-container">
                                 
                                 <div class="common-table-filter">
-                                    <h2>All Tickets</h2>
-                                    <div class="search-box">
-                                        <i class="ti-search"></i>
-                                        <input class="ajax-search" type="text" placeholder="Search Your Receipt or issue" id="search-software-ticket-input">
+                                    <div class="filter-group">
+                                        <h2>All Tickets</h2>
+                                        <div class="search-box">
+                                            <i class="ti-search"></i>
+                                            <input class="ajax-search" type="text" placeholder="Search Your Receipt or issue" id="search-software-ticket-input">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="filter-group">
+                                        <h2>Support Type</h2>
+                                        <select class="ajax-filter" name="support_type">
+                                            <option value="">All</option>
+                                            <option value="1">Thêm mã part/product</option>
+                                            <option value="2">Rollback</option>
+                                            <option value="3">Hủy số phiếu/Ẩn lịch sử bảo hành</option>
+                                            <option value="4">Điều chỉnh thông tin</option>
+                                            <option value="5">Unmark Re-Repair</option>
+                                            <option value="6">Lỗi hệ thống</option>
+                                            <option value="7">Cấp quyền export data</option>
+                                            <option value="8">Đề xuất thay đổi/cải tiến</option>
+                                            <option value="9">Vấn đề khác</option>
+
+
+                                            
+                                        </select>
                                     </div>
 
-                                    <h2>Support Type</h2>
-                                    <select class="ajax-filter" name="support_type">
-                                        <option value="">All</option>
-                                        <option value="1">Thêm mã part/product</option>
-                                        <option value="2">Rollback</option>
-                                        <option value="3">Hủy số phiếu/Ẩn lịch sử bảo hành</option>
-                                        <option value="4">Điều chỉnh thông tin</option>
-                                        <option value="5">Unmark Re-Repair</option>
-                                        <option value="6">Lỗi hệ thống</option>
-                                        <option value="7">Cấp quyền export data</option>
-                                        <option value="8">Đề xuất thay đổi/cải tiến</option>
-                                        <option value="9">Vấn đề khác</option>
+                                    <div class="filter-group">
+                                        <h2>Ticket Status</h2>
+                                        <select class="ajax-filter" name="status">
+                                            <option value="">All</option>
+                                            <option value="1">Open</option>
+                                            <option value="2">In Progress</option>
+                                            <option value="3">Waiting Approval</option>
+                                            <option value="4">Completed</option>
+                                            <option value="5">Rejected</option>
+                                            <option value="6">Canceled</option>
 
-
-                                        
-                                    </select>
-
-                                    <h2>Ticket Status</h2>
-                                    <select class="ajax-filter" name="status">
-                                        <option value="">All</option>
-                                        <option value="1">Open</option>
-                                        <option value="2">In Progress</option>
-                                        <option value="3">Waiting Approval</option>
-                                        <option value="4">Completed</option>
-                                        <option value="5">Rejected</option>
-                                        <option value="6">Canceled</option>
-
-                                        
-                                    </select>
+                                            
+                                        </select>
+                                    </div>
 
                                 </div>
 

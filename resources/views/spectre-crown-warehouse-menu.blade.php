@@ -48,47 +48,57 @@
                     <div class="col-10 h-100 overflow-auto">
                         <div class="bg-white p-3 rounded shadow-sm ticket-table" id="pending-thermal-event-tickets-container">
                             <div class="common-table-filter">
-                                <div class="search-box">
-                                    <i class="ti-search"></i>
-                                    <input type="text" placeholder="Search Serial, Box SN, Product Number & Model" id="search-spectre-crown-warehouse-input">
+                                <div class="filter-group">
+                                    <div class="search-box">
+                                        <i class="ti-search"></i>
+                                        <input type="text" placeholder="Search Serial, Box SN, Product Number & Model" id="search-spectre-crown-warehouse-input">
+                                    </div>
+                                </div>
+                                
+                                <div class="filter-group">
+                                    <h2>Category:</h2>
+                                    <select id="category-filter">
+                                        <option value="">All</option>
+                                        <option value="1">Laptop</option>
+                                        <option value="2">Accessories (Chuột, phím,...)</option>
+                                        <option value="3">Màn hình</option>
+                                        <option value="4">Máy scanner</option>
+                                        <option value="5">PC (Máy tính để bàn)</option>
+                                        <option value="6">Máy in khổ lớn</option>
+                                        <option value="7">Máy in khổ nhỏ</option>
+                                        <option value="8">Khác</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="filter-group">
+                                    <h2>Warehouse:</h2>
+                                    <select id="warehouse-filter">
+                                        <option value="">All</option>
+                                        <option value="1">Spectre</option>
+                                        <option value="2">CROWN HCM</option>
+                                        <option value="3">CROWN HN</option>
+                                    </select>
                                 </div>
 
-                                <h2>Category:</h2>
-                                <select id="category-filter">
-                                    <option value="">All</option>
-                                    <option value="1">Laptop</option>
-                                    <option value="2">Accessories (Chuột, phím,...)</option>
-                                    <option value="3">Màn hình</option>
-                                    <option value="4">Máy scanner</option>
-                                    <option value="5">PC (Máy tính để bàn)</option>
-                                    <option value="6">Máy in khổ lớn</option>
-                                    <option value="7">Máy in khổ nhỏ</option>
-                                    <option value="8">Khác</option>
-                                </select>
+                                <div class="filter-group">
+                                    <h2>Availability:</h2>
+                                    <select id="availability-filter">
+                                        <option value="">All</option>
+                                        <option value="1">Available</option>
+                                        <option value="2">Not Available</option>
+                                        <option value="3">In Use</option>
+                                    </select>
+                                </div>
 
-                                <h2>Warehouse:</h2>
-                                <select id="warehouse-filter">
-                                    <option value="">All</option>
-                                    <option value="1">Spectre</option>
-                                    <option value="2">CROWN HCM</option>
-                                    <option value="3">CROWN HN</option>
-                                </select>
-
-                                <h2>Availability:</h2>
-                                <select id="availability-filter">
-                                    <option value="">All</option>
-                                    <option value="1">Available</option>
-                                    <option value="2">Not Available</option>
-                                    <option value="3">In Use</option>
-                                </select>
-
-                                <h2>Condition:</h2>
-                                <select id="condition-filter">
-                                    <option value="">All</option>
-                                    <option value="1">Good working</option>
-                                    <option value="2">Not tested</option>
-                                    <option value="3">Can't use</option>
-                                </select>
+                                <div class="filter-group">
+                                    <h2>Condition:</h2>
+                                    <select id="condition-filter">
+                                        <option value="">All</option>
+                                        <option value="1">Good working</option>
+                                        <option value="2">Not tested</option>
+                                        <option value="3">Can't use</option>
+                                    </select>
+                                </div>
 
 
                             </div>

@@ -82,6 +82,7 @@
 
                         <div class="col-10 h-100 overflow-auto">
                             <div class="bg-white p-3 rounded shadow-sm ticket-table" id="pending-training-tickets-container">
+                                
 
                                 <h2>Pending Training</h2>
                                 <table id="pending-training-tickets-table" class="common-table mh-100" width="100%" >
@@ -129,27 +130,31 @@
 
                             <div class="bg-white p-3 rounded shadow-sm ticket-table d-none" id="all-training-tickets-container">
                                 <div class="common-table-filter">
-                                    <h2>All your tickets</h2>
-                                    <h2>Training No</h2>
-                                    <select class="ajax-filter" name="training_no" id="all-training-tickets-training-no-filter">
-                                        <option value="">All</option>
-                                        @foreach($all_training_no_numbers as $training_no_numbers)
-                                            <option value="{{ $training_no_numbers }}">{{ $training_no_numbers }}</option>
-                                        @endforeach
-                                        
-                                    </select>
+                                    <h2>All your trainings</h2>
+                                    <div class="filter-group">
+                                        <h2>Training No</h2>
+                                        <select class="ajax-filter" name="training_no" id="all-training-tickets-training-no-filter">
+                                            <option value="">All</option>
+                                            @foreach($all_training_no_numbers as $training_no_numbers)
+                                                <option value="{{ $training_no_numbers }}">{{ $training_no_numbers }}</option>
+                                            @endforeach
+                                            
+                                        </select>
+                                    </div>
 
-                                    <h2>Status</h2>
-                                    <select class="ajax-filter" name="status" id="all-training-tickets-status-filter">
+                                    <div class="filter-group">
+                                        <h2>Status</h2>
+                                        <select class="ajax-filter" name="status" id="all-training-tickets-status-filter">
 
-                                        <option value="">All</option>
-                                        <option value="1">Open</option>
-                                        <option value="2">Chưa submit</option>
-                                        <option value="3">Đã submit, chờ verify</option>
-                                        <option value="4">Completed</option>
-                                        <option value="5">Rejected</option>
-                                        
-                                    </select>
+                                            <option value="">All</option>
+                                            <option value="1">Open</option>
+                                            <option value="2">Chưa submit</option>
+                                            <option value="3">Đã submit, chờ verify</option>
+                                            <option value="4">Completed</option>
+                                            <option value="5">Rejected</option>
+                                            
+                                        </select>
+                                    </div>
 
                                     
                                 </div>
@@ -162,20 +167,24 @@
 
                             <div class="bg-white p-3 rounded shadow-sm ticket-table d-none ajax-table" id="all-training-courses-container">
                                 <div class="common-table-filter">
-                                    <h2>All Training Courses</h2>
-                                    <div class="search-box">
-                                        <i class="ti-search"></i>
-                                        <input class="ajax-search" type="text" placeholder="Search course id, course name" id="search-all-training-course-input">
+                                    <div class="filter-group">
+                                        <h2>All Training Courses</h2>
+                                        <div class="search-box">
+                                            <i class="ti-search"></i>
+                                            <input class="ajax-search" type="text" placeholder="Search course id, course name" id="search-all-training-course-input">
+                                        </div>
                                     </div>
 
-                                    <h2>Training No</h2>
-                                    <select class="ajax-filter" name="training_no" id="all-training-courses-training-no-filter">
-                                        <option value="">All</option>
-                                        @foreach($all_training_no_numbers as $training_no_numbers)
-                                            <option value="{{ $training_no_numbers }}">{{ $training_no_numbers }}</option>
-                                        @endforeach
-                                        
-                                    </select>
+                                    <div class="filter-group">
+                                        <h2>Training No</h2>
+                                        <select class="ajax-filter" name="training_no" id="all-training-courses-training-no-filter">
+                                            <option value="">All</option>
+                                            @foreach($all_training_no_numbers as $training_no_numbers)
+                                                <option value="{{ $training_no_numbers }}">{{ $training_no_numbers }}</option>
+                                            @endforeach
+                                            
+                                        </select>
+                                    </div>
 
                                     
 
@@ -189,31 +198,37 @@
 
                             <div class="bg-white p-3 rounded shadow-sm ticket-table d-none" id="all-country-team-training-tickets-container">
                                 <div class="common-table-filter">
-                                    <h2>Your Team/Country training status</h2>
-                                    <div class="search-box">
-                                        <i class="ti-search"></i>
-                                        <input class="ajax-search" type="text" placeholder="Search tên user, training no" id="search-all-training-tickets-input">
+                                    <div class="filter-group">
+                                        <h2>Your Team/Country training status</h2>
+                                        <div class="search-box">
+                                            <i class="ti-search"></i>
+                                            <input class="ajax-search" type="text" placeholder="Search tên user, training no" id="search-all-training-tickets-input">
+                                        </div>
                                     </div>
 
-                                    <h2>Status:</h2>
-                                    <select id="all-training-tickets-status-filter" name="status" class="ajax-filter">
-                                        <option value="">All</option>
-                                        <option value="1">Open</option>
-                                        <option value="2">Chưa submit</option>
-                                        <option value="3">Đã submit, chờ verify</option>
-                                        <option value="4">Completed</option>
-                                        <option value="5">Rejected</option>
-                                        
-                                    </select>
+                                    <div class="filter-group">
+                                        <h2>Status:</h2>
+                                        <select id="all-training-tickets-status-filter" name="status" class="ajax-filter">
+                                            <option value="">All</option>
+                                            <option value="1">Open</option>
+                                            <option value="2">Chưa submit</option>
+                                            <option value="3">Đã submit, chờ verify</option>
+                                            <option value="4">Completed</option>
+                                            <option value="5">Rejected</option>
+                                            
+                                        </select>
+                                    </div>
 
-                                    <h2>Training No</h2>
-                                    <select id="all-training-tickets-training-no-filter" name="training_no" class="ajax-filter">
-                                        <option value="">All</option>
-                                        @foreach($all_training_no_numbers as $training_no_numbers)
-                                            <option value="{{ $training_no_numbers }}">{{ $training_no_numbers }}</option>
-                                        @endforeach
-                                        
-                                    </select>
+                                    <div class="filter-group">
+                                        <h2>Training No</h2>
+                                        <select id="all-training-tickets-training-no-filter" name="training_no" class="ajax-filter">
+                                            <option value="">All</option>
+                                            @foreach($all_training_no_numbers as $training_no_numbers)
+                                                <option value="{{ $training_no_numbers }}">{{ $training_no_numbers }}</option>
+                                            @endforeach
+                                            
+                                        </select>
+                                    </div>
 
 
                                 </div>

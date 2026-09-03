@@ -33,8 +33,8 @@ class Spectre_Crown_Warehouse_Model extends Model
 
     public function ticket_comments()
     {
-        return $this->hasMany(Comments_Model::class, 'ticket_id', 'id') // Liên kết với model Comments_Model, dựa vào "ticket_id" để lấy những comment có ticket_id trùng với id của ticket này
-            ->where(['type_of_ticket' => 11]); // Chỉ lấy những comment có type_of_ticket là 1 (software ticket)
+        return $this->hasMany(Comments_Model::class, 'ticket_id', 'id')
+            ->where(['type_of_ticket' => 11]); 
         
     }
 

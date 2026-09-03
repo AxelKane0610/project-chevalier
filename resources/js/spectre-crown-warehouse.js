@@ -278,6 +278,64 @@ document.addEventListener('submit', function (e) {
         
 
     }
+
+    if (e.target && e.target.id === 'edit-asset-details') {
+        e.preventDefault();
+
+        const form = e.target;
+
+        Swal.fire({
+            title: 'Bạn có chắc muốn edit asset này ?',
+            icon: 'warning',
+            showCancelButton: true,
+            heightAuto: false
+        })
+        .then((result) => {
+            if (!result.isConfirmed) {
+                return;
+            }
+
+            // Confirm mới loading
+            startButtonLoading(form);
+            fetch(url, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                }
+            })
+            .then(response => response.json())
+            .then(new_asset => {
+
+                if (new_asset.success === true) {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: new_asset.message,
+                        icon: 'success',
+                        confirmButtonText: 'OK',
+                        heightAuto: false
+                    }).then((result) => {
+                        document.querySelector('.ticket-form-overlay').classList.remove('active');
+                        e.target.reset();
+                        location.reload();
+                    });
+                    
+                } else {
+                    Swal.fire({
+                        title:'Error',
+                        text:new_asset.message,
+                        icon:'error',
+                        heightAuto: false
+                    });
+                    stopButtonLoading(form);
+                }
+                
+            })
+            .catch(error => console.error(error));
+        });
+        
+
+    }
 });
 
 

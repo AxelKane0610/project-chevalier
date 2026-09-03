@@ -150,23 +150,27 @@
                             <div class="bg-white p-3 rounded shadow-sm ticket-table d-none" id="all-thermal-event-tickets-container">
                                 
                                 <div class="common-table-filter">
-                                    <h2>All Tickets</h2>
-                                    <div class="search-box">
-                                        <i class="ti-search"></i>
-                                        <input class="ajax-search "type="text" placeholder="Search Receipt, SN, PN, Model, CDAX ID" id="search-thermal-event-receipt-input">
+                                    <div class="filter-group">
+                                        <h2>All Tickets</h2>
+                                        <div class="search-box">
+                                            <i class="ti-search"></i>
+                                            <input class="ajax-search "type="text" placeholder="Search Receipt, SN, PN, Model, CDAX ID" id="search-thermal-event-receipt-input">
+                                        </div>
                                     </div>
 
-                                    <h2>Ticket Status</h2>
-                                    <select class="ajax-filter" name="status">
-                                        <option value="">All</option>
-                                        <option value="1">Open</option>
-                                        <option value="2">Waiting for verifier</option>
-                                        <option value="3">Waiting for approver</option>
-                                        <option value="4">Completed</option>
-                                        <option value="5">Rejected</option>
+                                    <div class="filter-group">
+                                        <h2>Ticket Status</h2>
+                                        <select class="ajax-filter" name="status">
+                                            <option value="">All</option>
+                                            <option value="1">Open</option>
+                                            <option value="2">Waiting for verifier</option>
+                                            <option value="3">Waiting for approver</option>
+                                            <option value="4">Completed</option>
+                                            <option value="5">Rejected</option>
 
-                                        
-                                    </select>
+                                            
+                                        </select>
+                                    </div>
 
                                 </div>
                                 

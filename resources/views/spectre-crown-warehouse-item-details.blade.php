@@ -249,6 +249,12 @@
                             },
                         ],
                         [
+                            'icon' => 'ti-calendar',
+                            'label' => 'Import Date',
+                            'value' => $item_details->import_date,
+                            'type' => 'text'
+                        ],
+                        [
                             'icon' => 'ti-arrow-circle-right',
                             'label' => 'Available Status',
                             'value' => match ($item_details->available_status) {
@@ -398,6 +404,9 @@
                 <option value="3" @selected($item_details->condition == 3)>Can't use</option>
                 
             </select>
+
+            <label>Import Date</label>
+            <input type="date" class="ticket-form-body-input" placeholder="Ngày nhập kho" name="import_date" value="{{$item_details->import_date}}" >
 
             <label>Note</label>
             <input type="text" class="ticket-form-body-input" placeholder="Note" name="note" value="{{$item_details->note}}" >

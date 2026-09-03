@@ -65,22 +65,26 @@
                         <div class="bg-white p-3 rounded shadow-sm ticket-table" id="pending-loan-unit-part-tickets-container">
                             
                             <div class="common-table-filter">
-                                <h2>Pending Tickets</h2>
-                                <div class="search-box">
-                                    <i class="ti-search"></i>
-                                    <input type="text" placeholder="Search Receipt" id="search-pending-loan-unit-part-tickets" class="ajax-search">
+                                <div class="filter-group">
+                                    <h2>Pending Tickets</h2>
+                                    <div class="search-box">
+                                        <i class="ti-search"></i>
+                                        <input type="text" placeholder="Search Receipt" id="search-pending-loan-unit-part-tickets" class="ajax-search">
+                                    </div>
                                 </div>
 
-                                <h2>Status</h2>
-                                <select class="ajax-filter" name="status" id="all-loan-unit-part-tickets-status-filter">
+                                <div class="filter-group">
+                                    <h2>Status</h2>
+                                    <select class="ajax-filter" name="status" id="all-loan-unit-part-tickets-status-filter">
 
-                                    <option value="">All</option>
-                                    <option value="1">Open</option>
-                                    <option value="2">In progress</option>
-                                    <option value="3">Completed</option>
-                                    <option value="4">Canceled</option>
-                                    
-                                </select>
+                                        <option value="">All</option>
+                                        <option value="1">Open</option>
+                                        <option value="2">In progress</option>
+                                        <option value="3">Completed</option>
+                                        <option value="4">Canceled</option>
+                                        
+                                    </select>
+                                </div>
 
                             </div>
 
@@ -95,22 +99,26 @@
                         <div class="bg-white p-3 rounded shadow-sm ticket-table d-none" id="all-loan-unit-part-tickets-container">
                             
                             <div class="common-table-filter">
-                                <h2>All Tickets</h2>
-                                <div class="search-box">
-                                    <i class="ti-search"></i>
-                                    <input type="text" placeholder="Search Receipt" id="search-loan-unit-part-all-tickets" class="ajax-search">
+                                <div class="filter-group">
+                                    <h2>All Tickets</h2>
+                                    <div class="search-box">
+                                        <i class="ti-search"></i>
+                                        <input type="text" placeholder="Search Receipt" id="search-loan-unit-part-all-tickets" class="ajax-search">
+                                    </div>
                                 </div>
 
-                                <h2>Status</h2>
-                                <select class="ajax-filter" name="status" id="all-loan-unit-part-tickets-status-filter">
+                                <div class="filter-group">
+                                    <h2>Status</h2>
+                                    <select class="ajax-filter" name="status" id="all-loan-unit-part-tickets-status-filter">
 
-                                    <option value="">All</option>
-                                    <option value="1">Open</option>
-                                    <option value="2">In progress</option>
-                                    <option value="3">Completed</option>
-                                    <option value="4">Canceled</option>
-                                    
-                                </select>
+                                        <option value="">All</option>
+                                        <option value="1">Open</option>
+                                        <option value="2">In progress</option>
+                                        <option value="3">Completed</option>
+                                        <option value="4">Canceled</option>
+                                        
+                                    </select>
+                                </div>
 
                             </div>
                             

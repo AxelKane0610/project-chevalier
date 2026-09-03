@@ -37,7 +37,7 @@ table {
    FILTER
 ========================================================= */
 
-.common-table-filter {
+/* .common-table-filter {
     width: 100%;
 
     display: flex;
@@ -51,8 +51,49 @@ table {
     padding: 10px 0;
 
     box-sizing: border-box;
+} */
+
+/* .common-table-filter {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+
+    background-color: white;
+    padding: 10px 0;
+    box-sizing: border-box;
+} */
+
+.common-table-filter {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+
+    background-color: white;
+    padding: 10px 0;
+    box-sizing: border-box;
 }
 
+.common-table-filter h2 {
+    margin: 0;
+    white-space: nowrap;
+}
+
+/* Một filter = label + dropdown */
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.filter-group .ajax-filter {
+    width: 220px;
+    box-sizing: border-box;
+}
 
 /* =========================================================
    TABLE

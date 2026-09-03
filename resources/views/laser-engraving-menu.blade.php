@@ -111,22 +111,26 @@
                         <div class="bg-white p-3 rounded shadow-sm ticket-table d-none" id="all-laser-engraving-tickets-container">
                         
                             <div class="common-table-filter">
-                                <h2>All Tickets</h2>
-                                <div class="search-box">
-                                    <i class="ti-search"></i>
-                                    <input type="text" placeholder="Search Receipt, info base" id="search-laser-engraving-input">
+                                <div class="filter-group">
+                                    <h2>All Tickets</h2>
+                                    <div class="search-box">
+                                        <i class="ti-search"></i>
+                                        <input type="text" placeholder="Search Receipt, info base" id="search-laser-engraving-input">
+                                    </div>
                                 </div>
 
-                                <h2>Ticket Status</h2>
-                                <select class="ajax-filter" name="status">
-                                    <option value="">All</option>
-                                    <option value="1">Not started</option>
-                                    <option value="2">In Progress</option>
-                                    <option value="3">Completed</option>
-                                    <option value="4">Rejected</option>
+                                <div class="filter-group">
+                                    <h2>Ticket Status</h2>
+                                    <select class="ajax-filter" name="status">
+                                        <option value="">All</option>
+                                        <option value="1">Not started</option>
+                                        <option value="2">In Progress</option>
+                                        <option value="3">Completed</option>
+                                        <option value="4">Rejected</option>
 
-                                    
-                                </select>
+                                        
+                                    </select>
+                                </div>
 
 
                             </div>

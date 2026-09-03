@@ -81,19 +81,21 @@
                                 <div class="bg-white p-3 rounded shadow-sm ticket-table always-visible d-flex flex-column" >
                                     
                                     <div class="common-table-filter">
-                                        <h2>Tickets đã book trong hôm nay</h2>
-                                        <div class="search-box">
-                                            <i class="ti-search"></i>
-                                            <input class="ajax-search" type="text" placeholder="Search Receipt, Bill, Người gửi & người nhận" id="search-ttex-tickets-booked-today-table">
+                                        <div class="filter-group">
+                                            <h2>Tickets đã book trong hôm nay</h2>
+                                            <div class="search-box">
+                                                <i class="ti-search"></i>
+                                                <input class="ajax-search" type="text" placeholder="Search Receipt, Bill, Người gửi & người nhận" id="search-ttex-tickets-booked-today-table">
+                                            </div>
+                                            <h2>Part Status:</h2>
+                                            <select id="ttex-tickets-booked-today-part-status-filter" class="ajax-filter" name="part_status">
+                                                <option value="">All</option>
+                                                <option value="1">Good part</option>
+                                                <option value="2">Def part</option>
+                                                <option value="3">Good part - Unused</option>
+                                                
+                                            </select>
                                         </div>
-                                        <h2>Part Status:</h2>
-                                        <select id="ttex-tickets-booked-today-part-status-filter" class="ajax-filter" name="part_status">
-                                            <option value="">All</option>
-                                            <option value="1">Good part</option>
-                                            <option value="2">Def part</option>
-                                            <option value="3">Good part - Unused</option>
-                                            
-                                        </select>
                                     </div>
 
                                     <div id="ttex-tickets-booked-today-table-container">
@@ -161,18 +163,20 @@
 
                                 <div class="bg-white p-3 rounded shadow-sm ticket-table d-none" id="pending-def-part-ttex-tickets-container">
                                     <div class="common-table-filter">
-                                        <h2>Pending Def Part Tickets</h2>
-                                        <div class="search-box">
-                                            <i class="ti-search"></i>
-                                            <input class="ajax-search" type="text" placeholder="Search Receipt, Bill, Người gửi & người nhận" id="search-pending-def-part-ttex-tickets-table">
+                                        <div class="filter-group">
+                                            <h2>Pending Def Part Tickets</h2>
+                                            <div class="search-box">
+                                                <i class="ti-search"></i>
+                                                <input class="ajax-search" type="text" placeholder="Search Receipt, Bill, Người gửi & người nhận" id="search-pending-def-part-ttex-tickets-table">
+                                            </div>
+                                            <h2>Part Status:</h2>
+                                            <select id="pending-def-part-ttex-tickets-part-status-filter" class="ajax-filter" name="part_status">
+                                                <option value="">All</option>
+                                                <option value="2">Def part</option>
+                                                <option value="3">Good part - Unused</option>
+                                                
+                                            </select>
                                         </div>
-                                        <h2>Part Status:</h2>
-                                        <select id="pending-def-part-ttex-tickets-part-status-filter" class="ajax-filter" name="part_status">
-                                            <option value="">All</option>
-                                            <option value="2">Def part</option>
-                                            <option value="3">Good part - Unused</option>
-                                            
-                                        </select>
 
                                         
                                     </div>
@@ -194,34 +198,36 @@
                                 <div class="bg-white p-3 rounded shadow-sm ticket-table d-none" id="all-ttex-tickets-container" >
                                     
                                     <div class="common-table-filter">
-                                        <h2>All Tickets</h2>
-                                        <div class="search-box">
-                                            <i class="ti-search"></i>
-                                            <input class="ajax-search" type="text" placeholder="Search Receipt, Bill, Người gửi & người nhận" id="search-ttex-bill-input-all-tickets-table">
+                                        <div class="filter-group">
+                                            <h2>All Tickets</h2>
+                                            <div class="search-box">
+                                                <i class="ti-search"></i>
+                                                <input class="ajax-search" type="text" placeholder="Search Receipt, Bill, Người gửi & người nhận" id="search-ttex-bill-input-all-tickets-table">
+                                            </div>
                                         </div>
 
-                                        <h2>Status:</h2>
-                                        <select class="ajax-filter" id="all-ttex-tickets-status-filter" name="status">
-                                            <option value="">All</option>
-                                            <option value="1">Open - Chưa điều tin</option>
-                                            <option value="2">Completed - Đã điều tin</option>
-                                            <option value="3">Rejected</option>
-                                            
-                                        </select>
+                                        <div class="filter-group">
+                                            <h2>Status:</h2>
+                                            <select class="ajax-filter" id="all-ttex-tickets-status-filter" name="status">
+                                                <option value="">All</option>
+                                                <option value="1">Open - Chưa điều tin</option>
+                                                <option value="2">Completed - Đã điều tin</option>
+                                                <option value="3">Rejected</option>
+                                                
+                                            </select>
+                                        </div>
 
-                                        <h2>Part Status:</h2>
-                                        <select class="ajax-filter" id="all-ttex-tickets-part-status-filter" name="part_status">
-                                            <option value="">All</option>
-                                            <option value="1">Good part</option>
-                                            <option value="2">Def part</option>
-                                            <option value="3">Good part - Unused</option>
-                                            
-                                        </select>
-
-                                            
-
-                                        
-
+                                        <div class="filter-group">
+                                            <h2>Part Status:</h2>
+                                            <select class="ajax-filter" id="all-ttex-tickets-part-status-filter" name="part_status">
+                                                <option value="">All</option>
+                                                <option value="1">Good part</option>
+                                                <option value="2">Def part</option>
+                                                <option value="3">Good part - Unused</option>
+                                                
+                                            </select>
+                                        </div>
+                                    
 
                                     </div>
                                     <div id="all-ttex-tickets-table-container">
@@ -238,8 +244,7 @@
                         
                     </div>
                     
-                
-
+            
             
 
                 
