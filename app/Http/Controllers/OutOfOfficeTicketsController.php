@@ -61,8 +61,7 @@ class OutOfOfficeTicketsController extends Controller
                 ['user_id', auth()->id()],
                 ])->get();
 
-            $all_tickets = Out_Of_Office_Tickets_Model::where('user_id', auth()->id())->get();
-
+            $all_tickets = Out_Of_Office_Tickets_Model::where('user_id', auth()->id())->orderByDesc('created_at')->paginate(10);
             return view('out-of-office-tickets-menu', compact('tickets', 'tickets_waiting_approval', 'all_tickets'));
 
         }
