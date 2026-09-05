@@ -72,11 +72,9 @@ html, body{
     
     background-image:url("/imgs/blue_vector_background.svg") ;
     background-size:cover;
-    /* background-position:center; */
     
     z-index: -1;
     overflow: scroll;
-    /* #EEEEF5 */
 }
 
 /* *::-webkit-scrollbar {

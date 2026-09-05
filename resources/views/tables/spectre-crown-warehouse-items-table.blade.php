@@ -40,22 +40,22 @@
                     <td>{{ $item->model }}</td>
                     
                     <td>
-                        <span class="ticket-status {{ $item->category_data['class'] }}">
+                        <span class="badge rounded-pill bg-{{ $item->category_data['color'] ?? 'primary' }} px-3 py-2">
                             {{ $item->category_data['text'] }}
                         </span>
                     </td>
                     <td>
-                        <span class="ticket-status {{ $item->warehouse_data['class'] }}">
+                        <span class="badge rounded-pill bg-{{ $item->warehouse_data['color'] ?? 'primary' }} px-3 py-2">
                             {{ $item->warehouse_data['text'] }}
                         </span>
                     </td>
                     <td>
-                        <span class="ticket-status {{ $item->available_status_data['class'] }}">
+                        <span class="badge rounded-pill bg-{{ $item->available_status_data['color'] ?? 'primary' }} px-3 py-2">
                             {{ $item->available_status_data['text'] }}
                         </span>
                     </td>
                     <td>
-                        <span class="ticket-status {{ $item->condition_data['class'] }}">
+                        <span class="badge rounded-pill bg-{{ $item->condition_data['color'] ?? 'primary' }} px-3 py-2">
                             {{ $item->condition_data['text'] }}
                         </span>
                     </td>

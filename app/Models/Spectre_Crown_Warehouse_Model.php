@@ -54,23 +54,23 @@ class Spectre_Crown_Warehouse_Model extends Model
         return match ($this->warehouse) {
             "1" => [
                 'text' => 'SPECTRE',
-                'class' => 'spectre'
+                'color' => 'primary'
             ],
 
             "2" => [
                 'text' => 'CROWN HCM',
-                'class' => 'crown-hcm'
+                'color' => 'secondary'
             ],
 
             "3" => [
                 'text' => 'CROWN HN',
-                'class' => 'crown-hn'
+                'color' => 'warning'
             ],
 
 
             default => [
                 'text' => 'Unknown',
-                'class' => 'unknown'
+                'color' => 'unknown'
             ]
         };
     }
@@ -80,23 +80,23 @@ class Spectre_Crown_Warehouse_Model extends Model
         return match ($this->available_status) {
             "1" => [
                 'text' => 'Available',
-                'class' => 'available'
+                'color' => 'success'
             ],
 
             "2" => [
                 'text' => 'Not Available',
-                'class' => 'not-available'
+                'color' => 'secondary'
             ],
 
             "3" => [
                 'text' => 'In use',
-                'class' => 'in-use'
+                'color' => 'warning'
             ],
 
 
             default => [
                 'text' => 'Unknown',
-                'class' => 'unknown'
+                'color' => 'primary'
             ]
         };
     }
@@ -106,22 +106,22 @@ class Spectre_Crown_Warehouse_Model extends Model
         return match ($this->condition) {
             "1" => [
                 'text' => 'Good working',
-                'class' => 'good-working'
+                'color' => 'primary'
             ],
 
             "2" => [
                 'text' => 'Chưa test',
-                'class' => 'not-tested'
+                'color' => 'secondary'
             ],
 
             "3" => [
                 'text' => 'Can\'t use',
-                'class' => 'can-t-use'
+                'color' => 'danger'
             ],
 
             default => [
                 'text' => 'Unknown',
-                'class' => 'unknown'
+                'color' => 'primary'
             ]
         };
     }
@@ -131,48 +131,48 @@ class Spectre_Crown_Warehouse_Model extends Model
         return match ($this->category) {
             "1" => [
                 'text' => 'Laptop',
-                'class' => 'laptop'
+                'color' => 'primary'
             ],
 
             "2" => [
                 'text' => 'Accessories (Chuột, phím,...)',
-                'class' => 'accessories'
+                'color' => 'secondary'
             ],
 
             "3" => [
                 'text' => 'Màn hình',
-                'class' => 'monitor'
+                'color' => 'warning'
             ],
 
             "4" => [
                 'text' => 'Máy scanner',
-                'class' => 'scanner'
+                'color' => 'success'
             ],
 
             "5" => [
                 'text' => 'PC',
-                'class' => 'pc'
+                'color' => 'danger'
             ],
 
             "6" => [
                 'text' => 'Máy in khổ lớn',
-                'class' => 'large-format-printer'
+                'color' => 'dark'
             ],
 
             "7" => [
                 'text' => 'Máy in khổ nhỏ',
-                'class' => 'small-format-printer'
+                'color' => 'info'
             ],
 
             "8" => [
                 'text' => 'Others',
-                'class' => 'others'
+                'color' => 'info'
             ],
 
 
             default => [
                 'text' => 'Unknown',
-                'class' => 'unknown'
+                'color' => 'primary'
             ]
         };
     }

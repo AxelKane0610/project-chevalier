@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Project Chevalier</title>
+        <title>CENTRA</title>
         <meta charset="utf-8">
+        <link rel="icon" type="image/png" href="{{ asset('imgs/logo.png') }}">
         @vite([ 'resources/js/app.js', 'resources/js/spectre-crown-warehouse.js', 'resources/css/icons/themify-icons.css'])
         
     </head>
@@ -206,7 +207,17 @@
                                 default => 'Unknown',
                             },
                             'type' => 'badge',
-                            'color' => 'primary',
+                            'color' => match ($item_details->category) {
+                                '1' => 'primary',
+                                '2' => 'secondary',
+                                '3' => 'warning',
+                                '4' => 'success',
+                                '5' => 'danger',
+                                '6' => 'dark',
+                                '7' => 'info',
+                                '8' => 'info',
+                                default => 'Unknown',
+                            },
                         ],
                         [
                             'icon' => 'ti-arrow-circle-right',
@@ -284,7 +295,7 @@
                             'color' => match ($item_details->condition) {
                                 '1' => 'primary',
                                 '2' => 'secondary',
-                                '3' => 'warning',
+                                '3' => 'danger',
                                 default => 'Unknown',
                             },
                         ],

@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Project Chevalier</title>
+        <title>CENTRA</title>
         <meta charset="utf-8">
+        <link rel="icon" type="image/png" href="{{ asset('imgs/logo.png') }}">
         @vite([ 'resources/js/app.js', 'resources/js/laser-engraving.js', 'resources/css/icons/themify-icons.css'])
         
     </head>

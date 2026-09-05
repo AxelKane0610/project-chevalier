@@ -2,7 +2,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Project Chevalier</title>
+        <title>CENTRA</title>
+        <link rel="icon" type="image/png" href="{{ asset('imgs/logo.png') }}">
         <meta charset="utf-8">
 
         
