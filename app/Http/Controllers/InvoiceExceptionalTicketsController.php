@@ -99,7 +99,7 @@ class InvoiceExceptionalTicketsController extends Controller
                 'company_customer_name' => 'required',
                 'support_type' => 'required',
                 'description' => 'required',
-                'attachments.*' => 'file|max:20480|mimes:jpg,png,pdf,jpeg,xlsx,docx'
+                'attachments.*' => 'file|max:20480|mimetypes:image/jpeg,image/png,application/pdf,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/octet-stream',
             ]);
 
             $validate_data['user_id'] = auth()->id();
@@ -300,7 +300,7 @@ class InvoiceExceptionalTicketsController extends Controller
                     'retail_name' => 'required',
                     'company_customer_name' => 'required',
                     'support_type' => 'required',
-                    'attachments.*' => 'file|max:20480|mimes:jpg,png,pdf,jpeg,xlsx'
+                    'attachments.*' => 'file|max:20480|mimetypes:image/jpeg,image/png,application/pdf,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/octet-stream',
             ]);
 
                 $validate_data['ticket_receipt'] = strip_tags($validate_data['ticket_receipt']);

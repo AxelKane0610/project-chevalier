@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Http;
 class LaserEngravingTicketsController extends Controller
 {
     //
+    
     public function index(){
         if (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_LASER_ENGRAVING_ADMIN')) {
             $tickets = Laser_Engraving_Tickets_Model::whereIn('status', ['1', '2'])->get();
@@ -72,6 +73,7 @@ class LaserEngravingTicketsController extends Controller
     public function Create_Laser_Engraving_Ticket(Request $request){
         try {
         // Validate dữ liệu đầu vào
+        
             $validatedData = $request->validate([
                 'ticket_receipt' => 'required|string|max:255',
                 'priority' => 'required|in:1,2,3,4',
@@ -79,6 +81,7 @@ class LaserEngravingTicketsController extends Controller
                 'barcode_info' => 'required|string|max:255',
                 'description' => 'required|string',
                 'attachments.*' => 'file|max:20480|mimes:jpg,png,pdf,jpeg,xlsx,gif,cdr'
+                
             ]);
 
             $validatedData['ticket_receipt'] = strip_tags($validatedData['ticket_receipt']);
@@ -161,7 +164,7 @@ class LaserEngravingTicketsController extends Controller
             'info_base' => 'required',
             'barcode_info' => 'required',
             'description' => 'required',
-            'attachments.*' => 'file|max:20480|mimes:jpg,png,pdf,jpeg,xlsx'
+            'attachments.*' => 'file|max:20480'
         ]);
         $ticket = Laser_Engraving_Tickets_Model::with('user_owner')->findOrFail($id);
         try {
@@ -230,7 +233,7 @@ class LaserEngravingTicketsController extends Controller
         $validatedData = $request->validate([
             'comment' => 'required_without_all:attachments|string|nullable',
             'attachments' => 'required_without_all:comment|array|nullable',
-            'attachments.*' => 'file|max:20480|mimes:jpg,png,pdf,jpeg,xlsx,gif,cdr',
+            'attachments.*' => 'file|max:20480'
         ]);
 
         $validatedData['comment'] = strip_tags($validatedData['comment']);

@@ -137,6 +137,7 @@ class LoanUnitPartTicketsController extends Controller
     
 
     public function Create_Loan_Unit_Part_Ticket(Request $request){
+        
         try {
             $validate_data = $request->validate([
                 'ticket_receipt' => 'required',
@@ -151,7 +152,7 @@ class LoanUnitPartTicketsController extends Controller
             $validate_data['ticket_receipt'] = strip_tags($validate_data['ticket_receipt']);
             $validate_data['customer_unit_info'] = strip_tags($validate_data['customer_unit_info']);
             $validate_data['part_request'] = strip_tags($validate_data['part_request']);
-
+            $ticket = Loan_Unit_Part_Tickets_Model::create($validate_data);
             if ($request->hasFile('attachments')) { //Kiểm tra xem có file nào được upload lên không
 
                 foreach ($request->file('attachments') as $file) { //Duyệt qua từng file được upload lên
@@ -169,7 +170,7 @@ class LoanUnitPartTicketsController extends Controller
                 
             }
             
-            $ticket = Loan_Unit_Part_Tickets_Model::create($validate_data);
+            
             $validate_data['ticket_id'] = $ticket->id;
             $part_details = Loan_Unit_Ticket_Parts_Details_Model::create($validate_data);
             tracking_info_service::add(
