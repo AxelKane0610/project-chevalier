@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\Rules\Can;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\AttachmentController;
+use App\Http\Controllers\HPSWarehouseController;
 use App\Http\Controllers\InvoiceExceptionalTicketsController;
 use App\Models\Laser_Engraving_Tickets_Model;
 use App\Http\Controllers\LaserEngravingTicketsController;
@@ -235,6 +236,17 @@ Route::middleware(['auth'])->group(function () {
         Route::patch('/edit-asset-details/{id}', [SpectreCrownWarehouseController::class, 'Edit_Asset_Details'])->name('edit-asset-details');
         Route::post('/asset-export/{id}', [SpectreCrownWarehouseController::class, 'Asset_Export'])->name('asset-export');
         Route::patch('/edit-asset-export/{id}', [SpectreCrownWarehouseController::class, 'Edit_Asset_Export'])->name('edit-asset-export');
+        
+    });
+
+    Route::middleware(['role:ROLE_SUPER_ADMIN,ROLE_HPS_WAREHOUSE_ADMIN,ROLE_HPS_WAREHOUSE_USER'])->group(function () {
+        // Route::post('/import-asset', [SpectreCrownWarehouseController::class, 'Import_Asset']);
+        Route::get('/hps-warehouse-menu', [HPSWarehouseController::class, 'index']);
+        // Route::get('/spectre-crown-warehouse-item-details/{id}', [SpectreCrownWarehouseController::class, 'Item_Details']);
+        // Route::post('/add-comment-spectre-crown-warehouse/{id}', [SpectreCrownWarehouseController::class, 'Add_Comment_Spectre_Crown_Warehouse']) ->name('add-comment-spectre-crown-warehouse');
+        // Route::patch('/edit-asset-details/{id}', [SpectreCrownWarehouseController::class, 'Edit_Asset_Details'])->name('edit-asset-details');
+        // Route::post('/asset-export/{id}', [SpectreCrownWarehouseController::class, 'Asset_Export'])->name('asset-export');
+        // Route::patch('/edit-asset-export/{id}', [SpectreCrownWarehouseController::class, 'Edit_Asset_Export'])->name('edit-asset-export');
         
     });
 
