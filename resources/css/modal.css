@@ -1,0 +1,82 @@
+.ticket-form-overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: none; /* ẨN FORM KHI CHƯA NHẤN NÚT CREATE TICKET */
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: rgba(0,0,0,0.3);
+
+    
+}
+
+.ticket-form-box {
+    position: relative;
+    min-width: 500px;
+    max-width: 1000px;
+
+    height: auto;
+    background-color: white;
+    border-radius: clamp(12px, 2cqw + 8px, 28px);
+    padding: 20px;
+    box-shadow: 0 4px 10px 5px rgba(0,0,0,0.2);
+    
+}
+
+.ticket-form-overlay.active {
+    display: flex; /* HIỆN FORM KHI NHẤN NÚT CREATE TICKET */
+    z-index: 99999;
+
+}
+
+
+.ticket-form-header {
+    justify-content: center;
+    align-items: flex-end;
+    
+}
+
+.ticket-form-header > .ti-close {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    cursor: pointer;
+}
+
+.ticket-form-body {
+    display: flex;
+    flex-direction: column;
+    max-height: 70vh;
+    /* gap: 10px; */
+    overflow-y:auto;
+    /* box-sizing: border-box; */
+}
+
+.ticket-form-body > label {
+    align-items: left;
+}
+
+.ticket-form-body-input {
+    padding: 5px;
+    font-size: 15px;
+    width: 100%;
+}
+.ticket-form-body-input .singlerow,
+.ticket-form-body .single-row {
+    height: 30px;
+}
+
+.ticket-form-body-input .multiple-row,
+.ticket-form-body .multiple-row {
+    height: 100px;
+}
+
+.ticket-form-footer {
+    display: flex;
+    /* align-items: center; */
+    justify-content: center;
+    margin-top: 10px;
+}

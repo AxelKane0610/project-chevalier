@@ -191,7 +191,7 @@
             </div>
 
             <x-slot:footer>
-                <button class="ticket-form-body-input" type="submit">Submit</button> 
+                <button class="ticket-form-body-input" type="submit">Nhập kho</button> 
             </x-slot:footer>
 
             

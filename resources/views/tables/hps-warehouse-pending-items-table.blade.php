@@ -1,6 +1,6 @@
 
 <div class="d-flex justify-content-end">
-    {{ $items->links('pagination::bootstrap-5') }}
+    {{ $pending_items->links('pagination::bootstrap-5') }}
 </div>
 
 <div class="common-table-container">
@@ -19,7 +19,7 @@
         </thead>
 
         <tbody>
-            @foreach ($items as $item)
+            @foreach ($pending_items as $item)
                 
                 <tr>
                     <td>

@@ -23,6 +23,7 @@ export default defineConfig({
                 'resources/js/ttex.js',
                 'resources/js/user-profile.js',
                 'resources/js/training-management.js',
+                'resources/js/hps-warehouse.js',
 
 
             ],

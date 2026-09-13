@@ -1,8 +1,5 @@
 document.addEventListener('click', function (e) {
 
-    // ==========================
-    // Add Row
-    // ==========================
     if (e.target.id === 'add-row') {
 
         const courseBody = document.getElementById('course-body');

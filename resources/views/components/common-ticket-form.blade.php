@@ -2,7 +2,7 @@
     <div class="ticket-form-box">
         <div class="ticket-form-box-content">
             <div class="ticket-form-header">
-                <i class="ti-close js-close-input-form"></i> <!-- class="js-close-create-software-tickets"-->
+                <i class="ti-close js-close-input-form"></i>
                 <h2>{{$title}}</h2>
             </div>
 

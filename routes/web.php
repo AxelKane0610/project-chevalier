@@ -239,14 +239,22 @@ Route::middleware(['auth'])->group(function () {
         
     });
 
+
+    //12. Quản lý kho HPS
     Route::middleware(['role:ROLE_SUPER_ADMIN,ROLE_HPS_WAREHOUSE_ADMIN,ROLE_HPS_WAREHOUSE_USER'])->group(function () {
-        // Route::post('/import-asset', [SpectreCrownWarehouseController::class, 'Import_Asset']);
+        Route::post('/import-hps-asset', [HPSWarehouseController::class, 'Import_Asset']);
         Route::get('/hps-warehouse-menu', [HPSWarehouseController::class, 'index']);
+        Route::get('/hps-warehouse-item-details/{id}', [HPSWarehouseController::class, 'Item_Details']);
+        Route::get('/hps-warehouse-menu/get-model-name', [HPSWarehouseController::class, 'Get_Model_Name']);
+        Route::post('/add-comment-hps-warehouse/{id}', [HPSWarehouseController::class, 'Add_Comment_HPS_Warehouse']) ->name('add-comment-hps-warehouse');
+
         // Route::get('/spectre-crown-warehouse-item-details/{id}', [SpectreCrownWarehouseController::class, 'Item_Details']);
-        // Route::post('/add-comment-spectre-crown-warehouse/{id}', [SpectreCrownWarehouseController::class, 'Add_Comment_Spectre_Crown_Warehouse']) ->name('add-comment-spectre-crown-warehouse');
-        // Route::patch('/edit-asset-details/{id}', [SpectreCrownWarehouseController::class, 'Edit_Asset_Details'])->name('edit-asset-details');
-        // Route::post('/asset-export/{id}', [SpectreCrownWarehouseController::class, 'Asset_Export'])->name('asset-export');
-        // Route::patch('/edit-asset-export/{id}', [SpectreCrownWarehouseController::class, 'Edit_Asset_Export'])->name('edit-asset-export');
+        Route::patch('/edit-hps-asset-details/{id}', [HPSWarehouseController::class, 'Edit_HPS_Asset_Details'])->name('edit-hps-asset-details');
+        Route::post('/export-hps-asset/{id}', [HPSWarehouseController::class, 'Export_HPS_Asset'])->name('export-hps-asset');
+        Route::patch('/re-import-hps-asset/{id}', [HPSWarehouseController::class, 'Re_Import_HPS_Asset'])->name('re-import-hps-asset');
+
+        Route::get('/hps-warehouse-menu/filter-all-hps-items', [HPSWarehouseController::class, 'Filter_All_HPS_Items'])->name('filter-all-hps-items');
+
         
     });
 
