@@ -120,45 +120,108 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
+// document.addEventListener('change', async function (e) {
+//     // Kiểm tra nếu ô vừa thay đổi là Product Number
+//     if (e.target.matches('input[name="product_number[]"]')) {
+//         const productInput = e.target;
+//         const productNumber = productInput.value.trim();
+        
+//         // Tìm dòng <tr> hiện tại và ô Model tương ứng trong dòng đó
+//         const currentRow = productInput.closest('tr');
+//         const modelInput = currentRow.querySelector('input[name="model[]"]');
+
+//         // Nếu ô Product Number bị xóa trống
+//         if (!productNumber) {
+//             modelInput.value = '';
+//             modelInput.placeholder = 'Tự động điền...';
+//             return;
+//         }
+
+//         // Đổi placeholder thông báo trạng thái đang tra cứu
+//         modelInput.value = '';
+//         modelInput.placeholder = 'Đang tìm...';
+
+//         try {
+//             // Gọi API tra cứu thông tin sản phẩm
+//             const response = await fetch(`/hps-warehouse-menu/get-model-name?product_number=${encodeURIComponent(productNumber)}`);
+//             const data = await response.json();
+
+//             if (response.ok && data.success) {
+//                 modelInput.value = data.model;
+//             } else {
+//                 modelInput.value = '';
+//                 modelInput.placeholder = 'Không tìm thấy Model';
+//             }
+//         } catch (error) {
+//             console.error('Lỗi khi tra cứu Model:', error);
+//             modelInput.value = '';
+//             modelInput.placeholder = 'Lỗi kết nối';
+//         }
+//     }
+// });
+
 document.addEventListener('change', async function (e) {
-    // Kiểm tra nếu ô vừa thay đổi là Product Number
+    
+    // ==============================================================
+    // TRƯỜNG HỢP 1: Xử lý cho bảng (Code cũ của bạn)
+    // ==============================================================
     if (e.target.matches('input[name="product_number[]"]')) {
         const productInput = e.target;
         const productNumber = productInput.value.trim();
         
-        // Tìm dòng <tr> hiện tại và ô Model tương ứng trong dòng đó
         const currentRow = productInput.closest('tr');
         const modelInput = currentRow.querySelector('input[name="model[]"]');
 
-        // Nếu ô Product Number bị xóa trống
-        if (!productNumber) {
-            modelInput.value = '';
-            modelInput.placeholder = 'Tự động điền...';
-            return;
-        }
+        await fetchModelName(productNumber, modelInput);
+    }
 
-        // Đổi placeholder thông báo trạng thái đang tra cứu
-        modelInput.value = '';
-        modelInput.placeholder = 'Đang tìm...';
+    // ==============================================================
+    // TRƯỜNG HỢP 2: Xử lý cho Form Nhập lại máy (Code mới thêm)
+    // ==============================================================
+    if (e.target.matches('input[name="re_import_product_number"]')) {
+        const productInput = e.target;
+        const productNumber = productInput.value.trim();
+        
+        // Tìm form chứa input này, sau đó tìm ô re_import_model bên trong form
+        const form = productInput.closest('form');
+        const modelInput = form.querySelector('input[name="re_import_model"]');
 
-        try {
-            // Gọi API tra cứu thông tin sản phẩm
-            const response = await fetch(`/hps-warehouse-menu/get-model-name?product_number=${encodeURIComponent(productNumber)}`);
-            const data = await response.json();
-
-            if (response.ok && data.success) {
-                modelInput.value = data.model;
-            } else {
-                modelInput.value = '';
-                modelInput.placeholder = 'Không tìm thấy Model';
-            }
-        } catch (error) {
-            console.error('Lỗi khi tra cứu Model:', error);
-            modelInput.value = '';
-            modelInput.placeholder = 'Lỗi kết nối';
-        }
+        await fetchModelName(productNumber, modelInput);
     }
 });
+
+/**
+ * Hàm dùng chung để gọi API và điền kết quả vào ô Model
+ * Giúp code không bị lặp lại (DRY)
+ */
+async function fetchModelName(productNumber, modelInput) {
+    if (!modelInput) return;
+
+    if (!productNumber) {
+        modelInput.value = '';
+        modelInput.placeholder = 'Tự động điền...';
+        return;
+    }
+
+    modelInput.value = '';
+    modelInput.placeholder = 'Đang tìm...';
+
+    try {
+        const response = await fetch(`/hps-warehouse-menu/get-model-name?product_number=${encodeURIComponent(productNumber)}`);
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+            modelInput.value = data.model;
+        } else {
+            modelInput.value = '';
+            modelInput.placeholder = 'Không tìm thấy Model';
+        }
+    } catch (error) {
+        console.error('Lỗi khi tra cứu Model:', error);
+        modelInput.value = '';
+        modelInput.placeholder = 'Lỗi kết nối';
+    }
+}
 
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -393,6 +456,60 @@ document.addEventListener('submit', function (e) {
 
         Swal.fire({
             title: 'Bạn có chắc muốn thực hiện xuất kho ?',
+            icon: 'warning',
+            showCancelButton: true,
+            heightAuto: false
+        })
+        .then((result) => {
+            if (!result.isConfirmed) {
+                return;
+            }
+
+            // Confirm mới loading
+            startButtonLoading(form);
+            fetch(url, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                }
+            })
+            .then(response => response.json())
+            .then(new_ticket => {
+
+                if (new_ticket.success === true) {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: new_ticket.message,
+                        icon: 'success',
+                        confirmButtonText: 'OK',
+                        heightAuto: false
+                    }).then((result) => {
+                        location.reload();
+                    });
+
+                } else {
+                    Swal.fire({
+                        title:'Error',
+                        text:new_ticket.message,
+                        icon:'error',
+                        heightAuto: false
+                    });
+                    stopButtonLoading(form);
+                }
+                
+            })
+            .catch(error => console.error(error));
+        });
+    }
+
+
+    if (e.target && e.target.id === 're-import-hps-asset') {
+        e.preventDefault();
+        const form = e.target;
+
+        Swal.fire({
+            title: 'Bạn có chắc muốn thực hiện nhập lại kho ?',
             icon: 'warning',
             showCancelButton: true,
             heightAuto: false

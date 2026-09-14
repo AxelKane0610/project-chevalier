@@ -49,7 +49,8 @@ return [
         'invoice_exceptional_create_ticket_request_url' => env('API_POWER_AUTOMATE_CREATE_INVOICE_EXCEPTIONAL_REQUEST'),
         'invoice_exceptional_request_sale_support_url' => env('API_POWER_AUTOMATE_INVOICE_EXCEPTIONAL_REQUEST_SALE_SUPPORT'),
         'request_training_url' => env('API_POWER_AUTOMATE_CREATE_REQUEST_TRAINING'),
-        'spectre_crown_warehouse_update_to_excel_url' => env('API_POWER_AUTOMATE_UPDATE_ASSET_TO_EXCEL')
+        'spectre_crown_warehouse_update_to_excel_url' => env('API_POWER_AUTOMATE_UPDATE_ASSET_TO_EXCEL'),
+        'hps_export_request_url' => env('API_POWER_AUTOMATE_HPS_EXPORT_REQUEST')
     ],
 
 ];

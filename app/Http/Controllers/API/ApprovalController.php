@@ -9,6 +9,8 @@ use App\Models\Out_Of_Office_Tickets_Model;
 use App\Models\Invoice_Exceptional_Tickets_Model;
 
 use App\Models\Comments_Model;
+use App\Models\HPS_Warehouse_Export_Details_Model;
+use App\Models\HPS_Warehouse_Model;
 use App\Models\Thermal_Event_Exceptional_Tickets_Model;
 use App\Services\tracking_info_service;
 
@@ -401,6 +403,78 @@ class ApprovalController extends Controller
                 ]);
                 $ticket->status = '5'; 
                 $ticket->save();
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Trạng thái ticket đã được cập nhật'
+                ], 200);
+            }  else{
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Ticket không ở trạng thái chờ phê duyệt'
+                ], 200);
+            }
+        }
+
+
+
+        if ($approval_response['outcome'] === 'Approve' && $approval_response['type_of_ticket'] === '12') 
+        {
+            $export_details = HPS_Warehouse_Export_Details_Model::find($approval_response['ticket_id']);
+            $asset = HPS_Warehouse_Model::find($export_details->asset_tag);
+            if ($export_details->status == '1') {
+                tracking_info_service::add(
+                    $export_details->id,
+                    10,
+                    12,
+                    'received approved response from Power Automate',
+                );
+                Comments_Model::create([
+                    'ticket_id' => $approval_response['ticket_id'],
+                    'type_of_ticket' => $approval_response['type_of_ticket'],
+                    'user_id' => 10,
+                    'comment'=> $approval_response['approver_comment']
+
+                ]);
+                $export_details->status = '2'; 
+                $export_details->save();
+                $asset->current_status = '3';
+                $asset->current_hps_receipt = $export_details->hps_receipt;
+                $asset->current_export_ticket_id = $export_details->id;
+                $asset->save();
+
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Trạng thái ticket đã được cập nhật'
+                ], 200);
+            }  else{
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Ticket không ở trạng thái chờ phê duyệt'
+                ], 200);
+            }
+        }
+
+
+        if ($approval_response['outcome'] === 'Reject' && $approval_response['type_of_ticket'] === '12') 
+        {
+            $export_details = HPS_Warehouse_Export_Details_Model::find($approval_response['ticket_id']);
+            if ($export_details->status == '1') {
+                tracking_info_service::add(
+                    $export_details->id,
+                    10,
+                    12,
+                    'received rejected response from Power Automate',
+                );
+                Comments_Model::create([
+                    'ticket_id' => $approval_response['ticket_id'],
+                    'type_of_ticket' => $approval_response['type_of_ticket'],
+                    'user_id' => 10,
+                    'comment'=> $approval_response['approver_comment']
+
+                ]);
+                $export_details->status = '5'; 
+                $export_details->save();
+                
                 return response()->json([
                     'status' => 'success',
                     'message' => 'Trạng thái ticket đã được cập nhật'

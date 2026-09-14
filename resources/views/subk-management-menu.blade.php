@@ -293,6 +293,11 @@
                 <option value="ROLE_THERMAL_EVENT_LV1_APPROVER">ROLE_THERMAL_EVENT_LV1_APPROVER</option>
                 <option value="ROLE_THERMAL_EVENT_LV2_APPROVER">ROLE_THERMAL_EVENT_LV2_APPROVER</option>
 
+                <option value="ROLE_SPECTRE_CROWN_WAREHOUSE_ADMIN">ROLE_SPECTRE_CROWN_WAREHOUSE_ADMIN</option>
+
+                <option value="ROLE_HPS_WAREHOUSE_ADMIN">ROLE_HPS_WAREHOUSE_ADMIN</option>
+                <option value="ROLE_HPS_WAREHOUSE_USER">ROLE_HPS_WAREHOUSE_USER</option>
+
             </select>
 
 

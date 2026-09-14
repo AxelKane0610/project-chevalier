@@ -9,7 +9,10 @@ use App\Models\HPS_Warehouse_Export_Details_Model;
 use Illuminate\Support\Facades\DB;
 use App\Models\Comments_Model;
 use App\Models\Attachments_Model;
+use App\Services\tracking_info_service;
+use Illuminate\Support\Facades\Http;
 
+use function PHPUnit\Framework\matches;
 
 class HPSWarehouseController extends Controller
 {
@@ -19,7 +22,7 @@ class HPSWarehouseController extends Controller
         if (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_HPS_WAREHOUSE_ADMIN')) {
             $query = HPS_Warehouse_Model::query();
         } else {
-            $query = HPS_Warehouse_Model::where('current_site', auth()->user()->site_id());
+            $query = HPS_Warehouse_Model::where('current_site', auth()->user()->site_id);
         }
 
         $items = $query->orderBy('created_at', 'desc')->paginate(10);
@@ -118,7 +121,7 @@ class HPSWarehouseController extends Controller
     }
 
     public function Import_Asset(Request $request) {
-    try {
+        try {
         $validated = $request->validate([
             'serial_number'   => 'required|array|min:1',
             'serial_number.*' => 'required|string',
@@ -347,8 +350,114 @@ class HPSWarehouseController extends Controller
         }
     }
 
+    // public function Export_HPS_Asset(Request $request, $id){
+    //     try{
+    //         $validatedData = $request->validate([
+    //             'hps_receipt' => 'required|string',
+    //             'ce_owner' => 'nullable|exists:users,id',
+    //             'program_support' => 'required',
+    //             'export_date' => 'required|date',
+    //             'export_site' => 'required|string',
+    //             'export_location' => 'nullable|string',
+    //             'export_product_number' => 'nullable|string',
+    //             'export_model' => 'nullable|string',
+    //             'export_serial_number' => 'nullable|string',
+    //             'export_box_serial_number' => 'nullable|string',
+    //             'note' => 'nullable|string',
+    //         ]);
+
+    //         $asset = HPS_Warehouse_Model::findOrFail($id);
+
+    //         // dd(
+    //         //     $validatedData, auth()->user()->fullname, auth()->user()->email
+    //         // );
+            
+    //         if (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_HPS_WAREHOUSE_ADMIN')) {
+    //             $validatedData['asset_tag'] = $asset->asset_tag;
+    //             $validatedData['user_export'] = auth()->id(); // Gán user hiện tại là người export
+    //             $validatedData['current_status'] = "2";
+
+    //             $new_export_detail = HPS_Warehouse_Export_Details_Model::create($validatedData);
+    //             $asset->update([
+    //                 'current_status' => "3", // Cập nhật trạng thái hiện tại của asset
+    //                 'current_hps_receipt' => $validatedData['hps_receipt'],
+    //                 'current_export_ticket_id' => $new_export_detail->id, // Lưu ID của bản ghi export mới tạo vào asset
+
+    //             ]);
+                
+    //             tracking_info_service::add(
+    //                 $asset->id, 
+    //                 auth()->id(), 
+    //                 12,
+    //                 'export ' & $asset->current_serial_number & ' for receipt ' & $validatedData['hps_receipt'] & ' at'
+    //             );
+                
+
+    //             return response()->json([
+    //                 'success' => true,
+    //                 'message' => 'Asset exported successfully',
+    //             ]);
+    //         } else {
+    //             $validatedData['asset_tag'] = $asset->asset_tag;
+    //             $validatedData['user_export'] = auth()->id(); // Gán user hiện tại là người export
+    //             $validatedData['current_status'] = "1";
+
+    //             $new_export_detail = HPS_Warehouse_Export_Details_Model::create($validatedData);
+
+    //             tracking_info_service::add(
+    //                 $asset->id, 
+    //                 auth()->id(), 
+    //                 12,
+    //                 'requested export ' & $asset->current_serial_number & ' for receipt ' & $validatedData['hps_receipt'] & ' at'
+    //             );
+
+    //             $send_approval = Http::post(config('services.api_service.hps_export_request_url'), [
+    //                 'ticket_owner' => auth()->user()->fullname,
+    //                 'ticket_owner_email' => auth()->user()->email,
+    //                 'receipt' => $validatedData['hps_receipt'],
+    //                 'program' => match($validatedData) {
+    //                     '1' => 'FB30',
+    //                     '2' => 'Handover',
+    //                     '3' => 'Luân chuyển nội bộ',
+    //                     '4' => 'Sàn số serial',
+    //                     '5' => 'WUE',
+    //                     '6' => 'Xuất mượn',
+    //                     default => 'Unknown',
+
+    //                 },
+    //                 'serial_number' => $validatedData['export_serial_number'],
+    //                 'product_number' => $validatedData['export_product_number'],
+    //                 'product_model' => $validatedData['export_model'],
+
+    //             ]);
+
+    //             if ($send_approval->successful()) {
+    //                 return response()->json([
+    //                     'success' => true,
+    //                     'message' => 'Request xuất máy thành công, vui lòng đợi duyệt',
+    //                 ]);
+    //             } else {
+    //                 // Xử lý lỗi nếu phản hồi không thành công
+    //                 return response()->json([
+    //                     'success' => false,
+    //                     'message' => 'Request xuất máy thành công, nhưng API trả lỗi: ' . $send_approval->body(),
+    //                 ], 500);
+    //             } 
+    //         }
+            
+
+            
+    //     } catch (\Exception $e) {
+    //         return response()->json([
+    //             'success' => false,
+    //             'message' => 'Failed to export asset due to '.$e->getMessage(),
+    //         ], 500);
+    //     }
+    // }
+
+
     public function Export_HPS_Asset(Request $request, $id){
-        try{
+    try {
             $validatedData = $request->validate([
                 'hps_receipt' => 'required|string',
                 'ce_owner' => 'nullable|exists:users,id',
@@ -364,39 +473,150 @@ class HPSWarehouseController extends Controller
             ]);
 
             $asset = HPS_Warehouse_Model::findOrFail($id);
+            
             if (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_HPS_WAREHOUSE_ADMIN')) {
                 $validatedData['asset_tag'] = $asset->asset_tag;
-                $validatedData['user_export'] = auth()->id(); // Gán user hiện tại là người export
+                $validatedData['user_export'] = auth()->id();
                 $validatedData['current_status'] = "2";
 
                 $new_export_detail = HPS_Warehouse_Export_Details_Model::create($validatedData);
                 $asset->update([
-                    'current_status' => "3", // Cập nhật trạng thái hiện tại của asset
+                    'current_status' => "3",
                     'current_hps_receipt' => $validatedData['hps_receipt'],
-                    'current_export_ticket_id' => $new_export_detail->id, // Lưu ID của bản ghi export mới tạo vào asset
-
+                    'current_export_ticket_id' => $new_export_detail->id,
                 ]);
-
                 
-
+                // Đã sửa nối chuỗi dùng dấu . thay vì dấu &
+                tracking_info_service::add(
+                    $asset->id, 
+                    auth()->id(), 
+                    12,
+                    'export ' . $asset->current_serial_number . ' for receipt ' . $validatedData['hps_receipt'] . ' at'
+                );
+                
                 return response()->json([
                     'success' => true,
                     'message' => 'Asset exported successfully',
                 ]);
             } else {
                 $validatedData['asset_tag'] = $asset->asset_tag;
-                $validatedData['user_export'] = auth()->id(); // Gán user hiện tại là người export
+                $validatedData['user_export'] = auth()->id();
                 $validatedData['current_status'] = "1";
 
-                HPS_Warehouse_Export_Details_Model::create($validatedData);
-            }
-            
+                $new_export_detail = HPS_Warehouse_Export_Details_Model::create($validatedData);
 
+                // Đã sửa nối chuỗi dùng dấu . thay vì dấu &
+                tracking_info_service::add(
+                    $asset->id, 
+                    auth()->id(), 
+                    12,
+                    'requested export ' . $asset->current_serial_number . ' for receipt ' . $validatedData['hps_receipt'] . ' at'
+                );
+
+                $send_approval = Http::post(config('services.api_service.hps_export_request_url'), [
+                    'ticket_id' => $new_export_detail->id,
+                    'ticket_owner' => auth()->user()->fullname,
+                    'ticket_owner_email' => auth()->user()->email,
+                    'receipt' => $validatedData['hps_receipt'],
+                    // Đã sửa match truyền đúng trường program_support
+                    'program' => match((string)$validatedData['program_support']) {
+                        '1' => 'FB30',
+                        '2' => 'Handover',
+                        '3' => 'Luân chuyển nội bộ',
+                        '4' => 'Sàn số serial',
+                        '5' => 'WUE',
+                        '6' => 'Xuất mượn',
+                        default => 'Unknown',
+                    },
+                    'serial_number' => $validatedData['export_serial_number'],
+                    'product_number' => $validatedData['export_product_number'], // Đã sửa từ product_number -> export_product_number
+                    'product_model' => $validatedData['export_model'],
+                ]);
+
+                if ($send_approval->successful()) {
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'Request xuất máy thành công, vui lòng đợi duyệt',
+                    ]);
+                } else {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Request xuất máy thành công, nhưng API trả lỗi: ' . $send_approval->body(),
+                    ], 500);
+                } 
+            }
             
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to export asset due to '.$e->getMessage(),
+                'message' => 'Failed to export asset due to ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function Re_Import_HPS_Asset(Request $request, $id) {
+        
+        try {
+            $validatedData = $request->validate([
+                're_import_date' => 'required',
+                're_import_location' => 'nullable',
+                're_import_product_number' => 'required',
+                're_import_model' => 'required',
+                're_import_serial_number' => 'required',
+                're_import_box_serial_number' => 'required',
+                're_import_site' => 'required',
+                're_import_status' => 'required',
+                'note' => 'nullable',
+            ]);
+
+            $sanitize = function ($value) use (&$sanitize) {
+                if (is_array($value)) {
+                    return array_map($sanitize, $value);
+                }
+                return is_string($value) ? strip_tags(trim($value)) : $value;
+            };
+
+            // Áp dụng làm sạch cho toàn bộ $validated
+            $validatedData = array_map($sanitize, $validatedData);
+            
+            $validatedData['user_re_import'] = auth()->id();
+
+            $asset = HPS_Warehouse_Model::findOrFail($id);
+            $asset['current_serial_number'] = $validatedData['re_import_serial_number'];
+            $asset['current_box_serial_number'] = $validatedData['re_import_box_serial_number'];
+            $asset['current_product_number'] = $validatedData['re_import_product_number'];
+            $asset['model'] = $validatedData['re_import_model'];
+            $asset['current_site'] = $validatedData['re_import_site'];
+            $asset['current_location'] = $validatedData['re_import_location'];
+            $asset['unit_re_import_status'] = $validatedData['re_import_status'];
+
+            if (in_array($validatedData['re_import_status'], ["1", "2", "4"])) {
+                $asset['current_status'] = "1";
+            } else {
+                $asset['current_status'] = "4";
+            }
+            $asset->save();
+            $re_import_data = HPS_Warehouse_Export_Details_Model::findOrFail($asset['current_export_ticket_id']);
+            
+            $re_import_data->update($validatedData);
+
+            tracking_info_service::add(
+                $asset->id, 
+                auth()->id(), 
+                12,
+                're-imported ' & $validatedData['re_import_serial_number'] & ' of receipt ' & $re_import_data['hps_receipt'] & ' at'
+            );
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Nhập lại thành công',
+            ]);
+
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to re-import asset due to '.$e->getMessage(),
             ], 500);
         }
     }

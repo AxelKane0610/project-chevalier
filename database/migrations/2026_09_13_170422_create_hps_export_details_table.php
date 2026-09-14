@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('hps_export_details', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('ce_owner')->constrained('users');
+            $table->foreignId('ce_owner')->nullable()->constrained('users');
             $table->string('asset_tag');
             $table->date('export_date');
             $table->enum('export_site', ['1', '2', '3', '4']);

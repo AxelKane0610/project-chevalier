@@ -101,7 +101,7 @@ class InvoiceExceptionalTicketsController extends Controller
                 'description' => 'required',
                 'attachments.*' => 'file|max:20480|mimetypes:image/jpeg,image/png,application/pdf,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/octet-stream',
             ]);
-
+            
             $validate_data['user_id'] = auth()->id();
             $validate_data['status'] = '2';
             $validate_data['ticket_receipt'] = strip_tags($validate_data['ticket_receipt']);

@@ -65,7 +65,7 @@
                     <button
                         type="button"
                         class="js-input-required-btn"
-                        data-target="asset-re-import"
+                        data-target="re-import-hps-asset"
                     >
                         <i class="ti-back-left"></i>
                         Nhập lại máy
@@ -587,8 +587,9 @@
         </x-common-ticket-form>
 
 
-        <x-common-ticket-form title="Export Asset" id="asset-export" action1="{{ route('export-hps-asset', $item_details->id) }}" method="POST" enctype="multipart/form-data">
+        <x-common-ticket-form title="Export Asset" id="asset-export" action1="{{ route('export-hps-asset', $item_details->id) }}" method="PATCH" enctype="multipart/form-data">
             @csrf
+            @method('POST')
             <label>HPS Receipt</label>
             <input type="text" class="ticket-form-body-input" placeholder="Nhập HPS Receipt" name="hps_receipt" required>
 
@@ -623,15 +624,19 @@
 
             <label>Export Date</label>
             <input type="date" class="ticket-form-body-input" name="export_date" value="{{ today()->format('Y-m-d') }}" required>
-
+            
+            
             <label>Export Serial Number</label>
-            <input type="text" class="ticket-form-body-input" placeholder="Nhập Export Serial Number" name="export_serial_number" value="{{ $item_details->current_serial_number }}" required>
+            <input type="text" class="ticket-form-body-input" placeholder="Nhập Export Serial Number" name="export_serial_number" value="{{ $item_details->current_serial_number }}" readonly>
 
             <label>Export Box SN</label>
-            <input type="text" class="ticket-form-body-input" placeholder="Nhập Export Box SN" name="export_box_serial_number" value="{{ $item_details->current_box_serial_number }}">
+            <input type="text" class="ticket-form-body-input" placeholder="Nhập Export Box SN" name="export_box_serial_number" value="{{ $item_details->current_box_serial_number }}" readonly>
+
+            <label>Export Product Number</label>
+            <input type="text" class="ticket-form-body-input" placeholder="Nhập Export Serial Number" name="export_product_number" value="{{ $item_details->current_product_number }}" readonly>
 
             <label>Export Model</label>
-            <input type="text" class="ticket-form-body-input" placeholder="Nhập Export Model" name="export_model" value="{{ $item_details->model }}" required>
+            <input type="text" class="ticket-form-body-input" placeholder="Nhập Export Model" name="export_model" value="{{ $item_details->model }}" readonly>
 
             <label>Export Location</label>
             <input type="text" class="ticket-form-body-input" placeholder="Nhập Export Location" name="export_location" value="{{ $item_details->current_location }}">
@@ -641,6 +646,55 @@
 
             <x-slot:footer>
                 <button class="ticket-form-body-input" type="submit">Export</button> 
+            </x-slot:footer>
+        </x-common-ticket-form>
+
+        <x-common-ticket-form title="Nhập lại máy" id="re-import-hps-asset" action1="{{ route('re-import-hps-asset', $item_details->id) }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            @method('PATCH')
+            <label>HPS Receipt</label>
+            <input type="text" class="ticket-form-body-input" value="{{ $item_details->current_hps_receipt }}" readonly>
+
+            <label>Ngày nhập lại</label>
+            <input type="date" class="ticket-form-body-input" name="re_import_date" value="{{ today()->format('Y-m-d') }}" required>
+
+            <label>Re-Import Location</label>
+            <input type="text" class="ticket-form-body-input" placeholder="Nhập vị trí cất máy thu hồi nếu có" name="re_import_location">
+
+            <label>PN nhập lại</label>
+            <input type="text" class="ticket-form-body-input" placeholder="Nhập PN của máy nhập lại" name="re_import_product_number" required>
+
+            <label>Model nhập lại</label>
+            <input type="text" class="ticket-form-body-input" name="re_import_model" readonly>
+
+            <label>SN nhập lại</label>
+            <input type="text" class="ticket-form-body-input" placeholder="Nhập SN của máy nhập lại" name="re_import_serial_number" required>
+
+            <label>Box SN nhập lại</label>
+            <input type="text" class="ticket-form-body-input" placeholder="Nhập SN thùng của máy nhập lại, không có để N/A" name="re_import_box_serial_number" required>
+
+            <label>Re-Import Site</label>
+            <select class="ticket-form-body-input" name="re_import_site" required>
+                <option value="1" {{ $item_details->current_site == 1 ? 'selected' : '' }}>HCM</option>
+                <option value="2" {{ $item_details->current_site == 2 ? 'selected' : '' }}>HN</option>
+                <option value="3" {{ $item_details->current_site == 3 ? 'selected' : '' }}>DN</option>
+                <option value="4" {{ $item_details->current_site == 4 ? 'selected' : '' }}>CT</option>
+            </select>
+
+            <label>Trạng thái máy nhập lại</label>
+            <select class="ticket-form-body-input" name="re_import_status" required>
+                <option value="1">New</option>
+                <option value="2">Good</option>
+                <option value="3">Not good</option>
+                <option value="4">DOA</option>
+                <option value="5">Scrap</option>
+            </select>
+            
+            <label>Note</label>
+            <input type="text" class="ticket-form-body-input" placeholder="Note thêm nếu có" name="note">
+
+            <x-slot:footer>
+                <button class="ticket-form-body-input" type="submit">Nhập lại máy</button> 
             </x-slot:footer>
         </x-common-ticket-form>
     </body>
