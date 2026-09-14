@@ -334,6 +334,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
     });
 
+    initAjaxTable({
+
+        wrapper: 'pending-hps-items-container',
+
+        container: '#all-hps-items-table-container',
+
+        url: '/hps-warehouse-menu/filter-pending-hps-items'
+
+    });
+
 
 });
 

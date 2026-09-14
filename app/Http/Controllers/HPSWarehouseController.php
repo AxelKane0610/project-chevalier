@@ -37,7 +37,63 @@ class HPSWarehouseController extends Controller
         if (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_HPS_WAREHOUSE_ADMIN')) {
             $query = HPS_Warehouse_Model::query();
         } else {
-            $query = HPS_Warehouse_Model::where('current_site', auth()->user()->site_id());
+            $query = HPS_Warehouse_Model::where('current_site', auth()->user()->site_id);
+        }
+        
+
+        // Search
+        if ($request->filled('search')) {
+            $search = $request->search;
+
+            $query->where(function ($q) use ($search) {
+                $q->where('current_serial_number', 'like', "%{$search}%")
+                ->orWhere('current_box_serial_number', 'like', "%{$search}%")
+                ->orWhere('current_product_number', 'like', "%{$search}%")
+                ->orWhere('serial_number', 'like', "%{$search}%")
+                ->orWhere('box_serial_number', 'like', "%{$search}%")
+                ->orWhere('po_number', 'like', "%{$search}%")
+                ->orWhere('invoice', 'like', "%{$search}%")
+                ->orWhere('model', 'like', "%{$search}%")
+                ->orWhere('asset_tag', 'like', "%{$search}%")
+                ;
+            });
+        }
+
+
+        if ($request->filled('current_status')) {
+            $query->where('current_status', $request->current_status);
+        }
+
+
+        if ($request->filled('current_site')) {
+            $query->where('current_site', $request->current_site);
+        }
+
+        
+        if ($request->filled('unit_re_import_status')) {
+            $query->where('unit_re_import_status', $request->unit_re_import_status);
+        }
+
+
+        $items = $query->orderBy('created_at', 'desc')->paginate(10);
+
+        if ($request->ajax()) {
+            return view('tables.hps-warehouse-items-table', compact('items'))->render();
+        }
+
+    }
+
+
+    public function Filter_Pending_HPS_Items(Request $request)
+    {
+        if (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_HPS_WAREHOUSE_ADMIN')) {
+            $query = HPS_Warehouse_Model::where('current_status', "3");
+        } else {
+            $query = HPS_Warehouse_Model::where([
+                ['current_site', auth()->user()->site_id],
+                ['current_status', "3"],
+
+            ]);
         }
         
 

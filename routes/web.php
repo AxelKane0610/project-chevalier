@@ -254,6 +254,8 @@ Route::middleware(['auth'])->group(function () {
         Route::patch('/re-import-hps-asset/{id}', [HPSWarehouseController::class, 'Re_Import_HPS_Asset'])->name('re-import-hps-asset');
 
         Route::get('/hps-warehouse-menu/filter-all-hps-items', [HPSWarehouseController::class, 'Filter_All_HPS_Items'])->name('filter-all-hps-items');
+        Route::get('/hps-warehouse-menu/filter-pending-hps-items', [HPSWarehouseController::class, 'Filter_Pending_HPS_Items'])->name('filter-pending-hps-items');
+
 
         
     });

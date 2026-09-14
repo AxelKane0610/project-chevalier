@@ -685,8 +685,8 @@
             <select class="ticket-form-body-input" name="re_import_status" required>
                 <option value="1">New</option>
                 <option value="2">Good</option>
-                <option value="3">Not good</option>
-                <option value="4">DOA</option>
+                <option value="3">DOA</option>
+                <option value="4">Not good</option>
                 <option value="5">Scrap</option>
             </select>
             

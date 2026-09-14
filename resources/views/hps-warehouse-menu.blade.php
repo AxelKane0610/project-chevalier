@@ -54,7 +54,7 @@
                             Show All
                         </button>
 
-                        <button class="btn btn-primary table-btn w-100 position-relative" id="show-pending-items-btn" data-target = "pending-items-container">
+                        <button class="btn btn-primary table-btn w-100 position-relative" id="show-pending-items-btn" data-target = "pending-hps-items-container">
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                                 {{$pending_items->total()}}
                             </span>
@@ -122,7 +122,7 @@
                         </div>
 
 
-                        <div class="bg-white p-3 rounded shadow-sm ticket-table d-none" id="pending-items-container" >
+                        <div class="bg-white p-3 rounded shadow-sm ticket-table d-none" id="pending-hps-items-container" >
                             <div class="common-table-filter">
                                 <div class="filter-group">
                                     <div class="search-box">
