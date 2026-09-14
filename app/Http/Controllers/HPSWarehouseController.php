@@ -103,6 +103,7 @@ class HPSWarehouseController extends Controller
 
             $query->where(function ($q) use ($search) {
                 $q->where('current_serial_number', 'like', "%{$search}%")
+                ->orWhere('current_hps_receipt', 'like', "%{$search}%")
                 ->orWhere('current_box_serial_number', 'like', "%{$search}%")
                 ->orWhere('current_product_number', 'like', "%{$search}%")
                 ->orWhere('serial_number', 'like', "%{$search}%")
@@ -131,10 +132,10 @@ class HPSWarehouseController extends Controller
         }
 
 
-        $items = $query->orderBy('created_at', 'desc')->paginate(10);
+        $pending_items = $query->orderBy('created_at', 'desc')->paginate(10);
 
         if ($request->ajax()) {
-            return view('tables.hps-warehouse-items-table', compact('items'))->render();
+            return view('tables.hps-warehouse-pending-items-table', compact('$pending_items'))->render();
         }
 
     }
@@ -660,7 +661,7 @@ class HPSWarehouseController extends Controller
                 $asset->id, 
                 auth()->id(), 
                 12,
-                're-imported ' & $validatedData['re_import_serial_number'] & ' of receipt ' & $re_import_data['hps_receipt'] & ' at'
+                're-imported ' . $validatedData['re_import_serial_number'] . ' of receipt ' . $re_import_data['hps_receipt'] . ' at'
             );
             
             return response()->json([
