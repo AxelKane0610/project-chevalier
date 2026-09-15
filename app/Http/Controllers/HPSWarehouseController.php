@@ -588,6 +588,14 @@ class HPSWarehouseController extends Controller
                     'serial_number' => $validatedData['export_serial_number'],
                     'product_number' => $validatedData['export_product_number'], // Đã sửa từ product_number -> export_product_number
                     'product_model' => $validatedData['export_model'],
+                    'asset_status' => match((string)$asset->unit_re_import_status){
+                        '1' => 'New',
+                        '2' => 'Good',
+                        '3' => 'DOA',
+                        '4' => 'Not good',
+                        '5' => 'Scrap',
+                        default => 'Unknown',
+                    }
                 ]);
 
                 if ($send_approval->successful()) {
