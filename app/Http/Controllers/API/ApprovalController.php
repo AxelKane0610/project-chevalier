@@ -435,7 +435,7 @@ class ApprovalController extends Controller
                     'comment'=> $approval_response['approver_comment']
 
                 ]);
-                $export_details->status = '2'; 
+                $export_details->current_status = '2'; 
                 $export_details->save();
                 $asset->current_status = '3';
                 $asset->current_hps_receipt = $export_details->hps_receipt;
@@ -472,7 +472,7 @@ class ApprovalController extends Controller
                     'comment'=> $approval_response['approver_comment']
 
                 ]);
-                $export_details->status = '5'; 
+                $export_details->current_status = '5'; 
                 $export_details->save();
                 
                 return response()->json([
