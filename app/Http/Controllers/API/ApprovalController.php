@@ -428,13 +428,13 @@ class ApprovalController extends Controller
                     12,
                     'received approved response from Power Automate',
                 );
-                // Comments_Model::create([
-                //     'ticket_id' => $approval_response[$asset->id],
-                //     'type_of_ticket' => $approval_response['type_of_ticket'],
-                //     'user_id' => 10,
-                //     'comment'=> $approval_response['approver_comment']
+                Comments_Model::create([
+                    'ticket_id' => $asset->id,
+                    'type_of_ticket' => $approval_response['type_of_ticket'],
+                    'user_id' => 10,
+                    'comment'=> $approval_response['approver_comment']
 
-                // ]);
+                ]);
                 $export_details->current_status = '2'; 
                 $export_details->save();
                 $asset->current_status = '3';
@@ -467,13 +467,13 @@ class ApprovalController extends Controller
                     12,
                     'received rejected response from Power Automate',
                 );
-                // Comments_Model::create([
-                //     'ticket_id' => $approval_response[$asset->id],
-                //     'type_of_ticket' => $approval_response['type_of_ticket'],
-                //     'user_id' => 10,
-                //     'comment'=> $approval_response['approver_comment']
+                Comments_Model::create([
+                    'ticket_id' => $asset->id,
+                    'type_of_ticket' => $approval_response['type_of_ticket'],
+                    'user_id' => 10,
+                    'comment'=> $approval_response['approver_comment']
 
-                // ]);
+                ]);
                 $export_details->current_status = '5'; 
                 $export_details->save();
                 
