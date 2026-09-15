@@ -647,7 +647,7 @@ class HPSWarehouseController extends Controller
             $asset['current_location'] = $validatedData['re_import_location'];
             $asset['unit_re_import_status'] = $validatedData['re_import_status'];
 
-            if (in_array($validatedData['re_import_status'], ["1", "2", "4"])) {
+            if (in_array($validatedData['re_import_status'], ["1", "2", "3"])) {
                 $asset['current_status'] = "1";
             } else {
                 $asset['current_status'] = "4";
