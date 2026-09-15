@@ -423,13 +423,13 @@ class ApprovalController extends Controller
             $asset = HPS_Warehouse_Model::where('asset_tag', $export_details->asset_tag)->first();
             if ($export_details->current_status == '1') {
                 tracking_info_service::add(
-                    $export_details->id,
+                    $asset->id,
                     10,
                     12,
                     'received approved response from Power Automate',
                 );
                 Comments_Model::create([
-                    'ticket_id' => $approval_response['ticket_id'],
+                    'ticket_id' => $approval_response[$asset->id],
                     'type_of_ticket' => $approval_response['type_of_ticket'],
                     'user_id' => 10,
                     'comment'=> $approval_response['approver_comment']
@@ -458,15 +458,17 @@ class ApprovalController extends Controller
         if ($approval_response['outcome'] === 'Reject' && $approval_response['type_of_ticket'] === '12') 
         {
             $export_details = HPS_Warehouse_Export_Details_Model::find($approval_response['ticket_id']);
+            $asset = HPS_Warehouse_Model::where('asset_tag', $export_details->asset_tag)->first();
+
             if ($export_details->current_status == '1') {
                 tracking_info_service::add(
-                    $export_details->id,
+                    $asset->id,
                     10,
                     12,
                     'received rejected response from Power Automate',
                 );
                 Comments_Model::create([
-                    'ticket_id' => $approval_response['ticket_id'],
+                    'ticket_id' => $approval_response[$asset->id],
                     'type_of_ticket' => $approval_response['type_of_ticket'],
                     'user_id' => 10,
                     'comment'=> $approval_response['approver_comment']
