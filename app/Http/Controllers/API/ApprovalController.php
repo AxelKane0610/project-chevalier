@@ -420,7 +420,7 @@ class ApprovalController extends Controller
         if ($approval_response['outcome'] === 'Approve' && $approval_response['type_of_ticket'] === '12') 
         {
             $export_details = HPS_Warehouse_Export_Details_Model::find($approval_response['ticket_id']);
-            $asset = HPS_Warehouse_Model::find($export_details->asset_tag);
+            $asset = HPS_Warehouse_Model::where('asset_tag', $export_details->asset_tag)->first();
             if ($export_details->current_status == '1') {
                 tracking_info_service::add(
                     $export_details->id,
