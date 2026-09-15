@@ -571,6 +571,7 @@ class HPSWarehouseController extends Controller
                 );
 
                 $send_approval = Http::post(config('services.api_service.hps_export_request_url'), [
+                    'current_status' => $new_export_detail->current_status,
                     'ticket_id' => $new_export_detail->id,
                     'ticket_owner' => auth()->user()->fullname,
                     'ticket_owner_email' => auth()->user()->email,
