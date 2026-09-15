@@ -561,7 +561,6 @@ class HPSWarehouseController extends Controller
                 $validatedData['current_status'] = "1";
 
                 $new_export_detail = HPS_Warehouse_Export_Details_Model::create($validatedData);
-
                 // Đã sửa nối chuỗi dùng dấu . thay vì dấu &
                 tracking_info_service::add(
                     $asset->id, 
