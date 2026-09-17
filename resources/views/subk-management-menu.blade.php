@@ -198,6 +198,9 @@
                 <option value="ROLE_HPS_WAREHOUSE_ADMIN">ROLE_HPS_WAREHOUSE_ADMIN</option>
                 <option value="ROLE_HPS_WAREHOUSE_USER">ROLE_HPS_WAREHOUSE_USER</option>
 
+                <option value="ROLE_BBNT_PARTNER_ONSITE_USER">ROLE_BBNT_PARTNER_ONSITE_USER</option>
+                <option value="ROLE_BBNT_PARTNER_ONSITE_ADMIN">ROLE_BBNT_PARTNER_ONSITE_ADMIN</option>
+
 
             </select>
 
@@ -297,6 +300,9 @@
 
                 <option value="ROLE_HPS_WAREHOUSE_ADMIN">ROLE_HPS_WAREHOUSE_ADMIN</option>
                 <option value="ROLE_HPS_WAREHOUSE_USER">ROLE_HPS_WAREHOUSE_USER</option>
+
+                <option value="ROLE_BBNT_PARTNER_ONSITE_USER">ROLE_BBNT_PARTNER_ONSITE_USER</option>
+                <option value="ROLE_BBNT_PARTNER_ONSITE_ADMIN">ROLE_BBNT_PARTNER_ONSITE_ADMIN</option>
 
             </select>
 

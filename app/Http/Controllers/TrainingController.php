@@ -434,4 +434,29 @@ class TrainingController extends Controller
             ], 500);
         }
     }
+
+
+    public function Power_Automate_Auto_Remind_Incomplete_Training(Request $request) {
+        if ($request->header('api-key') !== config('services.api_service.power_automate_api_key')) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized access. Invalid API key.',
+            ], 401);
+        } else { 
+            $pending_tickets = Training_Tickets_Model::with('user_owner')->whereIn('status',['1', '2', '5']);
+            
+            if (count($pending_tickets) > 0){
+                $email_list = $pending_tickets->pluck('user_owner.email')->toArray();//
+                $email_list = array_unique($email_list);
+                $email_list = implode(';', $email_list);
+
+                
+                return response()->json([
+                    'success' => true,
+                    'pending_tickets' => $pending_tickets,
+                    'email_list' => $email_list,
+                ]);
+            }
+        }
+    }
 }

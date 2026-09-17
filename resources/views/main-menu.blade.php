@@ -481,6 +481,44 @@
             </div>
         @endif
 
+
+        @if(auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_BBNT_PARTNER_ONSITE_ADMIN') || auth()->user()->hasRole('ROLE_BBNT_PARTNER_ONSITE_USER') )
+            <div class="main-menu col" style="width: 300px">
+                <a href="{{ url('/bbnt-partner-onsite-menu') }}"
+                class="text-decoration-none">
+
+                    <div class="card h-100 shadow-lg border-0 rounded-5">
+
+                        <div class="card-body d-flex flex-column text-center">
+
+                            <div class="ticket-img-description">
+                                <img src="{{ asset('imgs/bbnt_icon.png') }}"
+                                    class="img-fluid"
+                                    alt="">
+                            </div>
+
+                            <h4 class="fw-bold mt-3">
+                                Biên bản nghiệm thu partner onsite
+                            </h4>
+
+                            <p class="text-muted flex-grow-1">
+                                Quản lý, submit biên bản nghiệm thu
+                            </p>
+
+                            <div class="mt-auto d-flex justify-content-center align-items-center gap-2">
+                                <span style="color:#2563eb; font-weight:600;">Learn more</span>
+                                <span style="width:28px; height:28px; display:flex; align-items:center; justify-content:center; border-radius:50%; background:#eef4ff; color: #2563eb">
+                                    <i class="ti-angle-right"></i>
+                                </span>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </a>
+            </div>
+        @endif
+
     </div>
 </div>
         

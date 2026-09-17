@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\Rules\Can;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\AttachmentController;
+use App\Http\Controllers\BBNTpartnerOnsiteController;
 use App\Http\Controllers\HPSWarehouseController;
 use App\Http\Controllers\InvoiceExceptionalTicketsController;
 use App\Models\Laser_Engraving_Tickets_Model;
@@ -257,6 +258,13 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/hps-warehouse-menu/filter-pending-hps-items', [HPSWarehouseController::class, 'Filter_Pending_HPS_Items'])->name('filter-pending-hps-items');
 
 
+        
+    });
+
+
+    //13. Biên bản nghiệm thu partner onsite
+    Route::middleware(['role:ROLE_SUPER_ADMIN,ROLE_HPS_WAREHOUSE_ADMIN,ROLE_HPS_WAREHOUSE_USER'])->group(function () {
+        Route::get('/bbnt-partner-onsite-menu', [BBNTpartnerOnsiteController::class, 'index']);
         
     });
 
