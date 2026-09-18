@@ -443,7 +443,7 @@ class TrainingController extends Controller
                 'message' => 'Unauthorized access. Invalid API key.',
             ], 401);
         } else { 
-            $pending_tickets = Training_Tickets_Model::with('user_owner')->whereIn('status',['1', '2', '5']);
+            $pending_tickets = Training_Tickets_Model::with('user_owner')->whereIn('status',['1', '2', '5'])->whereDate('end_date', '<', today())->get();
             
             if (count($pending_tickets) > 0){
                 $email_list = $pending_tickets->pluck('user_owner.email')->toArray();//
