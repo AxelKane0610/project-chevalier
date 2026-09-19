@@ -44,20 +44,7 @@ class TrainingController extends Controller
         }
     }
 
-    private function trainingTicketQuery()
-    {
-        
-
-        if (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_TRAINING_ADMIN')) {
-            $query = Training_Tickets_Model::query();
-        } else {
-            $query = Training_Tickets_Model::whereHas('user_owner', function ($q) {
-                $q->where('leader_id', auth()->id());
-            });
-        }
-
-        return $query;
-    }
+    
 
     public function Filter_All_Courses_Table(Request $request)
     {
@@ -124,47 +111,117 @@ class TrainingController extends Controller
         }
     }
 
+    // public function Filter_All_Country_Team_Training_Tickets_Table(Request $request)
+    // {
+    //     $query = $this->trainingTicketQuery();
+
+    //     // Search
+    //     if ($request->filled('search')) {
+
+    //         $search = $request->search;
+
+    //         $query->where(function ($q) use ($search) {
+
+    //             $q->orWhereHas('user_owner', function ($user) use ($search) {
+    //                 $user->where('fullname', 'like', "%{$search}%");
+    //             });
+    //         });
+    //     }
+
+    //     // Training No Filter
+    //     if ($request->filled('training_no')) {
+
+    //         $query->where('training_no', $request->training_no);
+    //     }
+
+    //     if ($request->filled('status')) {
+
+    //         $query->where('status', $request->status);
+    //     }
+
+    //     $all_country_team_training_tickets = $query
+    //         ->latest()
+    //         ->paginate(10)
+    //         ->withQueryString();
+
+    //     if ($request->ajax()) {
+
+    //         return view(
+    //             'tables.all-country-team-training-tickets-table',
+    //             compact('all_country_team_training_tickets')
+    //         )->render();
+    //     }
+    // }
+
+    // private function trainingTicketQuery()
+    // {
+        
+
+    //     if (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_TRAINING_ADMIN')) {
+    //         $query = Training_Tickets_Model::query();
+    //     } else {
+    //         $query = Training_Tickets_Model::whereHas('user_owner', function ($q) {
+    //             $q->where('leader_id', auth()->id());
+    //         });
+    //     }
+
+    //     return $query;
+    // }
+
     public function Filter_All_Country_Team_Training_Tickets_Table(Request $request)
-    {
-        $query = $this->trainingTicketQuery();
+{
+    $query = $this->trainingTicketQuery();
 
-        // Search
-        if ($request->filled('search')) {
+    // 1. Eager load relationship để tránh N+1 query khi render view
+    $query->with('user_owner');
 
-            $search = $request->search;
+    // Search
+    if ($request->filled('search')) {
+        $search = $request->search;
 
-            $query->where(function ($q) use ($search) {
-
-                $q->orWhereHas('user_owner', function ($user) use ($search) {
-                    $user->where('fullname', 'like', "%{$search}%");
-                });
-            });
-        }
-
-        // Training No Filter
-        if ($request->filled('training_no')) {
-
-            $query->where('training_no', $request->training_no);
-        }
-
-        if ($request->filled('status')) {
-
-            $query->where('status', $request->status);
-        }
-
-        $all_country_team_training_tickets = $query
-            ->latest()
-            ->paginate(10)
-            ->withQueryString();
-
-        if ($request->ajax()) {
-
-            return view(
-                'tables.all-country-team-training-tickets-table',
-                compact('all_country_team_training_tickets')
-            )->render();
-        }
+        // Bỏ bớt closure dư thừa nếu chỉ lọc theo 1 quan hệ
+        $query->whereHas('user_owner', function ($user) use ($search) {
+            $user->where('fullname', 'like', "%{$search}%");
+        });
     }
+
+    // Training No Filter
+    if ($request->filled('training_no')) {
+        $query->where('training_no', $request->training_no);
+    }
+
+    // Status Filter
+    if ($request->filled('status')) {
+        $query->where('status', $request->status);
+    }
+
+    // 2. Thêm orderBy('id', 'desc') làm tie-breaker giúp phân trang chuẩn xác
+    $all_country_team_training_tickets = $query
+        ->latest('created_at')
+        ->orderBy('id', 'desc') 
+        ->paginate(10)
+        ->withQueryString();
+
+    if ($request->ajax()) {
+        return view(
+            'tables.all-country-team-training-tickets-table',
+            compact('all_country_team_training_tickets')
+        )->render();
+    }
+
+    return view('pages.training-tickets', compact('all_country_team_training_tickets'));
+}
+
+private function trainingTicketQuery()
+{
+    if (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_TRAINING_ADMIN')) {
+        return Training_Tickets_Model::query();
+    }
+
+    return Training_Tickets_Model::whereHas('user_owner', function ($q) {
+        $q->where('leader_id', auth()->id());
+    });
+}
 
     public function Show_Training_Ticket_Details($id)
     {
