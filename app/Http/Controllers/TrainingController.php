@@ -16,6 +16,7 @@ use Smalot\PdfParser\Parser;
 use Illuminate\Support\Facades\Http;
 use App\Jobs\VerifyTrainingTicketJob;
 
+use function PHPUnit\Framework\matches;
 
 class TrainingController extends Controller
 {
@@ -450,11 +451,31 @@ class TrainingController extends Controller
                 $email_list = array_unique($email_list);
                 $email_list = implode(';', $email_list);
 
+                $pending_tickets_array = $pending_tickets->map(function ($ticket) {
+                    $userName = $ticket->user_owner->fullname;
+                    $trainingNo = $ticket->training_no;
+                    $statusText = match($ticket->status) {
+                        '1' => 'Open',
+                        '2' => 'Chưa submit',
+                        '3' => 'Đã submit, chờ verify',
+                        '4' => 'Completed',
+                        '5' => 'Rejected',
+                        default => 'Unknown'
+                    };
+
+                    return [
+                        'user_name'   => $userName,
+                        'training_no' => $trainingNo,
+                        'status'      => $statusText,
+                    ];
+                })->toArray();
+
                 
                 return response()->json([
                     'success' => true,
-                    'pending_tickets' => $pending_tickets,
                     'email_list' => $email_list,
+                    'pending_tickets_array' => $pending_tickets_array,
+                    
                 ]);
             }
         }
