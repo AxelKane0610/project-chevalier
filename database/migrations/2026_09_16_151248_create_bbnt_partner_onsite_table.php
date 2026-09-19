@@ -14,8 +14,6 @@ return new class extends Migration
         Schema::create('bbnt_partner_onsite', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
-            $table->date('submit_date')->nullable();
-            $table->string('requester_name');
             $table->string('partner_address');
             $table->string('partner_city');
             $table->enum('onsite_type', ['1', '2']);

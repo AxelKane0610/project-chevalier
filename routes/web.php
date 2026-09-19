@@ -266,6 +266,11 @@ Route::middleware(['auth'])->group(function () {
     //13. Biên bản nghiệm thu partner onsite
     Route::middleware(['role:ROLE_SUPER_ADMIN,ROLE_HPS_WAREHOUSE_ADMIN,ROLE_HPS_WAREHOUSE_USER'])->group(function () {
         Route::get('/bbnt-partner-onsite-menu', [BBNTpartnerOnsiteController::class, 'index']);
+        Route::post('/create-bbnt-ticket', [BBNTpartnerOnsiteController::class, 'Create_BBNT_Ticket'])->name('create-bbnt-ticket');
+        Route::post('/add-comment-bbnt-ticket/{id}', [BBNTpartnerOnsiteController::class, 'Add_Comment_BBNT_Ticket']) ->name('add-comment-bbnt-ticket');
+        Route::patch('/change-bbnt-ticket-status-to-in-progress/{id}', [BBNTpartnerOnsiteController::class, 'Change_BBNT_Ticket_Status_To_In_Progress'])->name('change-bbnt-ticket-status-to-in-progress');
+        
+        Route::get('/bbnt-ticket-details/{id}', [BBNTpartnerOnsiteController::class, 'Ticket_Details']);
         
     });
 

@@ -40,6 +40,33 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 document.addEventListener('DOMContentLoaded', function () {
+
+    const buttons = document.querySelectorAll('.table-btn');
+    const tables = document.querySelectorAll('.ticket-table');
+
+    buttons.forEach(button => {
+
+        button.addEventListener('click', function () {
+
+            // Ẩn tất cả bảng
+            tables.forEach(table => {
+                table.classList.add('d-none');
+            });
+
+            // Hiện bảng được chọn
+            const target = document.getElementById(this.dataset.target);
+
+            if (target) {
+                target.classList.remove('d-none');
+            }
+
+        });
+
+    });
+
+});
+
+document.addEventListener('DOMContentLoaded', function () {
     const openBtns = document.querySelectorAll('.js-input-required-btn');
 
     openBtns.forEach(btn => {

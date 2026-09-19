@@ -210,7 +210,7 @@
 
                 </x-common-ticket-comments-card>
 
-                <!-- ================= Timeline ================= -->
+                <!-- ================= Timeline ================= --> 
 
                 <x-common-ticket-tracking-info
                     :trackings="$ticket->ticket_tracking_info"
