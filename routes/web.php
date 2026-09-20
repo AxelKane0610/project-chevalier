@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\Rules\Can;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\AttachmentController;
-use App\Http\Controllers\BBNTpartnerOnsiteController;
+use App\Http\Controllers\BBNTPartnerOnsiteController;
 use App\Http\Controllers\HPSWarehouseController;
 use App\Http\Controllers\InvoiceExceptionalTicketsController;
 use App\Models\Laser_Engraving_Tickets_Model;
