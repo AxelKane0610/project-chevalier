@@ -97,11 +97,11 @@ class BBNTPartnerOnsiteController extends Controller
 
 
             tracking_info_service::add(
-                    $new_ticket->id, 
-                    auth()->id(), 
-                    13,
-                    'created ticket at'
-                );
+                $new_ticket->id, 
+                auth()->id(), 
+                13,
+                'created ticket at'
+            );
 
             return response()->json([
                 'success' => true,

@@ -201,6 +201,11 @@
                 <option value="ROLE_BBNT_PARTNER_ONSITE_USER">ROLE_BBNT_PARTNER_ONSITE_USER</option>
                 <option value="ROLE_BBNT_PARTNER_ONSITE_ADMIN">ROLE_BBNT_PARTNER_ONSITE_ADMIN</option>
 
+                <option value="ROLE_SCRAP_USER">ROLE_SCRAP_USER</option>
+                <option value="ROLE_SCRAP_LV1_APPROVER">ROLE_SCRAP_LV1_APPROVER</option>
+                <option value="ROLE_SCRAP_LV2_APPROVER">ROLE_SCRAP_LV2_APPROVER</option>
+
+
 
             </select>
 
@@ -303,6 +308,10 @@
 
                 <option value="ROLE_BBNT_PARTNER_ONSITE_USER">ROLE_BBNT_PARTNER_ONSITE_USER</option>
                 <option value="ROLE_BBNT_PARTNER_ONSITE_ADMIN">ROLE_BBNT_PARTNER_ONSITE_ADMIN</option>
+
+                <option value="ROLE_SCRAP_USER">ROLE_SCRAP_USER</option>
+                <option value="ROLE_SCRAP_LV1_APPROVER">ROLE_SCRAP_LV1_APPROVER</option>
+                <option value="ROLE_SCRAP_LV2_APPROVER">ROLE_SCRAP_LV2_APPROVER</option>
 
             </select>
 

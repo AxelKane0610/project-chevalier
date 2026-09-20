@@ -24,6 +24,8 @@ export default defineConfig({
                 'resources/js/user-profile.js',
                 'resources/js/training-management.js',
                 'resources/js/hps-warehouse.js',
+                'resources/js/bbnt.js',
+                'resources/js/scrap-request.js',
 
 
             ],

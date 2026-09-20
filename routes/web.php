@@ -18,6 +18,7 @@ use App\Http\Controllers\ThermalEventExceptionalTicketsController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SpectreCrownWarehouseController;
 use App\Http\Controllers\LoanUnitPartTicketsController;
+use App\Http\Controllers\ScrapRequestController;
 use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\TTEXTicketsController;
 
@@ -276,6 +277,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/bbnt-partner-onsite-menu/filter-pending-bbnt-tickets', [BBNTPartnerOnsiteController::class, 'Filter_Pending_BBNT_Tickets'])->name('filter-pending-bbnt-tickets');
         Route::get('/bbnt-partner-onsite-menu/filter-all-bbnt-tickets', [BBNTPartnerOnsiteController::class, 'Filter_All_BBNT_Tickets'])->name('filter-all-bbnt-tickets');
 
+    });
+
+    Route::middleware(['role:ROLE_SUPER_ADMIN,ROLE_SCRAP_USER,ROLE_SCRAP_LV1_APPROVER,ROLE_SCRAP_LV2_APPROVER'])->group(function () {
+        Route::get('/scrap-request-menu', [ScrapRequestController::class, 'index']);
+        Route::post('/create-scrap-ticket', [ScrapRequestController::class, 'Create_Scrap_Ticket'])->name('create-scrap-ticket');
     });
 
     
