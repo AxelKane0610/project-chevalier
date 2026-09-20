@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Storage;
 
 
 
-class BBNTpartnerOnsiteController extends Controller
+class BBNTPartnerOnsiteController extends Controller
 {
     //
     public function index(){ 
