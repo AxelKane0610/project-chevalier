@@ -55,7 +55,7 @@
                         </button>
 
 
-                        <button class="btn btn-primary table-btn w-100 position-relative" id="show-all-items-btn" data-target = "all-bbnt-ticket-container">
+                        <button class="btn btn-primary table-btn w-100 position-relative" id="show-all-items-btn" data-target = "all-bbnt-tickets-container">
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                                 {{$all_tickets->total()}}
                             </span>
@@ -70,13 +70,49 @@
 
                     <div class="col-10 h-100 overflow-auto">
                         <div class="bg-white p-3 rounded shadow-sm ticket-table" id="pending-bbnt-tickets-container">
+                            @if(auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_BBNT_PARTNER_ONSITE_ADMIN'))
+                                
+                                <div class="common-table-filter">
+                                    <div class="filter-group">
+                                        <h2>Pending Tickets</h2>
+                                        <div class="search-box">
+                                            <i class="ti-search"></i>
+                                            <input class="ajax-search" type="text" placeholder="Search tên partner, tên document" id="search-bbnt-pending-tickets-input">
+                                        </div>
+                                    </div>
+
+                                    <div class="filter-group">
+                                        <h2>Onsite Type</h2>
+                                        <select class="ajax-filter" name="onsite_type">
+                                            <option value="">All</option>
+                                            <option value="1">MÁY TÍNH</option>
+                                            <option value="2">MÁY IN</option>
+                                            
+                                        </select>
+                                    </div>
+
                                     
+
+                                </div>
+
+                            @endif
+
+                            <div id="pending-bbnt-tickets-table-container">
+                                @include('tables.pending-bbnt-tickets-table')
+                            </div>
+
+                            
+                        </div>
+
+                        <div class="bg-white p-3 rounded shadow-sm ticket-table d-none" id="all-bbnt-tickets-container">
+                            
+                                
                             <div class="common-table-filter">
                                 <div class="filter-group">
-                                    <h2>Pending Tickets</h2>
+                                    <h2>All Tickets</h2>
                                     <div class="search-box">
                                         <i class="ti-search"></i>
-                                        <input class="ajax-search" type="text" placeholder="Search Receipt, số Invoice, SN & PN" id="search-invoice-exceptional-receipt-input">
+                                        <input class="ajax-search" type="text" placeholder="Search tên document" id="search-bbnt-all-tickets-input">
                                     </div>
                                 </div>
 
@@ -93,11 +129,11 @@
                                 
 
                             </div>
+                            
 
-                            <div id="all-invoice-exception-tickets-table-container">
-                                @include('tables.pending-bbnt-tickets-table')
+                            <div id="all-bbnt-tickets-table-container">
+                                @include('tables.all-bbnt-tickets-table')
                             </div>
-
                             
                         </div>
                     </div>
@@ -110,6 +146,10 @@
             @method('POST')
             <label class="ticket-form-body-input">Công ty request</label>
             <input type="text" class="ticket-form-body-input" value="{{ auth()->user()->fullname }}" readonly>
+
+            <label class="ticket-form-body-input">Địa chỉ email bạn muốn nhận kết quả (Có thể điền nhiều email)</label>
+            <input type="text" class="ticket-form-body-input" name="email_address" placeholder="Nhập địa chỉ email" required>
+
 
             <label class="ticket-form-body-input">Địa chỉ</label>
             <input type="text" class="ticket-form-body-input" name="partner_address" placeholder="Nhập địa chỉ của công ty" required>

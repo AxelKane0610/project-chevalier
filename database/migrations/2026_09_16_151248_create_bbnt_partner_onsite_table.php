@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users');
             $table->string('partner_address');
             $table->string('partner_city');
+            $table->string('email_address');
             $table->enum('onsite_type', ['1', '2']);
             $table->string('document_name');
             $table->integer('total_case');

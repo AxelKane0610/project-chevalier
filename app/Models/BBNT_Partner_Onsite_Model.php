@@ -23,6 +23,7 @@ class BBNT_Partner_Onsite_Model extends Model
         'total_amount',
         'status',
         'notes',
+        'email_address'
     ];
 
     public function active_attachments()

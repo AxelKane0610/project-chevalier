@@ -269,9 +269,13 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/create-bbnt-ticket', [BBNTpartnerOnsiteController::class, 'Create_BBNT_Ticket'])->name('create-bbnt-ticket');
         Route::post('/add-comment-bbnt-ticket/{id}', [BBNTpartnerOnsiteController::class, 'Add_Comment_BBNT_Ticket']) ->name('add-comment-bbnt-ticket');
         Route::patch('/change-bbnt-ticket-status-to-in-progress/{id}', [BBNTpartnerOnsiteController::class, 'Change_BBNT_Ticket_Status_To_In_Progress'])->name('change-bbnt-ticket-status-to-in-progress');
+        Route::patch('/edit-bbnt-ticket-details/{id}', [BBNTpartnerOnsiteController::class, 'Edit_BBNT_Ticket_Details'])->name('edit-bbnt-ticket-details');
         
+        Route::post('/close-bbnt-ticket/{id}', [BBNTpartnerOnsiteController::class, 'Close_BBNT_Ticket'])->name('close-bbnt-ticket');
         Route::get('/bbnt-ticket-details/{id}', [BBNTpartnerOnsiteController::class, 'Ticket_Details']);
-        
+        Route::get('/bbnt-partner-onsite-menu/filter-pending-bbnt-tickets', [BBNTpartnerOnsiteController::class, 'Filter_Pending_BBNT_Tickets'])->name('filter-pending-bbnt-tickets');
+        Route::get('/bbnt-partner-onsite-menu/filter-all-bbnt-tickets', [BBNTpartnerOnsiteController::class, 'Filter_All_BBNT_Tickets'])->name('filter-all-bbnt-tickets');
+
     });
 
     
