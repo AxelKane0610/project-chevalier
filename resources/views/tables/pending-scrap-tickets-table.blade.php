@@ -18,7 +18,7 @@
             <tr>
                 <td>
                     
-                    <a href="/scrap-ticket-details/{{ $ticket->id }}">
+                    <a href="/scrap-request-details/{{ $ticket->id }}">
                         <button><i class="ti-arrow-right" ></i></button>
                     </a>
                     

@@ -279,9 +279,17 @@ Route::middleware(['auth'])->group(function () {
 
     });
 
+
+    //14. Hủy hàng
     Route::middleware(['role:ROLE_SUPER_ADMIN,ROLE_SCRAP_USER,ROLE_SCRAP_LV1_APPROVER,ROLE_SCRAP_LV2_APPROVER'])->group(function () {
         Route::get('/scrap-request-menu', [ScrapRequestController::class, 'index']);
         Route::post('/create-scrap-ticket', [ScrapRequestController::class, 'Create_Scrap_Ticket'])->name('create-scrap-ticket');
+        Route::get('/scrap-request-details/{id}', [ScrapRequestController::class, 'Ticket_Details']);
+        Route::patch('/edit-scrap-ticket-details/{id}', [ScrapRequestController::class, 'Edit_Scrap_Ticket_Details'])->name('edit-scrap-ticket-details');
+        Route::post('/send-approve-scrap-request/{id}', [ScrapRequestController::class, 'Send_Approve_Scrap_Request'])->name('send-approve-scrap-request');
+        Route::post('/add-comment-scrap-ticket/{id}', [ScrapRequestController::class, 'Add_Comment_Scrap_Ticket']) ->name('add-comment-scrap-ticket');
+        Route::get('/scrap-request-menu/filter-all-scrap-tickets', [ScrapRequestController::class, 'Filter_All_Scrap_Tickets'])->name('filter-all-scrap-tickets');
+        Route::patch('/re-open-scrap-ticket/{id}', [ScrapRequestController::class, 'Re_Open_Scrap_Ticket']) ->name('re-open-scrap-ticket');
     });
 
     

@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function() {
 document.addEventListener('DOMContentLoaded', function () {
 
     const buttons = document.querySelectorAll('.table-btn');
-    const tables = document.querySelectorAll('.ticket-table');
+    const tables = document.querySelectorAll('.ticket-table:not(.always-visible)');
 
     buttons.forEach(button => {
 
@@ -65,6 +65,41 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 });
+
+// document.addEventListener('DOMContentLoaded', function () {
+
+//     const buttons = document.querySelectorAll('.table-btn');
+
+//     buttons.forEach(button => {
+//         button.addEventListener('click', function () {
+
+//             // 1. Lấy tất cả bảng tại thời điểm click
+//             const tables = document.querySelectorAll('.ticket-table');
+
+//             // 2. Duyệt qua từng bảng
+//             tables.forEach(table => {
+//                 // NẾU là bảng always-visible HOẶC có ID của bảng cố định -> BỎ QUA, KHÔNG THÊM d-none
+//                 if (table.classList.contains('always-visible') || table.id === 'ttex-tickets-booked-today-container') {
+//                     return; 
+//                 }
+
+//                 // Với các bảng khác -> Thêm d-none để ẩn
+//                 table.classList.add('d-none');
+//             });
+
+//             // 3. Hiện bảng target tương ứng với nút vừa bấm
+//             const targetId = this.dataset.target;
+//             if (targetId) {
+//                 const target = document.getElementById(targetId);
+//                 if (target) {
+//                     target.classList.remove('d-none');
+//                 }
+//             }
+
+//         });
+//     });
+
+// });
 
 document.addEventListener('DOMContentLoaded', function () {
     const openBtns = document.querySelectorAll('.js-input-required-btn');

@@ -258,7 +258,7 @@ class BBNTPartnerOnsiteController extends Controller
                 return response()->json([
                     'success' => false,
                     'message' => 'Không thể edit ticket do ticket đã chuyển mục',
-                ], 403);
+                ], 200);
             } else {
                 $validatedData = $request->validate([
                     'email_address' => 'required',

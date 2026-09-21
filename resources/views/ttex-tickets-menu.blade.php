@@ -78,8 +78,8 @@
 
                     
 
-                    <div class="col-10 d-flex  flex-column gap-3 my-4 overflow-y-auto h-100" id="ttex-tickets-booked-today-container">
-                        <div class="bg-white p-3 rounded shadow-sm ticket-table always-visible d-flex flex-column" >
+                    <div class="col-10 d-flex  flex-column gap-3 my-4 overflow-y-auto h-100" >
+                        <div class="bg-white p-3 rounded shadow-sm ticket-table always-visible d-flex flex-column" id="ttex-tickets-booked-today-container">
                             
                             <div class="common-table-filter">
                                 <div class="filter-group">
