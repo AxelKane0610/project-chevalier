@@ -42,7 +42,7 @@ class ScrapRequestController extends Controller
                 'scrap_type' => 'required',
                 'scrap_date' => 'required',
                 'scrap_description' => 'required',
-                'attachments.*' => 'file|max:20480|mimes:jpg,png,pdf,jpeg,xlsx'
+                'attachments.*' => 'file|max:20480|mimetypes:image/jpeg,image/png,application/pdf,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/octet-stream'
 
             ]);
 
