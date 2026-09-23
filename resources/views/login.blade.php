@@ -60,10 +60,11 @@
                                     <h6 class="mb-1 fw-bold text-dark">Cập nhật hệ thống</h6>
                                     <ul class="text-muted small mb-0 ps-3">
                                         <li>Thêm vào 4 hạng mục: Kho Spectre - Crown, kho HPS, biên bản nghiệm thu cho partner onsite & hủy hàng</li>
-                                        <li>Thay đổi logic tự cancel ticket mượn part từ 21 ngày xuống 5 ngày</li>
+                                        <li>Thay đổi logic tự cancel ticket từ 21 ngày xuống 5 ngày </li>
                                         <li>Đồng bộ lịch sử xuất máy/part của kho Crown & Spectre với hạng mục 4</li>
                                         <li>Thay đổi process Invoice Exceptional đối với người log thuộc team CC</li>
-                                        <li>Tăng thời gian phiên làm việc từ 3 tiếng > 9 tiếng.</li>
+                                        <li>Thêm chức năng thông báo khi có ticket tạo đối với 1 số hạng mục</li>
+
                                         
                                     </ul>
                                     <h6 class="mb-1 fw-bold text-dark">Bug fixed</h6>

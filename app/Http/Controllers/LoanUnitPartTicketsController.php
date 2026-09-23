@@ -682,9 +682,10 @@ class LoanUnitPartTicketsController extends Controller
                 'message' => 'Unauthorized access. Invalid API key.',
             ], 401);
         } else {
-            $expiredDate = now()->subDays(21);
+            $expiredDate = now()->subDays(5);
 
-            $tickets = Loan_Unit_Part_Tickets_Model::where('status', '1')
+            $tickets = Loan_Unit_Part_Tickets_Model::with('user_owner')
+                ->where('status', '1')
                 ->where('updated_at', '<=', $expiredDate)
                 ->get();
 
@@ -706,6 +707,9 @@ class LoanUnitPartTicketsController extends Controller
                     4,
                     'auto canceled ticket at'
                 );
+
+                $ticket->user_email = $ticket->user_owner->email ?? 'N/A';
+                $ticket->user_name = $ticket->user_owner->fullname ?? 'N/A';
             }
 
             if (count($tickets) > 0){
@@ -714,6 +718,25 @@ class LoanUnitPartTicketsController extends Controller
                     'tickets' => $tickets
                 ]);
             }
+        }
+    }
+
+
+    public function Change_Loan_Unit_Part_Ticket_Status_To_In_Progress($id) {
+        try {
+            $ticket = Loan_Unit_Part_Tickets_Model::findOrFail($id);
+            $ticket->status = '2';
+            $ticket->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Ticket changed to "In Progress" successfully',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to change ticket status due to ' .$e->getMessage(),
+            ], 500);
         }
     }
 
