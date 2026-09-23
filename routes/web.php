@@ -30,10 +30,8 @@ Route::get('/', function () {
     return redirect('/login');
 });
 
-// 1. Trang hiển thị Form Login
-Route::get('/login', [UserController::class, 'login'])->name('login');
 
-// 2. Xử lý logic Login (Nơi thực hiện validate)
+Route::get('/login', [UserController::class, 'login'])->name('login');
 Route::post('/login', [UserController::class, 'authenticate']);
 
 
