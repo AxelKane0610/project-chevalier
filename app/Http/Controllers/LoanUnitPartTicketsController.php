@@ -330,28 +330,40 @@ class LoanUnitPartTicketsController extends Controller
                 ], 400);
             } else {
                 $validate_data = $request->validate([
-                    'part_request' => 'nullable',
-                    'loan_unit_asset_tag' => 'nullable',
+                    'part_request'            => 'nullable',
+                    'loan_unit_asset_tag'     => 'nullable',
                     'loan_unit_serial_number' => 'nullable',
-                    'ct_loaned' => 'nullable',
-                    'new_ct_return' => 'nullable',
-                    'original' => 'nullable',
-                    'start_date' => 'nullable',
-                    'end_date' => 'nullable',
-                    'status' => 'nullable',
-                    'note' => 'nullable|string|max:255',
+                    'ct_loaned'               => 'nullable',
+                    'new_ct_return'           => 'nullable',
+                    'original'                => 'nullable',
+                    'start_date'              => 'nullable',
+                    'end_date'                => 'nullable',
+                    'status'                  => 'nullable',
+                    'note'                    => 'nullable|string|max:255',
                 ]);
 
-                $part->part_request = strip_tags($validate_data['part_request']);
-                $part->loan_unit_asset_tag = strip_tags($validate_data['loan_unit_asset_tag']);
-                $part->loan_unit_serial_number = strip_tags($validate_data['loan_unit_serial_number']);
-                $part->ct_loaned = strip_tags($validate_data['ct_loaned']);
-                $part->new_ct_return = strip_tags($validate_data['new_ct_return']);
-                $part->original = strip_tags($validate_data['original']);
-                $part->start_date = $validate_data['start_date'] ?: null;
-                $part->end_date = $validate_data['end_date'] ?: null;
-                $part->note = strip_tags($validate_data['note']);
-                $part->status = strip_tags($validate_data['status']);
+                // 1. Cập nhật phần User thường
+                if (array_key_exists('part_request', $validate_data)) {
+                    $part->part_request = !empty($validate_data['part_request']) ? strip_tags($validate_data['part_request']) : null;
+                }
+
+                // 2. Cập nhật phần Admin
+                if (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_LOAN_UNIT_ADMIN')) {
+                    $part->loan_unit_asset_tag   = !empty($validate_data['loan_unit_asset_tag']) ? strip_tags($validate_data['loan_unit_asset_tag']) : null;
+                    $part->loan_unit_serial_number = !empty($validate_data['loan_unit_serial_number']) ? strip_tags($validate_data['loan_unit_serial_number']) : null;
+                    $part->ct_loaned             = !empty($validate_data['ct_loaned']) ? strip_tags($validate_data['ct_loaned']) : null;
+                    $part->new_ct_return         = !empty($validate_data['new_ct_return']) ? strip_tags($validate_data['new_ct_return']) : null;
+                    
+                    // Gán null nếu không có giá trị để tránh lỗi INT/ENUM trong MySQL
+                    $part->original              = !empty($validate_data['original']) ? strip_tags($validate_data['original']) : null;
+                    $part->start_date            = !empty($validate_data['start_date']) ? $validate_data['start_date'] : null;
+                    $part->end_date              = !empty($validate_data['end_date']) ? $validate_data['end_date'] : null;
+                    $part->note                  = !empty($validate_data['note']) ? strip_tags($validate_data['note']) : null;
+                    
+                    if (isset($validate_data['status'])) {
+                        $part->status = strip_tags($validate_data['status']);
+                    }
+                }
 
                 $part->save();
 
