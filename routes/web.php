@@ -131,6 +131,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/loan-unit-part-menu/filter-all-loan-unit-part-tickets-table', [LoanUnitPartTicketsController::class, 'Filter_All_Loan_Unit_Part_Tickets']);
         Route::get('/loan-unit-part-menu/filter-pending-loan-unit-part-tickets-table', [LoanUnitPartTicketsController::class, 'Filter_Pending_Loan_Unit_Part_Tickets']);
 
+        Route::patch('/change-loan-unit-part-ticket-status-to-in-progress/{id}', [LoanUnitPartTicketsController::class, 'Change_Loan_Unit_Part_Ticket_Status_To_In_Progress'])->name('change-loan-unit-part-ticket-status-to-in-progress');
+
     });
 
 

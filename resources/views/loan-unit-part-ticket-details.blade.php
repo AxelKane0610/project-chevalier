@@ -43,6 +43,16 @@
                     </button>
                 </a>
             </li>
+            @if( $ticket->status == '1' && (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_LOAN_UNIT_ADMIN') ))
+                <li>
+                    <form id="change-loan-unit-part-ticket-status-to-in-progress" class="js-input-required-btn" data-target="change-loan-unit-part-ticket-status-to-in-progress" action="{{ route('change-loan-unit-part-ticket-status-to-in-progress', $ticket->id) }}">
+                        @csrf
+                        @method('PATCH')
+                        <button type="submit"><i class="ti-alarm-clock"></i>In Progress</button>
+                    </form>
+                </li>
+            @endif
+
             @if( ($ticket->status == '1' || $ticket->status == '2') && $ticket->user_id == auth()->user()->id)
                 <li>
                     <button type="button" class="js-input-required-btn" data-target="add-loan-unit-part"><i class="ti-plus"></i> Add part</button>
