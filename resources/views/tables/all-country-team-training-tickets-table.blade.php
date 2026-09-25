@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-end sticky" >
-    {{ $all_country_team_training_tickets->links('pagination::bootstrap-5') }}
+    {{ $all_country_team_training_tickets->withQueryString()->links('pagination::bootstrap-5') }}
 </div>
 
 <table id="your-team-country-tickets-table" class="common-table mh-100" width="100%" >

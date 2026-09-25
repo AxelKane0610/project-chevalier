@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-end">
-    {{ $all_tickets->links('pagination::bootstrap-5') }}
+    {{ $all_tickets->withQueryString()->links('pagination::bootstrap-5') }}
 </div>
 
 <table id="all-loan-unit-part-tickets-table" class="common-table" width="100%" >

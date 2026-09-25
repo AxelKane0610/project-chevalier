@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-end">
-    {{ $pending_tickets->links('pagination::bootstrap-5') }}
+    {{ $pending_tickets->withQueryString()->links('pagination::bootstrap-5') }}
 </div>
 
 <table id="pending-scrap-tickets-table" class="common-table" width="100%" >

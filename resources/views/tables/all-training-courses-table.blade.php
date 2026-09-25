@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-end sticky" >
-    {{ $all_training_courses->links('pagination::bootstrap-5') }}
+    {{ $all_training_courses->withQueryString()->links('pagination::bootstrap-5') }}
 </div>
 
 

@@ -1,6 +1,6 @@
 
 <div class="d-flex justify-content-end">
-    {{ $pending_items->links('pagination::bootstrap-5') }}
+    {{ $pending_items->withQueryString()->links('pagination::bootstrap-5') }}
 </div>
 
 <div class="common-table-container">
