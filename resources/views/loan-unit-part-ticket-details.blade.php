@@ -223,7 +223,7 @@
 
                     
                         <x-slot:footer>
-                            @if((($ticket->status == '1') && $ticket->user_id == auth()->user()->id) || (auth()->user()->hasRole('ROLE_SUPER_ADMIN')))
+                            @if((($ticket->status == '1') && $ticket->user_id == auth()->user()->id) || (auth()->user()->hasRole('ROLE_SUPER_ADMIN')) || (auth()->user()->hasRole('ROLE_LOAN_UNIT_ADMIN')))
                             <button type="button" class="js-input-required-btn" data-target="edit-ticket-details"><i class="ti-pencil"></i> Edit</button>
                             @endif
                         </x-slot:footer>

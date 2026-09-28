@@ -132,7 +132,9 @@ class HPSWarehouseController extends Controller
         }
 
 
-        $pending_items = $query->orderBy('created_at', 'desc')->paginate(10);
+        $pending_items = $query->latest()
+            ->paginate(10)
+            ->withQueryString();
 
         if ($request->ajax()) {
             return view('tables.hps-warehouse-pending-items-table', compact('pending_items'))->render();

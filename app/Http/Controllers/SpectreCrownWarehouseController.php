@@ -204,7 +204,9 @@ class SpectreCrownWarehouseController extends Controller
             $query->where('condition', $request->condition);
         }
 
-        $items = $query->paginate(10);
+        $items = $query->latest()
+            ->paginate(10)
+            ->withQueryString();
 
         if ($request->ajax()) {
             return view('tables.spectre-crown-warehouse-items-table', compact('items'))->render();

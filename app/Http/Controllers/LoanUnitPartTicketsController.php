@@ -253,12 +253,17 @@ class LoanUnitPartTicketsController extends Controller
         $ticket = Loan_Unit_Part_Tickets_Model::with('user_owner')->findOrFail($id);
         
         try {
-            if ($ticket->status == '1') {
+            if ($ticket->status != '1' && auth()->user()->hasRole('ROLE_LOAN_UNIT_USER')) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Chỉ có ticket đang ở trạng thái "Open" mới được phép edit !',
+                ], 400);
+            } else {
                 $validate_data = $request->validate([
                     'ticket_receipt' => 'required',
                     'customer_unit_info' => 'required',
                     'attachments.*' => 'file|max:20480|mimes:jpg,png,pdf,jpeg,xlsx'
-            ]);
+                ]);
 
                 $validate_data['ticket_receipt'] = strip_tags($validate_data['ticket_receipt']);
                 $validate_data['customer_unit_info'] = strip_tags($validate_data['customer_unit_info']);
@@ -306,10 +311,7 @@ class LoanUnitPartTicketsController extends Controller
                     'success' => true,
                     'message' => 'Ticket edited successfully',
                 ]);
-            } else return response()->json([
-                'success' => false,
-                'message' => 'Chỉ có ticket đang ở trạng thái "Open" mới được phép edit !',
-            ], 400);
+            }
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,

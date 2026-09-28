@@ -185,9 +185,9 @@ class BBNTPartnerOnsiteController extends Controller
         
 
         // Phân trang kết quả
-        $all_tickets = $query->orderBy('created_at', 'desc')
-                        ->paginate(10)
-                        ->withQueryString();
+        $all_tickets = $query->latest()
+            ->paginate(10)
+            ->withQueryString();
 
         if ($request->ajax()) {
             return view('tables.all-bbnt-tickets-table', compact('all_tickets'))->render();
