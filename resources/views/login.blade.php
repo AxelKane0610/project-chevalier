@@ -10,7 +10,7 @@
         @vite([ 'resources/js/app.js', 'resources/css/icons/themify-icons.css', 'resources/css/app.css'])
     </head>
 
-    <body style="background-image: url('/imgs/moon_festival_background.png');">
+    <body>
 
         {{-- <div class="d-flex flex-grow-1 overflow-hidden vh-100 align-items-center justify-content-center">
             <div class="container my-auto p-4" style="max-width: 1100px;">
@@ -121,10 +121,10 @@
 
                     <div class="col-md-6 d-flex position-relative">
     
-                        <img src="/imgs/moon_festival_3.png" 
+                        {{-- <img src="/imgs/moon_festival_3.png" 
                             alt="Moon Festival Kids" 
                             class="position-absolute start-0 w-100" 
-                            style="bottom: 100%; z-index: 10; pointer-events: none; margin-bottom: -24 px; object-fit: contain; transform: scaleX(-1);">
+                            style="bottom: 100%; z-index: 10; pointer-events: none; margin-bottom: -24 px; object-fit: contain; transform: scaleX(-1);"> --}}
 
                         <!-- Box Update Notice (Nằm riêng biệt bên dưới) -->
                         <div class="bg-white p-4 rounded shadow-sm w-100 d-flex flex-column overflow-hidden" style="min-height: 380px;">

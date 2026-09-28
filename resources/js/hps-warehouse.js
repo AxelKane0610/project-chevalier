@@ -320,9 +320,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     }
 
-    // ==========================================
-    // Individual Tickets
-    // ==========================================
 
     initAjaxTable({
 

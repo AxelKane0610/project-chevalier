@@ -150,7 +150,7 @@
 
 
                             </div>
-                            <div id="all-hps-items-table-container">
+                            <div id="pending-hps-items-table-container">
                                 @include('tables.hps-warehouse-pending-items-table')
                             </div>
 
