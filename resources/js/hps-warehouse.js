@@ -338,7 +338,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         wrapper: 'pending-hps-items-container',
 
-        container: '#all-hps-items-table-container',
+        container: '#pending-hps-items-table-container',
 
         url: '/hps-warehouse-menu/filter-pending-hps-items'
 
