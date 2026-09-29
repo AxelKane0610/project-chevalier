@@ -191,6 +191,7 @@ class LoanUnitPartTicketsController extends Controller
                     '2' => 'In Progress',
                     '3' => 'Completed',
                     '4' => 'Canceled',
+                    '5' => 'Checking',
                     default => 'Unknown'
                 },
                 'customer_unit_info' => $ticket->customer_unit_info,

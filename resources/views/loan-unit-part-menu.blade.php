@@ -81,8 +81,8 @@
                                         <option value="">All</option>
                                         <option value="1">Open</option>
                                         <option value="2">In progress</option>
-                                        <option value="3">Completed</option>
-                                        <option value="4">Canceled</option>
+                                        <option value="5">Checking</option>
+                                    
                                         
                                     </select>
                                 </div>
@@ -117,6 +117,7 @@
                                         <option value="2">In progress</option>
                                         <option value="3">Completed</option>
                                         <option value="4">Canceled</option>
+                                        <option value="5">Checking</option>
                                         
                                     </select>
                                 </div>

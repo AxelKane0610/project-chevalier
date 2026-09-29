@@ -70,6 +70,11 @@ class Loan_Unit_Part_Tickets_Model extends Model
                 'color' => 'info'
             ],
 
+            "5" => [
+                'text' => 'Checking',
+                'color' => 'warning'
+            ],
+
             default => [
                 'text' => 'Unknown',
                 'color' => 'primary'

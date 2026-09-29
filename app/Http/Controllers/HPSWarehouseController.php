@@ -26,8 +26,12 @@ class HPSWarehouseController extends Controller
         }
 
         $items = $query->orderBy('created_at', 'desc')->paginate(10);
-        $pending_items = $query->where('current_status', '3')->orderBy('created_at', 'desc')
-            ->paginate(10);
+        // $pending_items = $query->where('current_status', '3')->orderBy('created_at', 'desc')
+        //     ->paginate(10);
+
+        $pending_items = $query->where('current_status', '3')->latest()
+            ->paginate(10)
+            ->withQueryString();
         
         return view('hps-warehouse-menu', compact('items', 'pending_items'));
     }
@@ -117,22 +121,14 @@ class HPSWarehouseController extends Controller
         }
 
 
-        if ($request->filled('current_status')) {
-            $query->where('current_status', $request->current_status);
-        }
-
-
         if ($request->filled('current_site')) {
             $query->where('current_site', $request->current_site);
         }
 
-        
-        if ($request->filled('unit_re_import_status')) {
-            $query->where('unit_re_import_status', $request->unit_re_import_status);
-        }
 
 
-        $pending_items = $query->latest()
+        $pending_items = $query->orderBy('created_at', 'desc')
+            ->orderBy('id', 'desc') // Đảm bảo thứ tự duy nhất tuyệt đối
             ->paginate(10)
             ->withQueryString();
 
