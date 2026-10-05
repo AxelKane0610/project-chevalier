@@ -116,6 +116,9 @@ class HPSWarehouseController extends Controller
                 ->orWhere('invoice', 'like', "%{$search}%")
                 ->orWhere('model', 'like', "%{$search}%")
                 ->orWhere('asset_tag', 'like', "%{$search}%")
+                ->orWhereHas('ce_owner', function ($user) use ($search) {
+                    $user->where('fullname', 'like', "%{$search}%");
+                });
                 ;
             });
         }
