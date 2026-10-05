@@ -537,7 +537,7 @@ document.addEventListener('submit', function (e) {
 
     }
 
-    if (e.target && e.target.id === 'change-loan-unit-part-ticket-status-to-in-progress') {
+    if (e.target && e.target.id === 'change-loan-unit-part-ticket-status-to-checking') {
         e.preventDefault();
 
         const form = e.target;

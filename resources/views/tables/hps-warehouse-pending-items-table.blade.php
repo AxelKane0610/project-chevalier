@@ -8,11 +8,14 @@
         <thead>
             <th width="5%"></th>
             <th width="10%">HPS Receipt</th>
+            <th width="10%">CE Owner</th>
             <th width="10%">Serial Number</th>
             
             <th width="20%">Model</th>
             <th width="10%">Site</th>
             <th width="10%">Status</th>
+            <th width="10%">Aging</th>
+
 
         </thead>
 
@@ -26,6 +29,7 @@
                         </a>
                     </td>
                     <td>{{ $item->current_hps_receipt }}</td>
+                    <td>{{ $item->ceOwner->fullname ?? 'N/A' }}</td>
                     <td>{{ $item->current_serial_number }}</td>
                     
                     <td>{{ $item->model }}</td>
@@ -40,6 +44,15 @@
                         <span class="badge rounded-pill bg-{{ $item->current_status_data['color'] ?? 'primary' }} px-3 py-2">
                             {{ $item->current_status_data['text'] }}
                         </span>
+                    </td>
+                    <td>
+                        @if($item->aging !== null)
+                            <span class="badge bg-warning text-dark">
+                                {{ $item->aging }} ngày
+                            </span>
+                        @else
+                            <span class="text-muted">N/A</span>
+                        @endif
                     </td>
                     
                     

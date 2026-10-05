@@ -26,7 +26,7 @@ class LoanUnitPartTicketsController extends Controller
             auth()->user()->hasRole('ROLE_SUPER_ADMIN') ||
             auth()->user()->hasRole('ROLE_LOAN_UNIT_ADMIN')
         ) {
-            $tickets = Loan_Unit_Part_Tickets_Model::whereIn('status', ['1', '2'])
+            $tickets = Loan_Unit_Part_Tickets_Model::whereIn('status', ['1', '2', '5'])
                 ->paginate(10);
 
             $all_tickets = Loan_Unit_Part_Tickets_Model::paginate(10);
@@ -45,7 +45,7 @@ class LoanUnitPartTicketsController extends Controller
     }
 
     public function Filter_Pending_Loan_Unit_Part_Tickets(Request $request){
-        $query = Loan_Unit_Part_Tickets_Model::query()->whereIn('status', ['1', '2']);
+        $query = Loan_Unit_Part_Tickets_Model::with('parts_details')->whereIn('status', ['1', '2','5']);
 
         // Search
         if ($request->filled('search')) {
@@ -59,6 +59,14 @@ class LoanUnitPartTicketsController extends Controller
                 })
                     ->orWhere('ticket_receipt', 'like', "%{$search}%")
                     ->orWhere('customer_unit_info', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('original')) {
+            $original = $request->original;
+            
+            $query->whereHas('parts_details', function ($q) use ($original) {
+                $q->where('original', $original);
             });
         }
 
@@ -263,11 +271,16 @@ class LoanUnitPartTicketsController extends Controller
                 $validate_data = $request->validate([
                     'ticket_receipt' => 'required',
                     'customer_unit_info' => 'required',
+                    'status' => 'sometimes|required',
                     'attachments.*' => 'file|max:20480|mimes:jpg,png,pdf,jpeg,xlsx'
                 ]);
 
                 $validate_data['ticket_receipt'] = strip_tags($validate_data['ticket_receipt']);
                 $validate_data['customer_unit_info'] = strip_tags($validate_data['customer_unit_info']);
+
+                if (request()->has('status') && (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_LOAN_UNIT_ADMIN'))) {
+                    $ticket->status = $validate_data['status'];
+                }
                 
                 $ticket->ticket_receipt = $validate_data['ticket_receipt'];
                 $ticket->customer_unit_info = $validate_data['customer_unit_info'];
@@ -737,15 +750,15 @@ class LoanUnitPartTicketsController extends Controller
     }
 
 
-    public function Change_Loan_Unit_Part_Ticket_Status_To_In_Progress($id) {
+    public function Change_Loan_Unit_Part_Ticket_Status_To_Checking($id) {
         try {
             $ticket = Loan_Unit_Part_Tickets_Model::findOrFail($id);
-            $ticket->status = '2';
+            $ticket->status = '5';
             $ticket->save();
 
             return response()->json([
                 'success' => true,
-                'message' => 'Ticket changed to "In Progress" successfully',
+                'message' => 'Ticket changed to "Checking" successfully',
             ]);
         } catch (\Exception $e) {
             return response()->json([

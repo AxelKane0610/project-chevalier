@@ -11,13 +11,14 @@ use App\Models\Comments_Model;
 use App\Models\Attachments_Model;
 use App\Services\tracking_info_service;
 use Illuminate\Support\Facades\Http;
+use Carbon\Carbon;
 
 use function PHPUnit\Framework\matches;
 
 class HPSWarehouseController extends Controller
 {
     //
-    public function index(Request $request)
+    public function index()
     {
         if (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_HPS_WAREHOUSE_ADMIN')) {
             $query = HPS_Warehouse_Model::query();
@@ -91,9 +92,9 @@ class HPSWarehouseController extends Controller
     public function Filter_Pending_HPS_Items(Request $request)
     {
         if (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_HPS_WAREHOUSE_ADMIN')) {
-            $query = HPS_Warehouse_Model::where('current_status', "3");
+            $query = HPS_Warehouse_Model::with(['ceOwner', 'exportDetail'])->where('current_status', "3");
         } else {
-            $query = HPS_Warehouse_Model::where([
+            $query = HPS_Warehouse_Model::with(['ceOwner', 'exportDetail'])->where([
                 ['current_site', auth()->user()->site_id],
                 ['current_status', "3"],
 
@@ -116,7 +117,7 @@ class HPSWarehouseController extends Controller
                 ->orWhere('invoice', 'like', "%{$search}%")
                 ->orWhere('model', 'like', "%{$search}%")
                 ->orWhere('asset_tag', 'like', "%{$search}%")
-                ->orWhereHas('ce_owner', function ($user) use ($search) {
+                ->orWhereHas('ceOwner', function ($user) use ($search) {
                     $user->where('fullname', 'like', "%{$search}%");
                 });
                 ;
@@ -140,6 +141,8 @@ class HPSWarehouseController extends Controller
         }
 
     }
+
+    
 
 
     public function Item_Details($id){

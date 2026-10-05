@@ -45,10 +45,10 @@
             </li>
             @if( $ticket->status == '1' && (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_LOAN_UNIT_ADMIN') ))
                 <li>
-                    <form id="change-loan-unit-part-ticket-status-to-in-progress" class="js-input-required-btn" data-target="change-loan-unit-part-ticket-status-to-in-progress" action="{{ route('change-loan-unit-part-ticket-status-to-in-progress', $ticket->id) }}">
+                    <form id="change-loan-unit-part-ticket-status-to-checking" class="js-input-required-btn" data-target="change-loan-unit-part-ticket-status-to-checking" action="{{ route('change-loan-unit-part-ticket-status-to-checking', $ticket->id) }}">
                         @csrf
                         @method('PATCH')
-                        <button type="submit"><i class="ti-alarm-clock"></i>In Progress</button>
+                        <button type="submit"><i class="ti-alarm-clock"></i>Checking</button>
                     </form>
                 </li>
             @endif
@@ -261,6 +261,20 @@
 
             <label>Customer Unit Info</label>
             <input type="text" class="ticket-form-body-input" name="customer_unit_info" value="{{ $ticket->customer_unit_info }}">
+
+            @if(auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_LOAN_UNIT_ADMIN'))
+                <label>Status</label>
+                <select name="status" class="ticket-form-body-input">
+                    <option value="1" @selected($ticket->status == 1)>Open</option>
+                    <option value="5" @selected($ticket->status == 5)>Checking</option>
+                    <option value="2" @selected($ticket->status == 2)>In Progress</option>
+                    <option value="3" @selected($ticket->status == 3)>Completed</option>
+                    <option value="4" @selected($ticket->status == 4)>Canceled</option>
+                    
+
+                </select>
+            @endif
+            
 
             <label><b>Attachments</b></label>
             

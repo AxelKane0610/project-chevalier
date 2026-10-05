@@ -9,6 +9,8 @@
         <th width="15%">User Owner</th>
         <th width="15%">Status</th>
         <th width="15%">Customer Unit Info</th>
+        <th width="15%">Original Parts</th>
+
         
 
     </thead>
@@ -31,6 +33,8 @@
                     </span>
                 </td>
                 <td>{{ $ticket->customer_unit_info }}</td>
+                <td>{{ $ticket->all_originals ?: 'N/A' }}</td>
+
 
             </tr>
         @endforeach

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 class HPS_Warehouse_Model extends Model
 {
@@ -62,9 +63,36 @@ class HPS_Warehouse_Model extends Model
         return $this->belongsTo(User::class, 'user_id'); //Bảo model sang model User để lấy thông tin user của ticket đó, dựa vào "user_id"
     }
 
+    public function ceOwner(): HasOneThrough
+    {
+        return $this->hasOneThrough(
+            User::class,                               // 1. Model mục tiêu muốn lấy
+            HPS_Warehouse_Export_Details_Model::class, // 2. Model trung gian
+            'hps_receipt',                             // 3. Cột trên bảng Export Details nối với Warehouse
+            'id',                                      // 4. Cột trên bảng users nối với ce_owner
+            'current_hps_receipt',                     // 5. Cột trên bảng Warehouse
+            'ce_owner'                                 // 6. Cột trên bảng Export Details
+        );
+    }
+
     public function export_details()
     {
         return $this->hasMany(HPS_Warehouse_Export_Details_Model::class, 'asset_tag', 'asset_tag');
+    }
+
+    public function exportDetail(): BelongsTo
+    {
+        return $this->belongsTo(HPS_Warehouse_Export_Details_Model::class, 'current_hps_receipt', 'hps_receipt');
+    }
+
+    // Accessor tính Aging
+    public function getAgingAttribute()
+    {
+        if ($this->exportDetail && $this->exportDetail->export_date) {
+            return (int) \Carbon\Carbon::parse($this->exportDetail->export_date)->diffInDays(now());
+        }
+
+        return null;
     }
 
     public function getImportSourceDataAttribute()

@@ -47,6 +47,28 @@ class Loan_Unit_Part_Tickets_Model extends Model
         return $this->hasMany(Loan_Unit_Ticket_Parts_Details_Model::class,'ticket_id','id'); // Liên kết với model Thermal_Event_Parts_Details_Model, dựa vào "ticket_id" để lấy những part details có ticket_id trùng với id của ticket này
     }
 
+    public function getAllOriginalsAttribute()
+    {
+        // pluck('original'): Lấy danh sách cột original
+        // filter(): Loại bỏ các giá trị null hoặc rỗng
+        // implode(', '): Nối chuỗi bằng dấu phẩy
+        $originalMap = [
+            '1' => 'Crown',
+            '2' => 'Spectre',
+            '3' => 'T1 (FPT, DGW, Elite)',
+            // Thêm các mã khác của bạn vào đây...
+        ];
+
+        return $this->parts_details
+            ->pluck('original')
+            ->filter()
+            ->map(function ($value) use ($originalMap) {
+                // Nếu tìm thấy trong $originalMap thì lấy tên tương ứng, nếu không thì giữ nguyên mã số
+                return $originalMap[$value] ?? $value; 
+            })
+            ->implode(', ');
+    }
+
     public function getStatusDataAttribute()
     {
         return match ($this->status){

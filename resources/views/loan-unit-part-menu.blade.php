@@ -85,7 +85,22 @@
                                     
                                         
                                     </select>
+
+                                    
                                 </div>
+
+                                <div class="filter-group">
+                                    <h2>Original</h2>
+                                    <select class="ajax-filter" name="original" id="all-loan-unit-part-tickets-original-filter">
+                                        <option value="">All</option>
+                                        <option value="1">Crown</option>
+                                        <option value="2">Spectre</option>
+                                        <option value="3">T1 (FPT, DGW, Elite)</option>
+                                        <!-- Thêm các lựa chọn khác tùy theo dữ liệu thực tế của bạn -->
+                                    </select>
+                                </div>
+
+                                
 
                             </div>
 
