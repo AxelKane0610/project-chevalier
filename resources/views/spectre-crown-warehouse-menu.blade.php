@@ -47,18 +47,18 @@
                     </div>
 
                     <div class="col-10 h-100 overflow-auto">
-                        <div class="bg-white p-3 rounded shadow-sm ticket-table" id="pending-thermal-event-tickets-container">
+                        <div class="bg-white p-3 rounded shadow-sm ticket-table" id="all-spectre-crown-items-container">
                             <div class="common-table-filter">
                                 <div class="filter-group">
                                     <div class="search-box">
                                         <i class="ti-search"></i>
-                                        <input type="text" placeholder="Search Serial, Box SN, Product Number & Model" id="search-spectre-crown-warehouse-input">
+                                        <input type="text" placeholder="Search Serial, Box SN, Product Number & Model" id="search-spectre-crown-warehouse-input" class="ajax-search">
                                     </div>
                                 </div>
                                 
-                                <div class="filter-group">
+                                <div class="filter-group" >
                                     <h2>Category:</h2>
-                                    <select id="category-filter">
+                                    <select id="category-filter" class="ajax-filter" name="category">
                                         <option value="">All</option>
                                         <option value="1">Laptop</option>
                                         <option value="2">Accessories (Chuột, phím,...)</option>
@@ -73,7 +73,7 @@
                                 
                                 <div class="filter-group">
                                     <h2>Warehouse:</h2>
-                                    <select id="warehouse-filter">
+                                    <select id="warehouse-filter" class="ajax-filter" name="warehouse">
                                         <option value="">All</option>
                                         <option value="1">Spectre</option>
                                         <option value="2">CROWN HCM</option>
@@ -83,7 +83,7 @@
 
                                 <div class="filter-group">
                                     <h2>Availability:</h2>
-                                    <select id="availability-filter">
+                                    <select id="availability-filter" class="ajax-filter" name="availability" >
                                         <option value="">All</option>
                                         <option value="1">Available</option>
                                         <option value="2">Not Available</option>
@@ -93,7 +93,7 @@
 
                                 <div class="filter-group">
                                     <h2>Condition:</h2>
-                                    <select id="condition-filter">
+                                    <select id="condition-filter" class="ajax-filter" name="condition">
                                         <option value="">All</option>
                                         <option value="1">Good working</option>
                                         <option value="2">Not tested</option>
@@ -103,7 +103,7 @@
 
 
                             </div>
-                            <div id="table-data-container">
+                            <div id="all-spectre-crown-items-table-container">
                                 @include('tables.spectre-crown-warehouse-items-table')
                             </div>
 

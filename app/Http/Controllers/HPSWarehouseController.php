@@ -27,8 +27,6 @@ class HPSWarehouseController extends Controller
         }
 
         $items = $query->orderBy('created_at', 'desc')->paginate(10);
-        // $pending_items = $query->where('current_status', '3')->orderBy('created_at', 'desc')
-        //     ->paginate(10);
 
         $pending_items = $query->where('current_status', '3')->latest()
             ->paginate(10)

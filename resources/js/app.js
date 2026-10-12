@@ -129,58 +129,6 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-
-// class FileUploader {
-//     constructor(container) {
-//         this.container = container;
-//         this.fileInput = container.querySelector('.file-input');
-//         this.fileListUI = container.querySelector('.file-list');
-//         this.selectedFiles = [];
-
-//         if (this.fileInput) {
-//             this.initEvents();
-//         }
-//     }
-
-//     initEvents() {
-//         this.fileInput.addEventListener('change', (e) => {
-//             // Thay vì ghi đè, bạn có thể gộp file mới chọn vào file cũ (tuỳ nhu cầu)
-//             this.selectedFiles = Array.from(e.target.files);
-//             this.renderFileList();
-//         });
-//     }
-
-//     renderFileList() {
-//         this.fileListUI.innerHTML = '';
-
-//         this.selectedFiles.forEach((file, index) => {
-//             const li = document.createElement('li');
-//             li.textContent = file.name;
-
-//             const removeBtn = document.createElement('button');
-//             removeBtn.innerHTML = '<i class="ti-close"></i>';
-//             removeBtn.onclick = () => this.removeFile(index);
-
-//             li.appendChild(removeBtn);
-//             this.fileListUI.appendChild(li);
-//         });
-//     }
-
-//     removeFile(index) {
-//         this.selectedFiles.splice(index, 1);
-//         this.updateInputFiles();
-//         this.renderFileList();
-//     }
-
-//     updateInputFiles() {
-//         const dataTransfer = new DataTransfer();
-//         this.selectedFiles.forEach(file => {
-//             dataTransfer.items.add(file);
-//         });
-//         this.fileInput.files = dataTransfer.files;
-//     }
-// }
-
 class FileUploader {
     constructor(container) {
         this.container = container;
@@ -438,3 +386,262 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
+
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    const ajaxTables = new Map();
+    let popstateInitialized = false;
+
+    // Kiểm tra đây có phải là navigation bằng Back/Forward không.
+    const navigationEntry = performance.getEntriesByType('navigation')[0];
+    const isBackForward = navigationEntry?.type === 'back_forward';
+
+    window.initAjaxTable = function (config) {
+
+        const wrapper = document.getElementById(config.wrapper);
+
+        if (!wrapper) return null;
+
+        const container = wrapper.querySelector(config.container);
+        const searchInput = wrapper.querySelector('.ajax-search');
+        const filters = wrapper.querySelectorAll('.ajax-filter');
+
+        if (!container) return null;
+
+        const tableId = `${window.location.pathname}:${config.key}`;
+        const storageKey = `ajax-table:${tableId}`;
+
+        let searchTimer = null;
+        let requestController = null;
+
+        function getCurrentState(page = 1) {
+            const state = {
+                page: String(page),
+                search: searchInput ? searchInput.value : '',
+                filters: {}
+            };
+
+            filters.forEach(filter => {
+                if (filter.name) {
+                    state.filters[filter.name] = filter.value;
+                }
+            });
+
+            return state;
+        }
+
+        function saveState(state) {
+            try {
+                sessionStorage.setItem(storageKey, JSON.stringify(state));
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        // Chỉ khôi phục state được truyền vào.
+        // Không tự đọc sessionStorage để tránh lấy nhầm filter cũ.
+        function restoreState(state = null) {
+
+            if (!state || typeof state !== 'object') {
+                state = {
+                    page: '1',
+                    search: '',
+                    filters: {}
+                };
+            }
+
+            if (searchInput) {
+                searchInput.value = state.search ?? '';
+            }
+
+            filters.forEach(filter => {
+                filter.value = state.filters?.[filter.name] ?? '';
+            });
+
+            return {
+                page: String(state.page ?? '1'),
+                search: state.search ?? '',
+                filters: state.filters ?? {}
+            };
+        }
+
+        function saveHistory(state, method = 'pushState') {
+
+            saveState(state);
+
+            const currentState = window.history.state || {};
+
+            const historyState = {
+                ...currentState,
+                ajaxTables: {
+                    ...(currentState.ajaxTables || {}),
+                    [tableId]: state
+                }
+            };
+
+            window.history[method](
+                historyState,
+                '',
+                window.location.pathname
+            );
+        }
+
+        function fetchData(page = 1, options = {}) {
+
+            const {
+                history = true,
+                state: restoredState = null
+            } = options;
+
+            if (restoredState) {
+                restoreState(restoredState);
+            }
+
+            const state = getCurrentState(page);
+
+            if (history) {
+                saveHistory(state);
+            } else {
+                saveState(state);
+            }
+
+            const params = new URLSearchParams();
+
+            params.set('page', state.page);
+
+            if (state.search.trim() !== '') {
+                params.set('search', state.search.trim());
+            }
+
+            Object.entries(state.filters).forEach(([name, value]) => {
+                if (value !== '') {
+                    params.set(name, value);
+                }
+            });
+
+            if (requestController) {
+                requestController.abort();
+            }
+
+            requestController = new AbortController();
+
+            fetch(`${config.url}?${params.toString()}`, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                signal: requestController.signal
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+
+                return response.text();
+            })
+            .then(html => {
+                container.innerHTML = html;
+            })
+            .catch(error => {
+                if (error.name !== 'AbortError') {
+                    console.error(error);
+                }
+            });
+        }
+
+        // Search
+        if (searchInput) {
+            searchInput.addEventListener('input', function () {
+                clearTimeout(searchTimer);
+
+                searchTimer = setTimeout(() => {
+                    fetchData(1);
+                }, 300);
+            });
+        }
+
+        // Filters
+        filters.forEach(filter => {
+            filter.addEventListener('change', () => {
+                fetchData(1);
+            });
+        });
+
+        // Pagination
+        container.addEventListener('click', function (event) {
+            const link = event.target.closest('.pagination a');
+
+            if (!link) return;
+
+            event.preventDefault();
+
+            const page = new URL(link.href, window.location.origin)
+                .searchParams.get('page') || '1';
+
+            fetchData(page);
+        });
+
+        const table = {
+            key: tableId,
+            fetchData,
+            restoreState
+        };
+
+        ajaxTables.set(tableId, table);
+
+        // Chỉ lấy history.state khi đây là Back/Forward.
+        // Các trường hợp khác bắt đầu với trạng thái mặc định.
+        const historyState = window.history.state?.ajaxTables?.[tableId];
+
+        let initialState;
+
+        if (isBackForward && historyState) {
+            initialState = restoreState(historyState);
+        } else {
+            initialState = restoreState({
+                page: '1',
+                search: '',
+                filters: {}
+            });
+        }
+
+        saveState(initialState);
+
+        fetchData(initialState.page, {
+            history: false
+        });
+
+        // Chỉ đăng ký popstate một lần.
+        if (!popstateInitialized) {
+
+            window.addEventListener('popstate', function (event) {
+
+                const states = event.state?.ajaxTables || {};
+
+                ajaxTables.forEach((registeredTable, id) => {
+
+                    // Không dùng sessionStorage làm fallback.
+                    const state = states[id] || {
+                        page: '1',
+                        search: '',
+                        filters: {}
+                    };
+
+                    const restoredState = registeredTable.restoreState(state);
+
+                    registeredTable.fetchData(restoredState.page, {
+                        history: false
+                    });
+                });
+            });
+
+            popstateInitialized = true;
+        }
+
+        return table;
+    };
+
+});
+

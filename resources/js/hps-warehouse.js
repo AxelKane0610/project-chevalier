@@ -223,126 +223,480 @@ async function fetchModelName(productNumber, modelInput) {
     }
 }
 
+// document.addEventListener('DOMContentLoaded', function () {
+
+//     function initAjaxTable(config) {
+
+//         const wrapper = document.getElementById(config.wrapper);
+
+//         if (!wrapper) return;
+
+//         const container = wrapper.querySelector(config.container);
+//         const searchInput = wrapper.querySelector('.ajax-search');
+//         const filters = wrapper.querySelectorAll('.ajax-filter');
+
+//         function fetchData(page = 1) {
+
+//             const params = new URLSearchParams();
+
+//             params.append('page', page);
+
+//             // Search
+//             if (searchInput) {
+//                 params.append('search', searchInput.value);
+//             }
+
+//             // Filters
+//             filters.forEach(filter => {
+
+//                 if (filter.value !== '') {
+//                     params.append(filter.name, filter.value);
+//                 }
+
+//             });
+
+//             fetch(`${config.url}?${params.toString()}`, {
+//                 headers: {
+//                     'X-Requested-With': 'XMLHttpRequest'
+//                 }
+//             })
+//             .then(response => response.text())
+//             .then(html => {
+//                 container.innerHTML = html;
+//             })
+//             .catch(error => console.error(error));
+
+//         }
+
+//         // =========================
+//         // SEARCH
+//         // =========================
+
+//         if (searchInput) {
+
+//             let timer;
+
+//             searchInput.addEventListener('keyup', function () {
+
+//                 clearTimeout(timer);
+
+//                 timer = setTimeout(() => {
+//                     fetchData(1);
+//                 }, 300);
+
+//             });
+
+//         }
+
+//         // =========================
+//         // FILTER
+//         // =========================
+
+//         filters.forEach(filter => {
+
+//             filter.addEventListener('change', function () {
+//                 fetchData(1);
+//             });
+
+//         });
+
+//         // =========================
+//         // PAGINATION
+//         // =========================
+
+//         container.addEventListener('click', function (e) {
+
+//             const link = e.target.closest('.pagination a');
+
+//             if (!link) return;
+
+//             e.preventDefault();
+
+//             const page = new URL(link.href).searchParams.get('page') || 1;
+
+//             fetchData(page);
+
+//         });
+
+//     }
+
+
+//     initAjaxTable({
+
+//         wrapper: 'all-hps-items-container',
+
+//         container: '#all-hps-items-table-container',
+
+//         url: '/hps-warehouse-menu/filter-all-hps-items'
+
+//     });
+
+//     initAjaxTable({
+
+//         wrapper: 'pending-hps-items-container',
+
+//         container: '#pending-hps-items-table-container',
+
+//         url: '/hps-warehouse-menu/filter-pending-hps-items'
+
+//     });
+
+
+// });
+
+
+
+// document.addEventListener('DOMContentLoaded', function () {
+
+//     const ajaxTables = [];
+
+//     // =========================================
+//     // AJAX TABLE INITIALIZATION
+//     // =========================================
+
+//     function initAjaxTable(config) {
+
+//         const wrapper = document.getElementById(config.wrapper);
+
+//         if (!wrapper) return null;
+
+//         const container = wrapper.querySelector(config.container);
+//         const searchInput = wrapper.querySelector('.ajax-search');
+//         const filters = wrapper.querySelectorAll('.ajax-filter');
+
+//         if (!container) return null;
+
+//         const storageKey = `ajax-table-${config.key}`;
+
+//         let searchTimer = null;
+//         let requestController = null;
+
+//         // =========================================
+//         // GET CURRENT STATE
+//         // =========================================
+
+//         function getCurrentState(page = 1) {
+
+//             const state = {
+//                 page: String(page),
+//                 search: searchInput ? searchInput.value : '',
+//                 filters: {}
+//             };
+
+//             filters.forEach(filter => {
+//                 state.filters[filter.name] = filter.value;
+//             });
+
+//             return state;
+//         }
+
+//         // =========================================
+//         // SAVE STATE TO SESSION STORAGE
+//         // =========================================
+
+//         function saveState(state) {
+
+//             sessionStorage.setItem(
+//                 storageKey,
+//                 JSON.stringify(state)
+//             );
+//         }
+
+//         // =========================================
+//         // RESTORE STATE
+//         // =========================================
+
+//         function restoreState(state = null) {
+
+//             if (!state) {
+//                 const saved = sessionStorage.getItem(storageKey);
+
+//                 if (saved) {
+//                     try {
+//                         state = JSON.parse(saved);
+//                     } catch (error) {
+//                         console.error('Cannot restore AJAX table state:', error);
+//                     }
+//                 }
+//             }
+
+//             if (!state) {
+//                 state = {
+//                     page: '1',
+//                     search: '',
+//                     filters: {}
+//                 };
+//             }
+
+//             if (searchInput) {
+//                 searchInput.value = state.search || '';
+//             }
+
+//             filters.forEach(filter => {
+//                 filter.value = state.filters?.[filter.name] ?? '';
+//             });
+
+//             return state;
+//         }
+
+//         // =========================================
+//         // UPDATE BROWSER HISTORY WITHOUT URL PARAMS
+//         // =========================================
+
+//         function saveHistory(state, method = 'pushState') {
+
+//         saveState(state);
+
+//         const historyState = {
+//             ...(window.history.state || {}),
+//             ajaxTables: {
+//                 ...(window.history.state?.ajaxTables || {}),
+//                 [config.key]: state
+//             }
+//         };
+
+//         // Chỉ giữ pathname, loại bỏ toàn bộ query parameters và hash.
+//         window.history[method](
+//             historyState,
+//             '',
+//             window.location.pathname
+//         );
+//     }
+
+//         // =========================================
+//         // FETCH DATA
+//         // =========================================
+
+//         function fetchData(page = 1, options = {}) {
+
+//             const {
+//                 history = true,
+//                 state: restoredState = null
+//             } = options;
+
+//             if (restoredState) {
+//                 restoreState(restoredState);
+//             }
+
+//             const state = getCurrentState(page);
+
+//             if (history) {
+//                 saveHistory(state, 'pushState');
+//             } else {
+//                 saveState(state);
+//             }
+
+//             const params = new URLSearchParams();
+
+//             params.set('page', state.page);
+
+//             if (state.search.trim() !== '') {
+//                 params.set('search', state.search.trim());
+//             }
+
+//             Object.entries(state.filters).forEach(([name, value]) => {
+
+//                 if (value !== '') {
+//                     params.set(name, value);
+//                 }
+
+//             });
+
+//             // Cancel the previous request if it is still running.
+//             if (requestController) {
+//                 requestController.abort();
+//             }
+
+//             requestController = new AbortController();
+
+//             fetch(`${config.url}?${params.toString()}`, {
+//                 headers: {
+//                     'X-Requested-With': 'XMLHttpRequest'
+//                 },
+//                 signal: requestController.signal
+//             })
+//             .then(response => {
+
+//                 if (!response.ok) {
+//                     throw new Error(`HTTP error: ${response.status}`);
+//                 }
+
+//                 return response.text();
+//             })
+//             .then(html => {
+//                 container.innerHTML = html;
+//             })
+//             .catch(error => {
+
+//                 if (error.name !== 'AbortError') {
+//                     console.error('AJAX table error:', error);
+//                 }
+
+//             });
+//         }
+
+//         // =========================================
+//         // SEARCH
+//         // =========================================
+
+//         if (searchInput) {
+
+//             searchInput.addEventListener('input', function () {
+
+//                 clearTimeout(searchTimer);
+
+//                 searchTimer = setTimeout(() => {
+//                     fetchData(1);
+//                 }, 300);
+
+//             });
+
+//         }
+
+//         // =========================================
+//         // FILTER
+//         // =========================================
+
+//         filters.forEach(filter => {
+
+//             filter.addEventListener('change', function () {
+//                 fetchData(1);
+//             });
+
+//         });
+
+//         // =========================================
+//         // PAGINATION
+//         // =========================================
+
+//         container.addEventListener('click', function (event) {
+
+//             const link = event.target.closest('.pagination a');
+
+//             if (!link) return;
+
+//             event.preventDefault();
+
+//             const url = new URL(link.href, window.location.origin);
+
+//             const page = url.searchParams.get('page') || '1';
+
+//             fetchData(page);
+//         });
+
+//         // =========================================
+//         // INITIAL STATE
+//         // =========================================
+
+//         const initialHistoryState = window.history.state?.ajaxTables?.[config.key];
+
+//         const initialState = restoreState(initialHistoryState || null);
+
+//         const table = {
+//             key: config.key,
+
+//             fetchData,
+
+//             restoreState,
+
+//             getCurrentState,
+
+//             getSavedState: function () {
+//                 return restoreState(
+//                     window.history.state?.ajaxTables?.[config.key] || null
+//                 );
+//             }
+//         };
+
+//         ajaxTables.push(table);
+
+//         // Render the initial table using the restored state.
+//         fetchData(initialState.page || 1, {
+//             history: false
+//         });
+
+//         return table;
+//     }
+
+//     // =========================================
+//     // INITIALIZE ALL ITEMS
+//     // =========================================
+
+//     initAjaxTable({
+
+//         key: 'all',
+
+//         wrapper: 'all-hps-items-container',
+
+//         container: '#all-hps-items-table-container',
+
+//         url: '/hps-warehouse-menu/filter-all-hps-items'
+
+//     });
+
+//     // =========================================
+//     // INITIALIZE PENDING ITEMS
+//     // =========================================
+
+//     initAjaxTable({
+
+//         key: 'pending',
+
+//         wrapper: 'pending-hps-items-container',
+
+//         container: '#pending-hps-items-table-container',
+
+//         url: '/hps-warehouse-menu/filter-pending-hps-items'
+
+//     });
+
+//     // =========================================
+//     // BROWSER BACK / FORWARD
+//     // =========================================
+
+//     window.addEventListener('popstate', function (event) {
+
+//         const states = event.state?.ajaxTables || {};
+
+//         ajaxTables.forEach(table => {
+
+//             // Prefer the state belonging to this history entry.
+//             // If it has no state yet, restore the last saved state.
+//             const state = states[table.key] || null;
+
+//             const restoredState = table.restoreState(state);
+
+//             table.fetchData(restoredState.page || 1, {
+//                 history: false
+//             });
+
+//         });
+
+//     });
+
+// });
+
+
 document.addEventListener('DOMContentLoaded', function () {
 
-    function initAjaxTable(config) {
-
-        const wrapper = document.getElementById(config.wrapper);
-
-        if (!wrapper) return;
-
-        const container = wrapper.querySelector(config.container);
-        const searchInput = wrapper.querySelector('.ajax-search');
-        const filters = wrapper.querySelectorAll('.ajax-filter');
-
-        function fetchData(page = 1) {
-
-            const params = new URLSearchParams();
-
-            params.append('page', page);
-
-            // Search
-            if (searchInput) {
-                params.append('search', searchInput.value);
-            }
-
-            // Filters
-            filters.forEach(filter => {
-
-                if (filter.value !== '') {
-                    params.append(filter.name, filter.value);
-                }
-
-            });
-
-            fetch(`${config.url}?${params.toString()}`, {
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            })
-            .then(response => response.text())
-            .then(html => {
-                container.innerHTML = html;
-            })
-            .catch(error => console.error(error));
-
-        }
-
-        // =========================
-        // SEARCH
-        // =========================
-
-        if (searchInput) {
-
-            let timer;
-
-            searchInput.addEventListener('keyup', function () {
-
-                clearTimeout(timer);
-
-                timer = setTimeout(() => {
-                    fetchData(1);
-                }, 300);
-
-            });
-
-        }
-
-        // =========================
-        // FILTER
-        // =========================
-
-        filters.forEach(filter => {
-
-            filter.addEventListener('change', function () {
-                fetchData(1);
-            });
-
-        });
-
-        // =========================
-        // PAGINATION
-        // =========================
-
-        container.addEventListener('click', function (e) {
-
-            const link = e.target.closest('.pagination a');
-
-            if (!link) return;
-
-            e.preventDefault();
-
-            const page = new URL(link.href).searchParams.get('page') || 1;
-
-            fetchData(page);
-
-        });
-
-    }
-
-
-    initAjaxTable({
-
+    window.initAjaxTable({
+        key: 'all',
         wrapper: 'all-hps-items-container',
-
         container: '#all-hps-items-table-container',
-
         url: '/hps-warehouse-menu/filter-all-hps-items'
-
     });
 
-    initAjaxTable({
-
+    window.initAjaxTable({
+        key: 'pending',
         wrapper: 'pending-hps-items-container',
-
         container: '#pending-hps-items-table-container',
-
         url: '/hps-warehouse-menu/filter-pending-hps-items'
-
     });
-
 
 });
+
+
+
 
 document.addEventListener('submit', function (e) {
     // Kiểm tra xem form nào đang được submit dựa vào ID

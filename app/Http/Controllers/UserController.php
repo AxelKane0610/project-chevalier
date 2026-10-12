@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Attachments_Model;
-
+use Illuminate\Testing\Fluent\Concerns\Has;
 
 use function Laravel\Prompts\alert;
 
@@ -202,7 +202,7 @@ class UserController extends Controller
     public function Reset_Password ($id){
         try {
             $user = User::findOrFail($id);
-            $defaultPassword = env('DEFAULT_USER_PASSWORD');; // Password mặc định
+            $defaultPassword = env('DEFAULT_USER_PASSWORD'); // Password mặc định
             $user->password = bcrypt($defaultPassword);
             $user->save();
             return response()->json([

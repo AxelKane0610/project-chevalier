@@ -169,8 +169,18 @@ class SpectreCrownWarehouseController extends Controller
 
     }
 
-    public function index(Request $request)
+    public function index()
     {
+        $query = Spectre_Crown_Warehouse_Model::query();
+
+        $items = $query->latest()
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('spectre-crown-warehouse-menu', compact('items'));
+    }
+
+    public function Filter_All_Spectre_Crown_Items(Request $request) {
         $query = Spectre_Crown_Warehouse_Model::query();
 
         // Search
@@ -212,7 +222,6 @@ class SpectreCrownWarehouseController extends Controller
             return view('tables.spectre-crown-warehouse-items-table', compact('items'))->render();
         }
 
-        return view('spectre-crown-warehouse-menu', compact('items'));
     }
 
     public function Item_Details($id){
