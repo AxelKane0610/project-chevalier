@@ -179,113 +179,256 @@ class HPSWarehouseController extends Controller
         }
     }
 
+    // public function Import_Asset(Request $request) {
+    //     try {
+    //     $validated = $request->validate([
+    //         'serial_number'   => 'required|array|min:1',
+    //         'serial_number.*' => 'required|string',
+    //         'product_number'  => 'required|array|min:1',
+    //         'model'           => 'required|array|min:1',
+    //         'po_number'       => 'nullable|array',
+    //         'price'           => 'nullable|array',
+    //         'note'            => 'nullable|array',
+    //         'import_source'   => 'required',
+    //         'po_type'         => 'required',
+    //         'import_status'   => 'required',
+    //         'unit_re_import_status' => 'required',
+    //         'site'            => 'required',
+    //         'location'        => 'nullable',
+    //         'invoice'         => 'nullable',
+    //         'attachments.*'   => 'file|max:20480|mimes:jpg,png,pdf,jpeg,xlsx'
+    //     ]);
+
+    //     $sanitize = function ($value) use (&$sanitize) {
+    //         if (is_array($value)) {
+    //             return array_map($sanitize, $value);
+    //         }
+    //         return is_string($value) ? strip_tags(trim($value)) : $value;
+    //     };
+
+    //     // Áp dụng làm sạch cho toàn bộ $validated
+    //     $validated = array_map($sanitize, $validated);
+
+
+    //     // Thêm `return` trước DB::transaction để trả kết quả response ra Controller
+    //     return DB::transaction(function () use ($request) {
+            
+    //         // Tách phần số sau 'FB-' (từ ký tự thứ 4) và ép kiểu về UNSIGNED để tìm số lớn nhất chuẩn xác
+    //         $latestAsset = HPS_Warehouse_Model::where('asset_tag', 'LIKE', 'FB-%')
+    //             ->orderByRaw("CAST(SUBSTRING(asset_tag, 4) AS UNSIGNED) DESC")
+    //             ->lockForUpdate()
+    //             ->first();
+
+    //         // Tách lấy số thứ tự hiện tại
+    //         $currentNumber = 1000; // Giá trị mặc định nếu DB chưa có bản ghi FB- nào
+    //         if ($latestAsset && $latestAsset->asset_tag) {
+    //             $numberPart = preg_replace('/[^0-9]/', '', $latestAsset->asset_tag);
+    //             if (!empty($numberPart)) {
+    //                 $currentNumber = (int) $numberPart;
+    //             }
+    //         }
+
+    //         $serialNumbers = $request->input('serial_number');
+
+    //         foreach ($serialNumbers as $index => $serial) {
+    //             $currentNumber++; // Tăng dần số thứ tự (ví dụ: 1001, 1002...)
+    //             $newAssetTag = 'FB-' . $currentNumber;
+
+    //             $new_asset = HPS_Warehouse_Model::create([
+    //                 'asset_tag'                 => $newAssetTag,
+    //                 'user_id'                   => auth()->id(),
+    //                 'serial_number'             => $request->serial_number[$index],
+    //                 'box_serial_number'         => $request->serial_number[$index],
+    //                 'product_number'            => $request->product_number[$index],
+    //                 'model'                     => $request->model[$index],
+    //                 'po_number'                 => $request->po_number[$index] ?? null,
+    //                 'price'                     => $request->price[$index] ?? null,
+    //                 'note'                      => $request->note[$index] ?? null,
+    //                 'import_source'             => $request->import_source,
+    //                 'po_type'                   => $request->po_type,
+    //                 'import_status'             => $request->import_status,
+    //                 'unit_re_import_status'     => $request->unit_re_import_status,
+    //                 'site'                      => $request->site,
+    //                 'location'                  => $request->location,
+    //                 'invoice'                   => $request->invoice,
+    //                 'import_date'               => now(),
+
+    //                 'curent_status'             => '1',
+    //                 'current_hps_receipt'       => null,
+    //                 'current_serial_number'     => $serial,
+    //                 'current_box_serial_number' => $serial ?? null,
+    //                 'current_product_number'    => $request->product_number[$index] ?? null,
+    //                 'current_site'              => $request->site,
+    //                 'current_location'          => $request->location,
+    //                 'current_export_ticket_id'  => null,
+    //             ]);
+
+    //             if ($request->hasFile('attachments')) {
+    //                 foreach ($request->file('attachments') as $file) {
+    //                     $originalName = $file->getClientOriginalName();
+    //                     $folderPath = '12/' . $new_asset->id;
+    //                     $filePath = $file->storeAs($folderPath, $originalName, 'attachments');
+
+    //                     Attachments_Model::create([
+    //                         'type_of_ticket' => 12,
+    //                         'ticket_id'      => $new_asset->id,
+    //                         'comment_id'     => null,
+    //                         'file_path'      => $filePath,
+    //                         'name'           => $originalName,
+    //                         'status'         => 1
+    //                     ]);
+    //                 }
+    //             }
+    //         }
+
+    //         return response()->json([
+    //             'success' => true,
+    //             'message' => 'Nhập kho thành công ' . count($serialNumbers) . ' máy.',
+    //         ]);
+    //     });
+
+    //     } catch (\Exception $e) {
+    //         return response()->json([
+    //             'success' => false,
+    //             'message' => 'Nhập kho thất bại do ' . $e->getMessage(),
+    //         ], 500);
+    //     }
+    // }
+
     public function Import_Asset(Request $request) {
         try {
-        $validated = $request->validate([
-            'serial_number'   => 'required|array|min:1',
-            'serial_number.*' => 'required|string',
-            'product_number'  => 'required|array|min:1',
-            'model'           => 'required|array|min:1',
-            'po_number'       => 'nullable|array',
-            'price'           => 'nullable|array',
-            'note'            => 'nullable|array',
-            'import_source'   => 'required',
-            'po_type'         => 'required',
-            'import_status'   => 'required',
-            'unit_re_import_status' => 'required',
-            'site'            => 'required',
-            'location'        => 'nullable',
-            'invoice'         => 'nullable',
-            'attachments.*'   => 'file|max:20480|mimes:jpg,png,pdf,jpeg,xlsx'
-        ]);
+            $validated = $request->validate([
+                'serial_number'   => 'required|array|min:1',
+                'serial_number.*' => 'required|string',
+                'product_number'  => 'required|array|min:1',
+                'model'           => 'required|array|min:1',
+                'po_number'       => 'nullable|array',
+                'price'           => 'nullable|array',
+                'note'            => 'nullable|array',
+                'import_source'   => 'required',
+                'po_type'         => 'required',
+                'import_status'   => 'required',
+                'unit_re_import_status' => 'required',
+                'site'            => 'required',
+                'location'        => 'nullable',
+                'invoice'         => 'nullable',
+                'attachments.*'   => 'file|max:20480|mimes:jpg,png,pdf,jpeg,xlsx'
+            ]);
 
-        $sanitize = function ($value) use (&$sanitize) {
-            if (is_array($value)) {
-                return array_map($sanitize, $value);
-            }
-            return is_string($value) ? strip_tags(trim($value)) : $value;
-        };
-
-        // Áp dụng làm sạch cho toàn bộ $validated
-        $validated = array_map($sanitize, $validated);
-
-
-        // Thêm `return` trước DB::transaction để trả kết quả response ra Controller
-        return DB::transaction(function () use ($request) {
-            
-            // Tách phần số sau 'FB-' (từ ký tự thứ 4) và ép kiểu về UNSIGNED để tìm số lớn nhất chuẩn xác
-            $latestAsset = HPS_Warehouse_Model::where('asset_tag', 'LIKE', 'FB-%')
-                ->orderByRaw("CAST(SUBSTRING(asset_tag, 4) AS UNSIGNED) DESC")
-                ->lockForUpdate()
-                ->first();
-
-            // Tách lấy số thứ tự hiện tại
-            $currentNumber = 1000; // Giá trị mặc định nếu DB chưa có bản ghi FB- nào
-            if ($latestAsset && $latestAsset->asset_tag) {
-                $numberPart = preg_replace('/[^0-9]/', '', $latestAsset->asset_tag);
-                if (!empty($numberPart)) {
-                    $currentNumber = (int) $numberPart;
+            $sanitize = function ($value) use (&$sanitize) {
+                if (is_array($value)) {
+                    return array_map($sanitize, $value);
                 }
-            }
+                return is_string($value) ? strip_tags(trim($value)) : $value;
+            };
+
+            // Áp dụng làm sạch cho toàn bộ $validated
+            $validated = array_map($sanitize, $validated);
 
             $serialNumbers = $request->input('serial_number');
 
-            foreach ($serialNumbers as $index => $serial) {
-                $currentNumber++; // Tăng dần số thứ tự (ví dụ: 1001, 1002...)
-                $newAssetTag = 'FB-' . $currentNumber;
-
-                $new_asset = HPS_Warehouse_Model::create([
-                    'asset_tag'                 => $newAssetTag,
-                    'user_id'                   => auth()->id(),
-                    'serial_number'             => $request->serial_number[$index],
-                    'box_serial_number'         => $request->serial_number[$index],
-                    'product_number'            => $request->product_number[$index],
-                    'model'                     => $request->model[$index],
-                    'po_number'                 => $request->po_number[$index] ?? null,
-                    'price'                     => $request->price[$index] ?? null,
-                    'note'                      => $request->note[$index] ?? null,
-                    'import_source'             => $request->import_source,
-                    'po_type'                   => $request->po_type,
-                    'import_status'             => $request->import_status,
-                    'unit_re_import_status'     => $request->unit_re_import_status,
-                    'site'                      => $request->site,
-                    'location'                  => $request->location,
-                    'invoice'                   => $request->invoice,
-                    'import_date'               => now(),
-
-                    'curent_status'             => '1',
-                    'current_hps_receipt'       => null,
-                    'current_serial_number'     => $serial,
-                    'current_box_serial_number' => $serial ?? null,
-                    'current_product_number'    => $request->product_number[$index] ?? null,
-                    'current_site'              => $request->site,
-                    'current_location'          => $request->location,
-                    'current_export_ticket_id'  => null,
-                ]);
-
-                if ($request->hasFile('attachments')) {
-                    foreach ($request->file('attachments') as $file) {
-                        $originalName = $file->getClientOriginalName();
-                        $folderPath = '12/' . $new_asset->id;
-                        $filePath = $file->storeAs($folderPath, $originalName, 'attachments');
-
-                        Attachments_Model::create([
-                            'type_of_ticket' => 12,
-                            'ticket_id'      => $new_asset->id,
-                            'comment_id'     => null,
-                            'file_path'      => $filePath,
-                            'name'           => $originalName,
-                            'status'         => 1
-                        ]);
-                    }
-                }
+            // 1. Kiểm tra trùng lặp ngay trong mảng request gửi lên
+            if (count($serialNumbers) !== count(array_unique($serialNumbers))) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Danh sách nhập vào có chứa các Serial Number bị trùng lặp với nhau.'
+                ], 422);
             }
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Nhập kho thành công ' . count($serialNumbers) . ' máy.',
-            ]);
-        });
+            // 2. Kiểm tra trùng lặp với Database (cả serial_number hoặc current_serial_number)
+            $existingSerials = HPS_Warehouse_Model::whereIn('serial_number', $serialNumbers)
+                ->orWhereIn('current_serial_number', $serialNumbers)
+                ->pluck('serial_number')
+                ->toArray();
+
+            // Lấy thêm các trường hợp trùng ở cột current_serial_number nếu cần hiển thị chuẩn xác hơn
+            $existingCurrentSerials = HPS_Warehouse_Model::whereIn('current_serial_number', $serialNumbers)
+                ->pluck('current_serial_number')
+                ->toArray();
+
+            $allDuplicates = array_unique(array_merge($existingSerials, $existingCurrentSerials));
+
+            if (!empty($allDuplicates)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Nhập kho thất bại! Các Serial Number sau đã tồn tại trong hệ thống: ' . implode(', ', $allDuplicates)
+                ], 422);
+            }
+
+            // Thực hiện giao dịch database khi dữ liệu sạch và không trùng lặp
+            return DB::transaction(function () use ($request, $serialNumbers) {
+                
+                // Tách phần số sau 'FB-' (từ ký tự thứ 4) và ép kiểu về UNSIGNED để tìm số lớn nhất chuẩn xác
+                $latestAsset = HPS_Warehouse_Model::where('asset_tag', 'LIKE', 'FB-%')
+                    ->orderByRaw("CAST(SUBSTRING(asset_tag, 4) AS UNSIGNED) DESC")
+                    ->lockForUpdate()
+                    ->first();
+
+                // Tách lấy số thứ tự hiện tại
+                $currentNumber = 1000; // Giá trị mặc định nếu DB chưa có bản ghi FB- nào
+                if ($latestAsset && $latestAsset->asset_tag) {
+                    $numberPart = preg_replace('/[^0-9]/', '', $latestAsset->asset_tag);
+                    if (!empty($numberPart)) {
+                        $currentNumber = (int) $numberPart;
+                    }
+                }
+
+                foreach ($serialNumbers as $index => $serial) {
+                    $currentNumber++; // Tăng dần số thứ tự (ví dụ: 1001, 1002...)
+                    $newAssetTag = 'FB-' . $currentNumber;
+
+                    $new_asset = HPS_Warehouse_Model::create([
+                        'asset_tag'                 => $newAssetTag,
+                        'user_id'                   => auth()->id(),
+                        'serial_number'             => $request->serial_number[$index],
+                        'box_serial_number'         => $request->serial_number[$index],
+                        'product_number'            => $request->product_number[$index],
+                        'model'                     => $request->model[$index],
+                        'po_number'                 => $request->po_number[$index] ?? null,
+                        'price'                     => $request->price[$index] ?? null,
+                        'note'                      => $request->note[$index] ?? null,
+                        'import_source'             => $request->import_source,
+                        'po_type'                   => $request->po_type,
+                        'import_status'             => $request->import_status,
+                        'unit_re_import_status'     => $request->unit_re_import_status,
+                        'site'                      => $request->site,
+                        'location'                  => $request->location,
+                        'invoice'                   => $request->invoice,
+                        'import_date'               => now(),
+
+                        'curent_status'             => '1',
+                        'current_hps_receipt'       => null,
+                        'current_serial_number'     => $serial,
+                        'current_box_serial_number' => $serial ?? null,
+                        'current_product_number'    => $request->product_number[$index] ?? null,
+                        'current_site'              => $request->site,
+                        'current_location'          => $request->location,
+                        'current_export_ticket_id'  => null,
+                    ]);
+
+                    if ($request->hasFile('attachments')) {
+                        foreach ($request->file('attachments') as $file) {
+                            $originalName = $file->getClientOriginalName();
+                            $folderPath = '12/' . $new_asset->id;
+                            $filePath = $file->storeAs($folderPath, $originalName, 'attachments');
+
+                            Attachments_Model::create([
+                                'type_of_ticket' => 12,
+                                'ticket_id'      => $new_asset->id,
+                                'comment_id'     => null,
+                                'file_path'      => $filePath,
+                                'name'           => $originalName,
+                                'status'         => 1
+                            ]);
+                        }
+                    }
+                }
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Nhập kho thành công ' . count($serialNumbers) . ' máy.',
+                ]);
+            });
 
         } catch (\Exception $e) {
             return response()->json([
