@@ -72,6 +72,7 @@
                                 <tr>
                                     <th width="5%"></th>
                                     <th width="14%">Receipt</th>
+                                    <th width="20%">CE Owner</th>
                                     <th width="20%">Info Base</th>
                                     <th width="39%">Description</th>
                                     <th width="11%">Priority</th>
@@ -89,6 +90,7 @@
                                                 </a>
                                             </td>
                                             <td>{{ $ticket->ticket_receipt }}</td>
+                                            <td>{{ $ticket->user_owner->fullname ?? 'N/A' }}</td>
                                             <td>{{ $ticket->info_base }}</td>
                                             <td>{{ $ticket->description }}</td>
                                             <td>
@@ -121,7 +123,7 @@
                                 </div>
 
                                 <div class="filter-group">
-                                    <h2>Ticket Status</h2>
+                                    <div class="text-gray-500 fs-7 me-2">Ticket Status</div>
                                     <select class="ajax-filter" name="status">
                                         <option value="">All</option>
                                         <option value="1">Not started</option>

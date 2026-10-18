@@ -160,7 +160,7 @@
                                     </div>
 
                                     <div class="filter-group">
-                                        <h2>Ticket Status</h2>
+                                        <div class="text-gray-500 fs-7 me-2">Ticket Status</div>
                                         <select class="ajax-filter" name="status">
                                             <option value="">All</option>
                                             <option value="1">Open</option>

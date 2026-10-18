@@ -133,7 +133,7 @@
                                 <div class="common-table-filter">
                                     <h2>All your trainings</h2>
                                     <div class="filter-group">
-                                        <h2>Training No</h2>
+                                        <div class="text-gray-500 fs-7 me-2">Training No</div>
                                         <select class="ajax-filter" name="training_no" id="all-training-tickets-training-no-filter">
                                             <option value="">All</option>
                                             @foreach($all_training_no_numbers as $training_no_numbers)
@@ -144,7 +144,7 @@
                                     </div>
 
                                     <div class="filter-group">
-                                        <h2>Status</h2>
+                                        <div class="text-gray-500 fs-7 me-2">Status</div>
                                         <select class="ajax-filter" name="status" id="all-training-tickets-status-filter">
 
                                             <option value="">All</option>
@@ -177,7 +177,7 @@
                                     </div>
 
                                     <div class="filter-group">
-                                        <h2>Training No</h2>
+                                        <div class="text-gray-500 fs-7 me-2">Training No</div>
                                         <select class="ajax-filter" name="training_no" id="all-training-courses-training-no-filter">
                                             <option value="">All</option>
                                             @foreach($all_training_no_numbers as $training_no_numbers)
@@ -208,7 +208,7 @@
                                     </div>
 
                                     <div class="filter-group">
-                                        <h2>Status:</h2>
+                                        <div class="text-gray-500 fs-7 me-2">Status:</div>
                                         <select id="all-training-tickets-status-filter" name="status" class="ajax-filter">
                                             <option value="">All</option>
                                             <option value="1">Open</option>
@@ -221,7 +221,7 @@
                                     </div>
 
                                     <div class="filter-group">
-                                        <h2>Training No</h2>
+                                        <div class="text-gray-500 fs-7 me-2">Training No</div>
                                         <select id="all-training-tickets-training-no-filter" name="training_no" class="ajax-filter">
                                             <option value="">All</option>
                                             @foreach($all_training_no_numbers as $training_no_numbers)

@@ -41,7 +41,7 @@ document.addEventListener('click', function (e) {
                 <td>
                     <input type="text"
                         name="price[]"
-                        class="form-control"
+                        class="form-control currency-input"
                         >
                 </td>
 

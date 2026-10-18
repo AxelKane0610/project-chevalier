@@ -1,15 +1,3 @@
-if (document.getElementById('total_amount')) {
-    document.getElementById('total_amount').addEventListener('input', function (e) {
-        let rawValue = this.value.replace(/\D/g, '');
-        if (rawValue) {
-            this.value = new Intl.NumberFormat('vi-VN').format(rawValue);
-        } else {
-            this.value = '';
-        }
-    });
-}
-
-
 document.addEventListener('submit', function (e) {
     // Kiểm tra xem form nào đang được submit dựa vào ID
     

@@ -645,3 +645,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
 });
 
+
+document.addEventListener('input', function (e) {
+    // Kiểm tra nếu ô đang nhập có class là 'currency-input'
+    if (e.target.classList.contains('currency-input')) {
+        let input = e.target;
+        let rawValue = input.value.replace(/\D/g, ''); // Chỉ giữ lại số
+        
+        if (rawValue) {
+            input.value = new Intl.NumberFormat('vi-VN').format(rawValue);
+        } else {
+            input.value = '';
+        }
+    }
+});
+

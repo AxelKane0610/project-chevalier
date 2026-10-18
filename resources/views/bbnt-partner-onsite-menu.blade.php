@@ -82,7 +82,7 @@
                                     </div>
 
                                     <div class="filter-group">
-                                        <h2>Onsite Type</h2>
+                                        <div class="text-gray-500 fs-7 me-2">Onsite Type</div>
                                         <select class="ajax-filter" name="onsite_type">
                                             <option value="">All</option>
                                             <option value="1">MÁY TÍNH</option>
@@ -117,7 +117,7 @@
                                 </div>
 
                                 <div class="filter-group">
-                                    <h2>Onsite Type</h2>
+                                    <div class="text-gray-500 fs-7 me-2">Onsite Type</div>
                                     <select class="ajax-filter" name="onsite_type">
                                         <option value="">All</option>
                                         <option value="1">MÁY TÍNH</option>
@@ -168,9 +168,8 @@
 
             <label class="ticket-form-body-input">Tổng số tiền (VND)</label>
             <input type="text" 
-                class="ticket-form-body-input" 
-                name="total_amount" 
-                id="total_amount" 
+                class="ticket-form-body-input currency-input" 
+                name="total_amount"  
                 placeholder="Nhập tổng số tiền" 
                 inputmode="numeric" 
                 required>

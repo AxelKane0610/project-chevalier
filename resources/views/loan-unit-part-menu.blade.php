@@ -75,7 +75,7 @@
                                 </div>
 
                                 <div class="filter-group">
-                                    <h2>Status</h2>
+                                    <div class="text-gray-500 fs-7 me-2">Status</div>
                                     <select class="ajax-filter" name="status" id="all-loan-unit-part-tickets-status-filter">
 
                                         <option value="">All</option>
@@ -90,7 +90,7 @@
                                 </div>
 
                                 <div class="filter-group">
-                                    <h2>Original</h2>
+                                    <div class="text-gray-500 fs-7 me-2">Original</div>
                                     <select class="ajax-filter" name="original" id="all-loan-unit-part-tickets-original-filter">
                                         <option value="">All</option>
                                         <option value="1">Crown</option>
@@ -124,7 +124,7 @@
                                 </div>
 
                                 <div class="filter-group">
-                                    <h2>Status</h2>
+                                    <div class="text-gray-500 fs-7 me-2">Status</div>
                                     <select class="ajax-filter" name="status" id="all-loan-unit-part-tickets-status-filter">
 
                                         <option value="">All</option>

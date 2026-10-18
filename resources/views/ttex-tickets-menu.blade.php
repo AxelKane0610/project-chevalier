@@ -88,7 +88,7 @@
                                         <i class="ti-search"></i>
                                         <input class="ajax-search" type="text" placeholder="Search Receipt, Bill, Người gửi & người nhận" id="search-ttex-tickets-booked-today-table">
                                     </div>
-                                    <h2>Part Status:</h2>
+                                    <div class="text-gray-500 fs-7 me-2">Part Status:</div>
                                     <select id="ttex-tickets-booked-today-part-status-filter" class="ajax-filter" name="part_status">
                                         <option value="">All</option>
                                         <option value="1">Good part</option>
@@ -170,7 +170,7 @@
                                         <i class="ti-search"></i>
                                         <input class="ajax-search" type="text" placeholder="Search Receipt, Bill, Người gửi & người nhận" id="search-pending-def-part-ttex-tickets-table">
                                     </div>
-                                    <h2>Part Status:</h2>
+                                    <div class="text-gray-500 fs-7 me-2">Part Status:</div>
                                     <select id="pending-def-part-ttex-tickets-part-status-filter" class="ajax-filter" name="part_status">
                                         <option value="">All</option>
                                         <option value="2">Def part</option>
@@ -208,7 +208,7 @@
                                 </div>
 
                                 <div class="filter-group">
-                                    <h2>Status:</h2>
+                                    <div class="text-gray-500 fs-7 me-2">Status:</div>
                                     <select class="ajax-filter" id="all-ttex-tickets-status-filter" name="status">
                                         <option value="">All</option>
                                         <option value="1">Open - Chưa điều tin</option>
@@ -219,7 +219,7 @@
                                 </div>
 
                                 <div class="filter-group">
-                                    <h2>Part Status:</h2>
+                                    <div class="text-gray-500 fs-7 me-2">Part Status:</div>
                                     <select class="ajax-filter" id="all-ttex-tickets-part-status-filter" name="part_status">
                                         <option value="">All</option>
                                         <option value="1">Good part</option>

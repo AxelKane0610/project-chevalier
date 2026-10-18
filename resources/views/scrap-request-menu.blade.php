@@ -83,7 +83,7 @@
                                 </div>
 
                                 <div class="filter-group">
-                                    <h2>Status</h2>
+                                    <div class="text-gray-500 fs-7 me-2">Status</div>
                                     <select class="ajax-filter" name="status">
                                         <option value="">All</option>
                                         <option value="1">Open</option>
@@ -97,7 +97,7 @@
                                 </div>
 
                                 <div class="filter-group">
-                                    <h2>Month</h2>
+                                    <div class="text-gray-500 fs-7 me-2">Month</div>
                                     <select class="ajax-filter" name="month">
                                         <option value="">All Months</option>
                                         <option value="1">January</option>
@@ -117,7 +117,7 @@
                                 </div>
 
                                 <div class="filter-group">
-                                    <h2>Year</h2>
+                                    <div class="text-gray-500 fs-7 me-2">Year</div>
                                     <select class="ajax-filter" name="year">
                                         <option value="">All Years</option>
                                         @for ($year = now()->year; $year >= 2026; $year--)

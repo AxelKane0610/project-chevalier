@@ -76,7 +76,7 @@
                                 </div>
                                 
                                 <div class="filter-group">
-                                    <h2>Current Status:</h2>
+                                    <div class="text-gray-500 fs-7 me-2">Current Status:</div>
                                     <select name="current_status" class="ajax-filter">
                                         <option value="">All</option>
                                         <option value="1">Đang lưu kho</option>
@@ -88,7 +88,7 @@
                                 </div>
                                 
                                 <div class="filter-group">
-                                    <h2>Current Site:</h2>
+                                    <div class="text-gray-500 fs-7 me-2">Current Site:</div>
                                     <select name="current_site" class="ajax-filter">
                                         <option value="">All</option>
                                         <option value="1">HCM</option>
@@ -99,7 +99,7 @@
                                 </div>
 
                                 <div class="filter-group">
-                                    <h2>Tình trạng máy:</h2>
+                                    <div class="text-gray-500 fs-7 me-2">Tình trạng máy:</div>
                                     <select name="unit_re_import_status" class="ajax-filter">
                                         <option value="">All</option>
                                         <option value="1">New</option>
@@ -134,7 +134,7 @@
                             
                                 
                                 <div class="filter-group">
-                                    <h2>Site:</h2>
+                                    <div class="text-gray-500 fs-7 me-2">Site:</div>
                                     <select name="current_site" class="ajax-filter">
                                         <option value="">All</option>
                                         <option value="1">HCM</option>
@@ -211,7 +211,7 @@
                     <td>
                         <input type="text"
                             name="price[]"
-                            class="form-control"
+                            class="form-control currency-input"
                             >
                     </td>
 

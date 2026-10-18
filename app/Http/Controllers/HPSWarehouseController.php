@@ -11,6 +11,7 @@ use App\Models\Comments_Model;
 use App\Models\Attachments_Model;
 use App\Services\tracking_info_service;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Carbon\Carbon;
 
 use function PHPUnit\Framework\matches;
@@ -129,10 +130,22 @@ class HPSWarehouseController extends Controller
 
 
 
-        $pending_items = $query->orderBy('created_at', 'desc')
-            ->orderBy('id', 'desc') // Đảm bảo thứ tự duy nhất tuyệt đối
-            ->paginate(10)
-            ->withQueryString();
+        $allData = $query->get()->sortByDesc(function ($item) {
+            return $item->aging ?? -1; // Bản ghi nào chưa có ngày xuất (null) sẽ tự động đẩy xuống cuối
+        });
+
+        // 5. Phân trang thủ công cho Collection (10 bản ghi / trang)
+        $perPage = 10;
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $currentItems = $allData->slice(($currentPage - 1) * $perPage, $perPage)->values();
+        
+        $pending_items = new LengthAwarePaginator(
+            $currentItems,
+            $allData->count(),
+            $perPage,
+            $currentPage,
+            ['path' => $request->url(), 'query' => $request->query()]
+        );
 
         if ($request->ajax()) {
             return view('tables.hps-warehouse-pending-items-table', compact('pending_items'))->render();

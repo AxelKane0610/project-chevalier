@@ -57,7 +57,7 @@
                                 </div>
                                 
                                 <div class="filter-group" >
-                                    <h2>Category:</h2>
+                                    <div class="text-gray-500 fs-7 me-2">Category:</div>
                                     <select id="category-filter" class="ajax-filter" name="category">
                                         <option value="">All</option>
                                         <option value="1">Laptop</option>
@@ -72,7 +72,7 @@
                                 </div>
                                 
                                 <div class="filter-group">
-                                    <h2>Warehouse:</h2>
+                                    <div class="text-gray-500 fs-7 me-2">Warehouse:</div>
                                     <select id="warehouse-filter" class="ajax-filter" name="warehouse">
                                         <option value="">All</option>
                                         <option value="1">Spectre</option>
@@ -82,7 +82,7 @@
                                 </div>
 
                                 <div class="filter-group">
-                                    <h2>Availability:</h2>
+                                    <div class="text-gray-500 fs-7 me-2">Availability:</div>
                                     <select id="availability-filter" class="ajax-filter" name="availability" >
                                         <option value="">All</option>
                                         <option value="1">Available</option>
@@ -92,7 +92,7 @@
                                 </div>
 
                                 <div class="filter-group">
-                                    <h2>Condition:</h2>
+                                    <div class="text-gray-500 fs-7 me-2">Condition:</div>
                                     <select id="condition-filter" class="ajax-filter" name="condition">
                                         <option value="">All</option>
                                         <option value="1">Good working</option>

@@ -10,6 +10,8 @@
         <th width="15%">Status</th>
         <th width="15%">Customer Unit Info</th>
         <th width="15%">Original Parts</th>
+        <th width="15%">Created At</th>
+
 
         
 
@@ -34,7 +36,7 @@
                 </td>
                 <td>{{ $ticket->customer_unit_info }}</td>
                 <td>{{ $ticket->all_originals ?: 'N/A' }}</td>
-
+                <td>{{ $ticket->created_at->format('d/m/Y H:i') }}</td>
 
             </tr>
         @endforeach

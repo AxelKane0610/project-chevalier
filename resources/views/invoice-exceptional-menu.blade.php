@@ -68,14 +68,14 @@
                                 <h2>Pending Tickets</h2>
 
                                 <table class="common-table pending-invoice-exceptional-tickets-table" width="100%" >
-                                    <tr>
+                                    <thead>
                                         <th width="5%"></th>
                                         <th width="14%">Receipt</th>
                                         <th width="20%">Support Type</th>
                                         <th width="39%">Issue Description</th>
                                         <th width="11%">Product Model</th>
                                         <th width="11%">Status</th>
-                                    </tr>
+                                    </thead>
                                 
                                     <tbody>
                                         @foreach ($tickets as $ticket)
@@ -119,7 +119,7 @@
                                     </div>
 
                                     <div class="filter-group">
-                                        <h2>Support Type</h2>
+                                        <div class="text-gray-500 fs-7 me-2">Support Type</div>
                                         <select class="ajax-filter" name="support_type">
                                             <option value="">All</option>
                                             <option value="1">Hóa đơn xuất sau (1 máy)</option>
@@ -133,7 +133,7 @@
                                     </div>
 
                                     <div class="filter-group">
-                                        <h2>Ticket Status</h2>
+                                        <div class="text-gray-500 fs-7 me-2">Ticket Status</div>
                                         <select class="ajax-filter" name="status">
                                             <option value="">All</option>
                                             <option value="1">Open</option>
