@@ -398,7 +398,7 @@ class HPSWarehouseController extends Controller
                         'product_number'            => $request->product_number[$index],
                         'model'                     => $request->model[$index],
                         'po_number'                 => $request->po_number[$index] ?? null,
-                        'price'                     => $request->price[$index] ?? null,
+                        'price'                     => str_replace('.', '', $request->price[$index] ) ?? null,
                         'note'                      => $request->note[$index] ?? null,
                         'import_source'             => $request->import_source,
                         'po_type'                   => $request->po_type,
