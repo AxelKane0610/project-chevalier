@@ -12,9 +12,9 @@
 
     <body>
 
-    <div style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; overflow: hidden;">
+    {{-- <div style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; overflow: hidden;">
         <img src="{{ asset('imgs/20-10-background.png') }}" style="width: 100%; height: 100%; object-fit: cover; object-position: center;" alt="Background">
-    </div>
+    </div> --}}
 
     <div class="d-flex flex-grow-1 overflow-hidden vh-100 align-items-center justify-content-center">
         <div class="container my-auto p-4" style="max-width: 1100px;">
