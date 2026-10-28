@@ -64,7 +64,7 @@ class UserController extends Controller
 
         try {
             // 2. Lấy Secret Key từ cấu hình (.env)
-            $secretKey = config('services.jwt_secret_key');
+            $secretKey = config('services.api_services.jwt_secret_key');
 
             // 3. Giải mã và kiểm tra chữ ký, thời gian sống (exp)
             $decoded = JWT::decode($token, new Key($secretKey, 'HS256'));
