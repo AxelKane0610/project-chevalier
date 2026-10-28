@@ -53,7 +53,7 @@ return [
         'send_bbnt_ticket_complete_notification_url' => env('API_POWER_AUTOMATE_CLOSE_BBNT_TICKET'),
         'send_approve_scrap_ticket_url' => env('API_POWER_AUTOMATE_CREATE_SCRAP_REQUEST'),
         'hps_export_request_url' => env('API_POWER_AUTOMATE_HPS_EXPORT_REQUEST'),
-        'jwt_secret_key' => env('JWT_SECRET_KET'),
+        'jwt_secret_key' => env('JWT_SECRET_KEY'),
     ],
 
 ];
