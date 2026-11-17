@@ -51,7 +51,7 @@ class UserController extends Controller
 
     public function EEG_SSO_Authenticate(Request $request)
     {
-        // 1. Lấy token và đường dẫn đích từ Query String
+        
         $token = $request->query('token');
         $redirectTo = $request->query('redirect_to', '/main-menu');
 
@@ -63,16 +63,15 @@ class UserController extends Controller
         }
 
         try {
-            // 2. Lấy Secret Key từ cấu hình (.env)
+            
             $secretKey = config('services.api_service.jwt_secret_key');
-            // 3. Giải mã và kiểm tra chữ ký, thời gian sống (exp)
+            
             $decoded = JWT::decode($token, new Key($secretKey, 'HS256'));
 
             $userId = $decoded->user_id;
             $username = $decoded->username;
 
-            // 4. Tìm kiếm user trong cơ sở dữ liệu của Hệ thống B
-            // Có thể tìm theo ID hoặc Username tùy thiết kế DB của bạn
+            
             $user = User::where('eeg_user_id', $userId)
                 ->orWhere('name', $username)
                 ->first();
@@ -84,24 +83,22 @@ class UserController extends Controller
                 ], 404);
             }
 
-            // 5. Tạo session đăng nhập cho user trên Hệ thống B
+            
             Auth::login($user);
 
-            // Tùy chọn: Regenerate session để bảo mật chống session fixation attack
+            
             $request->session()->regenerate();
 
-            // 6. Chuyển hướng người dùng vào trang đích mong muốn
+            
             return redirect()->to($redirectTo);
 
         } catch (ExpiredException $e) {
-            // Bắt riêng lỗi token quá hạn (ví dụ > 30 giây)
             return response()->json([
                 'status' => 'error',
-                'message' => 'Phiên đăng nhập qua đường dẫn tắt đã hết hạn. Vui lòng thử lại.'
+                'message' => 'Token expired !. Vui lòng thử lại.'
             ], 401);
 
         } catch (\Exception $e) {
-            // Bắt các lỗi khác như: sai chữ ký, token bị sửa đổi, cấu trúc hỏng...
             return response()->json([
                 'status' => 'error',
                 'message' => 'Xác thực chữ ký không hợp lệ: ' . $e->getMessage()

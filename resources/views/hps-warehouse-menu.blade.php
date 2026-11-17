@@ -37,8 +37,8 @@
         </x-common-header>
 
 
-        <div class="d-flex flex-grow-1 overflow-hidden vh-100">
-            <div class="container-fluid my-5 flex-grow-1">
+        {{-- <div class="d-flex flex-grow-1 overflow-hidden vh-100"> --}}
+            <div class="container-fluid my-5 flex-grow-1 vh-90">
                 <div class="row flex-grow-1 h-100">
                     <div class="col-2 d-flex justify-content-center align-items-center flex-column gap-3">
 
@@ -66,7 +66,7 @@
                     </div>
 
                     <div class="col-10 h-100 overflow-auto">
-                        <div class="bg-white p-3 rounded shadow-sm ticket-table" id="all-hps-items-container">
+                        <div class="bg-white p-3 rounded shadow-sm ticket-table h-100" id="all-hps-items-container">
                             <div class="common-table-filter">
                                 <div class="filter-group">
                                     <div class="search-box">
@@ -158,7 +158,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        {{-- </div> --}}
 
     <x-common-ticket-form title="Nhập kho" id="import-hps-warehouse-item-form" action1="/import-asset">
         @method('POST')

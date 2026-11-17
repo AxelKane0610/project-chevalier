@@ -4,21 +4,21 @@
 </div>
 
 <div class="common-table-container">
-    <table id="hps-warehouse-items-table" class="common-table" width="100%" >
-        <thead>
-            <th width="5%"></th>
-            <th width="5%">Asset Tag</th>
-            <th width="10%">Serial Number</th>
-            <th width="10%">Box SN</th>
-            <th width="10%">Product Number</th>
-            <th width="20%">Model</th>
-            <th width="10%">Site</th>
-            <th width="10%">Status</th>
-            <th width="10%">Tình trạng máy</th>
+    <table id="hps-warehouse-items-table" class="table table-bordered table-responsive table-hover align-middle" width="100%" >
+        <thead class="table-light text-center col-small">
+            <th class="col-small"></th>
+            <th class="col-small">Asset Tag</th>
+            <th class="col-small">Serial Number</th>
+            <th class="col-small">Box SN</th>
+            <th class="col-small">Product Number</th>
+            <th class="col-small">Model</th>
+            <th class="col-small">Site</th>
+            <th class="col-small">Status</th>
+            <th class="col-small">Tình trạng máy</th>
 
-        </thead>
+        </thead >
 
-        <tbody>
+        <tbody class="text-center">
             @foreach ($items as $item)
                 
                 <tr>

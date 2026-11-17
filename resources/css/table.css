@@ -2,11 +2,11 @@
    BASIC TABLE
 ========================================================= */
 
-table {
+/* table {
     width: 100%;
     empty-cells: show;
     border-collapse: collapse;
-}
+} */
 
 
 /* =========================================================
@@ -16,54 +16,17 @@ table {
 .common-table-container {
     width: 100%;
     max-width: 100%;
-
-    /* Đổi từ padding: 10px thành padding: 0 */
     padding: 0;
-
     background-color: white;
     border-radius: 10px;
     box-sizing: border-box;
     height: auto;
     max-height: 600px;
-
-    /*
-     * Chỉ container này được scroll
-     */
-    overflow: auto;
+    
+    /* Bật scroll cả ngang lẫn dọc khi nội dung vượt quá kích thước */
+    overflow: auto; 
 }
 
-
-/* =========================================================
-   FILTER
-========================================================= */
-
-/* .common-table-filter {
-    width: 100%;
-
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-
-    gap: 10px;
-
-    background-color: white;
-
-    padding: 10px 0;
-
-    box-sizing: border-box;
-} */
-
-/* .common-table-filter {
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 10px;
-
-    background-color: white;
-    padding: 10px 0;
-    box-sizing: border-box;
-} */
 
 .common-table-filter {
     width: 100%;
@@ -100,21 +63,12 @@ table {
 ========================================================= */
 
 .common-table {
-    width: 100%;
-
-    /*
-     * Quan trọng:
-     * cố định layout theo width của table
-     */
+    /* Đặt tổng chiều rộng tối thiểu cho bảng (ví dụ: tổng các cột cộng lại là 1200px) */
+    min-width: 1200px; 
+    
     table-layout: fixed;
-
     border-collapse: separate;
     border-spacing: 0;
-
-    /*
-     * Không cho table vượt container
-     */
-    max-width: 100%;
 }
 
 
@@ -301,4 +255,24 @@ table {
     background-color: white;
 
     box-sizing: border-box;
+}
+
+.common-table th.col-small, 
+.common-table td.col-small {
+    width: 60px;
+    min-width: 60px;
+}
+
+/* Cột thông tin chung (Tên, Email...) */
+.common-table th.col-medium, 
+.common-table td.col-medium {
+    width: 200px;
+    min-width: 200px;
+}
+
+/* Cột nội dung dài (Địa chỉ, Mô tả...) */
+.common-table th.col-large, 
+.common-table td.col-large {
+    width: 350px;
+    min-width: 350px;
 }
