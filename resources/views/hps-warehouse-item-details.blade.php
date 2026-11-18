@@ -74,31 +74,29 @@
             @endif
         </x-common-header>
 
-        <div class="common-table-container " style="zoom: 0.85;">
-            <div class="table-responsive">
-                <table class="common-table">
-                    <thead>
+        
+            <div class="table-responsive p-2">
+                <table class="table table-bordered table-responsive table-hover align-middle">
+                    <thead class="table-light text-center">
                         <tr>
-                            <th style="width: 7%"></th>
-                            <th style="width: 10%">HPS Receipt</th>
-                            <th style="width: 10%">CE Owner</th>
-                            <th style="width: 10%">Program Support</th>
-                            <th style="width: 10%">Export Serial Number</th>
-                            <th style="width: 15%">Export Model</th>
-                            <th style="width: 10%">Export Site</th>
-                            <th style="width: 10%">Người xuất máy</th>
-                            <th style="width: 10%">SN nhập lại</th>
-                            <th style="width: 15%">Model nhập lại</th>
-                            <th style="width: 10%">Site nhập lại</th>
-                            <th style="width: 10%">Người thu hồi</th>
-                            <th style="width: 10%">Trạng thái máy nhập lại</th>
-
-
-
+                            <th></th>
+                            <th>HPS Receipt</th>
+                            <th>CE Owner</th>
+                            <th>Program Support</th>
+                            <th>Export Serial Number</th>
+                            <th>Export Model</th>
+                            <th>Export Site</th>
+                            <th>Người xuất máy</th>
+                            <th>SN nhập lại</th>
+                            <th>Model nhập lại</th>
+                            <th>Site nhập lại</th>
+                            <th>Người thu hồi</th>
+                            <th>Trạng thái máy nhập lại</th>
+                            <th>Notes</th>
                         </tr>
                     </thead>
 
-                    <tbody>
+                    <tbody class="text-center col-small">
 
                     
                         @foreach($item_details->export_details as $details)
@@ -152,12 +150,14 @@
                                     default => '',
                                 } }}</td>
 
+                                <td>{{$details->note}}</td>
+
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
-        </div>
+        
 
 
         <div class="container-fluid px-4 py-4">

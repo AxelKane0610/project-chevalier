@@ -38,8 +38,8 @@
 
 
         {{-- <div class="d-flex flex-grow-1 overflow-hidden vh-100"> --}}
-            <div class="container-fluid my-5 flex-grow-1 vh-90">
-                <div class="row flex-grow-1 h-100">
+            <div class="container-fluid p-5 " style="flex: 1; height: calc(100vh - 10vh); overflow: hidden;">
+                <div class="row" style="height: 100%; flex-wrap: nowrap; align-items: center">
                     <div class="col-2 d-flex justify-content-center align-items-center flex-column gap-3">
 
                         @if (auth()->user()->hasRole('ROLE_SUPER_ADMIN') || auth()->user()->hasRole('ROLE_HPS_WAREHOUSE_ADMIN'))
@@ -66,7 +66,7 @@
                     </div>
 
                     <div class="col-10 h-100 overflow-auto">
-                        <div class="bg-white p-3 rounded shadow-sm ticket-table h-100" id="all-hps-items-container">
+                        <div class="bg-white p-3 rounded shadow-sm ticket-table" id="all-hps-items-container">
                             <div class="common-table-filter">
                                 <div class="filter-group">
                                     <div class="search-box">
@@ -77,7 +77,7 @@
                                 
                                 <div class="filter-group">
                                     <div class="text-gray-500 fs-7 me-2">Current Status:</div>
-                                    <select name="current_status" class="ajax-filter">
+                                    <select name="current_status"  class="ajax-filter">
                                         <option value="">All</option>
                                         <option value="1">Đang lưu kho</option>
                                         <option value="2">Đã hủy</option>

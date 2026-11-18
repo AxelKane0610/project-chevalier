@@ -4,18 +4,22 @@
 </div>
 
 <div class="common-table-container">
-    <table id="hps-warehouse-items-table" class="table table-bordered table-responsive table-hover align-middle" width="100%" >
+    <table id="hps-warehouse-items-table" class="table table-bordered table-responsive table-hover align-middle caption-top" width="100%" >
+        <caption>
+            
+        </caption>
         <thead class="table-light text-center col-small">
-            <th class="col-small"></th>
-            <th class="col-small">Asset Tag</th>
-            <th class="col-small">Serial Number</th>
-            <th class="col-small">Box SN</th>
-            <th class="col-small">Product Number</th>
-            <th class="col-small">Model</th>
-            <th class="col-small">Site</th>
-            <th class="col-small">Status</th>
-            <th class="col-small">Tình trạng máy</th>
-
+            <tr>
+                <th class="col-small"></th> 
+                <th class="col-medium">Asset Tag</th>
+                <th class="col-medium">Serial Number</th>
+                <th class="col-medium">Box SN</th>
+                <th class="col-medium">Product Number</th>
+                <th class="col-large">Model</th>
+                <th class="col-medium">Site</th>
+                <th class="col-medium">Status</th>
+                <th class="col-medium">Tình trạng máy</th>
+            </tr>
         </thead >
 
         <tbody class="text-center">

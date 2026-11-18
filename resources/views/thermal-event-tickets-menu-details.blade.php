@@ -120,8 +120,8 @@
             <table class="common-table" width="100%">
                 <th width="5%"></th>
                 <th width="25%">Part MO Number</th>
-                <th width="25%">Part Description</th>   
-                <th width="25%">Part Number</th>
+                <th width="25%">Part Number</th>   
+                <th width="25%">Part Description</th>
                 <th width="25%">Part CT Number</th> 
 
                 @foreach($ticket->parts_details as $parts)

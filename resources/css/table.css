@@ -2,11 +2,11 @@
    BASIC TABLE
 ========================================================= */
 
-/* table {
+table {
     width: 100%;
-    empty-cells: show;
-    border-collapse: collapse;
-} */
+    table-layout: fixed; /* Cực kỳ quan trọng: ép bảng tuân thủ chiều rộng cột cố định */
+    word-wrap: break-word; /* Tự động xuống dòng khi chữ quá dài */
+}
 
 
 /* =========================================================
@@ -20,10 +20,8 @@
     background-color: white;
     border-radius: 10px;
     box-sizing: border-box;
-    height: auto;
     max-height: 600px;
     
-    /* Bật scroll cả ngang lẫn dọc khi nội dung vượt quá kích thước */
     overflow: auto; 
 }
 
@@ -257,22 +255,22 @@
     box-sizing: border-box;
 }
 
-.common-table th.col-small, 
-.common-table td.col-small {
+ th.col-small, 
+ td.col-small {
     width: 60px;
     min-width: 60px;
 }
 
 /* Cột thông tin chung (Tên, Email...) */
-.common-table th.col-medium, 
-.common-table td.col-medium {
+ th.col-medium, 
+ td.col-medium {
     width: 200px;
     min-width: 200px;
 }
 
 /* Cột nội dung dài (Địa chỉ, Mô tả...) */
-.common-table th.col-large, 
-.common-table td.col-large {
+ th.col-large, 
+ td.col-large {
     width: 350px;
     min-width: 350px;
 }

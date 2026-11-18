@@ -21,6 +21,7 @@ use App\Http\Controllers\LoanUnitPartTicketsController;
 use App\Http\Controllers\ScrapRequestController;
 use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\TTEXTicketsController;
+use App\Http\Controllers\TestFetchXml;
 
 Route::get('/', function () {
     if (auth()->check()) {
@@ -294,6 +295,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/scrap-request-menu/filter-all-scrap-tickets', [ScrapRequestController::class, 'Filter_All_Scrap_Tickets'])->name('filter-all-scrap-tickets');
         Route::patch('/re-open-scrap-ticket/{id}', [ScrapRequestController::class, 'Re_Open_Scrap_Ticket']) ->name('re-open-scrap-ticket');
     });
+
+    Route::middleware(['role:ROLE_SUPER_ADMIN'])->group(function () {
+        Route::get('/test-fetch-xml', [TestFetchXml::class, 'index']);
+    });
+
 
     
 

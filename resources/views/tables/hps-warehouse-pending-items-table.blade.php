@@ -3,66 +3,66 @@
     {{ $pending_items->withQueryString()->links('pagination::bootstrap-5') }}
 </div>
 
-<div class="common-table-container">
-    <table id="hps-warehouse-items-table" class="common-table" width="100%" >
-        <thead>
-            <th width="5%"></th>
-            <th width="10%">HPS Receipt</th>
-            <th width="10%">CE Owner</th>
-            <th width="10%">Serial Number</th>
+
+<table id="hps-warehouse-items-table" class="table table-bordered table-responsive table-hover align-middle" width="100%" >
+    <thead class="table-light text-center col-small">
+        <th width="5%"></th>
+        <th width="10%">HPS Receipt</th>
+        <th width="10%">CE Owner</th>
+        <th width="10%">Serial Number</th>
+        
+        <th width="20%">Model</th>
+        <th width="10%">Site</th>
+        <th width="10%">Status</th>
+        <th width="10%">Aging</th>
+
+
+    </thead>
+
+    <tbody class="text-center"> 
+        @foreach ($pending_items as $item)
             
-            <th width="20%">Model</th>
-            <th width="10%">Site</th>
-            <th width="10%">Status</th>
-            <th width="10%">Aging</th>
-
-
-        </thead>
-
-        <tbody>
-            @foreach ($pending_items as $item)
+            <tr>
+                <td>
+                    <a href="/hps-warehouse-item-details/{{ $item->id }}">
+                        <button><i class="ti-arrow-right" ></i></button>
+                    </a>
+                </td>
+                <td>{{ $item->current_hps_receipt }}</td>
+                <td>{{ $item->ceOwner->fullname ?? 'N/A' }}</td>
+                <td>{{ $item->current_serial_number }}</td>
                 
-                <tr>
-                    <td>
-                        <a href="/hps-warehouse-item-details/{{ $item->id }}">
-                            <button><i class="ti-arrow-right" ></i></button>
-                        </a>
-                    </td>
-                    <td>{{ $item->current_hps_receipt }}</td>
-                    <td>{{ $item->ceOwner->fullname ?? 'N/A' }}</td>
-                    <td>{{ $item->current_serial_number }}</td>
-                    
-                    <td>{{ $item->model }}</td>
-                    
-                    <td>
-                        <span class="badge rounded-pill bg-{{ $item->current_site_data['color'] ?? 'primary' }} px-3 py-2">
-                            {{ $item->current_site_data['text'] }}
+                <td>{{ $item->model }}</td>
+                
+                <td>
+                    <span class="badge rounded-pill bg-{{ $item->current_site_data['color'] ?? 'primary' }} px-3 py-2">
+                        {{ $item->current_site_data['text'] }}
+                    </span>
+                </td>
+                
+                <td>
+                    <span class="badge rounded-pill bg-{{ $item->current_status_data['color'] ?? 'primary' }} px-3 py-2">
+                        {{ $item->current_status_data['text'] }}
+                    </span>
+                </td>
+                <td>
+                    @if($item->aging !== null)
+                        <span class="badge bg-warning text-dark">
+                            {{ $item->aging }} ngày
                         </span>
-                    </td>
-                    
-                    <td>
-                        <span class="badge rounded-pill bg-{{ $item->current_status_data['color'] ?? 'primary' }} px-3 py-2">
-                            {{ $item->current_status_data['text'] }}
-                        </span>
-                    </td>
-                    <td>
-                        @if($item->aging !== null)
-                            <span class="badge bg-warning text-dark">
-                                {{ $item->aging }} ngày
-                            </span>
-                        @else
-                            <span class="text-muted">N/A</span>
-                        @endif
-                    </td>
-                    
-                    
+                    @else
+                        <span class="text-muted">N/A</span>
+                    @endif
+                </td>
+                
+                
 
-                </tr>
-            @endforeach
-        </tbody>
+            </tr>
+        @endforeach
+    </tbody>
 
-    </table>
-</div>
+</table>
+
 
     
 
